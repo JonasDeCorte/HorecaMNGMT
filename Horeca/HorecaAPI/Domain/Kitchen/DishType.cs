@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Kitchen
+﻿namespace Domain.Kitchen
 {
-    enum DishType
+    public enum DishType
     {
+        APPETIZER,
+        MAINCOURSE,
+        DESSERT
     }
 }

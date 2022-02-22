@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Kitchen
+﻿namespace Domain.Kitchen
 {
-    enum IngredientType
+    public enum IngredientType
     {
+        FRUIT,
+        VEGETABLE,
+        MEAT,
+        SPICES,
+        MILKPRODUCT,
+        BAKINGPRODUCT,
+        OIL,
+        PASTA ,
+        OTHER
     }
 }

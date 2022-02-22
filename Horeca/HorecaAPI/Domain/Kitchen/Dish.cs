@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Kitchen
+﻿namespace Domain.Kitchen
 {
     public class Dish
     {
+        public string Name { get; set; }
+        public DishType DishType { get; set; }
+
+        public Dish()
+        {
+
+        }
     }
 }

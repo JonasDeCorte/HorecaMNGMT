@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Kitchen
+﻿namespace Domain.Kitchen
 {
     public class Ingredient
     {
+        public string Name { get; set; }
+        public IngredientType IngredientType { get; set; }
+
+        public Ingredient()
+        {
+
+        }
     }
 }
