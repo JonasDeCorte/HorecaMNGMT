@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Kitchen
+﻿namespace Domain.Kitchen
 {
     public class MenuCard
     {
+        public string Name { get; set; }
+        public List<Menu> Menus { get; set; }
+        public List<Dish> Dishes { get; set; }
+
+        public MenuCard()
+        {
+
+        }
     }
 }
