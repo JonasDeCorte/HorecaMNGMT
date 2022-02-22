@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.User
 {
-    enum EmployeeType
+  public enum EmployeeType
     {
+        KITCHEN, 
+        HALL
     }
 }
