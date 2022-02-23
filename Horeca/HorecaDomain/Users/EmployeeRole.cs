@@ -11,5 +11,9 @@
         FLOORPLAN = 32,
         BOOKING = 64,
         ORDER = 128,
+
+        DefaultKitchen = INGREDIENT | DISH | MENU | MENUCARD,
+        DefaultHall = TABLE | BOOKING | ORDER,
+        DefaultOwner = INGREDIENT | DISH | MENU | MENUCARD | TABLE | FLOORPLAN | BOOKING | ORDER
     }
 }
