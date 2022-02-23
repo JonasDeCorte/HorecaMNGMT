@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HorecaDomain\HorecaDomain.csproj" />
     <ProjectReference Include="..\HorecaPersistence\HorecaPersistence.csproj" />
   </ItemGroup>
 

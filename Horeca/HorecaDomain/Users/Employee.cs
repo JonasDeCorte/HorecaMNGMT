@@ -1,11 +1,11 @@
 ﻿using Domain.Restaurants;
 
+
 namespace Domain.Users
 {
-    public class Employee : IUser
+    public class Employee : ApplicationUser, IUser
     {
         public string Name { get; }
-        public string Email { get; }
         public string Password { get; }
         public List<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
 
