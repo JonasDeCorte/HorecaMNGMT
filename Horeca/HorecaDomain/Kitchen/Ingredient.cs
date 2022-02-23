@@ -5,10 +5,9 @@
         public string Name { get; set; }
         public IngredientType IngredientType { get; set; }
 
-        public Ingredient(string name, IngredientType ingredientType)
+        public Ingredient()
         {
-            Name = name;
-            IngredientType = ingredientType;
+
         }
     }
 }
