@@ -3,11 +3,11 @@
     public class Menu
     {
         public string Name { get; set; }
-        public List<Dish> Dishes;
+        public List<Dish> Dishes { get; set; } = new List<Dish>();
 
-        public Menu()
+        public Menu(string name)
         {
-
+            Name = name;
         }
     }
 }

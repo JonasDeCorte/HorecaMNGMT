@@ -6,9 +6,9 @@
         public List<Menu> Menus { get; set; }
         public List<Dish> Dishes { get; set; }
 
-        public MenuCard()
+        public MenuCard(string name)
         {
-
+            Name = name;
         }
     }
 }
