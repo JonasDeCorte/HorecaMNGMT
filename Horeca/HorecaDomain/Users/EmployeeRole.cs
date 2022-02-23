@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Users
-{   [Flags]
+﻿namespace Domain.Users
+{
+    [Flags]
     public enum EmployeeRole
     {
         INGREDIENT = 1,
