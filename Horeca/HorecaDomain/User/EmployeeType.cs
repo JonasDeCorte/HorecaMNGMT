@@ -9,6 +9,7 @@ namespace Domain.User
   public enum EmployeeType
     {
         KITCHEN, 
-        HALL
+        HALL,
+        OWNER
     }
 }
