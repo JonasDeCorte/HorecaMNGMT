@@ -1,16 +1,23 @@
-﻿namespace Domain.Kitchen
+﻿using HorecaDomain.Common;
+
+namespace Domain.Kitchen
 {
-    public class Dish
+    public class Dish : Entity
     {
         public string Name { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
         public DishType DishType { get; set; }
-        
+
         public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
-        public List<Menu> Menus { get; set; } = new List<Menu>();
-        public List<MenuCard> MenuCards { get; set; } = new List<MenuCard>();
-        
+
+        /// <summary>
+        /// Entity Framework Constructor
+        /// </summary>
+        private Dish()
+        {
+        }
+
         public Dish(string name, DishType dishType)
         {
             Name = name;
