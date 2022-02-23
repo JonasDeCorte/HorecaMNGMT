@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaAPI", "HorecaAPI.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaDomain", "..\HorecaDomain\HorecaDomain.csproj", "{D1E2C049-6269-4360-A05E-A517A44EC0E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaPersistence", "..\HorecaPersistence\HorecaPersistence.csproj", "{499D09E7-C919-49DD-86E4-461CD2710A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaPersistence", "..\HorecaPersistence\HorecaPersistence.csproj", "{499D09E7-C919-49DD-86E4-461CD2710A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaServices", "..\HorecaServices\HorecaServices.csproj", "{E9374257-DA43-47FC-8D12-47D2109C1866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaServices", "..\HorecaServices\HorecaServices.csproj", "{E9374257-DA43-47FC-8D12-47D2109C1866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaShared", "..\HorecaShared\HorecaShared.csproj", "{A94914F2-115D-43B3-BBCC-EF9EFC7AE967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaShared", "..\HorecaShared\HorecaShared.csproj", "{A94914F2-115D-43B3-BBCC-EF9EFC7AE967}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaMVC", "..\HorecaMVC\HorecaMVC.csproj", "{6AED0369-68EA-4726-8194-80E07621649E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A94914F2-115D-43B3-BBCC-EF9EFC7AE967}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A94914F2-115D-43B3-BBCC-EF9EFC7AE967}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A94914F2-115D-43B3-BBCC-EF9EFC7AE967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AED0369-68EA-4726-8194-80E07621649E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AED0369-68EA-4726-8194-80E07621649E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AED0369-68EA-4726-8194-80E07621649E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AED0369-68EA-4726-8194-80E07621649E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
