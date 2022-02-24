@@ -22,51 +22,6 @@ namespace HorecaMVC.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("DishIngredient", b =>
-                {
-                    b.Property<int>("DishesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DishesId", "IngredientsId");
-
-                    b.HasIndex("IngredientsId");
-
-                    b.ToTable("DishIngredient");
-                });
-
-            modelBuilder.Entity("DishMenu", b =>
-                {
-                    b.Property<int>("DishesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MenusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DishesId", "MenusId");
-
-                    b.HasIndex("MenusId");
-
-                    b.ToTable("DishMenu");
-                });
-
-            modelBuilder.Entity("DishMenuCard", b =>
-                {
-                    b.Property<int>("DishesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MenuCardsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DishesId", "MenuCardsId");
-
-                    b.HasIndex("MenuCardsId");
-
-                    b.ToTable("DishMenuCard");
-                });
-
             modelBuilder.Entity("Domain.Kitchen.Dish", b =>
                 {
                     b.Property<int>("Id")
@@ -77,14 +32,16 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("DishType")
                         .HasColumnType("int");
@@ -92,9 +49,16 @@ namespace HorecaMVC.Data.Migrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("MenuCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MenuId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -104,9 +68,13 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MenuCardId");
+
+                    b.HasIndex("MenuId");
+
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Dish");
+                    b.ToTable("Dish", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Kitchen.Ingredient", b =>
@@ -123,6 +91,9 @@ namespace HorecaMVC.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DishId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IngredientType")
                         .HasColumnType("int");
 
@@ -131,14 +102,17 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredient");
+                    b.HasIndex("DishId");
+
+                    b.ToTable("Ingredient", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Kitchen.Menu", b =>
@@ -155,16 +129,22 @@ namespace HorecaMVC.Data.Migrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("MenuCardId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menu");
+                    b.HasIndex("MenuCardId");
+
+                    b.ToTable("Menu", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Kitchen.MenuCard", b =>
@@ -183,7 +163,8 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -195,7 +176,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("MenuCard");
+                    b.ToTable("MenuCard", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Orders.Order", b =>
@@ -222,7 +203,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Restaurants.Booking", b =>
@@ -265,7 +246,7 @@ namespace HorecaMVC.Data.Migrations
                     b.HasIndex("TableId")
                         .IsUnique();
 
-                    b.ToTable("Booking");
+                    b.ToTable("Booking", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Restaurants.FloorPlan", b =>
@@ -287,7 +268,8 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -302,7 +284,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("FloorPlan");
+                    b.ToTable("FloorPlan", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Restaurants.Restaurant", b =>
@@ -328,7 +310,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurant");
+                    b.ToTable("Restaurants");
                 });
 
             modelBuilder.Entity("Domain.Restaurants.Table", b =>
@@ -338,6 +320,9 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -365,7 +350,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasIndex("FloorPlanId");
 
-                    b.ToTable("Table");
+                    b.ToTable("Table", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Users.Employee", b =>
@@ -386,6 +371,12 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("EmployeeRole")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -450,21 +441,6 @@ namespace HorecaMVC.Data.Migrations
                     b.HasIndex("RestaurantsId");
 
                     b.ToTable("EmployeeRestaurant");
-                });
-
-            modelBuilder.Entity("MenuMenuCard", b =>
-                {
-                    b.Property<int>("MenuCardsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MenusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MenuCardsId", "MenusId");
-
-                    b.HasIndex("MenusId");
-
-                    b.ToTable("MenuMenuCard");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -604,56 +580,36 @@ namespace HorecaMVC.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DishIngredient", b =>
-                {
-                    b.HasOne("Domain.Kitchen.Dish", null)
-                        .WithMany()
-                        .HasForeignKey("DishesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Kitchen.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DishMenu", b =>
-                {
-                    b.HasOne("Domain.Kitchen.Dish", null)
-                        .WithMany()
-                        .HasForeignKey("DishesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Kitchen.Menu", null)
-                        .WithMany()
-                        .HasForeignKey("MenusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DishMenuCard", b =>
-                {
-                    b.HasOne("Domain.Kitchen.Dish", null)
-                        .WithMany()
-                        .HasForeignKey("DishesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Kitchen.MenuCard", null)
-                        .WithMany()
-                        .HasForeignKey("MenuCardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Kitchen.Dish", b =>
                 {
+                    b.HasOne("Domain.Kitchen.MenuCard", null)
+                        .WithMany("Dishes")
+                        .HasForeignKey("MenuCardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Kitchen.Menu", null)
+                        .WithMany("Dishes")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Domain.Orders.Order", null)
                         .WithMany("Dishes")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("Domain.Kitchen.Ingredient", b =>
+                {
+                    b.HasOne("Domain.Kitchen.Dish", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("DishId");
+                });
+
+            modelBuilder.Entity("Domain.Kitchen.Menu", b =>
+                {
+                    b.HasOne("Domain.Kitchen.MenuCard", null)
+                        .WithMany("Menus")
+                        .HasForeignKey("MenuCardId");
                 });
 
             modelBuilder.Entity("Domain.Kitchen.MenuCard", b =>
@@ -689,7 +645,7 @@ namespace HorecaMVC.Data.Migrations
                     b.HasOne("Domain.Restaurants.Table", "Table")
                         .WithOne("Booking")
                         .HasForeignKey("Domain.Restaurants.Booking", "TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Restaurant");
@@ -730,21 +686,6 @@ namespace HorecaMVC.Data.Migrations
                     b.HasOne("Domain.Restaurants.Restaurant", null)
                         .WithMany()
                         .HasForeignKey("RestaurantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MenuMenuCard", b =>
-                {
-                    b.HasOne("Domain.Kitchen.MenuCard", null)
-                        .WithMany()
-                        .HasForeignKey("MenuCardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Kitchen.Menu", null)
-                        .WithMany()
-                        .HasForeignKey("MenusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -798,6 +739,23 @@ namespace HorecaMVC.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Kitchen.Dish", b =>
+                {
+                    b.Navigation("Ingredients");
+                });
+
+            modelBuilder.Entity("Domain.Kitchen.Menu", b =>
+                {
+                    b.Navigation("Dishes");
+                });
+
+            modelBuilder.Entity("Domain.Kitchen.MenuCard", b =>
+                {
+                    b.Navigation("Dishes");
+
+                    b.Navigation("Menus");
                 });
 
             modelBuilder.Entity("Domain.Orders.Order", b =>

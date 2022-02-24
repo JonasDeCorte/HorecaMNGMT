@@ -16,7 +16,7 @@ namespace HorecaPersistence.Data.Mapping
             builder.ToTable("Booking");
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.Restaurant).WithMany(x => x.Bookings).OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(x => x.Table).WithOne(x => x.Booking).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Table).WithOne(x => x.Booking).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -98,11 +98,11 @@ namespace HorecaMVC.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
             [DataType(DataType.Text)]
             [Display(Name = "Name")]
             public string Name { get; set; }
         }
-
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -116,18 +116,18 @@ namespace HorecaMVC.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = CreateUser(new object[] { Input.Name });
 
-                await _userStore.SetUserNameAsync((Employee)user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync((Employee)user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync((Employee)user, Input.Password);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var userId = await _userManager.GetUserIdAsync((Employee)user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync((Employee)user);
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -144,7 +144,7 @@ namespace HorecaMVC.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync((Employee)user, isPersistent: false);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -158,11 +158,11 @@ namespace HorecaMVC.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private Employee CreateUser()
+        private Employee CreateUser(params object[] args)
         {
             try
             {
-                return Activator.CreateInstance<Employee>();
+                return (Employee)Activator.CreateInstance(typeof(Employee), args);
             }
             catch
             {

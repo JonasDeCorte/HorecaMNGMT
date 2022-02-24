@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HorecaPersistence\HorecaPersistence.csproj" />
+    <ProjectReference Include="..\HorecaShared\HorecaShared.csproj" />
   </ItemGroup>
 
 </Project>

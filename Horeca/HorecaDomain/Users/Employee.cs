@@ -17,6 +17,11 @@ namespace Domain.Users
         {
         }
 
+        public Employee(string name)
+        {
+            Name = name;
+        }
+
         public Employee(string name, EmployeeType employeeType)
         {
             Name = name;

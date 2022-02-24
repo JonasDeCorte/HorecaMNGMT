@@ -35,10 +35,10 @@ namespace HorecaMVC.Data
             builder.ApplyConfiguration(new MenuConfiguration());
             builder.ApplyConfiguration(new DishConfiguration());
             builder.ApplyConfiguration(new BookingConfiguration());
-
             builder.ApplyConfiguration(new FloorPlanConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             builder.ApplyConfiguration(new TableConfiguration());
+            builder.ApplyConfiguration(new EmployeeConfiguration());
         }
     }
 }
