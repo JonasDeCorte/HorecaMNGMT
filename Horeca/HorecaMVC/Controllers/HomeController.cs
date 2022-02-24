@@ -23,6 +23,11 @@ namespace HorecaMVC.Controllers
             return View();
         }
 
+        public IActionResult Employees()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
