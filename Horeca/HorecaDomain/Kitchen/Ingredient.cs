@@ -9,6 +9,8 @@ namespace Domain.Kitchen
         public int Amount { get; set; }
         public IngredientType IngredientType { get; set; }
 
+        public List<Dish> Dishes { get; set; } = new List<Dish>();
+
         /// <summary>
         /// Entity Framework Constructor
         /// </summary>
