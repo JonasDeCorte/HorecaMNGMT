@@ -1,4 +1,5 @@
-﻿using HorecaDomain.Common;
+﻿using Ardalis.GuardClauses;
+using HorecaDomain.Common;
 
 namespace Domain.Kitchen
 {
@@ -16,7 +17,7 @@ namespace Domain.Kitchen
 
         public Menu(string name)
         {
-            Name = name;
+            Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
         }
     }
 }

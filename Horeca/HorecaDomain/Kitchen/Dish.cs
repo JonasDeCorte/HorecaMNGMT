@@ -1,4 +1,5 @@
 ﻿using HorecaDomain.Common;
+using Ardalis.GuardClauses;
 
 namespace Domain.Kitchen
 {
@@ -18,10 +19,12 @@ namespace Domain.Kitchen
         {
         }
 
-        public Dish(string name, DishType dishType)
+        public Dish(string name, string category, string description, DishType dishType)
         {
-            Name = name;
-            DishType = dishType;
+            Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Category = Guard.Against.NullOrWhiteSpace(category, nameof(category));
+            Description = Guard.Against.NullOrWhiteSpace(description, nameof(description));
+            DishType = Guard.Against.Null(dishType, nameof(DishType));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Kitchen;
+﻿using Ardalis.GuardClauses;
+using Domain.Kitchen;
 using Domain.Restaurants;
 using HorecaDomain.Common;
 
@@ -15,6 +16,11 @@ namespace Domain.Orders
         /// </summary>
         public Order()
         {
+        }
+
+        public Order(Table table)
+        {
+            Table = Guard.Against.Null(table, nameof(table));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Orders;
+﻿using Ardalis.GuardClauses;
+using Domain.Orders;
 using HorecaDomain.Common;
 using HorecaDomain.Restaurants;
 
@@ -10,7 +11,9 @@ namespace Domain.Restaurants
         public int Seats { get; set; }
         public TableType TableType { get; set; }
 
+        // moet een table booking obj bijhouden? idem met floorplan?
         public Booking Booking { get; set; }
+
         public int BookingId { get; set; }
         public FloorPlan FloorPlan { get; set; }
         public List<Order> Orders { get; set; } = new List<Order>();
@@ -24,9 +27,9 @@ namespace Domain.Restaurants
 
         public Table(string tableNumber, int seats, TableType tableType)
         {
-            TableNumber = tableNumber;
-            Seats = seats;
-            TableType = tableType;
+            TableNumber = Guard.Against.NullOrWhiteSpace(tableNumber, nameof(tableNumber));
+            Seats = Guard.Against.NegativeOrZero(seats, nameof(seats));
+            TableType = Guard.Against.Null(tableType, nameof(TableType));
         }
     }
 }

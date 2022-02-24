@@ -1,4 +1,5 @@
-﻿using HorecaDomain.Common;
+﻿using Ardalis.GuardClauses;
+using HorecaDomain.Common;
 
 namespace Domain.Restaurants
 {
@@ -19,11 +20,13 @@ namespace Domain.Restaurants
         {
         }
 
-        public Booking(string customerName, DateTime arrivalTime, int requiredSeats)
+        public Booking(string customerName, DateTime arrivalTime, int requiredSeats, Restaurant restaurant, Table table)
         {
-            CustomerName = customerName;
+            CustomerName = Guard.Against.NullOrWhiteSpace(customerName, nameof(customerName));
+            RequiredSeats = Guard.Against.NegativeOrZero(requiredSeats, nameof(requiredSeats));
+            restaurant = Guard.Against.Null(restaurant, nameof(restaurant));
+            Table = Guard.Against.Null(table, nameof(table));
             ArrivalTime = arrivalTime;
-            RequiredSeats = requiredSeats;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using HorecaDomain.Common;
+﻿using Ardalis.GuardClauses;
+using HorecaDomain.Common;
 
 namespace Domain.Restaurants
 {
@@ -17,11 +18,12 @@ namespace Domain.Restaurants
         {
         }
 
-        public FloorPlan(string name, int width, int height)
+        public FloorPlan(string name, int width, int height, Restaurant restaurant)
         {
-            Name = name;
-            Width = width;
-            Height = height;
+            Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Width = Guard.Against.NegativeOrZero(width, nameof(width));
+            Height = Guard.Against.NegativeOrZero(height, nameof(height));
+            Restaurant = Guard.Against.Null(restaurant, nameof(restaurant));
         }
     }
 }
