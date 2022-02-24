@@ -1,10 +1,11 @@
 using HorecaMVC.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using FluentValidation.AspNetCore;
 using HorecaShared.Ingredients;
 using HorecaServices.Ingredients;
 using Microsoft.OpenApi.Models;
+using HorecaShared.Dishes;
+using HorecaServices.Dishes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddControllersWithViews().AddFluentValidation(config =>
     config.ImplicitlyValidateChildProperties = true;
 });
 builder.Services.AddScoped<IIngredientService, IngredientService>();
+builder.Services.AddScoped<IDishService, DishService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
