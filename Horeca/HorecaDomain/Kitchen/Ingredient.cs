@@ -7,7 +7,7 @@ namespace Domain.Kitchen
     {
         public string Name { get; set; }
         public int Amount { get; set; }
-        public string Unit { get; set; }
+        //public string Unit { get; set; }
         public IngredientType IngredientType { get; set; }
 
         private readonly List<Dish> _dishes = new();

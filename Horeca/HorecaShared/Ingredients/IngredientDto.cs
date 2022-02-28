@@ -18,7 +18,7 @@ namespace HorecaShared.Ingredients
 
             public IngredientType IngredientType { get; set; }
 
-            public IReadOnlyList<Dish> Dishes { get; set; }
+            public IReadOnlyList<Dish> Dishes { get; set; } = new List<Dish>();
 
             public bool IsEnabled { get; set; }
         }

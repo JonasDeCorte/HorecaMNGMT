@@ -13,7 +13,7 @@ namespace HorecaShared.Menus
 
         public class Detail : Index
         {
-            public IReadOnlyList<Dish> Dishes { get; set; }
+            public IReadOnlyList<Dish> Dishes { get; set; } = new List<Dish>();
         }
 
         public class Mutate
