@@ -12,6 +12,7 @@ namespace Domain.Users
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public EmployeeType EmployeeType { get; set; }
         public EmployeeRole EmployeeRole { get; set; }
+
         public List<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
 
         /// <summary>

@@ -12,8 +12,8 @@ namespace HorecaPersistence.Data.Mapping
             base.Configure(builder);
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(50);
-            builder.HasOne(x => x.Restaurant).WithMany().OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.Dishes).WithOne().OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.Restaurant).WithMany();
+            builder.HasMany(x => x.Menus).WithOne();
         }
     }
 }

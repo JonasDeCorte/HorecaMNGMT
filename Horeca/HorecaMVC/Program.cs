@@ -30,15 +30,15 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<ApplicationDbContext>();
-//    context.Database.EnsureDeleted();
-//    Console.WriteLine("-----------deleted database----------");
-//    context.Database.EnsureCreated();
-//    Console.WriteLine("-----------created database----------");
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureDeleted();
+    Console.WriteLine("-----------deleted database----------");
+    context.Database.EnsureCreated();
+    Console.WriteLine("-----------created database----------");
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -12,8 +12,7 @@ namespace HorecaPersistence.Data.Mapping
             base.Configure(builder);
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.Restaurant).WithMany();
-
-            builder.HasOne<Table>().WithMany(x => x.Bookings).HasForeignKey(x => x.TableId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne<Table>().WithMany(x => x.Bookings).HasForeignKey(x => x.TableId);
         }
     }
 }
