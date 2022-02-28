@@ -11,17 +11,17 @@ namespace Domain.Restaurants
         public int Seats { get; set; }
         public TableType TableType { get; set; }
 
-        // moet een table booking obj bijhouden? idem met floorplan?
-        public Booking Booking { get; set; }
+        public List<Booking> Bookings { get; set; }
 
-        public int BookingId { get; set; }
         public FloorPlan FloorPlan { get; set; }
+        public int FloorPlanId { get; set; }
+
         public List<Order> Orders { get; set; } = new List<Order>();
 
         /// <summary>
         /// Entity Framework Constructor
         /// </summary>
-        private Table()
+        public Table()
         {
         }
 

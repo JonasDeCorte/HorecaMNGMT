@@ -1,23 +1,24 @@
 ﻿using Domain.Restaurants;
+using HorecaPersistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HorecaPersistence.Data.Mapping
 {
-    public class FloorPlanConfiguration : IEntityTypeConfiguration<FloorPlan>
+    public class FloorPlanConfiguration : EntityConfiguration<FloorPlan>
     {
         public void Configure(EntityTypeBuilder<FloorPlan> builder)
         {
-            builder.ToTable("FloorPlan");
+            base.Configure(builder);
             builder.Property(x => x.Name).HasMaxLength(50);
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.Restaurant).WithMany(x => x.FloorPlans).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.Tables).WithOne(x => x.FloorPlan).OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Restaurant)
+                .WithMany();
+
+            builder.HasMany(x => x.Tables)
+                .WithOne()
+                .HasForeignKey(x => x.FloorPlanId);
         }
     }
 }

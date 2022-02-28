@@ -30,6 +30,10 @@ namespace HorecaMVC.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
             builder.ApplyConfiguration(new IngredientConfiguration());
             builder.ApplyConfiguration(new MenuCardConfiguration());
             builder.ApplyConfiguration(new MenuConfiguration());

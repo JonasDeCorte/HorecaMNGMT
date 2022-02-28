@@ -10,7 +10,8 @@ namespace Domain.Kitchen
         public string Description { get; set; }
         public DishType DishType { get; set; }
 
-        public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+        private readonly List<Ingredient> _ingredients = new();
+        public IReadOnlyList<Ingredient> Ingredients => _ingredients.AsReadOnly();
 
         /// <summary>
         /// Entity Framework Constructor
@@ -25,6 +26,25 @@ namespace Domain.Kitchen
             Category = Guard.Against.NullOrWhiteSpace(category, nameof(category));
             Description = Guard.Against.NullOrWhiteSpace(description, nameof(description));
             DishType = Guard.Against.Null(dishType, nameof(DishType));
+        }
+
+        public void AddIngredient(Ingredient ingredient)
+        {
+            if (_ingredients.Contains(ingredient))
+            {
+                throw new ArgumentException($"{nameof(ingredient)} is already added to {Name}");
+            }
+
+            _ingredients.Add(ingredient);
+        }
+
+        public void RemoveIngredient(Ingredient ingredient)
+        {
+            if (!_ingredients.Contains(ingredient))
+
+                throw new ArgumentException($"{nameof(ingredient)} is not in {Name}");
+
+            _ingredients.Remove(ingredient);
         }
     }
 }
