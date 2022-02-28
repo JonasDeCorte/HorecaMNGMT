@@ -1,4 +1,5 @@
 ﻿using Domain.Restaurants;
+using HorecaPersistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace HorecaPersistence.Data.Mapping
 {
-    public class TableConfiguration : IEntityTypeConfiguration<Table>
+    public class TableConfiguration : EntityConfiguration<Table>
     {
         public void Configure(EntityTypeBuilder<Table> builder)
         {
-            builder.ToTable("Table");
+            base.Configure(builder);
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.Booking).WithOne(x => x.Table).HasForeignKey<Booking>(x => x.TableId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasOne(x => x.FloorPlan).WithMany(x => x.Tables).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.Orders).WithOne(x => x.Table).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Bookings).WithOne();
+            builder.HasOne(x => x.FloorPlan).WithMany().HasForeignKey(x => x.FloorPlanId);
+            builder.HasMany(x => x.Orders).WithOne();
         }
     }
 }

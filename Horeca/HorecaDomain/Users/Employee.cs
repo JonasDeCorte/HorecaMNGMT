@@ -5,9 +5,14 @@ namespace Domain.Users
 {
     public class Employee : IdentityUser
     {
+        public int Id { get; init; }
         public string Name { get; set; }
+        public bool IsEnabled { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public EmployeeType EmployeeType { get; set; }
         public EmployeeRole EmployeeRole { get; set; }
+
         public List<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
 
         /// <summary>

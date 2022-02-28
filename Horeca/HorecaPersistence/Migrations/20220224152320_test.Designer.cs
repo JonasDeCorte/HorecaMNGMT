@@ -4,16 +4,18 @@ using HorecaMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HorecaMVC.Data.Migrations
+namespace HorecaPersistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220224152320_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace HorecaMVC.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("DishIngredient", b =>
+                {
+                    b.Property<int>("DishesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DishesId", "IngredientsId");
+
+                    b.HasIndex("IngredientsId");
+
+                    b.ToTable("DishIngredient");
+                });
 
             modelBuilder.Entity("Domain.Kitchen.Dish", b =>
                 {
@@ -32,22 +49,22 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DishType")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int?>("MenuCardId")
                         .HasColumnType("int");
@@ -57,8 +74,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -91,26 +107,22 @@ namespace HorecaMVC.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DishId")
-                        .HasColumnType("int");
-
                     b.Property<int>("IngredientType")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DishId");
 
                     b.ToTable("Ingredient", (string)null);
                 });
@@ -127,15 +139,16 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int?>("MenuCardId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -159,12 +172,13 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -191,7 +205,9 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("TableId")
                         .HasColumnType("int");
@@ -225,7 +241,9 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("RequiredSeats")
                         .HasColumnType("int");
@@ -243,8 +261,7 @@ namespace HorecaMVC.Data.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.HasIndex("TableId")
-                        .IsUnique();
+                    b.HasIndex("TableId");
 
                     b.ToTable("Booking", (string)null);
                 });
@@ -264,12 +281,13 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -321,9 +339,6 @@ namespace HorecaMVC.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -331,7 +346,9 @@ namespace HorecaMVC.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("Seats")
                         .HasColumnType("int");
@@ -365,6 +382,9 @@ namespace HorecaMVC.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -378,6 +398,11 @@ namespace HorecaMVC.Data.Migrations
                     b.Property<int>("EmployeeType")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsEnabled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -386,7 +411,8 @@ namespace HorecaMVC.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -411,6 +437,9 @@ namespace HorecaMVC.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -425,7 +454,7 @@ namespace HorecaMVC.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("Employee", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeRestaurant", b =>
@@ -580,29 +609,34 @@ namespace HorecaMVC.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DishIngredient", b =>
+                {
+                    b.HasOne("Domain.Kitchen.Dish", null)
+                        .WithMany()
+                        .HasForeignKey("DishesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Kitchen.Ingredient", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Kitchen.Dish", b =>
                 {
                     b.HasOne("Domain.Kitchen.MenuCard", null)
                         .WithMany("Dishes")
-                        .HasForeignKey("MenuCardId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MenuCardId");
 
                     b.HasOne("Domain.Kitchen.Menu", null)
                         .WithMany("Dishes")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MenuId");
 
                     b.HasOne("Domain.Orders.Order", null)
                         .WithMany("Dishes")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.NoAction);
-                });
-
-            modelBuilder.Entity("Domain.Kitchen.Ingredient", b =>
-                {
-                    b.HasOne("Domain.Kitchen.Dish", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("DishId");
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Domain.Kitchen.Menu", b =>
@@ -642,15 +676,13 @@ namespace HorecaMVC.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Restaurants.Table", "Table")
-                        .WithOne("Booking")
-                        .HasForeignKey("Domain.Restaurants.Booking", "TableId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("Domain.Restaurants.Table", null)
+                        .WithMany("Bookings")
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Restaurant");
-
-                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("Domain.Restaurants.FloorPlan", b =>
@@ -741,11 +773,6 @@ namespace HorecaMVC.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Kitchen.Dish", b =>
-                {
-                    b.Navigation("Ingredients");
-                });
-
             modelBuilder.Entity("Domain.Kitchen.Menu", b =>
                 {
                     b.Navigation("Dishes");
@@ -779,8 +806,7 @@ namespace HorecaMVC.Data.Migrations
 
             modelBuilder.Entity("Domain.Restaurants.Table", b =>
                 {
-                    b.Navigation("Booking")
-                        .IsRequired();
+                    b.Navigation("Bookings");
 
                     b.Navigation("Orders");
                 });

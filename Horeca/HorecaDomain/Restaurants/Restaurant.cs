@@ -8,9 +8,10 @@ namespace Domain.Restaurants
     public class Restaurant : Entity
     {
         public string Name { get; set; }
-        public List<MenuCard> MenuCard { get; set; } = new List<MenuCard>();
+        public List<MenuCard> MenuCards { get; set; } = new List<MenuCard>();
         public List<Booking> Bookings { get; set; } = new List<Booking>();
         public List<FloorPlan> FloorPlans { get; set; } = new List<FloorPlan>();
+
         public List<Employee> Employees { get; set; } = new List<Employee>();
 
         /// <summary>

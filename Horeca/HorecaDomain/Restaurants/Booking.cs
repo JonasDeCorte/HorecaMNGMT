@@ -10,7 +10,9 @@ namespace Domain.Restaurants
         public int RequiredSeats { get; set; }
 
         public Restaurant Restaurant { get; set; }
-        public Table Table { get; set; }
+
+        //public Table Table { get; set; }
+
         public int TableId { get; set; }
 
         /// <summary>
@@ -25,7 +27,7 @@ namespace Domain.Restaurants
             CustomerName = Guard.Against.NullOrWhiteSpace(customerName, nameof(customerName));
             RequiredSeats = Guard.Against.NegativeOrZero(requiredSeats, nameof(requiredSeats));
             restaurant = Guard.Against.Null(restaurant, nameof(restaurant));
-            Table = Guard.Against.Null(table, nameof(table));
+            //Table = Guard.Against.Null(table, nameof(table));
             ArrivalTime = arrivalTime;
         }
     }
