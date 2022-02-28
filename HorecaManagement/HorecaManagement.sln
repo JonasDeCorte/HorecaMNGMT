@@ -3,11 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaMVC", "HorecaMVC\HorecaMVC.csproj", "{28C804CC-6046-4244-9986-88025A52A55B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaMVC", "HorecaMVC\HorecaMVC.csproj", "{28C804CC-6046-4244-9986-88025A52A55B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaAPI", "HorecaAPI\HorecaAPI.csproj", "{8D73E140-5689-4356-AAC2-E1EC204E7F82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaAPI", "HorecaAPI\HorecaAPI.csproj", "{8D73E140-5689-4356-AAC2-E1EC204E7F82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaShared", "HorecaShared\HorecaShared.csproj", "{BA3791BF-2205-4034-8B82-C962C0322B7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaShared", "HorecaShared\HorecaShared.csproj", "{BA3791BF-2205-4034-8B82-C962C0322B7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8E2D2ED7-E46D-494C-9BA9-F94D044B6688}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaCore", "HorecaCore\HorecaCore.csproj", "{A00D3619-C367-4C15-882F-A3F522B6BBA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{61F098C6-8100-4A25-9BB1-174D4F477682}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaInfrastructure", "HorecaInfrastructure\HorecaInfrastructure.csproj", "{94C1A6C3-997D-4B02-B470-905ABE96A20C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F2382E62-3EDA-4BE2-953A-BED4533DCEFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +37,24 @@ Global
 		{BA3791BF-2205-4034-8B82-C962C0322B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA3791BF-2205-4034-8B82-C962C0322B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA3791BF-2205-4034-8B82-C962C0322B7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00D3619-C367-4C15-882F-A3F522B6BBA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00D3619-C367-4C15-882F-A3F522B6BBA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00D3619-C367-4C15-882F-A3F522B6BBA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00D3619-C367-4C15-882F-A3F522B6BBA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C1A6C3-997D-4B02-B470-905ABE96A20C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C1A6C3-997D-4B02-B470-905ABE96A20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C1A6C3-997D-4B02-B470-905ABE96A20C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C1A6C3-997D-4B02-B470-905ABE96A20C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28C804CC-6046-4244-9986-88025A52A55B} = {F2382E62-3EDA-4BE2-953A-BED4533DCEFA}
+		{8D73E140-5689-4356-AAC2-E1EC204E7F82} = {F2382E62-3EDA-4BE2-953A-BED4533DCEFA}
+		{BA3791BF-2205-4034-8B82-C962C0322B7A} = {8E2D2ED7-E46D-494C-9BA9-F94D044B6688}
+		{A00D3619-C367-4C15-882F-A3F522B6BBA3} = {8E2D2ED7-E46D-494C-9BA9-F94D044B6688}
+		{94C1A6C3-997D-4B02-B470-905ABE96A20C} = {61F098C6-8100-4A25-9BB1-174D4F477682}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33B38637-A735-4C62-9DE4-D3BCC2D65DA0}
