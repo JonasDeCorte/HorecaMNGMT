@@ -6,6 +6,8 @@ using HorecaServices.Ingredients;
 using Microsoft.OpenApi.Models;
 using HorecaShared.Dishes;
 using HorecaServices.Dishes;
+using HorecaServices.Menus;
+using HorecaShared.Menus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,7 @@ builder.Services.AddControllersWithViews().AddFluentValidation(config =>
 });
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IDishService, DishService>();
+builder.Services.AddScoped<IMenuService, MenuService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

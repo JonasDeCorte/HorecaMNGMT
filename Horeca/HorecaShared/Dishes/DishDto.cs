@@ -11,13 +11,14 @@ namespace HorecaShared.Dishes
 
             public string Name { get; set; }
             public string Category { get; set; }
+            public bool IsEnabled { get; set; }
         }
 
         public class Detail : Index
         {
             public string Description { get; set; }
             public DishType DishType { get; set; }
-            public bool IsEnabled { get; set; }
+            public IReadOnlyList<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         }
 
         public class Mutate

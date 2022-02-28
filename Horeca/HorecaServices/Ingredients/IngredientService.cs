@@ -60,7 +60,7 @@ namespace HorecaServices.Ingredients
         {
             IngredientResponse.GetDetail response = new();
 
-            response.Ingredient = await context.Ingredients.Select(x =>
+            response.Ingredient = await context.Ingredients.Include(x => x.Dishes).Select(x =>
             new IngredientDto.Detail
             {
                 Id = x.Id,

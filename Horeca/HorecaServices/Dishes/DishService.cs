@@ -61,7 +61,7 @@ namespace HorecaServices.Dishes
         {
             DishResponse.GetDetail response = new();
 
-            response.Dish = await context.Dishes.Select(x =>
+            response.Dish = await context.Dishes.Include(x => x.Ingredients).Select(x =>
             new DishDto.Detail
             {
                 Id = x.Id,
