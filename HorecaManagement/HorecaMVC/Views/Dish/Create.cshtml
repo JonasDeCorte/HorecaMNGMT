@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Create Dish";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <div>
+        <div class="w-75 mx-auto">
+            <div class="mt-2">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Name">
+            </div>
+            <div class="mt-2">
+                <select class="form-select" aria-label="Dish type">
+                    <option selected>Dish type</option>
+                    <option value="1">Appetizer</option>
+                    <option value="2">Main Course</option>
+                    <option value="3">Dessert</option>
+                </select>
+            </div>
+            <div class="mt-2">
+                <label for="category" class="form-label">Category</label>
+                <input type="text" class="form-control" id="category" placeholder="Category">
+            </div>
+            <div class="mt-2">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="3"></textarea>
+            </div>
+            <div class="mt-2">
+                <label for="dishImg" class="form-label">Dish Image</label>
+                <input class="form-control" type="file" id="dishImg">
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

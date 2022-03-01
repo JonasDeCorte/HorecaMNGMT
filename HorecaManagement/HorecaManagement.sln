@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaShared", "HorecaShare
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8E2D2ED7-E46D-494C-9BA9-F94D044B6688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaCore", "HorecaCore\HorecaCore.csproj", "{A00D3619-C367-4C15-882F-A3F522B6BBA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaCore", "HorecaCore\HorecaCore.csproj", "{A00D3619-C367-4C15-882F-A3F522B6BBA3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{61F098C6-8100-4A25-9BB1-174D4F477682}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorecaInfrastructure", "HorecaInfrastructure\HorecaInfrastructure.csproj", "{94C1A6C3-997D-4B02-B470-905ABE96A20C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorecaInfrastructure", "HorecaInfrastructure\HorecaInfrastructure.csproj", "{94C1A6C3-997D-4B02-B470-905ABE96A20C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F2382E62-3EDA-4BE2-953A-BED4533DCEFA}"
 EndProject

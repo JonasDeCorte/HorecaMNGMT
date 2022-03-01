@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Menu Detail";
+}
+
+<div class="text-center">
+    <div class="d-flex">
+        <img src="https://www.lutosa.com/wp-content/uploads/2021/05/19683_-_skinny_fries_5.5-5.5_skin-on-1.png" alt="steak and fries" 
+        style="max-width: 50%" />
+        <div class="d-flex flex-column">
+            <h1 class="display-4">Just fries</h1>
+            <table class="table">
+                <tbody>
+                    <tr class="d-flex flex-column">
+                        <th scope="col">Description</th>
+                        <td scope="row">
+                            This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
+                            Which appetizer? Believe it or not, fries.
+                        </td>
+                    </tr>
+                    <tr class="d-flex flex-column">
+                        <th scope="col">Dishes</th>
+                        <td scope="row">
+                            <table class="table" style="table-layout: fixed">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Dish Type</th>
+                                        <th scope="col">Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Fries</td>
+                                        <td>Appetizer</td>
+                                        <td>Fries</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fries</td>
+                                        <td>Main Course</td>
+                                        <td>Fries</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fries</td>
+                                        <td>Dessert</td>
+                                        <td>Fries</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td scope="row" colspan="2">
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

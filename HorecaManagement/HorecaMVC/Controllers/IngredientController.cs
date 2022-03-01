@@ -6,6 +6,9 @@ namespace HorecaMVC.Controllers
     {
         public IActionResult Index()
         {
+            bool isRequestingDelete = false;
+
+            ViewBag.IsRequestingDelete = isRequestingDelete;
             return View();
         }
 
@@ -20,6 +23,10 @@ namespace HorecaMVC.Controllers
         }
 
         public IActionResult Edit()
+        {
+            return View();
+        }
+        public IActionResult Delete()
         {
             return View();
         }

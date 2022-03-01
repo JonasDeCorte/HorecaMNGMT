@@ -2,7 +2,7 @@
 
 namespace HorecaMVC.Controllers
 {
-    public class DishController : Controller
+    public class OrderController : Controller
     {
         public IActionResult Index()
         {

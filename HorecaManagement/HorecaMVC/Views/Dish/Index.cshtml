@@ -4,4 +4,43 @@
 
 <div class="text-center">
     <h1 class="display-4">Dishes</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
+                </div>
+                <button type="button" class="btn btn-primary ">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="col">
+                <a asp-action="Create" class="btn btn-primary float-end">New Dish</a>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Dish Type</th>
+                <th scope="col">Category</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Steak & Fries</td>
+                <td>Main Course</td>
+                <td>Meat</td>
+                <td>
+                    <a asp-action="Detail" class="btn btn-primary">Details</a>
+                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

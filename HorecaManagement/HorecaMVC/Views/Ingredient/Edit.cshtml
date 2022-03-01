@@ -3,21 +3,47 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Edit Ingredient</h1>
-    <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    <h1 class="display-4">Edit Carrot</h1>
+    <div>
+        <div class="w-75 mx-auto">
+            <div class="row mt-2">
+                <div class="col">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Name">
+                </div>
+                <div class="col">
+                    <label for="ingredientType" class="form-label">Ingredient type</label>
+                    <select id="ingredientType" class="form-select" aria-label="Ingredient type">
+                        <option selected>Ingredient type</option>
+                        <option value="1">Fruit</option>
+                        <option value="2">Vegetable</option>
+                        <option value="3">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <label for="baseAmount" class="form-label">Base Amount</label>
+                    <input type="number" class="form-control" id="baseAmount" placeholder="Base Amount">
+                </div>
+                <div class="col">
+                    <label for="unit" class="form-label">Unit</label>
+                    <select id="unit" class="form-select" aria-label="Unit">
+                        <option selected>Unit</option>
+                        <option value="1">gram</option>
+                        <option value="2">kilogram</option>
+                        <option value="3">liter</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-2">
+                <label for="ingredientImg" class="form-label">Ingredient Image</label>
+                <input class="form-control" type="file" id="ingredientImg">
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary">Submit Changes</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
     </div>
-</div>
-<div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-    <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="#">Separated link</a>
-  </div>
 </div>

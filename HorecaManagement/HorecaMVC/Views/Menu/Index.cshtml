@@ -4,4 +4,71 @@
 
 <div class="text-center">
     <h1 class="display-4">Menus</h1>
+    <div class="container mb-3">
+        <div class="row">
+            <div class="col input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
+                </div>
+                <button type="button" class="btn btn-primary ">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="col">
+                <a asp-action="Create" class="btn btn-primary float-end">New Menu</a>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @for (int i = 0; i < 12; i++)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="https://www.lutosa.com/wp-content/uploads/2021/05/19683_-_skinny_fries_5.5-5.5_skin-on-1.png" 
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Just fries</h5>
+                        <p class="card-text">
+                            This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries. 
+                            Which appetizer? Believe it or not, fries.
+                        </p>
+                        <div>
+                            <a asp-action="Detail" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            <a asp-action="Delete" class="btn btn-primary">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
 </div>
+
+
+
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Dish Type</th>
+                <th scope="col">Category</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Steak & Fries</td>
+                <td>Main Course</td>
+                <td>Meat</td>
+                <td>
+                    <a asp-action="Detail" class="btn btn-primary">Details</a>
+                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>*@

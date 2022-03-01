@@ -1,3 +1,38 @@
 ﻿@{
     ViewData["Title"] = "Ingredient Detail";
 }
+
+<div class="text-center">
+    <h1 class="display-4">Carrot</h1>
+    <div class="d-flex">
+        <img src="https://befreshcorp.net/wp-content/uploads/2017/06/product-packshot-Carrot-558x600.jpg" alt="carrot" style="max-width: 50%;"/>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="col">Name</th>
+                    <td scope="row">Carrot</td>
+                </tr>
+                <tr>
+                    <th scope="col">Type</th>
+                    <td scope="row">Vegetable</td>
+                </tr>
+                <tr>
+                    <th scope="col">Base Amount</th>
+                    <td scope="row">1</td>
+                </tr>
+                <tr>
+                    <th scope="col">Unit</th>
+                    <td scope="row">carrot</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td scope="row" colspan="2">
+                        <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                        <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
