@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Ingredient Overview";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Ingredients</h1>
+    <div class="input-group">
+        <div class="form-outline">
+            <label class="form-label" for="form1"></label>
+            <input type="search" id="form1" class="form-control" placeholder="Search..."/>
+        </div>
+        @*<button type="button" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>*@
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Carrot</td>
+                <td>Vegetable</td>
+                <td></td>
+                <td>
+                    <a asp-action="Detail" class="btn btn-primary">Details</a>
+                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Apple</td>
+                <td>Fruit</td>
+                <td></td>
+                <td>
+                    <a asp-action="Detail" class="btn btn-primary">Details</a>
+                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Steak</td>
+                <td>Meat</td>
+                <td></td>
+                <td>
+                    <a asp-action="Detail" class="btn btn-primary">Details</a>
+                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
