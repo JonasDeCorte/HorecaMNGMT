@@ -1,6 +1,6 @@
 ﻿using Horeca.Infrastructure.Data.Repositories.Generic;
-using HorecaAPI.Data.Entities;
-using HorecaAPI.Data.Repositories;
+using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Repositories;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
@@ -9,5 +9,10 @@ namespace Horeca.Infrastructure.Data.Repositories
         public IngredientRepository(DatabaseContext context) : base(context)
         {
         }
+
+        //public override IEnumerable<Ingredient> GetAll()
+        //{
+        //    return context.GetAll();
+        //}
     }
 }

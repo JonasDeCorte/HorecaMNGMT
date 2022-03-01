@@ -1,12 +1,14 @@
-﻿namespace Horeca.Shared.Data.Entities
+﻿using Horeca.Shared.Dtos.Units;
+
+namespace Horeca.Shared.Dtos
 {
-    public class Ingredient : BaseEntity
+    public class UpdateIngredientDto
     {
         public string Name { get; set; }
         public string IngredientType { get; set; }
 
         public int BaseAmount { get; set; }
 
-        public Unit Unit { get; set; }
+        public UpdateUnitDto Unit { get; set; }
     }
 }

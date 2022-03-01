@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HorecaShared.Data.Entities
+﻿namespace Horeca.Shared.Data.Entities
 {
     public abstract class BaseEntity
     {

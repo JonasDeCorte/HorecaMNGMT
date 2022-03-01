@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Horeca.Shared.Dtos.Units;
+using Horeca.Shared.Dtos;
 
 namespace Horeca.Core.Validators
 {
-    public class CreateUnitDtoValidator : AbstractValidator<CreateUnitDto>
+    public class CreateIngredientDtoValidator : AbstractValidator<CreateIngredientDto>
     {
-        public CreateUnitDtoValidator()
+        public CreateIngredientDtoValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
         }
