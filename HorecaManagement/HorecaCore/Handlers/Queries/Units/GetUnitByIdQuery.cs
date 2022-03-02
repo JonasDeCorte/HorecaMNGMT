@@ -15,12 +15,12 @@ namespace Horeca.Core.Handlers.Queries.Units
             UnitId = unitId;
         }
 
-        public class GetIngredientByIdQueryHandler : IRequestHandler<GetUnitByIdQuery, UnitDto>
+        public class GetUnitByIdQueryHandler : IRequestHandler<GetUnitByIdQuery, UnitDto>
         {
             private readonly IUnitOfWork _repository;
             private readonly IMapper _mapper;
 
-            public GetIngredientByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
+            public GetUnitByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
                 _repository = repository;
                 _mapper = mapper;

@@ -1,8 +1,10 @@
 ﻿using Horeca.Core.Exceptions;
 using Horeca.Core.Handlers.Queries.Ingredients;
 using Horeca.Core.Providers.Handlers.Commands;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using HorecaCore.Handlers.Commands;
+using HorecaCore.Handlers.Commands.Ingredients;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -41,13 +43,34 @@ namespace Horeca.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] CreateIngredientDto model)
+        public async Task<IActionResult> Post([FromBody] MutateIngredientDto model)
         {
             try
             {
                 var command = new CreateIngredientCommand(model);
                 var response = await _mediator.Send(command);
                 return StatusCode((int)HttpStatusCode.Created, response);
+            }
+            catch (InvalidRequestBodyException ex)
+            {
+                return BadRequest(new BaseResponseDto
+                {
+                    IsSuccess = false,
+                    Errors = ex.Errors
+                });
+            }
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> Update([FromBody] Ingredient model)
+        {
+            try
+            {
+                var command = new EditIngredientCommand(model);
+                var response = await _mediator.Send(command);
+                return StatusCode((int)HttpStatusCode.OK, response);
             }
             catch (InvalidRequestBodyException ex)
             {

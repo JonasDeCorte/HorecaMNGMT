@@ -17,6 +17,8 @@ namespace Horeca.Infrastructure.Data
 
         public IUnitRepository Units => new UnitRepository(_context);
 
+        public IDishRepository Dishes => new DishRepository(_context);
+
         public async Task CommitAsync()
         {
             await _context.SaveChangesAsync();

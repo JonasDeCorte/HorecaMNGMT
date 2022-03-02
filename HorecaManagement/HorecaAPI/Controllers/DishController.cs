@@ -1,33 +1,33 @@
 ﻿using Horeca.Core.Exceptions;
-using Horeca.Core.Handlers.Queries.Units;
+using Horeca.Core.Handlers.Queries.Dishes;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
-using Horeca.Shared.Dtos.Units;
-using HorecaCore.Handlers.Commands;
-using HorecaCore.Handlers.Commands.Units;
+using Horeca.Shared.Dtos.Dishes;
+using HorecaCore.Handlers.Commands.Dishes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace Horeca.API.Controllers
+namespace HorecaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UnitController : ControllerBase
+    public class DishController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public UnitController(IMediator mediator)
+        public DishController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<UnitDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<DishDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
             // create request
-            var query = new GetAllUnitsQuery();
+            var query = new GetAllDishesQuery();
             // get response
             var response = await _mediator.Send(query);
             // use it
@@ -37,11 +37,11 @@ namespace Horeca.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
+        public async Task<IActionResult> Post([FromBody] MutateDishDto model)
         {
             try
             {
-                var command = new CreateUnitCommand(model);
+                var command = new CreateDishCommand(model);
                 var response = await _mediator.Send(command);
                 return StatusCode((int)HttpStatusCode.Created, response);
             }
@@ -57,13 +57,13 @@ namespace Horeca.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(UnitDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(DishDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var query = new GetUnitByIdQuery(id);
+                var query = new GetDishByIdQuery(id);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }
@@ -85,7 +85,7 @@ namespace Horeca.API.Controllers
         {
             try
             {
-                var command = new DeleteUnitCommand(id);
+                var command = new DeleteDishCommand(id);
                 var response = await _mediator.Send(command);
                 return StatusCode((int)HttpStatusCode.OK, response);
             }
@@ -102,11 +102,11 @@ namespace Horeca.API.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] Horeca.Shared.Data.Entities.Unit model)
+        public async Task<IActionResult> Update([FromBody] Dish model)
         {
             try
             {
-                var command = new EditUnitCommand(model);
+                var command = new EditDishCommand(model);
                 var response = await _mediator.Send(command);
                 return StatusCode((int)HttpStatusCode.OK, response);
             }

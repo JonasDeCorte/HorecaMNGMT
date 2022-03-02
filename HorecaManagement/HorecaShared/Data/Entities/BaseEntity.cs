@@ -1,12 +1,11 @@
 ﻿namespace Horeca.Shared.Data.Entities
 {
-    public abstract class BaseEntity : IDelete
+    public abstract class BaseEntity : IDelete, IBaseEntityId
     {
-        public int Id { get; init; }
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public bool IsEnabled { get; set; }
+        public int Id { get; init; }
 
         protected BaseEntity()
         {

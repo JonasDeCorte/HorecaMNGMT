@@ -9,7 +9,7 @@ namespace Horeca.Core.Providers.Handlers.Commands
 {
     public class CreateIngredientCommand : IRequest<int>
     {   // holds the information to be added to the database.
-        public CreateIngredientDto Model { get; }
+        public MutateIngredientDto Model { get; }
 
         /// <summary>
         /// We're passing the data to be used by the Handler on the other side of the Mediator as Properties,
@@ -17,9 +17,9 @@ namespace Horeca.Core.Providers.Handlers.Commands
         /// we add data to the Request via the constructor which assigns it to the respective public Properties.
         /// </summary>
         /// <param name="model"></param>
-        public CreateIngredientCommand(CreateIngredientDto model)
+        public CreateIngredientCommand(MutateIngredientDto model)
         {
-            this.Model = model;
+            Model = model;
         }
     }
 
@@ -33,9 +33,9 @@ namespace Horeca.Core.Providers.Handlers.Commands
 
     {
         private readonly IUnitOfWork _repository;
-        private readonly IValidator<CreateIngredientDto> _validator;
+        private readonly IValidator<MutateIngredientDto> _validator;
 
-        public CreateIngredientCommandHandler(IUnitOfWork repository, IValidator<CreateIngredientDto> validator)
+        public CreateIngredientCommandHandler(IUnitOfWork repository, IValidator<MutateIngredientDto> validator)
         {
             _repository = repository;
             _validator = validator;
@@ -43,7 +43,7 @@ namespace Horeca.Core.Providers.Handlers.Commands
 
         public async Task<int> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
-            CreateIngredientDto model = request.Model;
+            MutateIngredientDto model = request.Model;
 
             var result = _validator.Validate(model);
 
