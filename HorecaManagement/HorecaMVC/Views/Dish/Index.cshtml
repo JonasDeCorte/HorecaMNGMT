@@ -15,11 +15,49 @@
                 </button>
             </div>
             <div class="col">
+                <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
+            </div>
+            <div class="col">
                 <a asp-action="Create" class="btn btn-primary float-end">New Dish</a>
             </div>
         </div>
     </div>
-    <table class="table">
+    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
+        @for (int i = 0; i < 12; i++)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="https://www.solo.be/uploadedimages/recepten/afbeeldingen/168331-biefstuk-friet.jpg"
+                     class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Steak & Fries</h5>
+                        <div>
+                            <table class="table" style="table-layout: fixed">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Main Course</td>
+                                        <td>Meat</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <a asp-action="Detail" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <table id="tableView" class="table" style="display: none;">
         <thead>
             <tr>
                 <th scope="col">#</th>

@@ -15,19 +15,59 @@
                 </button>
             </div>
             <div class="col">
+                <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
+            </div>
+            <div class="col">
                 <a asp-action="Create" class="btn btn-primary float-end">New Ingredient</a>
             </div>
         </div>
     </div>
-    <table class="table">
+    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
+        @for (int i = 0; i < 12; i++)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="https://befreshcorp.net/wp-content/uploads/2017/06/product-packshot-Carrot-558x600.jpg"
+                     class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Carrot</h5>
+                        <div>
+                            <table class="table" style="table-layout: fixed">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Base Amount</th>
+                                        <th>Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Vegetable</td>
+                                        <td>1</td>
+                                        <td>Carrot</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <a asp-action="Detail" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <table id="tableView" class="table mt-2" style="display: none;">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Base Amount</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Options</th>
+                <th scope="col" class="col-1">#</th>
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Base Amount</th>
+                <th scope="col" class="col-2">Unit</th>
+                <th scope="col" class="col-3">Options</th>
             </tr>
         </thead>
         <tbody>
@@ -37,30 +77,6 @@
                 <td>Vegetable</td>
                 <td>1</td>
                 <td>carrot</td>
-                <td>
-                    <a asp-action="Detail" class="btn btn-primary">Details</a>
-                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Apple</td>
-                <td>Fruit</td>
-                <td>1</td>
-                <td>apple</td>
-                <td>
-                    <a asp-action="Detail" class="btn btn-primary">Details</a>
-                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Steak</td>
-                <td>Meat</td>
-                <td>1</td>
-                <td>gram</td>
                 <td>
                     <a asp-action="Detail" class="btn btn-primary">Details</a>
                     <a asp-action="Edit" class="btn btn-primary">Edit</a>

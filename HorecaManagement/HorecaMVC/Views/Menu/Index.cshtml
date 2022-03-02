@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <div id="menuCards" class="row row-cols-1 row-cols-md-3 g-4" style="display: none">
+    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible">
         @for (int i = 0; i < 12; i++)
         {
             <div class="col">
@@ -45,8 +45,7 @@
             </div>
         }
     </div>
-
-    <table id="menuTable" class="table" style="display: visible">
+    <table id="tableView" class="table mt-2" style="display: none;">
         <thead>
             <tr>
                 <th scope="col" class="col-1">#</th>
@@ -91,18 +90,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    var table = document.getElementById("menuTable");
-    var cards = document.getElementById("menuCards");
-
-    function toggleView() {
-        if (table.style.display !== "none") {
-            table.style.display = "none";
-            cards.style.display = "flex";
-        } else {
-            table.style.display = "initial";
-            cards.style.display = "none";
-        }
-    }
-</script>
