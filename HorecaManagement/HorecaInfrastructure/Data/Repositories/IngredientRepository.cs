@@ -9,10 +9,5 @@ namespace Horeca.Infrastructure.Data.Repositories
         public IngredientRepository(DatabaseContext context) : base(context)
         {
         }
-
-        //public override IEnumerable<Ingredient> GetAll()
-        //{
-        //    return context.GetAll();
-        //}
     }
 }
