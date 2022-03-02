@@ -3,6 +3,7 @@ using Horeca.Core.Handlers.Queries.Units;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Units;
 using HorecaCore.Handlers.Commands;
+using HorecaCore.Handlers.Commands.Units;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -65,6 +66,28 @@ namespace Horeca.API.Controllers
                 var query = new GetUnitByIdQuery(id);
                 var response = await _mediator.Send(query);
                 return Ok(response);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new BaseResponseDto
+                {
+                    IsSuccess = false,
+                    Errors = new string[] { ex.Message }
+                });
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            try
+            {
+                var command = new DeleteUnitCommand(id);
+                var response = await _mediator.Send(command);
+                return StatusCode((int)HttpStatusCode.OK, response);
             }
             catch (EntityNotFoundException ex)
             {
