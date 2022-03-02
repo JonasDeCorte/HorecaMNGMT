@@ -1,8 +1,9 @@
 ﻿using Horeca.Core.Exceptions;
-using Horeca.Core.Handlers.Queries.Ingredients;
-using Horeca.Core.Providers.Handlers.Commands;
+using Horeca.Core.Handlers.Queries.Units;
 using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Units;
 using HorecaCore.Handlers.Commands;
+using HorecaCore.Handlers.Commands.Units;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -11,27 +12,22 @@ namespace Horeca.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IngredientsController : ControllerBase
+    public class UnitController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public IngredientsController(IMediator mediator)
+        public UnitController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        /// <summary>
-        /// Finally in the Controller, we call the Mediator and Send our "QueryRequest"
-        /// which is delegated to the QueryRequestHandler and return data from the database.
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<IngredientDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<UnitDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
             // create request
-            var query = new GetAllIngredientsQuery();
+            var query = new GetAllUnitsQuery();
             // get response
             var response = await _mediator.Send(query);
             // use it
@@ -41,11 +37,11 @@ namespace Horeca.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] CreateIngredientDto model)
+        public async Task<IActionResult> Post([FromBody] CreateUnitDto model)
         {
             try
             {
-                var command = new CreateIngredientCommand(model);
+                var command = new CreateUnitCommand(model);
                 var response = await _mediator.Send(command);
                 return StatusCode((int)HttpStatusCode.Created, response);
             }
@@ -61,13 +57,13 @@ namespace Horeca.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(UnitDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var query = new GetIngredientByIdQuery(id);
+                var query = new GetUnitByIdQuery(id);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }
@@ -89,7 +85,7 @@ namespace Horeca.API.Controllers
         {
             try
             {
-                var command = new DeleteIngredientCommand(id);
+                var command = new DeleteUnitCommand(id);
                 var response = await _mediator.Send(command);
                 return StatusCode((int)HttpStatusCode.OK, response);
             }

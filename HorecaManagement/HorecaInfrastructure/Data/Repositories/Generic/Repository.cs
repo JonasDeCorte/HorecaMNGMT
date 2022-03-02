@@ -1,5 +1,7 @@
-﻿using HorecaAPI.Data.Repositories;
+﻿using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Horeca.Infrastructure.Data.Repositories.Generic
 {
@@ -45,7 +47,17 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
 
         public IEnumerable<T> GetAll()
         {
-            return _dbSet.AsEnumerable();
+            IQueryable<T> query = _context.Set<T>();
+            Type type = typeof(T);
+
+            foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            {
+                if (!field.FieldType.Namespace.StartsWith("System"))
+                {
+                    query = query.Include(field.FieldType.Name);
+                }
+            }
+            return query.AsEnumerable();
         }
 
         public void Update(T entity)

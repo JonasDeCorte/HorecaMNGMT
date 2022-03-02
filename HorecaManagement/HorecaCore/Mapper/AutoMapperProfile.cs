@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using HorecaAPI.Data.Entities;
-using HorecaShared.Dtos;
+using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.Core.Mapper
 {
@@ -9,6 +10,7 @@ namespace Horeca.Core.Mapper
         public AutoMapperProfile()
         {
             CreateMap<Ingredient, IngredientDto>();
+            CreateMap<Unit, UnitDto>();
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Horeca.Core.Exceptions;
-using HorecaShared.Data;
-using HorecaShared.Dtos;
+using Horeca.Shared.Data;
+using Horeca.Shared.Dtos;
 using MediatR;
 
-namespace Horeca.Core.Handlers.Queries
+namespace Horeca.Core.Handlers.Queries.Ingredients
 {
     public class GetIngredientByIdQuery : IRequest<IngredientDto>
     {
