@@ -1,6 +1,6 @@
 ﻿using Horeca.Infrastructure.Data.Repositories;
-using HorecaAPI.Data.Repositories;
-using HorecaShared.Data;
+using Horeca.Shared.Data;
+using Horeca.Shared.Data.Repositories;
 
 namespace Horeca.Infrastructure.Data
 {
@@ -14,6 +14,8 @@ namespace Horeca.Infrastructure.Data
         }
 
         public IIngredientRepository Ingredients => new IngredientRepository(_context);
+
+        public IUnitRepository Units => new UnitRepository(_context);
 
         public async Task CommitAsync()
         {

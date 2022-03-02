@@ -1,4 +1,4 @@
-﻿namespace HorecaAPI.Data.Repositories
+﻿namespace Horeca.Shared.Data.Repositories
 {
     public interface IRepository<T>
     {

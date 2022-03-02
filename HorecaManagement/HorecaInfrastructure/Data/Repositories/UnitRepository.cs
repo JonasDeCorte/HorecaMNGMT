@@ -4,9 +4,9 @@ using Horeca.Shared.Data.Repositories;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
-    public class IngredientRepository : Repository<Ingredient>, IIngredientRepository
+    public class UnitRepository : Repository<Unit>, IUnitRepository
     {
-        public IngredientRepository(DatabaseContext context) : base(context)
+        public UnitRepository(DatabaseContext context) : base(context)
         {
         }
     }

@@ -1,5 +1,5 @@
 ﻿using Horeca.Infrastructure.Data;
-using HorecaShared.Data;
+using Horeca.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

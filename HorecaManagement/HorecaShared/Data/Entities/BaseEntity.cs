@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HorecaShared.Data.Entities
+﻿namespace Horeca.Shared.Data.Entities
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : IDelete
     {
         public int Id { get; init; }
-        public bool IsEnabled { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsEnabled { get; set; }
 
         protected BaseEntity()
         {

@@ -2,7 +2,7 @@
 
 namespace Horeca.Shared.Data.Repositories
 {
-    public interface IIngredientRepository : IRepository<Ingredient>
+    public interface IUnitRepository : IRepository<Unit>
     {
     }
 }
