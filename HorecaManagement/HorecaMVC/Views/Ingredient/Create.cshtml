@@ -1,43 +1,76 @@
-﻿@{
+﻿@model HorecaMVC.Models.Ingredients.IngredientViewModel
+
+@{
     ViewData["Title"] = "Ingredient Create";
 }
 
 <div class="text-center">
     <h1 class="display-4">Create a new Ingredient</h1>
     <div>
-        <div class="w-75 mx-auto">
+        <form class="w-75 mx-auto">
             <div class="mt-2">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Name">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" id="name" placeholder="Name">
             </div>
             <div class="mt-2">
-                <select class="form-select" aria-label="Ingredient type">
-                    <option selected>Ingredient type</option>
-                    <option value="1">Fruit</option>
-                    <option value="2">Vegetable</option>
-                    <option value="3">Other</option>
-                </select>
+                <label asp-for="IngredientType" class="form-label">Type</label>
+                <input asp-for="IngredientType" class="form-control" id="ingredientType" placeholder="Ingredient Type">
             </div>
             <div class="mt-2">
-                <label for="baseAmount" class="form-label">Base Amount</label>
-                <input type="number" class="form-control" id="baseAmount" placeholder="Base Amount">
+                <label asp-for="BaseAmount" class="form-label">Base Amount</label>
+                <input asp-for="BaseAmount" class="form-control" id="baseAmount" placeholder="Base Amount">
             </div>
-            <div class="mt-2">
+            @*<div class="mt-2">
                 <select class="form-select" aria-label="Unit">
                     <option selected>Unit</option>
                     <option value="1">gram</option>
                     <option value="2">kilogram</option>
                     <option value="3">liter</option>
                 </select>
-            </div>
-            <div class="mt-2">
+            </div>*@
+            @*<div class="mt-2">
                 <label for="ingredientImg" class="form-label">Ingredient Image</label>
                 <input class="form-control" type="file" id="ingredientImg">
-            </div>
+            </div>*@
             <div class="mt-2">
-                <button type="submit" class="btn btn-primary">Create</button>
+                <input type="submit" value="Create" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+@*
+<h1>Create</h1>
+
+<h4>IngredientViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IngredientType" class="control-label"></label>
+                <input asp-for="IngredientType" class="form-control" />
+                <span asp-validation-for="IngredientType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BaseAmount" class="control-label"></label>
+                <input asp-for="BaseAmount" class="form-control" />
+                <span asp-validation-for="BaseAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@

@@ -7,15 +7,17 @@ namespace HorecaMVC.Services
     public class IngredientService : IIngredientRepository
     {
         private readonly HttpClient httpClient;
+        private IConfiguration configuration;
 
-        public IngredientService(HttpClient httpClient)
+        public IngredientService(HttpClient httpClient, IConfiguration iConfig)
         {
             this.httpClient = httpClient;
+            configuration = iConfig;
         }
 
         public void Add(Ingredient entity)
         {
-            throw new NotImplementedException();
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}", entity);
         }
 
         public int Count()
@@ -25,22 +27,19 @@ namespace HorecaMVC.Services
 
         public void Delete(object id)
         {
-            httpClient.DeleteAsync($"https://localhost:7282/api/Ingredients/{id}");
+            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{id}");
         }
 
         public Ingredient Get(object id)
         {
-            Console.WriteLine($"start of get(object id) id: {id}");
-            var ingredient = httpClient.GetAsync($"https://localhost:7282/api/Ingredients/{id}");
-            Console.WriteLine("after getasync");
+            var ingredient = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{id}");
             var result = JsonConvert.DeserializeObject<Ingredient>(ingredient.Result.Content.ReadAsStringAsync().Result);
-            Console.WriteLine("after deserialize");
             return result;
         }
 
         public IEnumerable<Ingredient> GetAll()
         {
-            var ingredients = httpClient.GetAsync("https://localhost:7282/api/Ingredients");
+            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}");
             var result = JsonConvert.DeserializeObject<IEnumerable<Ingredient>>(ingredients.Result.Content.ReadAsStringAsync().Result);
             return result;
         }

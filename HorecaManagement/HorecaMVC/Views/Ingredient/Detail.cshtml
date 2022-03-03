@@ -5,15 +5,12 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Carrot</h1>
+    <h1 class="display-4">@Model.Name</h1>
     <div class="d-flex">
-        <img src="https://befreshcorp.net/wp-content/uploads/2017/06/product-packshot-Carrot-558x600.jpg" alt="carrot" style="max-width: 50%;"/>
-        <table class="table">
+        <img src="https://befreshcorp.net/wp-content/uploads/2017/06/product-packshot-Carrot-558x600.jpg"
+             alt="carrot" />
+        <table class="table table-responsive">
             <tbody>
-                <tr>
-                    <th scope="col">Name</th>
-                    <td scope="row">@Model.Name</td>
-                </tr>
                 <tr>
                     <th scope="col">Type</th>
                     <td scope="row">@Model.IngredientType</td>

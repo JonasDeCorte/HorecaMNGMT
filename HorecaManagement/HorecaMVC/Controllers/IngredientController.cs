@@ -24,12 +24,8 @@ namespace HorecaMVC.Controllers
 
             foreach (var item in ingredients)
             {
-                IngredientViewModel model = new IngredientViewModel();
-                model.Id = item.Id;
-                model.Name = item.Name;
-                model.IngredientType = item.IngredientType;
-                model.BaseAmount = item.BaseAmount;
-                model.Unit = item.Unit;
+                IngredientViewModel model = mapModel(item);
+
                 listModel.Ingredients.Add(model);
             }
 
@@ -44,14 +40,22 @@ namespace HorecaMVC.Controllers
                 return View("NotFound");
             }
 
+            IngredientViewModel model = mapModel(ingredient);
+
+            return View(model);
+        }
+
+        public IngredientViewModel mapModel(Ingredient ingredient)
+        {
             IngredientViewModel model = new IngredientViewModel();
-            
+
+            model.Id = ingredient.Id;
             model.Name = ingredient.Name;
             model.IngredientType = ingredient.IngredientType;
             model.BaseAmount = ingredient.BaseAmount;
             model.Unit = ingredient.Unit;
 
-            return View(model);
+            return model;
         }
 
         public IActionResult Delete(int? id)
@@ -61,12 +65,26 @@ namespace HorecaMVC.Controllers
                 return View("NotFound");
             }
             ingredientService.Delete(id);
-            return View("NotFound");
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(IngredientViewModel ingredient)
+        {
+            Ingredient result = new Ingredient();
+            result.Name = ingredient.Name;
+            result.BaseAmount = ingredient.BaseAmount;
+            result.IngredientType = ingredient.IngredientType;
+            result.Unit = ingredient.Unit;
+
+            ingredientService.Add(result);
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Edit(int? id)
