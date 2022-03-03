@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HorecaMVC.Models.Ingredients.IngredientViewModel
+
+@{
     ViewData["Title"] = "Ingredient Detail";
 }
 
@@ -10,19 +12,19 @@
             <tbody>
                 <tr>
                     <th scope="col">Name</th>
-                    <td scope="row">Carrot</td>
+                    <td scope="row">@Model.Name</td>
                 </tr>
                 <tr>
                     <th scope="col">Type</th>
-                    <td scope="row">Vegetable</td>
+                    <td scope="row">@Model.IngredientType</td>
                 </tr>
                 <tr>
                     <th scope="col">Base Amount</th>
-                    <td scope="row">1</td>
+                    <td scope="row">@Model.BaseAmount</td>
                 </tr>
                 <tr>
                     <th scope="col">Unit</th>
-                    <td scope="row">carrot</td>
+                    <td scope="row">Name</td>
                 </tr>
             </tbody>
             <tfoot>

@@ -25,12 +25,17 @@ namespace HorecaMVC.Services
 
         public void Delete(object id)
         {
-            throw new NotImplementedException();
+            httpClient.DeleteAsync($"https://localhost:7282/api/Ingredients/{id}");
         }
 
         public Ingredient Get(object id)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"start of get(object id) id: {id}");
+            var ingredient = httpClient.GetAsync($"https://localhost:7282/api/Ingredients/{id}");
+            Console.WriteLine("after getasync");
+            var result = JsonConvert.DeserializeObject<Ingredient>(ingredient.Result.Content.ReadAsStringAsync().Result);
+            Console.WriteLine("after deserialize");
+            return result;
         }
 
         public IEnumerable<Ingredient> GetAll()
