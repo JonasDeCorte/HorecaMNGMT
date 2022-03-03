@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HorecaMVC.Models.Ingredients.IngredientListViewModel
+
+@{
     ViewData["Title"] = "Ingredient Overview";
 }
 
@@ -23,14 +25,14 @@
         </div>
     </div>
     <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
-        @for (int i = 0; i < 12; i++)
+        @foreach(var item in @Model.Ingredients)
         {
             <div class="col">
                 <div class="card">
                     <img src="https://befreshcorp.net/wp-content/uploads/2017/06/product-packshot-Carrot-558x600.jpg"
                      class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Carrot</h5>
+                        <h5 class="card-title">@item.Name</h5>
                         <div>
                             <table class="table" style="table-layout: fixed">
                                 <thead>
@@ -42,9 +44,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Vegetable</td>
-                                        <td>1</td>
-                                        <td>Carrot</td>
+                                        <td>@item.IngredientType</td>
+                                        <td>@item.BaseAmount</td>
+                                        <td>@item.Unit.Name</td>
                                     </tr>
                                 </tbody>
                             </table>

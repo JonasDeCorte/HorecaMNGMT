@@ -1,18 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Repositories;
+using HorecaMVC.Models.Ingredients;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HorecaMVC.Controllers
 {
     public class IngredientController : Controller
     {
-        public IActionResult Index()
-        {
-            bool isRequestingDelete = false;
+        private IIngredientRepository ingredientService;
 
-            ViewBag.IsRequestingDelete = isRequestingDelete;
-            return View();
+        public IngredientController(IIngredientRepository ingredientService)
+        {
+            this.ingredientService = ingredientService;
         }
 
-        public IActionResult Detail()
+        public async Task<ActionResult> Index()
+        {
+            IEnumerable<Ingredient> ingredients;
+            ingredients = ingredientService.GetAll();
+
+            IngredientListViewModel listModel = new IngredientListViewModel();
+
+            foreach (var item in ingredients)
+            {
+                IngredientViewModel model = new IngredientViewModel(item);
+                listModel.Ingredients.Add(model);
+            }
+
+            return View(listModel);
+        }
+
+        public IActionResult Detail(int? id)
         {
             return View();
         }
@@ -22,7 +40,7 @@ namespace HorecaMVC.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int? id)
         {
             return View();
         }
