@@ -32,7 +32,7 @@ namespace HorecaMVC.Controllers
             return View(listModel);
         }
 
-        public IActionResult Detail(int? id)
+        public IActionResult Detail(int id)
         {
             Ingredient ingredient = ingredientService.Get(id);
             if (ingredient.Name == null)
@@ -58,7 +58,7 @@ namespace HorecaMVC.Controllers
             return model;
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if(id == null)
             {
@@ -97,7 +97,7 @@ namespace HorecaMVC.Controllers
             }
         }
 
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
