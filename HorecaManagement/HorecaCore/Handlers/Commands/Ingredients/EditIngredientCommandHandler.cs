@@ -1,7 +1,5 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
+﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
-using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using MediatR;
 
@@ -9,9 +7,9 @@ namespace HorecaCore.Handlers.Commands.Ingredients
 {
     public class EditIngredientCommand : IRequest<int>
     {
-        public Ingredient Model { get; }
+        public MutateIngredientDto Model { get; }
 
-        public EditIngredientCommand(Ingredient model)
+        public EditIngredientCommand(MutateIngredientDto model)
         {
             Model = model;
         }
@@ -28,7 +26,22 @@ namespace HorecaCore.Handlers.Commands.Ingredients
 
         public async Task<int> Handle(EditIngredientCommand request, CancellationToken cancellationToken)
         {
-            _repository.Ingredients.Update(request.Model);
+            var ingredient = _repository.Ingredients.GetIngredientIncludingUnit(request.Model.Id);
+
+            if (ingredient is null)
+            {
+                throw new EntityNotFoundException("Entity does not exist");
+            }
+
+            ingredient.IngredientType = request.Model.IngredientType ?? ingredient.IngredientType;
+            ingredient.Name = request.Model.Name ?? ingredient.Name;
+
+            if (request.Model.BaseAmount != ingredient.BaseAmount)
+                ingredient.BaseAmount = request.Model.BaseAmount;
+
+            ingredient.Unit = request.Model.Unit ?? ingredient.Unit;
+            _repository.Units.Update(ingredient.Unit);
+            _repository.Ingredients.Update(ingredient);
 
             await _repository.CommitAsync();
 

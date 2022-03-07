@@ -8,7 +8,7 @@ using MediatR;
 namespace Horeca.Core.Providers.Handlers.Commands
 {
     public class CreateIngredientCommand : IRequest<int>
-    {   // holds the information to be added to the database.
+    {
         public MutateIngredientDto Model { get; }
 
         /// <summary>
@@ -43,9 +43,7 @@ namespace Horeca.Core.Providers.Handlers.Commands
 
         public async Task<int> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
-            MutateIngredientDto model = request.Model;
-
-            var result = _validator.Validate(model);
+            var result = _validator.Validate(request.Model);
 
             if (!result.IsValid)
             {
@@ -58,16 +56,16 @@ namespace Horeca.Core.Providers.Handlers.Commands
 
             var entity = new Ingredient
             {
-                Name = model.Name,
-                BaseAmount = model.BaseAmount,
-                IngredientType = model.IngredientType,
-                Unit = model.Unit,
+                Name = request.Model.Name,
+                BaseAmount = request.Model.BaseAmount,
+                IngredientType = request.Model.IngredientType,
+                Unit = request.Model.Unit,
             };
-
             _repository.Ingredients.Add(entity);
+
             await _repository.CommitAsync();
 
-            return entity.Id;
+            return request.Model.Id;
         }
     }
 }

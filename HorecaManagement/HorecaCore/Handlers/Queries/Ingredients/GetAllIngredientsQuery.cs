@@ -35,7 +35,7 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
         public async Task<IEnumerable<IngredientDto>> Handle(GetAllIngredientsQuery request, CancellationToken cancellationToken)
 
         {
-            var entities = await Task.FromResult(_repository.Ingredients.GetAll());
+            var entities = await Task.FromResult(_repository.Ingredients.GetAllIncludingUnit());
             return _mapper.Map<IEnumerable<IngredientDto>>(entities);
         }
     }

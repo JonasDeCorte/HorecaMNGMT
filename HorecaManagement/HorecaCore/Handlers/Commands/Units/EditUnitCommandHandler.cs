@@ -1,13 +1,15 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
+using Horeca.Shared.Dtos.Units;
 using MediatR;
 
 namespace HorecaCore.Handlers.Commands.Units
 {
     public class EditUnitCommand : IRequest<int>
     {
-        public Horeca.Shared.Data.Entities.Unit Model { get; }
+        public MutateUnitDto Model { get; }
 
-        public EditUnitCommand(Horeca.Shared.Data.Entities.Unit model)
+        public EditUnitCommand(MutateUnitDto model)
         {
             Model = model;
         }
@@ -24,7 +26,16 @@ namespace HorecaCore.Handlers.Commands.Units
 
         public async Task<int> Handle(EditUnitCommand request, CancellationToken cancellationToken)
         {
-            _repository.Units.Update(request.Model);
+            var unit = _repository.Units.Get(request.Model.Id);
+
+            if (unit is null)
+            {
+                throw new EntityNotFoundException("Entity does not exist");
+            }
+
+            unit.Name = request.Model.Name ?? unit.Name;
+
+            _repository.Units.Update(unit);
 
             await _repository.CommitAsync();
 

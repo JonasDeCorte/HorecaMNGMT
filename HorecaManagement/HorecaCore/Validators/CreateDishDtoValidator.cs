@@ -3,7 +3,7 @@ using Horeca.Shared.Dtos.Dishes;
 
 namespace Horeca.Core.Validators
 {
-    public class CreateDishDtoValidator : AbstractValidator<MutateDishDto>
+    public class CreateDishDtoValidator : AbstractValidator<DishDtoDetail>
     {
         public CreateDishDtoValidator()
         {

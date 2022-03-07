@@ -17,6 +17,11 @@ namespace Horeca.Infrastructure.Data
             builder.ApplyGlobalFilters<IDelete>(e => e.IsEnabled);
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var item in ChangeTracker.Entries<BaseEntity>().AsEnumerable())
