@@ -3,23 +3,16 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Edit Steak & Fries</h1>
+    <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
         <div class="w-75 mx-auto">
-            <div class="row mt-2">
-                <div class="col">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Name">
-                </div>
-                <div class="col">
-                    <label for="dishType" class="form-label">Dish type</label>
-                    <select id="dishType" class="form-select" aria-label="Dish type">
-                        <option selected>Dish type</option>
-                        <option value="1">Appetizer</option>
-                        <option value="2">Main Course</option>
-                        <option value="3">Dessert</option>
-                    </select>
-                </div>
+            <div class="mt-2">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Name">
+            </div>
+            <div class="mt-2">
+                <label for="dishType" class="form-label">Dish Type</label>
+                <input type="text" class="form-control" id="dishType" placeholder="Dish Type">
             </div>
             <div class="mt-2">
                 <label for="category" class="form-label">Category</label>
@@ -29,21 +22,21 @@
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" id="description" rows="3"></textarea>
             </div>
-            <div>
-                <label for="ingredientList" class="form-label">Ingredients</label>
-                <input class="form-control" list="datalistOptions" id="ingredientList" placeholder="Type to search...">
-                <datalist id="datalistOptions">
-                    <option value="Carrot"></option>
-                    <option value="Steak"></option>
-                    <option value="Fries"></option>
-                </datalist>
-            </div>
             <div class="mt-2">
+                <select class="form-select" aria-label="Dishes">
+                    <option selected>Ingredients</option>
+                    @for(int i = 0; i < 5; i++)
+                    {
+                        <option value="@i">Ingredient @i</option>
+                    }
+                </select>
+            </div>
+            @*<div class="mt-2">
                 <label for="dishImg" class="form-label">Dish Image</label>
                 <input class="form-control" type="file" id="dishImg">
-            </div>
+            </div>*@
             <div class="mt-2">
-                <button type="submit" class="btn btn-primary">Submit Changes</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </div>

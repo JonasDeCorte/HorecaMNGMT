@@ -23,7 +23,7 @@
         </div>
     </div>
     <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible">
-        @for (int i = 0; i < 12; i++)
+        @for (int i = 0; i < 2; i++)
         {
             <div class="col">
                 <div class="card">
@@ -38,7 +38,10 @@
                         <div>
                             <a asp-action="Detail" class="btn btn-primary">Details</a>
                             <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                            <button id="toDeleteModal" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -55,19 +58,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Just Fries</td>
-                <td>
-                    This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
-                    Which appetizer? Believe it or not, fries.
-                </td>
-                <td>
-                    <a asp-action="Detail" class="btn btn-primary">Details</a>
-                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                    <a asp-action="Delete" class="btn btn-primary">Delete</a>
-                </td>
-            </tr>
+            @for (int i = 0; i < 2; i++)
+            {
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Just Fries</td>
+                    <td>
+                        This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
+                        Which appetizer? Believe it or not, fries.
+                    </td>
+                    <td>
+                        <a asp-action="Detail" class="btn btn-primary">Details</a>
+                        <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                        <button id="toDeleteModal" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

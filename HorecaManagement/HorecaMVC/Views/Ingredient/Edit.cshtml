@@ -1,49 +1,37 @@
-﻿@{
+﻿@model HorecaMVC.Models.Ingredients.IngredientViewModel
+
+@{
     ViewData["Title"] = "Ingredient Edit";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Edit Carrot</h1>
+    <h1 class="display-4">Create a new Ingredient</h1>
     <div>
-        <div class="w-75 mx-auto">
-            <div class="row mt-2">
-                <div class="col">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Name">
-                </div>
-                <div class="col">
-                    <label for="ingredientType" class="form-label">Ingredient type</label>
-                    <select id="ingredientType" class="form-select" aria-label="Ingredient type">
-                        <option selected>Ingredient type</option>
-                        <option value="1">Fruit</option>
-                        <option value="2">Vegetable</option>
-                        <option value="3">Other</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col">
-                    <label for="baseAmount" class="form-label">Base Amount</label>
-                    <input type="number" class="form-control" id="baseAmount" placeholder="Base Amount">
-                </div>
-                <div class="col">
-                    <label for="unit" class="form-label">Unit</label>
-                    <select id="unit" class="form-select" aria-label="Unit">
-                        <option selected>Unit</option>
-                        <option value="1">gram</option>
-                        <option value="2">kilogram</option>
-                        <option value="3">liter</option>
-                    </select>
-                </div>
+        <form class="w-75 mx-auto">
+            <div class="mt-2">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" id="name" placeholder="Name">
             </div>
             <div class="mt-2">
+                <label asp-for="IngredientType" class="form-label">Type</label>
+                <input asp-for="IngredientType" class="form-control" id="ingredientType" placeholder="Ingredient Type">
+            </div>
+            <div class="mt-2">
+                <label asp-for="BaseAmount" class="form-label">Base Amount</label>
+                <input asp-for="BaseAmount" class="form-control" id="baseAmount" placeholder="Base Amount">
+            </div>
+            <div class="mt-2">
+                <label asp-for="Unit.Name" class="form-label">Unit</label>
+                <input asp-for="Unit.Name" class="form-control" id="unitName" placeholder="Unit">
+            </div>
+            @*<div class="mt-2">
                 <label for="ingredientImg" class="form-label">Ingredient Image</label>
                 <input class="form-control" type="file" id="ingredientImg">
-            </div>
+            </div>*@
             <div class="mt-2">
-                <button type="submit" class="btn btn-primary">Submit Changes</button>
+                <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
-        </div>
+        </form>
     </div>
 </div>
