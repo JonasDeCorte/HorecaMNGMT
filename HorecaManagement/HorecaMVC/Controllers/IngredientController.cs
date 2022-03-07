@@ -70,21 +70,29 @@ namespace HorecaMVC.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var model = new IngredientViewModel();
+
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Create(IngredientViewModel ingredient)
         {
-            Ingredient result = new Ingredient();
-            result.Name = ingredient.Name;
-            result.BaseAmount = ingredient.BaseAmount;
-            result.IngredientType = ingredient.IngredientType;
-            result.Unit = ingredient.Unit;
+            if (ModelState.IsValid)
+            {
+                Ingredient result = new Ingredient();
+                result.Name = ingredient.Name;
+                result.BaseAmount = ingredient.BaseAmount;
+                result.IngredientType = ingredient.IngredientType;
+                result.Unit = ingredient.Unit;
 
-            ingredientService.Add(result);
+                ingredientService.Add(result);
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            } else
+            {
+                return View(ingredient);
+            }
         }
 
         public IActionResult Edit(int? id)

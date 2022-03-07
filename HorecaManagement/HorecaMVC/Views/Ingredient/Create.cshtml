@@ -20,20 +20,16 @@
                 <label asp-for="BaseAmount" class="form-label">Base Amount</label>
                 <input asp-for="BaseAmount" class="form-control" id="baseAmount" placeholder="Base Amount">
             </div>
-            @*<div class="mt-2">
-                <select class="form-select" aria-label="Unit">
-                    <option selected>Unit</option>
-                    <option value="1">gram</option>
-                    <option value="2">kilogram</option>
-                    <option value="3">liter</option>
-                </select>
-            </div>*@
+            <div class="mt-2">
+                <label asp-for="Unit.Name" class="form-label">Unit</label>
+                <input asp-for="Unit.Name" class="form-control" id="unitName" placeholder="Unit">
+            </div>
             @*<div class="mt-2">
                 <label for="ingredientImg" class="form-label">Ingredient Image</label>
                 <input class="form-control" type="file" id="ingredientImg">
             </div>*@
             <div class="mt-2">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
