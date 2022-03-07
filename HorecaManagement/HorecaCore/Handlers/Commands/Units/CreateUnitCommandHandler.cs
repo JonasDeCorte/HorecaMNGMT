@@ -28,9 +28,7 @@ namespace HorecaCore.Handlers.Commands.Units
 
             public async Task<int> Handle(CreateUnitCommand request, CancellationToken cancellationToken)
             {
-                MutateUnitDto model = request.Model;
-
-                var result = _validator.Validate(model);
+                var result = _validator.Validate(request.Model);
 
                 if (!result.IsValid)
                 {
@@ -42,7 +40,7 @@ namespace HorecaCore.Handlers.Commands.Units
                 }
                 var entity = new Horeca.Shared.Data.Entities.Unit
                 {
-                    Name = model.Name,
+                    Name = request.Model.Name,
                 };
 
                 _repository.Units.Add(entity);

@@ -2,7 +2,6 @@
 using Horeca.Shared.Data.Repositories;
 
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Horeca.Infrastructure.Data.Repositories.Generic
 {
@@ -19,6 +18,8 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
 
         public void Add(T entity)
         {
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
+
             _dbSet.Add(entity);
         }
 
@@ -42,41 +43,23 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
 
         public T Get(int id)
         {
-            IQueryable<T> query = _dbSet;
-            Type type = typeof(T);
-            query = IncludeEagerLoading(query, type);
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
 
-            return query.SingleOrDefault(x => x.Id == id);
+            return _dbSet.Find(id);
         }
 
         public IEnumerable<T> GetAll()
         {
-            IQueryable<T> query = _dbSet;
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
 
-            Type type = typeof(T);
-
-            query = IncludeEagerLoading(query, type);
-
-            return query.AsEnumerable();
+            return _dbSet.AsEnumerable();
         }
 
         public void Update(T entity)
         {
             _dbSet.Attach(entity);
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
             _context.Entry(entity).State = EntityState.Modified;
-        }
-
-        private static IQueryable<T> IncludeEagerLoading(IQueryable<T> query, Type type)
-        {
-            foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-            {
-                if (!field.FieldType.Namespace.StartsWith("System"))
-                {
-                    query = query.Include(field.FieldType.Name);
-                }
-            }
-
-            return query;
         }
     }
 }

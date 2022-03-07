@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220302160013_addDish")]
-    partial class addDish
+    [Migration("20220303134251_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

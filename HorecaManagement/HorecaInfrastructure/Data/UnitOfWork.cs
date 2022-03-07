@@ -21,6 +21,7 @@ namespace Horeca.Infrastructure.Data
 
         public async Task CommitAsync()
         {
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
             await _context.SaveChangesAsync();
         }
     }

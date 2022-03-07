@@ -9,9 +9,9 @@ namespace HorecaCore.Handlers.Commands.Dishes
 {
     public class CreateDishCommand : IRequest<int>
     {
-        public MutateDishDto Model { get; }
+        public DishDtoDetail Model { get; }
 
-        public CreateDishCommand(MutateDishDto model)
+        public CreateDishCommand(DishDtoDetail model)
         {
             Model = model;
         }
@@ -19,9 +19,9 @@ namespace HorecaCore.Handlers.Commands.Dishes
         public class CreateDishCommandHandler : IRequestHandler<CreateDishCommand, int>
         {
             private readonly IUnitOfWork _repository;
-            private readonly IValidator<MutateDishDto> _validator;
+            private readonly IValidator<DishDtoDetail> _validator;
 
-            public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
+            public CreateDishCommandHandler(IUnitOfWork repository, IValidator<DishDtoDetail> validator)
             {
                 _repository = repository;
                 _validator = validator;
@@ -29,9 +29,7 @@ namespace HorecaCore.Handlers.Commands.Dishes
 
             public async Task<int> Handle(CreateDishCommand request, CancellationToken cancellationToken)
             {
-                MutateDishDto model = request.Model;
-
-                var result = _validator.Validate(model);
+                var result = _validator.Validate(request.Model);
 
                 if (!result.IsValid)
                 {
@@ -43,12 +41,34 @@ namespace HorecaCore.Handlers.Commands.Dishes
                 }
                 var entity = new Dish
                 {
-                    Name = model.Name,
-                    Category = model.Category,
-                    Description = model.Description,
-                    Ingredients = model.Ingredients,
-                    DishType = model.DishType,
+                    Name = request.Model.Name,
+                    Category = request.Model.Category,
+                    Description = request.Model.Description,
+                    DishType = request.Model.DishType,
                 };
+
+                foreach (var ingredient in request.Model.Ingredients)
+                {
+                    var existingIngredient = _repository.Ingredients.GetIngredientIncludingUnit(ingredient.Id);
+
+                    if (existingIngredient is null)
+                    {
+                        entity.Ingredients.Add(new Ingredient()
+                        {
+                            Name = ingredient.Name,
+                            BaseAmount = ingredient.BaseAmount,
+                            IngredientType = ingredient.IngredientType,
+                            Unit = new Horeca.Shared.Data.Entities.Unit()
+                            {
+                                Name = ingredient.Unit.Name
+                            }
+                        });
+                    }
+                    else
+                    {
+                        entity.Ingredients.Add(existingIngredient);
+                    }
+                }
 
                 _repository.Dishes.Add(entity);
                 await _repository.CommitAsync();

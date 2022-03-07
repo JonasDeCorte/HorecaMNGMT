@@ -8,5 +8,6 @@
         public int BaseAmount { get; set; }
 
         public Unit Unit { get; set; }
+        public int UnitId { get; set; }
     }
 }
