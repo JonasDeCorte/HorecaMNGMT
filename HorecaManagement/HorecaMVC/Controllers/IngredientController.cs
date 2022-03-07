@@ -99,7 +99,31 @@ namespace HorecaMVC.Controllers
 
         public IActionResult Edit(int id)
         {
-            return View();
+            Ingredient ingredient = ingredientService.Get(id);
+            IngredientViewModel model = mapModel(ingredient);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(IngredientViewModel ingredient)
+        {
+            if (ModelState.IsValid)
+            {
+                Ingredient result = new Ingredient();
+                result.Name = ingredient.Name;
+                result.BaseAmount = ingredient.BaseAmount;
+                result.IngredientType = ingredient.IngredientType;
+                result.Unit = ingredient.Unit;
+
+                ingredientService.Update(result);
+
+                Thread.Sleep(200);
+                return RedirectToAction(nameof(Index));
+            } else
+            {
+                return View(ingredient);
+            }
         }
     }
 }

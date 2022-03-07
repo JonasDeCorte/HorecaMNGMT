@@ -62,7 +62,7 @@ namespace HorecaMVC.Services
 
         public void Update(Ingredient entity)
         {
-            throw new NotImplementedException();
+            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}", entity);
         }
     }
 }

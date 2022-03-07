@@ -50,7 +50,7 @@
                         </div>
                         <div>
                             <a asp-action="Detail" class="btn btn-primary" asp-route-id="@item.Id">Details</a>
-                            <a asp-action="Edit" class="modalbutton btn btn-primary">Edit</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="modalbutton btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="btn btn-primary" data-bs-toggle="modal" 
                                 data-bs-target="#deleteModal" data-id="@item.Id">Delete</button>
                         </div>
@@ -81,7 +81,7 @@
                     <td>@Model.Ingredients[i].Unit.Name</td>
                     <td>
                         <a asp-action="Detail" asp-route-id="@Model.Ingredients[i].Id" class="btn btn-primary">Details</a>
-                        <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Ingredients[i].Id" class="btn btn-primary">Edit</a>
                         <button id="toDeleteModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal" 
                             data-bs-target="#deleteModal" data-id="@Model.Ingredients[i].Id">Delete</button>
                     </td>
