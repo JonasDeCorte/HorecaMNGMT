@@ -1,37 +1,46 @@
 ﻿@model HorecaMVC.Models.Ingredients.IngredientViewModel
 
 @{
-    ViewData["Title"] = "Ingredient Edit";
+    ViewData["Title"] = "Edit Ingredient";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Create a new Ingredient</h1>
+    <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
         <form class="w-75 mx-auto">
             <div class="mt-2">
                 <label asp-for="Name" class="form-label">Name</label>
                 <input asp-for="Name" class="form-control" id="name" placeholder="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="mt-2">
                 <label asp-for="IngredientType" class="form-label">Type</label>
                 <input asp-for="IngredientType" class="form-control" id="ingredientType" placeholder="Ingredient Type">
+                <span asp-validation-for="IngredientType" class="text-danger"></span>
             </div>
             <div class="mt-2">
                 <label asp-for="BaseAmount" class="form-label">Base Amount</label>
                 <input asp-for="BaseAmount" class="form-control" id="baseAmount" placeholder="Base Amount">
+                <span asp-validation-for="BaseAmount" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label asp-for="Unit.Name" class="form-label">Unit</label>
-                <input asp-for="Unit.Name" class="form-control" id="unitName" placeholder="Unit">
+                <label asp-for="Unit.Name" class="form-label">Unit name</label>
+                <input asp-for="Unit.Name" class="form-control" id="unitName" placeholder="Unit name">
+                <span asp-validation-for="Unit.Name" class="text-danger"></span>
             </div>
             @*<div class="mt-2">
                 <label for="ingredientImg" class="form-label">Ingredient Image</label>
                 <input class="form-control" type="file" id="ingredientImg">
-            </div>*@
+                </div>*@
             <div class="mt-2">
-                <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
+                <input type="submit" value="Edit" formmethod="put" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
 </div>
+
+@section scripts {
+<script asp-src-include="lib/jquery-validation/dist/jquery.validate.js"></script>
+<script asp-src-include="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

@@ -10,9 +10,6 @@
                 <div class="form-outline">
                     <input type="search" id="form1" class="form-control" placeholder="Search..." />
                 </div>
-                <button type="button" class="btn btn-primary ">
-                    <i class="fas fa-search"></i>
-                </button>
             </div>
             <div class="col">
                 <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
@@ -35,6 +32,14 @@
                             This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
                             Which appetizer? Believe it or not, fries.
                         </p>
+                        <table class="table table-responsive">
+                            <tbody>
+                                <tr>
+                                    <th class="col-6">Category</th>
+                                    <td class="col-6">Fries</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div>
                             <a asp-action="Detail" class="btn btn-primary">Details</a>
                             <a asp-action="Edit" class="btn btn-primary">Edit</a>
@@ -53,7 +58,8 @@
             <tr>
                 <th scope="col" class="col-1">#</th>
                 <th scope="col" class="col-2">Name</th>
-                <th scope="col" class="col-6">Description</th>
+                <th scope="col" class="col-2">Category</th>
+                <th scope="col" class="col-4">Description</th>
                 <th scope="col" class="col-3">Options</th>
             </tr>
         </thead>
@@ -63,6 +69,7 @@
                 <tr>
                     <th scope="row">1</th>
                     <td>Just Fries</td>
+                    <td>Fries</td>
                     <td>
                         This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
                         Which appetizer? Believe it or not, fries.
