@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220303134411_test2")]
-    partial class test2
+    [Migration("20220307151237_test5")]
+    partial class test5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace HorecaInfrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("DishIngredient", b =>
-                {
-                    b.Property<int>("DishesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DishesId", "IngredientsId");
-
-                    b.HasIndex("IngredientsId");
-
-                    b.ToTable("DishIngredient");
-                });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
                 {
@@ -91,6 +76,9 @@ namespace HorecaInfrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DishId")
+                        .HasColumnType("int");
+
                     b.Property<string>("IngredientType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -109,6 +97,8 @@ namespace HorecaInfrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DishId");
 
                     b.HasIndex("UnitId");
 
@@ -141,23 +131,12 @@ namespace HorecaInfrastructure.Migrations
                     b.ToTable("Units");
                 });
 
-            modelBuilder.Entity("DishIngredient", b =>
-                {
-                    b.HasOne("Horeca.Shared.Data.Entities.Dish", null)
-                        .WithMany()
-                        .HasForeignKey("DishesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Horeca.Shared.Data.Entities.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
                 {
+                    b.HasOne("Horeca.Shared.Data.Entities.Dish", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("DishId");
+
                     b.HasOne("Horeca.Shared.Data.Entities.Unit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
@@ -165,6 +144,11 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
+                {
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }
