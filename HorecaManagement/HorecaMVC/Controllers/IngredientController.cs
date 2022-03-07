@@ -65,6 +65,7 @@ namespace HorecaMVC.Controllers
                 return View("NotFound");
             }
             ingredientService.Delete(id);
+            Thread.Sleep(200);
             return RedirectToAction(nameof(Index));
         }
 
@@ -88,6 +89,7 @@ namespace HorecaMVC.Controllers
 
                 ingredientService.Add(result);
 
+                Thread.Sleep(200);
                 return RedirectToAction(nameof(Index));
             } else
             {
