@@ -4,13 +4,13 @@
     {
         IEnumerable<T> GetAll();
 
-        T Get(object id);
+        T Get(int id);
 
         void Add(T entity);
 
         void Update(T entity);
 
-        void Delete(object id);
+        void Delete(int id);
 
         int Count();
     }

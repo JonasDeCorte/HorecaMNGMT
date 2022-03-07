@@ -5,74 +5,64 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HorecaInfrastructure.Migrations
 {
-    public partial class AddUnits : Migration
+    public partial class addDish : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Unit",
-                table: "Ingredients");
-
             migrationBuilder.AddColumn<int>(
-                name: "UnitId",
+                name: "DishId",
                 table: "Ingredients",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Units",
+                name: "Dishes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DishType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Units", x => x.Id);
+                    table.PrimaryKey("PK_Dishes", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_UnitId",
+                name: "IX_Ingredients_DishId",
                 table: "Ingredients",
-                column: "UnitId");
+                column: "DishId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Ingredients_Units_UnitId",
+                name: "FK_Ingredients_Dishes_DishId",
                 table: "Ingredients",
-                column: "UnitId",
-                principalTable: "Units",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "DishId",
+                principalTable: "Dishes",
+                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Ingredients_Units_UnitId",
+                name: "FK_Ingredients_Dishes_DishId",
                 table: "Ingredients");
 
             migrationBuilder.DropTable(
-                name: "Units");
+                name: "Dishes");
 
             migrationBuilder.DropIndex(
-                name: "IX_Ingredients_UnitId",
+                name: "IX_Ingredients_DishId",
                 table: "Ingredients");
 
             migrationBuilder.DropColumn(
-                name: "UnitId",
+                name: "DishId",
                 table: "Ingredients");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Unit",
-                table: "Ingredients",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
         }
     }
 }
