@@ -4,4 +4,101 @@
 
 <div class="text-center">
     <h1 class="display-4">Menu Cards</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
+                </div>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
+            </div>
+            <div class="col">
+                <a asp-action="Create" class="btn btn-primary float-end">New Menu Card</a>
+            </div>
+        </div>
+    </div>
+    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Menu Card @i</h5>
+                        <p class="card-text">
+                            this is a description of a menu card yes
+                        </p>
+                        <div>
+                            <a asp-action="Detail" class="btn btn-primary" asp-route-id="1">Details</a>
+                            <a asp-action="Edit" class="modalbutton btn btn-primary">Edit</a>
+                            <button id="toDeleteModal" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal" data-id="1">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <table id="tableView" class="table table-responsive mt-2" style="display: none;">
+        <thead>
+            <tr>
+                <th scope="col" class="col-1">#</th>
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-6">Description</th>
+                <th scope="col" class="col-3">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 3; i++)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>Menu Card</td>
+                    <td>this is a description of a menu card yes</td>
+                    <td>
+                        <a asp-action="Detail" asp-route-id="1" class="btn btn-primary">Details</a>
+                        <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal" data-id="1">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
+<div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Ingredient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="dvData">
+                Are you sure you want to delete this menu card?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteButton" asp-action="Delete" class="btn btn-primary">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteModal",OpenModalDelete);
+    });
+
+    function OpenModalDelete(){
+       var itemId = $(this).data("id");
+       $('#deleteButton').attr('href', "/MenuCard/Delete/" + itemId)
+       $("#deleteModal").modal();
+    }
+</script>

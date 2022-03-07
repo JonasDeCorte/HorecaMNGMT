@@ -11,12 +11,8 @@
                 <input type="text" class="form-control" id="name" placeholder="Name">
             </div>
             <div class="mt-2">
-                <select class="form-select" aria-label="Dish type">
-                    <option selected>Dish type</option>
-                    <option value="1">Appetizer</option>
-                    <option value="2">Main Course</option>
-                    <option value="3">Dessert</option>
-                </select>
+                <label for="dishType" class="form-label">Dish Type</label>
+                <input type="text" class="form-control" id="dishType" placeholder="Dish Type">
             </div>
             <div class="mt-2">
                 <label for="category" class="form-label">Category</label>
@@ -27,9 +23,18 @@
                 <textarea class="form-control" id="description" rows="3"></textarea>
             </div>
             <div class="mt-2">
+                <select class="form-select" aria-label="Dishes">
+                    <option selected>Ingredients</option>
+                    @for(int i = 0; i < 5; i++)
+                    {
+                        <option value="@i">Ingredient @i</option>
+                    }
+                </select>
+            </div>
+            @*<div class="mt-2">
                 <label for="dishImg" class="form-label">Dish Image</label>
                 <input class="form-control" type="file" id="dishImg">
-            </div>
+            </div>*@
             <div class="mt-2">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>

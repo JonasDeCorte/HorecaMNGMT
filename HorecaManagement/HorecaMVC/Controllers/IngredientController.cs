@@ -1,32 +1,103 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Repositories;
+using HorecaMVC.Models.Ingredients;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace HorecaMVC.Controllers
 {
     public class IngredientController : Controller
     {
-        public IActionResult Index()
-        {
-            bool isRequestingDelete = false;
+        private IIngredientRepository ingredientService;
 
-            ViewBag.IsRequestingDelete = isRequestingDelete;
-            return View();
+        public IngredientController(IIngredientRepository ingredientService)
+        {
+            this.ingredientService = ingredientService;
         }
 
-        public IActionResult Detail()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<Ingredient> ingredients;
+            ingredients = ingredientService.GetAll();
+
+            IngredientListViewModel listModel = new IngredientListViewModel();
+
+            foreach (var item in ingredients)
+            {
+                IngredientViewModel model = mapModel(item);
+
+                listModel.Ingredients.Add(model);
+            }
+
+            return View(listModel);
+        }
+
+        public IActionResult Detail(int? id)
+        {
+            Ingredient ingredient = ingredientService.Get(id);
+            if (ingredient.Name == null)
+            {
+                return View("NotFound");
+            }
+
+            IngredientViewModel model = mapModel(ingredient);
+
+            return View(model);
+        }
+
+        public IngredientViewModel mapModel(Ingredient ingredient)
+        {
+            IngredientViewModel model = new IngredientViewModel();
+
+            model.Id = ingredient.Id;
+            model.Name = ingredient.Name;
+            model.IngredientType = ingredient.IngredientType;
+            model.BaseAmount = ingredient.BaseAmount;
+            model.Unit = ingredient.Unit;
+
+            return model;
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if(id == null)
+            {
+                return View("NotFound");
+            }
+            ingredientService.Delete(id);
+            Thread.Sleep(200);
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Create()
         {
-            return View();
+            var model = new IngredientViewModel();
+
+            return View(model);
         }
 
-        public IActionResult Edit()
+        [HttpPost]
+        public IActionResult Create(IngredientViewModel ingredient)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Ingredient result = new Ingredient();
+                result.Name = ingredient.Name;
+                result.BaseAmount = ingredient.BaseAmount;
+                result.IngredientType = ingredient.IngredientType;
+                result.Unit = ingredient.Unit;
+
+                ingredientService.Add(result);
+
+                Thread.Sleep(200);
+                return RedirectToAction(nameof(Index));
+            } else
+            {
+                return View(ingredient);
+            }
         }
-        public IActionResult Delete()
+
+        public IActionResult Edit(int? id)
         {
             return View();
         }
