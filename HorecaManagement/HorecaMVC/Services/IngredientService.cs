@@ -45,24 +45,40 @@ namespace HorecaMVC.Services
             return result;
         }
 
+        public void Update(Ingredient entity)
+        {
+            Console.WriteLine("Ingredient Id: " + entity.Id);
+            Console.WriteLine("Unit Id: " + entity.Unit.Id);
+
+            Console.WriteLine("before put");
+            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}", entity);
+            Console.WriteLine("after put");
+
+            Ingredient test = Get(entity.Id);
+
+            Console.WriteLine("Ingredient Id: " + test.Id);
+            Console.WriteLine("Unit Id: " + test.Unit.Id);
+        }
+
         public IEnumerable<IngredientDto> GetAllIncludingUnit()
         {
-            throw new NotImplementedException();
+            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}");
+            var result = JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(ingredients.Result.Content.ReadAsStringAsync().Result);
+            return result;
         }
 
         public IngredientDto GetIncludingUnit(int id)
         {
-            throw new NotImplementedException();
+            var ingredient = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{id}");
+            var result = JsonConvert.DeserializeObject<IngredientDto>(ingredient.Result.Content.ReadAsStringAsync().Result);
+            return result;
         }
 
         public Ingredient GetIngredientIncludingUnit(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Ingredient entity)
-        {
-            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}", entity);
+            var ingredient = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{id}");
+            var result = JsonConvert.DeserializeObject<Ingredient>(ingredient.Result.Content.ReadAsStringAsync().Result);
+            return result;
         }
     }
 }

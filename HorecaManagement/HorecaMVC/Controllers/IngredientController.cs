@@ -45,19 +45,6 @@ namespace HorecaMVC.Controllers
             return View(model);
         }
 
-        public IngredientViewModel mapModel(Ingredient ingredient)
-        {
-            IngredientViewModel model = new IngredientViewModel();
-
-            model.Id = ingredient.Id;
-            model.Name = ingredient.Name;
-            model.IngredientType = ingredient.IngredientType;
-            model.BaseAmount = ingredient.BaseAmount;
-            model.Unit = ingredient.Unit;
-
-            return model;
-        }
-
         public IActionResult Delete(int id)
         {
             if(id == null)
@@ -99,7 +86,7 @@ namespace HorecaMVC.Controllers
 
         public IActionResult Edit(int id)
         {
-            Ingredient ingredient = ingredientService.Get(id);
+            Ingredient ingredient = ingredientService.GetIngredientIncludingUnit(id);
             IngredientViewModel model = mapModel(ingredient);
 
             return View(model);
@@ -110,11 +97,12 @@ namespace HorecaMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = new Ingredient();
+                Ingredient result = ingredientService.GetIngredientIncludingUnit(ingredient.Id);
+
                 result.Name = ingredient.Name;
                 result.BaseAmount = ingredient.BaseAmount;
                 result.IngredientType = ingredient.IngredientType;
-                result.Unit = ingredient.Unit;
+                result.Unit.Name = ingredient.Unit.Name;
 
                 ingredientService.Update(result);
 
@@ -124,6 +112,19 @@ namespace HorecaMVC.Controllers
             {
                 return View(ingredient);
             }
+        }
+
+        public IngredientViewModel mapModel(Ingredient ingredient)
+        {
+            IngredientViewModel model = new IngredientViewModel();
+
+            model.Id = ingredient.Id;
+            model.Name = ingredient.Name;
+            model.IngredientType = ingredient.IngredientType;
+            model.BaseAmount = ingredient.BaseAmount;
+            model.Unit = ingredient.Unit;
+
+            return model;
         }
     }
 }
