@@ -22,7 +22,7 @@
         </div>
     </div>
     <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
-        @foreach(var item in @Model.Dishes)
+        @foreach (var item in @Model.Dishes)
         {
             <div class="col">
                 <div class="card">
@@ -47,9 +47,12 @@
                             </table>
                         </div>
                         <div>
-                            <a asp-action="Detail" class="btn btn-primary">Details</a>
+                            <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
                             <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                            <button id="toDeleteModal" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal" data-id="@item.Id">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -67,17 +70,20 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < 5; i++)
+            @for (int i = 0; i < @Model.Dishes.Count; i++)
             {
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Steak & Fries</td>
-                    <td>Main Course</td>
-                    <td>Meat</td>
+                    <th scope="row">@i</th>
+                    <td>@Model.Dishes[i].Name</td>
+                    <td>@Model.Dishes[i].DishType</td>
+                    <td>@Model.Dishes[i].Category</td>
                     <td>
                         <a asp-action="Detail" class="btn btn-primary">Details</a>
                         <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal" data-id="@Model.Dishes[i].Id">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             }
@@ -98,8 +104,20 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary">Yes</button>
+                <a id="deleteButton" asp-action="Delete" class="btn btn-primary">Yes</a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteModal",OpenModalDelete);
+    });
+
+    function OpenModalDelete(){
+       var itemId = $(this).data("id");
+       $('#deleteButton').attr('href', "/Dish/Delete/" + itemId)
+       $("#deleteModal").modal();
+    }
+</script>

@@ -1,15 +1,16 @@
 ﻿using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Data.Repositories;
 using Horeca.MVC.Models.Dishes;
 using Microsoft.AspNetCore.Mvc;
+using HorecaMVC.Models.Mappers;
+using Horeca.MVC.Services;
 
 namespace Horeca.MVC.Controllers
 {
     public class DishController : Controller
     {
-        private IDishRepository dishService;
+        private IDishService dishService;
 
-        public DishController(IDishRepository dishService)
+        public DishController(IDishService dishService)
         {
             this.dishService = dishService;
         }
@@ -17,13 +18,13 @@ namespace Horeca.MVC.Controllers
         public IActionResult Index()
         {
             IEnumerable<Dish> dishes;
-            dishes = dishService.GetAll();
+            dishes = dishService.GetDishes();
 
             DishListViewModel listModel = new DishListViewModel();
 
             foreach(var item in dishes)
             {
-                DishViewModel model = MapModel(item);
+                DishViewModel model = DishMapper.MapModel(item);
 
                 listModel.Dishes.Add(model);
             }
@@ -31,22 +32,32 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        public DishViewModel MapModel(Dish dish)
+        public IActionResult Detail(int id)
         {
-            DishViewModel model = new DishViewModel();
+            Dish dish = dishService.GetDishById(id);
+            if (dish.Name == null)
+            {
+                return View("NotFound");
+            }
 
-            model.Id = dish.Id;
-            model.Name = dish.Name;
-            model.Category = dish.Category;
-            model.DishType = dish.DishType;
+            DishDetailViewModel model = DishMapper.MapDetailModel(dish);
 
-            return model;
+            return View(model);
         }
 
-        public IActionResult Detail()
+        public IActionResult Delete(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return View("NotFound");
+            }
+
+            dishService.DeleteDish(id);
+            Thread.Sleep(200);
+
+            return RedirectToAction(nameof(Index));
         }
+
         public IActionResult Create()
         {
             return View();

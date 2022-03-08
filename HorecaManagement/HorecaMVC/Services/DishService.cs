@@ -1,12 +1,11 @@
 ﻿using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Data.Repositories;
 using Horeca.Shared.Dtos.Dishes;
 using Newtonsoft.Json;
 
 namespace Horeca.MVC.Services
 {
-    public class DishService : IDishRepository
+    public class DishService : IDishService
     {
         private readonly HttpClient httpClient;
         private IConfiguration configuration;
@@ -17,44 +16,37 @@ namespace Horeca.MVC.Services
             configuration = iConfig;
         }
 
-        public void Add(Dish entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Count()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Dish Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Dish> GetAll()
+        public IEnumerable<Dish> GetDishes()
         {
             var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
             var result = JsonConvert.DeserializeObject<IEnumerable<Dish>>(dishes.Result.Content.ReadAsStringAsync().Result);
             return result;
         }
 
-        public Dish GetDishIncludingDependencies(int id)
+        public Dish GetDishById(int id)
+        {
+            var dish = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
+            var result = JsonConvert.DeserializeObject<Dish>(dish.Result.Content.ReadAsStringAsync().Result);
+
+            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/ingredients");
+            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(ingredients.Result.Content.ReadAsStringAsync().Result);
+
+            result.Ingredients = listResult.Ingredients.ToList();
+
+            return result;
+        }
+
+        public void AddDish(Dish dish)
         {
             throw new NotImplementedException();
         }
 
-        public DishDtoDetailDto GetIncludingDependencies(int id)
+        public void DeleteDish(int id)
         {
-            throw new NotImplementedException();
+            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
         }
 
-        public void Update(Dish entity)
+        public void UpdateDish(Dish dish)
         {
             throw new NotImplementedException();
         }

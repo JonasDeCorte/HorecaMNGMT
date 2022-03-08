@@ -1,28 +1,29 @@
 ﻿using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Data.Repositories;
 using Horeca.MVC.Models.Ingredients;
 using Microsoft.AspNetCore.Mvc;
+using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Services;
 
 namespace Horeca.MVC.Controllers
 {
     public class IngredientController : Controller
     {
-        private IIngredientRepository ingredientService;
+        private IIngredientService ingredientService;
 
-        public IngredientController(IIngredientRepository ingredientService)
+        public IngredientController(IIngredientService ingredientService)
         {
             this.ingredientService = ingredientService;
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Ingredient> ingredients = ingredientService.GetAll();
+            IEnumerable<Ingredient> ingredients = ingredientService.GetIngredients();
 
             IngredientListViewModel listModel = new IngredientListViewModel();
 
             foreach (var item in ingredients)
             {
-                IngredientViewModel model = MapModel(item);
+                IngredientViewModel model = IngredientMapper.MapModel(item);
 
                 listModel.Ingredients.Add(model);
             }
@@ -32,13 +33,13 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Detail(int id)
         {
-            Ingredient ingredient = ingredientService.Get(id);
+            Ingredient ingredient = ingredientService.GetIngredientById(id);
             if (ingredient.Name == null)
             {
                 return View("NotFound");
             }
 
-            IngredientViewModel model = MapModel(ingredient);
+            IngredientViewModel model = IngredientMapper.MapModel(ingredient);
 
             return View(model);
         }
@@ -49,7 +50,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-            ingredientService.Delete(id);
+            ingredientService.DeleteIngredient(id);
             Thread.Sleep(200);
             return RedirectToAction(nameof(Index));
         }
@@ -72,7 +73,7 @@ namespace Horeca.MVC.Controllers
                 result.IngredientType = ingredient.IngredientType;
                 result.Unit = ingredient.Unit;
 
-                ingredientService.Add(result);
+                ingredientService.AddIngredient(result);
 
                 Thread.Sleep(200);
                 return RedirectToAction(nameof(Index));
@@ -84,8 +85,8 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Edit(int id)
         {
-            Ingredient ingredient = ingredientService.GetIngredientIncludingUnit(id);
-            IngredientViewModel model = MapModel(ingredient);
+            Ingredient ingredient = ingredientService.GetIngredientById(id);
+            IngredientViewModel model = IngredientMapper.MapModel(ingredient);
 
             return View(model);
         }
@@ -95,7 +96,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = ingredientService.GetIngredientIncludingUnit(ingredient.Id);
+                Ingredient result = ingredientService.GetIngredientById(ingredient.Id);
 
                 result.Name = ingredient.Name;
                 result.BaseAmount = ingredient.BaseAmount;
@@ -103,7 +104,7 @@ namespace Horeca.MVC.Controllers
                 result.Unit.Name = ingredient.Unit.Name;
                 result.Unit.IsEnabled = true;
 
-                ingredientService.Update(result);
+                ingredientService.UpdateIngredient(result);
 
                 Thread.Sleep(200);
                 return RedirectToAction(nameof(Index));
@@ -111,19 +112,6 @@ namespace Horeca.MVC.Controllers
             {
                 return View(ingredient);
             }
-        }
-
-        public IngredientViewModel MapModel(Ingredient ingredient)
-        {
-            IngredientViewModel model = new IngredientViewModel();
-
-            model.Id = ingredient.Id;
-            model.Name = ingredient.Name;
-            model.IngredientType = ingredient.IngredientType;
-            model.BaseAmount = ingredient.BaseAmount;
-            model.Unit = ingredient.Unit;
-
-            return model;
         }
     }
 }

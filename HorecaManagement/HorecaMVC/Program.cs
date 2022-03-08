@@ -1,4 +1,3 @@
-using Horeca.Shared.Data.Repositories;
 using Horeca.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,8 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<IIngredientRepository, IngredientService>();
-builder.Services.AddScoped<IDishRepository, DishService>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
+builder.Services.AddScoped<IDishService, DishService>();
 
 var app = builder.Build();
 
