@@ -1,4 +1,4 @@
-namespace HorecaMVC.Models
+namespace Horeca.MVC.Models
 {
     public class ErrorViewModel
     {

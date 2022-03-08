@@ -1,10 +1,9 @@
 ﻿using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
-using HorecaMVC.Models.Ingredients;
+using Horeca.MVC.Models.Ingredients;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
-namespace HorecaMVC.Controllers
+namespace Horeca.MVC.Controllers
 {
     public class IngredientController : Controller
     {
@@ -17,14 +16,13 @@ namespace HorecaMVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Ingredient> ingredients;
-            ingredients = ingredientService.GetAll();
+            IEnumerable<Ingredient> ingredients = ingredientService.GetAll();
 
             IngredientListViewModel listModel = new IngredientListViewModel();
 
             foreach (var item in ingredients)
             {
-                IngredientViewModel model = mapModel(item);
+                IngredientViewModel model = MapModel(item);
 
                 listModel.Ingredients.Add(model);
             }
@@ -40,7 +38,7 @@ namespace HorecaMVC.Controllers
                 return View("NotFound");
             }
 
-            IngredientViewModel model = mapModel(ingredient);
+            IngredientViewModel model = MapModel(ingredient);
 
             return View(model);
         }
@@ -87,7 +85,7 @@ namespace HorecaMVC.Controllers
         public IActionResult Edit(int id)
         {
             Ingredient ingredient = ingredientService.GetIngredientIncludingUnit(id);
-            IngredientViewModel model = mapModel(ingredient);
+            IngredientViewModel model = MapModel(ingredient);
 
             return View(model);
         }
@@ -115,7 +113,7 @@ namespace HorecaMVC.Controllers
             }
         }
 
-        public IngredientViewModel mapModel(Ingredient ingredient)
+        public IngredientViewModel MapModel(Ingredient ingredient)
         {
             IngredientViewModel model = new IngredientViewModel();
 

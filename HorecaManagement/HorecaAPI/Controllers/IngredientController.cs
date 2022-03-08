@@ -1,8 +1,6 @@
 ﻿using Horeca.Core.Handlers.Commands.Ingredients;
 using Horeca.Core.Handlers.Queries.Ingredients;
-using Horeca.Core.Handlers.Queries.Menus;
 using Horeca.Shared.Dtos;
-using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -11,11 +9,11 @@ namespace Horeca.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IngredientsController : ControllerBase
+    public class IngredientController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public IngredientsController(IMediator mediator)
+        public IngredientController(IMediator mediator)
         {
             _mediator = mediator;
         }

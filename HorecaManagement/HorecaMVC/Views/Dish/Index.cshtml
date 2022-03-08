@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Horeca.MVC.Models.Dishes.DishListViewModel
+
+@{
     ViewData["Title"] = "Dish Overview";
 }
 
@@ -20,14 +22,14 @@
         </div>
     </div>
     <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
-        @for (int i = 0; i < 5; i++)
+        @foreach(var item in @Model.Dishes)
         {
             <div class="col">
                 <div class="card">
                     <img src="https://www.solo.be/uploadedimages/recepten/afbeeldingen/168331-biefstuk-friet.jpg"
                      class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Steak & Fries</h5>
+                        <h5 class="card-title">@item.Name</h5>
                         <div>
                             <table class="table" style="table-layout: fixed">
                                 <thead>
@@ -38,8 +40,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Main Course</td>
-                                        <td>Meat</td>
+                                        <td>@item.DishType</td>
+                                        <td>@item.Category</td>
                                     </tr>
                                 </tbody>
                             </table>

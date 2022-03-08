@@ -2,7 +2,7 @@
 using Horeca.Shared.Dtos.Units;
 using System.ComponentModel.DataAnnotations;
 
-namespace HorecaMVC.Models.Ingredients
+namespace Horeca.MVC.Models.Ingredients
 {
     public class IngredientViewModel
     {

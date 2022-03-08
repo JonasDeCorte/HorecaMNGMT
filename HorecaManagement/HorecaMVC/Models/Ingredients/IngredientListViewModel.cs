@@ -1,4 +1,4 @@
-﻿namespace HorecaMVC.Models.Ingredients
+﻿namespace Horeca.MVC.Models.Ingredients
 {
     public class IngredientListViewModel
     {

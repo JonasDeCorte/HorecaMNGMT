@@ -1,5 +1,5 @@
 using Horeca.Shared.Data.Repositories;
-using HorecaMVC.Services;
+using Horeca.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IIngredientRepository, IngredientService>();
+builder.Services.AddScoped<IDishRepository, DishService>();
 
 var app = builder.Build();
 

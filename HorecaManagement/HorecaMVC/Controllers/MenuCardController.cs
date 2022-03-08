@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace HorecaMVC.Controllers
+namespace Horeca.MVC.Controllers
 {
     public class MenuCardController : Controller
     {
