@@ -103,6 +103,7 @@ namespace HorecaMVC.Controllers
                 result.BaseAmount = ingredient.BaseAmount;
                 result.IngredientType = ingredient.IngredientType;
                 result.Unit.Name = ingredient.Unit.Name;
+                result.Unit.IsEnabled = true;
 
                 ingredientService.Update(result);
 

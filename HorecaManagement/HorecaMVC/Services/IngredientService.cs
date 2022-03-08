@@ -47,17 +47,7 @@ namespace HorecaMVC.Services
 
         public void Update(Ingredient entity)
         {
-            Console.WriteLine("Ingredient Id: " + entity.Id);
-            Console.WriteLine("Unit Id: " + entity.Unit.Id);
-
-            Console.WriteLine("before put");
             httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}", entity);
-            Console.WriteLine("after put");
-
-            Ingredient test = Get(entity.Id);
-
-            Console.WriteLine("Ingredient Id: " + test.Id);
-            Console.WriteLine("Unit Id: " + test.Unit.Id);
         }
 
         public IEnumerable<IngredientDto> GetAllIncludingUnit()
