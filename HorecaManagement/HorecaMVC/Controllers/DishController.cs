@@ -3,6 +3,7 @@ using Horeca.MVC.Models.Dishes;
 using Microsoft.AspNetCore.Mvc;
 using HorecaMVC.Models.Mappers;
 using Horeca.MVC.Services;
+using Horeca.MVC.Models.Ingredients;
 
 namespace Horeca.MVC.Controllers
 {
@@ -60,8 +61,62 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var model = new DishViewModel();
+
+            return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Create(DishViewModel dish)
+        {
+            if (ModelState.IsValid)
+            {
+                Dish result = new Dish();
+                result.Name = dish.Name;
+                result.Category = dish.Category;
+                result.DishType = dish.DishType;
+                result.Description = dish.Description;
+
+                dishService.AddDish(result);
+
+                Thread.Sleep(200);
+                return RedirectToAction(nameof(Index));
+            } else
+            {
+                return View(dish);
+            }
+        }
+
+        public IActionResult CreateIngredient(int id)
+        {
+            var model = new IngredientViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateIngredient(IngredientViewModel ingredient)
+        {
+            int id = 1;
+            if (ModelState.IsValid)
+            {
+                Ingredient result = new Ingredient();
+                result.Name = ingredient.Name;
+                result.BaseAmount = ingredient.BaseAmount;
+                result.IngredientType = ingredient.IngredientType;
+                result.Unit = ingredient.Unit;
+
+                dishService.AddDishIngredient(id, result);
+
+                Thread.Sleep(200);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(ingredient);
+            }
+        }
+
         public IActionResult Edit()
         {
             return View();

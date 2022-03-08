@@ -38,7 +38,12 @@ namespace Horeca.MVC.Services
 
         public void AddDish(Dish dish)
         {
-            throw new NotImplementedException();
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
+        }
+
+        public void AddDishIngredient(int id, Ingredient ingredient)
+        {
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/ingredients", ingredient);
         }
 
         public void DeleteDish(int id)

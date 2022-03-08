@@ -15,6 +15,7 @@ namespace HorecaMVC.Models.Mappers
             model.Name = dish.Name;
             model.Category = dish.Category;
             model.DishType = dish.DishType;
+            model.Description = dish.Description;
 
             return model;
         }
