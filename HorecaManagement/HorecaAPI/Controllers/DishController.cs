@@ -57,7 +57,7 @@ namespace HorecaAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="200">Success Retrieve Dish by Id</response>
+        /// <response code="200">Success Retrieving Dish by Id</response>
         /// <response code="400">Bad request</response
         [HttpGet]
         [Route("{id}")]

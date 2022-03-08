@@ -15,18 +15,18 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
     public class DeleteMenuCommandHandler : IRequestHandler<DeleteMenuCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public DeleteMenuCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(DeleteMenuCommand request, CancellationToken cancellationToken)
         {
-            _repository.Menus.Delete(request.Id);
+            repository.Menus.Delete(request.Id);
 
-            await _repository.CommitAsync();
+            await repository.CommitAsync();
 
             return request.Id;
         }

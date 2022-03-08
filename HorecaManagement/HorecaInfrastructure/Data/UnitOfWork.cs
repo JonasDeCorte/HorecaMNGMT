@@ -21,6 +21,8 @@ namespace Horeca.Infrastructure.Data
 
         public IMenuRepository Menus => new MenuRepository(_context);
 
+        public IMenuCardRepository MenuCards => new MenuCardRepository(_context);
+
         public async Task CommitAsync()
         {
             Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);

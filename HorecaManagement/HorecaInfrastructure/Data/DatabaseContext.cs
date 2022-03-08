@@ -51,5 +51,6 @@ namespace Horeca.Infrastructure.Data
         public DbSet<Dish> Dishes { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
+        public DbSet<MenuCard> MenuCards { get; set; }
     }
 }

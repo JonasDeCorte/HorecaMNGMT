@@ -20,12 +20,12 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class CreateMenuCommandHandler : IRequestHandler<CreateMenuCommand, int>
 
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
         private readonly IValidator<MutateMenuDto> _validator;
 
         public CreateMenuCommandHandler(IUnitOfWork repository, IValidator<MutateMenuDto> validator)
         {
-            _repository = repository;
+            this.repository = repository;
             _validator = validator;
         }
 
@@ -49,9 +49,9 @@ namespace Horeca.Core.Handlers.Commands.Menus
                 Category = request.Model.Category,
             };
 
-            _repository.Menus.Add(entity);
+            repository.Menus.Add(entity);
 
-            await _repository.CommitAsync();
+            await repository.CommitAsync();
 
             return request.Model.Id;
         }

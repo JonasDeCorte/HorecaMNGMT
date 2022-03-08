@@ -17,16 +17,16 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
     public class EditMenuCommandHandler : IRequestHandler<EditMenuCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public EditMenuCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(EditMenuCommand request, CancellationToken cancellationToken)
         {
-            var menu = _repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
+            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
 
             if (menu is null)
             {
@@ -37,8 +37,8 @@ namespace Horeca.Core.Handlers.Commands.Menus
             menu.Description = request.Model.Description ?? menu.Description;
             menu.Name = request.Model.Name ?? menu.Name;
 
-            _repository.Menus.Update(menu);
-            await _repository.CommitAsync();
+            repository.Menus.Update(menu);
+            await repository.CommitAsync();
 
             return request.Model.Id;
         }

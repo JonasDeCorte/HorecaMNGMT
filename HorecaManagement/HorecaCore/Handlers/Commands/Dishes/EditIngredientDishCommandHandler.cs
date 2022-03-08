@@ -17,16 +17,16 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
     public class EditIngredientDishCommandHandler : IRequestHandler<EditIngredientDishCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public EditIngredientDishCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(EditIngredientDishCommand request, CancellationToken cancellationToken)
         {
-            var dish = _repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
+            var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
 
             if (dish is null)
             {
@@ -44,10 +44,10 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             ingredient.IngredientType = request.Model.Ingredient.IngredientType ?? ingredient.IngredientType;
             ingredient.Unit = request.Model.Ingredient.Unit ?? ingredient.Unit;
 
-            _repository.Ingredients.Update(ingredient);
-            _repository.Dishes.Update(dish);
+            repository.Ingredients.Update(ingredient);
+            repository.Dishes.Update(dish);
 
-            await _repository.CommitAsync();
+            await repository.CommitAsync();
 
             return dish.Id;
         }

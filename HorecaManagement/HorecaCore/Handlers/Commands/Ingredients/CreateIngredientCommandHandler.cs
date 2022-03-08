@@ -32,12 +32,12 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
     public class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, int>
 
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
         private readonly IValidator<MutateIngredientDto> _validator;
 
         public CreateIngredientCommandHandler(IUnitOfWork repository, IValidator<MutateIngredientDto> validator)
         {
-            _repository = repository;
+            this.repository = repository;
             _validator = validator;
         }
 
@@ -61,9 +61,9 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
                 IngredientType = request.Model.IngredientType,
                 Unit = request.Model.Unit,
             };
-            _repository.Ingredients.Add(entity);
+            repository.Ingredients.Add(entity);
 
-            await _repository.CommitAsync();
+            await repository.CommitAsync();
 
             return request.Model.Id;
         }

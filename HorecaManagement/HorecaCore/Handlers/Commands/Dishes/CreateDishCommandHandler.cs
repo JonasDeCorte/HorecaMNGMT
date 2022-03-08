@@ -18,12 +18,12 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public class CreateDishCommandHandler : IRequestHandler<CreateDishCommand, int>
         {
-            private readonly IUnitOfWork _repository;
+            private readonly IUnitOfWork repository;
             private readonly IValidator<MutateDishDto> _validator;
 
             public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
             {
-                _repository = repository;
+                this.repository = repository;
                 _validator = validator;
             }
 
@@ -47,8 +47,8 @@ namespace Horeca.Core.Handlers.Commands.Dishes
                     DishType = request.Model.DishType,
                 };
 
-                _repository.Dishes.Add(entity);
-                await _repository.CommitAsync();
+                repository.Dishes.Add(entity);
+                await repository.CommitAsync();
 
                 return entity.Id;
             }

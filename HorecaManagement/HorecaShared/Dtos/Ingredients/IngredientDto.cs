@@ -1,6 +1,6 @@
 ﻿using Horeca.Shared.Dtos.Units;
 
-namespace Horeca.Shared.Dtos
+namespace Horeca.Shared.Dtos.Ingredients
 {
     public class IngredientDto
     {
