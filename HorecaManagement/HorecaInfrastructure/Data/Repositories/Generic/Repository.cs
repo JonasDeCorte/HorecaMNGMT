@@ -1,11 +1,11 @@
-﻿using Horeca.Shared.Data.Entities;
+﻿using Horeca.Shared.Data;
 using Horeca.Shared.Data.Repositories;
+
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Horeca.Infrastructure.Data.Repositories.Generic
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class, IBaseEntityId
     {
         private readonly DatabaseContext _context;
         private readonly DbSet<T> _dbSet;
@@ -18,6 +18,8 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
 
         public void Add(T entity)
         {
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
+
             _dbSet.Add(entity);
         }
 
@@ -26,7 +28,7 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
             return _dbSet.Count();
         }
 
-        public void Delete(object id)
+        public void Delete(int id)
         {
             var entity = Get(id);
             if (entity != null)
@@ -39,30 +41,24 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
             }
         }
 
-        public T Get(object id)
+        public T Get(int id)
         {
-            var x = _dbSet.Find(id);
-            return x;
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
+
+            return _dbSet.Find(id);
         }
 
         public IEnumerable<T> GetAll()
         {
-            IQueryable<T> query = _context.Set<T>();
-            Type type = typeof(T);
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
 
-            foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-            {
-                if (!field.FieldType.Namespace.StartsWith("System"))
-                {
-                    query = query.Include(field.FieldType.Name);
-                }
-            }
-            return query.AsEnumerable();
+            return _dbSet.AsEnumerable();
         }
 
         public void Update(T entity)
         {
             _dbSet.Attach(entity);
+            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
             _context.Entry(entity).State = EntityState.Modified;
         }
     }

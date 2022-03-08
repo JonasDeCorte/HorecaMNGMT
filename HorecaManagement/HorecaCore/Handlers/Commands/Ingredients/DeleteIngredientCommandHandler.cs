@@ -1,13 +1,7 @@
-﻿using Horeca.Core.Exceptions;
-using Horeca.Shared.Data;
+﻿using Horeca.Shared.Data;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HorecaCore.Handlers.Commands
+namespace Horeca.Core.Handlers.Commands.Ingredients
 {
     public class DeleteIngredientCommand : IRequest<int>
     {

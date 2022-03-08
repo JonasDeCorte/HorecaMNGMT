@@ -4,13 +4,13 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Units;
 using MediatR;
 
-namespace HorecaCore.Handlers.Commands
+namespace Horeca.Core.Handlers.Commands.Units
 {
     public class CreateUnitCommand : IRequest<int>
     {
-        public CreateUnitDto Model { get; }
+        public MutateUnitDto Model { get; }
 
-        public CreateUnitCommand(CreateUnitDto model)
+        public CreateUnitCommand(MutateUnitDto model)
         {
             Model = model;
         }
@@ -18,9 +18,9 @@ namespace HorecaCore.Handlers.Commands
         public class CreateUnitCommandHandler : IRequestHandler<CreateUnitCommand, int>
         {
             private readonly IUnitOfWork _repository;
-            private readonly IValidator<CreateUnitDto> _validator;
+            private readonly IValidator<MutateUnitDto> _validator;
 
-            public CreateUnitCommandHandler(IUnitOfWork repository, IValidator<CreateUnitDto> validator)
+            public CreateUnitCommandHandler(IUnitOfWork repository, IValidator<MutateUnitDto> validator)
             {
                 _repository = repository;
                 _validator = validator;
@@ -28,9 +28,7 @@ namespace HorecaCore.Handlers.Commands
 
             public async Task<int> Handle(CreateUnitCommand request, CancellationToken cancellationToken)
             {
-                CreateUnitDto model = request.Model;
-
-                var result = _validator.Validate(model);
+                var result = _validator.Validate(request.Model);
 
                 if (!result.IsValid)
                 {
@@ -42,7 +40,7 @@ namespace HorecaCore.Handlers.Commands
                 }
                 var entity = new Horeca.Shared.Data.Entities.Unit
                 {
-                    Name = model.Name,
+                    Name = request.Model.Name,
                 };
 
                 _repository.Units.Add(entity);

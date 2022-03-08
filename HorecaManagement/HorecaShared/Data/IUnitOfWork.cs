@@ -7,6 +7,9 @@ namespace Horeca.Shared.Data
         IIngredientRepository Ingredients { get; }
         IUnitRepository Units { get; }
 
+        IDishRepository Dishes { get; }
+        IMenuRepository Menus { get; }
+
         Task CommitAsync();
     }
 }
