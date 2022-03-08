@@ -1,7 +1,7 @@
 ﻿using Horeca.Shared.Data;
 using MediatR;
 
-namespace HorecaCore.Handlers.Commands
+namespace Horeca.Core.Handlers.Commands.Ingredients
 {
     public class DeleteIngredientCommand : IRequest<int>
     {

@@ -1,7 +1,7 @@
 ﻿using Horeca.Shared.Data;
 using MediatR;
 
-namespace HorecaCore.Handlers.Commands.Dishes
+namespace Horeca.Core.Handlers.Commands.Dishes
 {
     public class DeleteDishCommand : IRequest<int>
     {

@@ -21,9 +21,9 @@ namespace Horeca.Infrastructure.Data.Repositories
             return context.Dishes.Include(x => x.Ingredients).ThenInclude(x => x.Unit).Where(x => x.Id.Equals(id)).FirstOrDefault();
         }
 
-        public DishDtoDetail GetIncludingDependencies(int id)
+        public DishDtoDetailDto GetIncludingDependencies(int id)
         {
-            return context.Dishes.Include(x => x.Ingredients).ThenInclude(x => x.Unit).Select(dish => new DishDtoDetail
+            return context.Dishes.Include(x => x.Ingredients).ThenInclude(x => x.Unit).Select(dish => new DishDtoDetailDto
             {
                 Id = dish.Id,
                 Name = dish.Name,
