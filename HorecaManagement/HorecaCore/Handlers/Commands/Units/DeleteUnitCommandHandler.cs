@@ -15,17 +15,17 @@ namespace Horeca.Core.Handlers.Commands.Units
 
     public class DeleteUnitCommandHandler : IRequestHandler<DeleteUnitCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public DeleteUnitCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(DeleteUnitCommand request, CancellationToken cancellationToken)
         {
-            _repository.Units.Delete(request.Id);
-            await _repository.CommitAsync();
+            repository.Units.Delete(request.Id);
+            await repository.CommitAsync();
             return request.Id;
         }
     }

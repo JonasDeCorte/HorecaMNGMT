@@ -17,16 +17,16 @@ namespace Horeca.Core.Handlers.Commands.Units
 
     public class EditUnitCommandHandler : IRequestHandler<EditUnitCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public EditUnitCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(EditUnitCommand request, CancellationToken cancellationToken)
         {
-            var unit = _repository.Units.Get(request.Model.Id);
+            var unit = repository.Units.Get(request.Model.Id);
 
             if (unit is null)
             {
@@ -35,9 +35,9 @@ namespace Horeca.Core.Handlers.Commands.Units
 
             unit.Name = request.Model.Name ?? unit.Name;
 
-            _repository.Units.Update(unit);
+            repository.Units.Update(unit);
 
-            await _repository.CommitAsync();
+            await repository.CommitAsync();
 
             return request.Model.Id;
         }

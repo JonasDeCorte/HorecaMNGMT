@@ -17,20 +17,20 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
     public class DeleteIngredientDishCommandHandler : IRequestHandler<DeleteIngredientDishCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public DeleteIngredientDishCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(DeleteIngredientDishCommand request, CancellationToken cancellationToken)
         {
-            var dish = _repository.Dishes.GetDishIncludingDependencies(request.Model.DishId);
-            var ingredient = _repository.Ingredients.Get(request.Model.IngredientId);
+            var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.DishId);
+            var ingredient = repository.Ingredients.Get(request.Model.IngredientId);
             dish.Ingredients.Remove(ingredient);
-            _repository.Ingredients.Delete(ingredient.Id);
-            await _repository.CommitAsync();
+            repository.Ingredients.Delete(ingredient.Id);
+            await repository.CommitAsync();
             return request.Model.IngredientId;
         }
     }

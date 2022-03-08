@@ -9,6 +9,7 @@ namespace Horeca.Shared.Data
 
         IDishRepository Dishes { get; }
         IMenuRepository Menus { get; }
+        IMenuCardRepository MenuCards { get; }
 
         Task CommitAsync();
     }

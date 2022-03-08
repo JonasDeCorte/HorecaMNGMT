@@ -17,18 +17,18 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 
         public class GetDishByIdQueryHandler : IRequestHandler<GetDishByIdQuery, DishDto>
         {
-            private readonly IUnitOfWork _repository;
+            private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
 
             public GetDishByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
-                _repository = repository;
+                this.repository = repository;
                 _mapper = mapper;
             }
 
             public async Task<DishDto> Handle(GetDishByIdQuery request, CancellationToken cancellationToken)
             {
-                var dish = await Task.FromResult(_repository.Dishes.Get(request.DishId));
+                var dish = await Task.FromResult(repository.Dishes.Get(request.DishId));
 
                 if (dish is null)
                 {

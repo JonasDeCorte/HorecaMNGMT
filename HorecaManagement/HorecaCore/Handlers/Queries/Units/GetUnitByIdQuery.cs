@@ -17,18 +17,18 @@ namespace Horeca.Core.Handlers.Queries.Units
 
         public class GetUnitByIdQueryHandler : IRequestHandler<GetUnitByIdQuery, UnitDto>
         {
-            private readonly IUnitOfWork _repository;
+            private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
 
             public GetUnitByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
-                _repository = repository;
+                this.repository = repository;
                 _mapper = mapper;
             }
 
             public async Task<UnitDto> Handle(GetUnitByIdQuery request, CancellationToken cancellationToken)
             {
-                var unit = await Task.FromResult(_repository.Units.Get(request.UnitId));
+                var unit = await Task.FromResult(repository.Units.Get(request.UnitId));
 
                 if (unit == null)
                 {

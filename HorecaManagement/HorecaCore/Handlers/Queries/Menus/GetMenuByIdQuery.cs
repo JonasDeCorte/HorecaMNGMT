@@ -17,18 +17,18 @@ namespace Horeca.Core.Handlers.Queries.Menus
 
         public class GetMenuByIdQueryHandler : IRequestHandler<GetMenuByIdQuery, MenuDto>
         {
-            private readonly IUnitOfWork _repository;
+            private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
 
             public GetMenuByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
-                _repository = repository;
+                this.repository = repository;
                 _mapper = mapper;
             }
 
             public async Task<MenuDto> Handle(GetMenuByIdQuery request, CancellationToken cancellationToken)
             {
-                var menu = await Task.FromResult(_repository.Menus.Get(request.MenuId));
+                var menu = await Task.FromResult(repository.Menus.Get(request.MenuId));
 
                 if (menu is null)
                 {

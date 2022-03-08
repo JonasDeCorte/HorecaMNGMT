@@ -20,19 +20,19 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
     public class AddDishMenuCommandHandler : IRequestHandler<AddDishMenuCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
         private readonly IValidator<MutateDishDto> _validator;
 
         public AddDishMenuCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
         {
-            _repository = repository;
+            this.repository = repository;
             _validator = validator;
         }
 
         public async Task<int> Handle(AddDishMenuCommand request, CancellationToken cancellationToken)
         {
             var result = _validator.Validate(request.Model.Dish);
-            var menu = _repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
+            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
 
             if (!result.IsValid)
             {
@@ -52,9 +52,9 @@ namespace Horeca.Core.Handlers.Commands.Menus
             };
 
             menu.Dishes.Add(entity);
-            _repository.Dishes.Add(entity);
-            _repository.Menus.Update(menu);
-            await _repository.CommitAsync();
+            repository.Dishes.Add(entity);
+            repository.Menus.Update(menu);
+            await repository.CommitAsync();
 
             return entity.Id;
         }

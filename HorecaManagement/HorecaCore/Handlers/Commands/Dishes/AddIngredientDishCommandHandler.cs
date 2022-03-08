@@ -20,19 +20,19 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
     public class CreateDishCommandHandler : IRequestHandler<AddIngredientDishCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
         private readonly IValidator<MutateIngredientDto> _validator;
 
         public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateIngredientDto> validator)
         {
-            _repository = repository;
+            this.repository = repository;
             _validator = validator;
         }
 
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
         {
             var result = _validator.Validate(request.Model.Ingredient);
-            var dish = _repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
+            var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
 
             if (!result.IsValid)
             {
@@ -50,9 +50,9 @@ namespace Horeca.Core.Handlers.Commands.Dishes
                 Unit = request.Model.Ingredient.Unit,
             };
             dish.Ingredients.Add(entity);
-            _repository.Ingredients.Add(entity);
-            _repository.Dishes.Update(dish);
-            await _repository.CommitAsync();
+            repository.Ingredients.Add(entity);
+            repository.Dishes.Update(dish);
+            await repository.CommitAsync();
 
             return entity.Id;
         }

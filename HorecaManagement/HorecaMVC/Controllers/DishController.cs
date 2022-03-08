@@ -91,22 +91,24 @@ namespace Horeca.MVC.Controllers
         {
             var model = new IngredientViewModel();
 
+            TempData["Id"] = id;
+
             return View(model);
         }
 
         [HttpPost]
         public IActionResult CreateIngredient(IngredientViewModel ingredient)
         {
-            int id = 1;
             if (ModelState.IsValid)
             {
+
                 Ingredient result = new Ingredient();
                 result.Name = ingredient.Name;
                 result.BaseAmount = ingredient.BaseAmount;
                 result.IngredientType = ingredient.IngredientType;
                 result.Unit = ingredient.Unit;
 
-                dishService.AddDishIngredient(id, result);
+                dishService.AddDishIngredient(2, result);
 
                 Thread.Sleep(200);
                 return RedirectToAction(nameof(Index));

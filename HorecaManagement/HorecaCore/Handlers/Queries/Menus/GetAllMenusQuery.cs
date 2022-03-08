@@ -11,20 +11,20 @@ namespace Horeca.Core.Handlers.Queries.Menus
 
     public class GetAllMenuQueryHandler : IRequestHandler<GetAllMenusQuery, IEnumerable<MenuDto>>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
 
         public GetAllMenuQueryHandler(IUnitOfWork repository, IMapper mapper)
 
         {
-            _repository = repository;
+            this.repository = repository;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<MenuDto>> Handle(GetAllMenusQuery request, CancellationToken cancellationToken)
 
         {
-            var entities = await Task.FromResult(_repository.Menus.GetAll());
+            var entities = await Task.FromResult(repository.Menus.GetAll());
             return _mapper.Map<IEnumerable<MenuDto>>(entities);
         }
     }

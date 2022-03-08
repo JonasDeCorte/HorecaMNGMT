@@ -1,7 +1,6 @@
 ﻿using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
-using Horeca.Shared.Dtos.Dishes;
 using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Infrastructure.Data.Repositories
@@ -19,19 +18,6 @@ namespace Horeca.Infrastructure.Data.Repositories
         {
             Console.WriteLine(context.ChangeTracker.DebugView.LongView);
             return context.Dishes.Include(x => x.Ingredients).ThenInclude(x => x.Unit).Where(x => x.Id.Equals(id)).FirstOrDefault();
-        }
-
-        public DishDtoDetailDto GetIncludingDependencies(int id)
-        {
-            return context.Dishes.Include(x => x.Ingredients).ThenInclude(x => x.Unit).Select(dish => new DishDtoDetailDto
-            {
-                Id = dish.Id,
-                Name = dish.Name,
-                Description = dish.Description,
-                Category = dish.Category,
-                DishType = dish.DishType,
-                Ingredients = dish.Ingredients,
-            }).Where(x => x.Id.Equals(id)).FirstOrDefault();
         }
     }
 }

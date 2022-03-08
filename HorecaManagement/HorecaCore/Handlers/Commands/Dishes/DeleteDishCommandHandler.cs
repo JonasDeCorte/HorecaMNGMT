@@ -15,17 +15,17 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
     public class DeleteDishCommandHandler : IRequestHandler<DeleteDishCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public DeleteDishCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(DeleteDishCommand request, CancellationToken cancellationToken)
         {
-            _repository.Dishes.Delete(request.Id);
-            await _repository.CommitAsync();
+            repository.Dishes.Delete(request.Id);
+            await repository.CommitAsync();
             return request.Id;
         }
     }

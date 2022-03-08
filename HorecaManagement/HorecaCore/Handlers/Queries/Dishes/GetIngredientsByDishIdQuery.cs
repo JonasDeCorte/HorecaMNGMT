@@ -18,18 +18,18 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 
     public class GetIngredientsByDishIdHandler : IRequestHandler<GetIngredientsByDishIdQuery, DishIngredientsByIdDto>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
 
         public GetIngredientsByDishIdHandler(IUnitOfWork repository, IMapper mapper)
         {
-            _repository = repository;
+            this.repository = repository;
             _mapper = mapper;
         }
 
         public async Task<DishIngredientsByIdDto> Handle(GetIngredientsByDishIdQuery request, CancellationToken cancellationToken)
         {
-            var dish = await Task.FromResult(_repository.Dishes.GetDishIncludingDependencies(request.DishId));
+            var dish = await Task.FromResult(repository.Dishes.GetDishIncludingDependencies(request.DishId));
             if (dish is null)
             {
                 throw new EntityNotFoundException($"No Dish found for Id {request.DishId}");

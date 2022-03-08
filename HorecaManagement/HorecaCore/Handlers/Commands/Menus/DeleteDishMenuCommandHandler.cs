@@ -22,22 +22,22 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
     public class DeleteDishMenuCommandHandler : IRequestHandler<DeleteDishMenuCommand, int>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork repository;
 
         public DeleteDishMenuCommandHandler(IUnitOfWork repository)
         {
-            _repository = repository;
+            this.repository = repository;
         }
 
         public async Task<int> Handle(DeleteDishMenuCommand request, CancellationToken cancellationToken)
         {
-            var menu = _repository.Menus.GetMenuIncludingDependencies(request.Model.MenuId);
-            var dish = _repository.Dishes.Get(request.Model.DishId);
+            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.MenuId);
+            var dish = repository.Dishes.Get(request.Model.DishId);
 
             menu.Dishes.Remove(dish);
-            _repository.Dishes.Delete(dish.Id);
+            repository.Dishes.Delete(dish.Id);
 
-            await _repository.CommitAsync();
+            await repository.CommitAsync();
 
             return request.Model.DishId;
         }

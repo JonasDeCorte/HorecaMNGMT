@@ -1,6 +1,7 @@
 ﻿using Horeca.Core.Handlers.Commands.Ingredients;
 using Horeca.Core.Handlers.Queries.Ingredients;
 using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

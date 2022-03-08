@@ -17,12 +17,12 @@ namespace Horeca.Core.Handlers.Commands.Units
 
         public class CreateUnitCommandHandler : IRequestHandler<CreateUnitCommand, int>
         {
-            private readonly IUnitOfWork _repository;
+            private readonly IUnitOfWork repository;
             private readonly IValidator<MutateUnitDto> _validator;
 
             public CreateUnitCommandHandler(IUnitOfWork repository, IValidator<MutateUnitDto> validator)
             {
-                _repository = repository;
+                this.repository = repository;
                 _validator = validator;
             }
 
@@ -43,8 +43,8 @@ namespace Horeca.Core.Handlers.Commands.Units
                     Name = request.Model.Name,
                 };
 
-                _repository.Units.Add(entity);
-                await _repository.CommitAsync();
+                repository.Units.Add(entity);
+                await repository.CommitAsync();
 
                 return entity.Id;
             }

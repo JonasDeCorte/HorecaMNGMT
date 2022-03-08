@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
-using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 
 namespace Horeca.Core.Handlers.Queries.Ingredients
@@ -17,18 +17,18 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
 
         public class GetIngredientByIdQueryHandler : IRequestHandler<GetIngredientByIdQuery, IngredientDto>
         {
-            private readonly IUnitOfWork _repository;
+            private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
 
             public GetIngredientByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
-                _repository = repository;
+                this.repository = repository;
                 _mapper = mapper;
             }
 
             public async Task<IngredientDto> Handle(GetIngredientByIdQuery request, CancellationToken cancellationToken)
             {
-                var ingredient = await Task.FromResult(_repository.Ingredients.GetIncludingUnit(request.IngredientId));
+                var ingredient = await Task.FromResult(repository.Ingredients.GetIngredientIncludingUnit(request.IngredientId));
 
                 if (ingredient == null)
                 {
