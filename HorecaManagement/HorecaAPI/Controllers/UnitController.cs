@@ -1,7 +1,7 @@
-﻿using Horeca.Core.Handlers.Queries.Units;
+﻿using Horeca.Core.Handlers.Commands.Units;
+using Horeca.Core.Handlers.Queries.Units;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Units;
-using HorecaCore.Handlers.Commands.Units;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

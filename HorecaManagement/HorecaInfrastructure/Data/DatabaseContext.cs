@@ -1,5 +1,6 @@
 ﻿using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Infrastructure.Data
@@ -48,5 +49,7 @@ namespace Horeca.Infrastructure.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Dish> Dishes { get; set; }
+
+        public DbSet<Menu> Menus { get; set; }
     }
 }

@@ -9,13 +9,13 @@ namespace Horeca.Core.Handlers.Queries.Units
     {
     }
 
-    public class GetAllIngrdedientsQueryHandler : IRequestHandler<GetAllUnitsQuery, IEnumerable<UnitDto>>
+    public class GetAllUnitsQueryHandler : IRequestHandler<GetAllUnitsQuery, IEnumerable<UnitDto>>
 
     {
         private readonly IUnitOfWork _repository;
         private readonly IMapper _mapper;
 
-        public GetAllIngrdedientsQueryHandler(IUnitOfWork repository, IMapper mapper)
+        public GetAllUnitsQueryHandler(IUnitOfWork repository, IMapper mapper)
 
         {
             _repository = repository;

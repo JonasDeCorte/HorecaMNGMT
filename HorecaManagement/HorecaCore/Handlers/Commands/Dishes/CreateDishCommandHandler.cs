@@ -5,13 +5,13 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using MediatR;
 
-namespace HorecaCore.Handlers.Commands.Dishes
+namespace Horeca.Core.Handlers.Commands.Dishes
 {
     public class CreateDishCommand : IRequest<int>
     {
-        public DishDtoDetail Model { get; }
+        public MutateDishDto Model { get; }
 
-        public CreateDishCommand(DishDtoDetail model)
+        public CreateDishCommand(MutateDishDto model)
         {
             Model = model;
         }
@@ -19,9 +19,9 @@ namespace HorecaCore.Handlers.Commands.Dishes
         public class CreateDishCommandHandler : IRequestHandler<CreateDishCommand, int>
         {
             private readonly IUnitOfWork _repository;
-            private readonly IValidator<DishDtoDetail> _validator;
+            private readonly IValidator<MutateDishDto> _validator;
 
-            public CreateDishCommandHandler(IUnitOfWork repository, IValidator<DishDtoDetail> validator)
+            public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
             {
                 _repository = repository;
                 _validator = validator;
@@ -46,29 +46,6 @@ namespace HorecaCore.Handlers.Commands.Dishes
                     Description = request.Model.Description,
                     DishType = request.Model.DishType,
                 };
-
-                foreach (var ingredient in request.Model.Ingredients)
-                {
-                    var existingIngredient = _repository.Ingredients.GetIngredientIncludingUnit(ingredient.Id);
-
-                    if (existingIngredient is null)
-                    {
-                        entity.Ingredients.Add(new Ingredient()
-                        {
-                            Name = ingredient.Name,
-                            BaseAmount = ingredient.BaseAmount,
-                            IngredientType = ingredient.IngredientType,
-                            Unit = new Horeca.Shared.Data.Entities.Unit()
-                            {
-                                Name = ingredient.Unit.Name
-                            }
-                        });
-                    }
-                    else
-                    {
-                        entity.Ingredients.Add(existingIngredient);
-                    }
-                }
 
                 _repository.Dishes.Add(entity);
                 await _repository.CommitAsync();

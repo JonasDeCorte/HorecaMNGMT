@@ -4,7 +4,7 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Units;
 using MediatR;
 
-namespace HorecaCore.Handlers.Commands.Units
+namespace Horeca.Core.Handlers.Commands.Units
 {
     public class CreateUnitCommand : IRequest<int>
     {

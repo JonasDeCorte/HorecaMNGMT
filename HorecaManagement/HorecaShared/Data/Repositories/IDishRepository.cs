@@ -5,8 +5,9 @@ namespace Horeca.Shared.Data.Repositories
 {
     public interface IDishRepository : IRepository<Dish>
     {
-        DishDtoDetail GetIncludingDependencies(int id);
-        // betere manier voor vinden? 
+        DishDtoDetailDto GetIncludingDependencies(int id);
+
+        // betere manier voor vinden?
         Dish GetDishIncludingDependencies(int id);
     }
 }

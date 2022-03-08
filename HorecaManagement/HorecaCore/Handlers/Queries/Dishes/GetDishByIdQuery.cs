@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Horeca.Core.Handlers.Queries.Dishes
 {
-    public class GetDishByIdQuery : IRequest<DishDtoDetail>
+    public class GetDishByIdQuery : IRequest<DishDto>
     {
         public int DishId { get; }
 
@@ -15,27 +15,27 @@ namespace Horeca.Core.Handlers.Queries.Dishes
             DishId = dishId;
         }
 
-        public class GetIngredientByIdQueryHandler : IRequestHandler<GetDishByIdQuery, DishDtoDetail>
+        public class GetDishByIdQueryHandler : IRequestHandler<GetDishByIdQuery, DishDto>
         {
             private readonly IUnitOfWork _repository;
             private readonly IMapper _mapper;
 
-            public GetIngredientByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
+            public GetDishByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
                 _repository = repository;
                 _mapper = mapper;
             }
 
-            public async Task<DishDtoDetail> Handle(GetDishByIdQuery request, CancellationToken cancellationToken)
+            public async Task<DishDto> Handle(GetDishByIdQuery request, CancellationToken cancellationToken)
             {
-                var dish = await Task.FromResult(_repository.Dishes.GetIncludingDependencies(request.DishId));
+                var dish = await Task.FromResult(_repository.Dishes.Get(request.DishId));
 
                 if (dish is null)
                 {
                     throw new EntityNotFoundException($"No Dish found for Id {request.DishId}");
                 }
 
-                return _mapper.Map<DishDtoDetail>(dish);
+                return _mapper.Map<DishDto>(dish);
             }
         }
     }

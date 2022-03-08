@@ -1,8 +1,8 @@
-﻿using Horeca.Core.Handlers.Queries.Ingredients;
-using Horeca.Core.Providers.Handlers.Commands;
+﻿using Horeca.Core.Handlers.Commands.Ingredients;
+using Horeca.Core.Handlers.Queries.Ingredients;
+using Horeca.Core.Handlers.Queries.Menus;
 using Horeca.Shared.Dtos;
-using HorecaCore.Handlers.Commands;
-using HorecaCore.Handlers.Commands.Ingredients;
+using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

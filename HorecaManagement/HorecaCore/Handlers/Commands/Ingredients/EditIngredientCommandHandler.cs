@@ -3,7 +3,7 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Dtos;
 using MediatR;
 
-namespace HorecaCore.Handlers.Commands.Ingredients
+namespace Horeca.Core.Handlers.Commands.Ingredients
 {
     public class EditIngredientCommand : IRequest<int>
     {

@@ -18,4 +18,8 @@
     <ProjectReference Include="..\HorecaShared\HorecaShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\" />
+  </ItemGroup>
+
 </Project>

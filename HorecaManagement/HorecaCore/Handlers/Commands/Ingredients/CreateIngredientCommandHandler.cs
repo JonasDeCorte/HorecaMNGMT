@@ -5,7 +5,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using MediatR;
 
-namespace Horeca.Core.Providers.Handlers.Commands
+namespace Horeca.Core.Handlers.Commands.Ingredients
 {
     public class CreateIngredientCommand : IRequest<int>
     {
