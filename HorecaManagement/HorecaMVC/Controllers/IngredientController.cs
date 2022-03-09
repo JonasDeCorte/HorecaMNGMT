@@ -96,13 +96,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = ingredientService.GetIngredientById(ingredient.Id);
-
-                result.Name = ingredient.Name;
-                result.BaseAmount = ingredient.BaseAmount;
-                result.IngredientType = ingredient.IngredientType;
-                result.Unit.Name = ingredient.Unit.Name;
-                result.Unit.IsEnabled = true;
+                Ingredient result = IngredientMapper.MapIngredient(ingredient, ingredientService.GetIngredientById(ingredient.Id));
 
                 ingredientService.UpdateIngredient(result);
 

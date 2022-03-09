@@ -5,7 +5,6 @@ using HorecaMVC.Models.Mappers;
 using Horeca.MVC.Services;
 using Horeca.MVC.Models.Ingredients;
 using Horeca.Shared.Dtos.Dishes;
-using Horeca.Shared.Dtos;
 
 namespace Horeca.MVC.Controllers
 {
@@ -92,15 +91,11 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Dish result = new Dish();
-                result.Name = dish.Name;
-                result.Category = dish.Category;
-                result.DishType = dish.DishType;
-                result.Description = dish.Description;
+                Dish result = DishMapper.MapDish(dish, new Dish());
 
                 dishService.AddDish(result);
-
                 Thread.Sleep(200);
+
                 return RedirectToAction(nameof(Index));
             } else
             {
@@ -122,18 +117,11 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = new MutateIngredientByDishDto();
-                result.Id = id;
-                result.Ingredient = new MutateIngredientDto();
-                result.Ingredient.Id = ingredient.Id;
-                result.Ingredient.Name = ingredient.Name;
-                result.Ingredient.BaseAmount = ingredient.BaseAmount;
-                result.Ingredient.IngredientType = ingredient.IngredientType;
-                result.Ingredient.Unit = ingredient.Unit;
+                MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, ingredient);
 
                 dishService.AddDishIngredient(id, result);
-
                 Thread.Sleep(200);
+
                 return RedirectToAction("Detail", new { id = id });
             }
             else
@@ -155,13 +143,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Dish result = dishService.GetDishById(dish.Id);
-
-                result.Name = dish.Name;
-                result.Name = dish.Name;
-                result.Category = dish.Category;
-                result.DishType = dish.DishType;
-                result.Description = dish.Description;
+                Dish result = DishMapper.MapDish(dish, dishService.GetDishById(dish.Id));
 
                 dishService.UpdateDish(result);
 

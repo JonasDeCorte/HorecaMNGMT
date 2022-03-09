@@ -57,7 +57,6 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/ingredients/{ingredient.IngredientId}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
             httpClient.SendAsync(request);
-            //httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{dishId}/ingredients/{id}");
         }
 
         public void UpdateDish(Dish dish)

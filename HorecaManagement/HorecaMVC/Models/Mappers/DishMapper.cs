@@ -2,6 +2,8 @@
 using Horeca.MVC.Models.Ingredients;
 using Horeca.MVC.Models.Mappers;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Dishes;
 
 namespace HorecaMVC.Models.Mappers
 {
@@ -36,6 +38,32 @@ namespace HorecaMVC.Models.Mappers
             }
 
             return model;
+        }
+
+        public static MutateIngredientByDishDto MapCreateIngredient(int id, IngredientViewModel ingredient)
+        {
+            MutateIngredientByDishDto result = new MutateIngredientByDishDto();
+            result.Id = id;
+            result.Ingredient = new MutateIngredientDto();
+            result.Ingredient.Id = ingredient.Id;
+            result.Ingredient.Name = ingredient.Name;
+            result.Ingredient.BaseAmount = ingredient.BaseAmount;
+            result.Ingredient.IngredientType = ingredient.IngredientType;
+            result.Ingredient.Unit = ingredient.Unit;
+
+            return result;
+        }
+
+        public static Dish MapDish(DishViewModel dishModel, Dish dish)
+        {
+            Dish result = dish;
+
+            result.Name = dishModel.Name;
+            result.Category = dishModel.Category;
+            result.DishType = dishModel.DishType;
+            result.Description = dishModel.Description;
+
+            return result;
         }
     }
 }
