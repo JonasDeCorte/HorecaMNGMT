@@ -53,7 +53,7 @@ namespace Horeca.MVC.Services
 
         public void UpdateDish(Dish dish)
         {
-            throw new NotImplementedException();
+            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
         }
     }
 }

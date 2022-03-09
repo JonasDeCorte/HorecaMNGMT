@@ -60,7 +60,7 @@
         <tfoot>
             <tr>
                 <td scope="row">
-                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
                     <a asp-action="CreateIngredient" asp-route-id="@Model.Id" class="btn btn-primary">Add Ingredient</a>
                     <a asp-action="Index" class="btn btn-secondary">Go Back</a>
                 </td>

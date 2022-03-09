@@ -1,44 +1,43 @@
-﻿@{
+﻿@model Horeca.MVC.Models.Dishes.DishViewModel
+
+@{
     ViewData["Title"] = "Edit Dish";
 }
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
-        <div class="w-75 mx-auto">
-            <div class="mt-2">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Name">
+        <form asp-action="Edit" class="w-75 mx-auto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label for="dishType" class="form-label">Dish Type</label>
-                <input type="text" class="form-control" id="dishType" placeholder="Dish Type">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label for="category" class="form-label">Category</label>
-                <input type="text" class="form-control" id="category" placeholder="Category">
+                <label asp-for="DishType" class="control-label"></label>
+                <input asp-for="DishType" class="form-control" />
+                <span asp-validation-for="DishType" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" rows="3"></textarea>
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control row-3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <select class="form-select" aria-label="Dishes">
-                    <option selected>Ingredients</option>
-                    @for(int i = 0; i < 5; i++)
-                    {
-                        <option value="@i">Ingredient @i</option>
-                    }
-                </select>
+            <div class="form-group mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
             </div>
-            @*<div class="mt-2">
-                <label for="dishImg" class="form-label">Dish Image</label>
-                <input class="form-control" type="file" id="dishImg">
-            </div>*@
-            <div class="mt-2">
-                <button type="submit" class="btn btn-primary">Edit</button>
-                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
+
+@section scripts {
+<script asp-src-include="lib/jquery-validation/dist/jquery.validate.js"></script>
+<script asp-src-include="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

@@ -123,9 +123,36 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            return View();
+            Dish dish = dishService.GetDishById(id);
+            DishViewModel model = DishMapper.MapModel(dish);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(DishViewModel dish)
+        {
+            if (ModelState.IsValid)
+            {
+                Dish result = dishService.GetDishById(dish.Id);
+
+                result.Name = dish.Name;
+                result.Name = dish.Name;
+                result.Category = dish.Category;
+                result.DishType = dish.DishType;
+                result.Description = dish.Description;
+
+                dishService.UpdateDish(result);
+
+                Thread.Sleep(200);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(dish);
+            }
         }
     }
 }
