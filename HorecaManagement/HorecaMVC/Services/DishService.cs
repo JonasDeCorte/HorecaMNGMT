@@ -41,7 +41,7 @@ namespace Horeca.MVC.Services
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
         }
 
-        public void AddDishIngredient(int id, Ingredient ingredient)
+        public void AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
         {
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/ingredients", ingredient);
         }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using HorecaMVC.Models.Mappers;
 using Horeca.MVC.Services;
 using Horeca.MVC.Models.Ingredients;
+using Horeca.Shared.Dtos.Dishes;
+using Horeca.Shared.Dtos;
 
 namespace Horeca.MVC.Controllers
 {
@@ -97,21 +99,23 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateIngredient(IngredientViewModel ingredient)
+        public IActionResult CreateIngredient(int id, IngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
+                MutateIngredientByDishDto result = new MutateIngredientByDishDto();
+                result.Id = id;
+                result.Ingredient = new MutateIngredientDto();
+                result.Ingredient.Id = ingredient.Id;
+                result.Ingredient.Name = ingredient.Name;
+                result.Ingredient.BaseAmount = ingredient.BaseAmount;
+                result.Ingredient.IngredientType = ingredient.IngredientType;
+                result.Ingredient.Unit = ingredient.Unit;
 
-                Ingredient result = new Ingredient();
-                result.Name = ingredient.Name;
-                result.BaseAmount = ingredient.BaseAmount;
-                result.IngredientType = ingredient.IngredientType;
-                result.Unit = ingredient.Unit;
-
-                dishService.AddDishIngredient(2, result);
+                dishService.AddDishIngredient(id, result);
 
                 Thread.Sleep(200);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Detail", new { id = id });
             }
             else
             {
