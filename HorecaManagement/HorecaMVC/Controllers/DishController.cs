@@ -61,6 +61,25 @@ namespace Horeca.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Route("/Dish/DeleteIngredient/{dishId}/{id}")]
+        public IActionResult DeleteIngredient(int dishId, int id)
+        {
+            if (dishId == 0 || id == null)
+            {
+                return View("NotFound");
+            }
+            Console.WriteLine(dishId);
+
+            DeleteIngredientDishDto ingredient = new DeleteIngredientDishDto();
+            ingredient.DishId = dishId;
+            ingredient.IngredientId = id;
+
+            dishService.DeleteDishIngredient(ingredient);
+            Thread.Sleep(200);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Create()
         {
             var model = new DishViewModel();
@@ -147,7 +166,7 @@ namespace Horeca.MVC.Controllers
                 dishService.UpdateDish(result);
 
                 Thread.Sleep(200);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Detail), new { id = dish.Id });
             }
             else
             {

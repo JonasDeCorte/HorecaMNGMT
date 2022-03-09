@@ -2,6 +2,7 @@
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Horeca.MVC.Services
 {
@@ -49,6 +50,14 @@ namespace Horeca.MVC.Services
         public void DeleteDish(int id)
         {
             httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
+        }
+        public void DeleteDishIngredient(DeleteIngredientDishDto ingredient)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/ingredients/{ingredient.IngredientId}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
+            //httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{dishId}/ingredients/{id}");
         }
 
         public void UpdateDish(Dish dish)

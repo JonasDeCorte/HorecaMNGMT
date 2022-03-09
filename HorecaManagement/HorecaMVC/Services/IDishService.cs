@@ -10,6 +10,7 @@ namespace Horeca.MVC.Services
         public void AddDish(Dish dish);
         public void AddDishIngredient(int id, MutateIngredientByDishDto ingredient);
         public void DeleteDish(int id);
+        public void DeleteDishIngredient(DeleteIngredientDishDto ingredient);
         public void UpdateDish(Dish dish);
     }
 }
