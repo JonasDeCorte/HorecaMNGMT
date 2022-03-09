@@ -31,9 +31,17 @@ namespace Horeca.MVC.Controllers
 
             return View(listModel);
         }
-        public IActionResult Detail()
+        public IActionResult Detail(int id)
         {
-            return View();
+            Menu menu = menuService.GetMenuById(id);
+            if (menu.Name == null)
+            {
+                return View("NotFound");
+            }
+
+            MenuDetailViewModel model = MenuMapper.MapDetailModel(menu);
+
+            return View(model);
         }
         public IActionResult Create()
         {
