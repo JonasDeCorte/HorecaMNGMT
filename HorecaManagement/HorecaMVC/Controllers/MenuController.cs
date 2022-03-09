@@ -1,12 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Horeca.Shared.Data.Entities;
+using Horeca.MVC.Services;
+using Microsoft.AspNetCore.Mvc;
+using Horeca.MVC.Models.Menus;
+using HorecaMVC.Models.Mappers;
 
 namespace Horeca.MVC.Controllers
 {
     public class MenuController : Controller
     {
+        private IMenuService menuService;
+
+        public MenuController(IMenuService menuService)
+        {
+            this.menuService = menuService;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Menu> menus;
+            menus = menuService.GetMenus();
+
+            MenuListViewModel listModel = new MenuListViewModel();
+
+            foreach (var item in menus)
+            {
+                MenuViewModel model = MenuMapper.MapModel(item);
+
+                listModel.Menus.Add(model);
+            }
+
+            return View(listModel);
         }
         public IActionResult Detail()
         {

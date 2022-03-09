@@ -4,5 +4,6 @@
     {
         public const string Ingredient = "Ingredient";
         public const string Dish = "Dish";
+        public const string Menu = "Menu";
     }
 }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Horeca.MVC.Models.Menus.MenuListViewModel
+
+@{
     ViewData["Title"] = "Menu Overview";
 }
 
@@ -20,23 +22,22 @@
         </div>
     </div>
     <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible">
-        @for (int i = 0; i < 2; i++)
+        @foreach (var item in @Model.Menus)
         {
             <div class="col">
                 <div class="card">
                     <img src="https://www.lutosa.com/wp-content/uploads/2021/05/19683_-_skinny_fries_5.5-5.5_skin-on-1.png"
                      class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Just fries</h5>
+                        <h5 class="card-title">@item.Name</h5>
                         <p class="card-text">
-                            This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
-                            Which appetizer? Believe it or not, fries.
+                            @item.Description
                         </p>
                         <table class="table table-responsive">
                             <tbody>
                                 <tr>
                                     <th class="col-6">Category</th>
-                                    <td class="col-6">Fries</td>
+                                    <td class="col-6">@item.Category</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -64,16 +65,13 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < 2; i++)
+            @for (int i = 0; i < @Model.Menus.Count; i++)
             {
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Just Fries</td>
-                    <td>Fries</td>
-                    <td>
-                        This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
-                        Which appetizer? Believe it or not, fries.
-                    </td>
+                    <th scope="row">@i</th>
+                    <td>@Model.Menus[i].Name</td>
+                    <td>@Model.Menus[i].Category</td>
+                    <td>@Model.Menus[i].Description</td>
                     <td>
                         <a asp-action="Detail" class="btn btn-primary">Details</a>
                         <a asp-action="Edit" class="btn btn-primary">Edit</a>

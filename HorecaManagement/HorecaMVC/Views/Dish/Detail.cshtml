@@ -102,7 +102,6 @@
 
     function OpenModalDelete(){
        var dishId = @Model.Id;
-       console.log(@Model.Id);
        var itemId = $(this).data("id");
        $('#deleteButton').attr('href', "/Dish/DeleteIngredient/" + dishId + "/" + itemId)
        $("#deleteModal").modal();
