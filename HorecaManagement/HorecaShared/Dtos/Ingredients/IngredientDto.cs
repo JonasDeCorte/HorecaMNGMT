@@ -11,4 +11,8 @@ namespace Horeca.Shared.Dtos.Ingredients
 
         public int BaseAmount { get; set; }
     }
+
+    public class MutateIngredientDto : IngredientDto
+    {
+    }
 }

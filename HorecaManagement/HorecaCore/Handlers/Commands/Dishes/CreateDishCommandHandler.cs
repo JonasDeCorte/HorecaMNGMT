@@ -19,17 +19,17 @@ namespace Horeca.Core.Handlers.Commands.Dishes
         public class CreateDishCommandHandler : IRequestHandler<CreateDishCommand, int>
         {
             private readonly IUnitOfWork repository;
-            private readonly IValidator<MutateDishDto> _validator;
+            private readonly IValidator<MutateDishDto> validator;
 
             public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
             {
                 this.repository = repository;
-                _validator = validator;
+                this.validator = validator;
             }
 
             public async Task<int> Handle(CreateDishCommand request, CancellationToken cancellationToken)
             {
-                var result = _validator.Validate(request.Model);
+                var result = validator.Validate(request.Model);
 
                 if (!result.IsValid)
                 {

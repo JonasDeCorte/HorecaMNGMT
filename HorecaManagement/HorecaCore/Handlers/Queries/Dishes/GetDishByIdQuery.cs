@@ -18,12 +18,12 @@ namespace Horeca.Core.Handlers.Queries.Dishes
         public class GetDishByIdQueryHandler : IRequestHandler<GetDishByIdQuery, DishDto>
         {
             private readonly IUnitOfWork repository;
-            private readonly IMapper _mapper;
+            private readonly IMapper mapper;
 
             public GetDishByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
                 this.repository = repository;
-                _mapper = mapper;
+                this.mapper = mapper;
             }
 
             public async Task<DishDto> Handle(GetDishByIdQuery request, CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
                     throw new EntityNotFoundException($"No Dish found for Id {request.DishId}");
                 }
 
-                return _mapper.Map<DishDto>(dish);
+                return mapper.Map<DishDto>(dish);
             }
         }
     }

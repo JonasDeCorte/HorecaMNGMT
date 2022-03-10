@@ -3,6 +3,7 @@ using Horeca.Core.Handlers.Queries.Dishes;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Dishes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -10,6 +11,7 @@ namespace HorecaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, User")] // just for test, don't push
     public class DishController : ControllerBase
     {
         private readonly IMediator _mediator;

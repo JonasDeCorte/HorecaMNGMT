@@ -42,7 +42,11 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             if (request.Model.Ingredient.BaseAmount != ingredient.BaseAmount)
                 ingredient.BaseAmount = request.Model.Ingredient.BaseAmount;
             ingredient.IngredientType = request.Model.Ingredient.IngredientType ?? ingredient.IngredientType;
-            ingredient.Unit = request.Model.Ingredient.Unit ?? ingredient.Unit;
+            var modelUnit = new Horeca.Shared.Data.Entities.Unit
+            {
+                Name = request.Model.Ingredient.Unit.Name
+            };
+            ingredient.Unit = modelUnit ?? ingredient.Unit;
 
             repository.Ingredients.Update(ingredient);
             repository.Dishes.Update(dish);

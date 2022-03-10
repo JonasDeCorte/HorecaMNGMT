@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Ingredients;
 
 namespace Horeca.Shared.Dtos.Dishes
 {

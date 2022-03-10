@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Entities.Account;
+using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.MenuCards;
