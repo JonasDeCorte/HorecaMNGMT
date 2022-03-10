@@ -21,6 +21,11 @@ namespace Horeca.MVC.Services
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
         }
 
+        public void AddMenuDish(int id, MutateDishMenuDto dish)
+        {
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}", dish);
+        }
+
         public void DeleteMenu(int id)
         {
             httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
@@ -32,7 +37,7 @@ namespace Horeca.MVC.Services
             Console.WriteLine(menu.Result);
             var result = JsonConvert.DeserializeObject<Menu>(menu.Result.Content.ReadAsStringAsync().Result);
 
-            var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/dishes");
+            var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}");
             var listResult = JsonConvert.DeserializeObject<MenuDishesByIdDto>(dishes.Result.Content.ReadAsStringAsync().Result);
 
             result.Dishes = listResult.Dishes.ToList();

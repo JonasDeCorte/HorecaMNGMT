@@ -3,6 +3,8 @@ using Horeca.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Menus;
 using HorecaMVC.Models.Mappers;
+using Horeca.Shared.Dtos.Menus;
+using Horeca.MVC.Models.Dishes;
 
 namespace Horeca.MVC.Controllers
 {
@@ -79,6 +81,32 @@ namespace Horeca.MVC.Controllers
             else
             {
                 return View(menu);
+            }
+        }
+        public IActionResult CreateDish(int id)
+        {
+            var model = new DishViewModel();
+
+            TempData["Id"] = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateDish(int id, DishViewModel dish)
+        {
+            if (ModelState.IsValid)
+            {
+                MutateDishMenuDto result = MenuMapper.MapCreateDish(id, dish);
+
+                menuService.AddMenuDish(id, result);
+                Thread.Sleep(200);
+
+                return RedirectToAction("Detail", new { id = id });
+            }
+            else
+            {
+                return View(dish);
             }
         }
 

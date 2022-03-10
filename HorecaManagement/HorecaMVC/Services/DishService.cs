@@ -29,7 +29,7 @@ namespace Horeca.MVC.Services
             var dish = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
             var result = JsonConvert.DeserializeObject<Dish>(dish.Result.Content.ReadAsStringAsync().Result);
 
-            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/ingredients");
+            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
             var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(ingredients.Result.Content.ReadAsStringAsync().Result);
 
             result.Ingredients = listResult.Ingredients.ToList();
@@ -44,7 +44,7 @@ namespace Horeca.MVC.Services
 
         public void AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/ingredients", ingredient);
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}", ingredient);
         }
 
         public void DeleteDish(int id)
@@ -54,7 +54,7 @@ namespace Horeca.MVC.Services
         public void DeleteDishIngredient(DeleteIngredientDishDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/ingredients/{ingredient.IngredientId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/{ClassConstants.Ingredients}/{ingredient.IngredientId}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
             httpClient.SendAsync(request);
         }

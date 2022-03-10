@@ -4,56 +4,55 @@
     ViewData["Title"] = "Menu Detail";
 }
 
-<div class="text-center">
-    <div class="d-flex">
+<div class="d-flex flex-column text-center align-items-center">
+    <h1 class="display-4">@Model.Name</h1>
+    <div style="max-width: 500px;">
         <img src="https://www.lutosa.com/wp-content/uploads/2021/05/19683_-_skinny_fries_5.5-5.5_skin-on-1.png" alt="..."
-             style="max-width: 50%" />
-        <div class="d-flex flex-column">
-            <h1 class="display-4">@Model.Name</h1>
-            <table class="table">
-                <tbody>
-                    <tr class="d-flex flex-column">
-                        <th scope="col">Category</th>
-                        <td scope="row">@Model.Category</td>
-                    </tr>
-                    <tr class="d-flex flex-column">
-                        <th scope="col">Description</th>
-                        <td scope="row">@Model.Description</td>
-                    </tr>
-                    <tr class="d-flex flex-column">
-                        <th scope="col">Dishes</th>
-                        <td scope="row">
-                            <table class="table" style="table-layout: fixed">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Dish Type</th>
-                                        <th scope="col">Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in @Model.Dishes)
-                                    {
-                                        <tr>
-                                            <td>@item.Name</td>
-                                            <td>@item.DishType</td>
-                                            <td>@item.Category</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td scope="row" colspan="2">
-                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                            <a asp-action="Index" class="btn btn-secondary">Go Back</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+             style="max-width: 100%; height: auto;" />
     </div>
+    <table class="table">
+        <tbody>
+            <tr class="d-flex flex-column">
+                <th scope="col">Category</th>
+                <td scope="row">@Model.Category</td>
+            </tr>
+            <tr class="d-flex flex-column">
+                <th scope="col">Description</th>
+                <td scope="row">@Model.Description</td>
+            </tr>
+            <tr class="d-flex flex-column">
+                <th scope="col">Dishes</th>
+                <td scope="row">
+                    <table class="table" style="table-layout: fixed">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Dish Type</th>
+                                <th scope="col">Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in @Model.Dishes)
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.DishType</td>
+                                    <td>@item.Category</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td scope="row" colspan="2">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="CreateDish" asp-route-id="@Model.Id" class="btn btn-primary">Add Dish</a>
+                    <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
 </div>
