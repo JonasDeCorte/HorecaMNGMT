@@ -43,10 +43,32 @@ namespace Horeca.MVC.Controllers
 
             return View(model);
         }
+
         public IActionResult Create()
         {
-            return View();
+            var model = new MenuViewModel();
+
+            return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Create(MenuViewModel menu)
+        {
+            if (ModelState.IsValid)
+            {
+                Menu result = MenuMapper.MapMenu(menu, new Menu());
+
+                menuService.AddMenu(result);
+                Thread.Sleep(200);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(menu);
+            }
+        }
+
         public IActionResult Edit()
         {
             return View();

@@ -18,7 +18,7 @@ namespace Horeca.MVC.Services
 
         public void AddMenu(Menu menu)
         {
-            throw new NotImplementedException();
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
         }
 
         public void DeleteMenu(int id)

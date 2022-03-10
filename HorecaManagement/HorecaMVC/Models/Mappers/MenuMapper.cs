@@ -35,5 +35,16 @@ namespace HorecaMVC.Models.Mappers
 
             return model;
         }
+
+        public static Menu MapMenu(MenuViewModel menuModel, Menu menu)
+        {
+            Menu result = menu;
+
+            result.Name = menuModel.Name;
+            result.Description = menuModel.Description;
+            result.Category = menuModel.Category;
+
+            return result;
+        }
     }
 }
