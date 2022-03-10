@@ -2,7 +2,7 @@
 using Horeca.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Menus;
-using HorecaMVC.Models.Mappers;
+using Horeca.MVC.Models.Mappers;
 using Horeca.Shared.Dtos.Menus;
 using Horeca.MVC.Models.Dishes;
 

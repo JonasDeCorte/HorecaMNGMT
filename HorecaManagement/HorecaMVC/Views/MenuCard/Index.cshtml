@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Horeca.MVC.Models.MenuCards.MenuCardListViewModel
+
+@{
     ViewData["Title"] = "Menu Card Overview";
 }
 
@@ -20,19 +22,16 @@
         </div>
     </div>
     <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: none;">
-        @for (int i = 0; i < 3; i++)
+        @foreach(var item in @Model.MenuCards)
         {
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Menu Card @i</h5>
-                        <p class="card-text">
-                            this is a description of a menu card yes
-                        </p>
+                        <h5 class="card-title">@item.Name</h5>
                         <div>
                             <a asp-action="Detail" class="btn btn-primary" asp-route-id="1">Details</a>
                             <a asp-action="Edit" class="modalbutton btn btn-primary">Edit</a>
-                            <button id="toDeleteModal" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="1">
                                 Delete
                             </button>
@@ -46,18 +45,16 @@
         <thead>
             <tr>
                 <th scope="col" class="col-1">#</th>
-                <th scope="col" class="col-3">Name</th>
-                <th scope="col" class="col-5">Description</th>
+                <th scope="col" class="col-8">Name</th>
                 <th scope="col" class="col-3">Options</th>
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < 3; i++)
+            @for (int i = 0; i < @Model.MenuCards.Count; i++)
             {
                 <tr>
                     <th scope="row">@i</th>
-                    <td>Menu Card</td>
-                    <td>this is a description of a menu card yes</td>
+                    <td>@Model.MenuCards[i].Name</td>
                     <td>
                         <a asp-action="Detail" asp-route-id="1" class="btn btn-primary">Details</a>
                         <a asp-action="Edit" class="btn btn-primary">Edit</a>

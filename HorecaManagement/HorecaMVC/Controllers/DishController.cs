@@ -1,7 +1,7 @@
 ﻿using Horeca.Shared.Data.Entities;
 using Horeca.MVC.Models.Dishes;
 using Microsoft.AspNetCore.Mvc;
-using HorecaMVC.Models.Mappers;
+using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services;
 using Horeca.MVC.Models.Ingredients;
 using Horeca.Shared.Dtos.Dishes;
@@ -11,10 +11,12 @@ namespace Horeca.MVC.Controllers
     public class DishController : Controller
     {
         private IDishService dishService;
+        private IIngredientService ingredientService;
 
-        public DishController(IDishService dishService)
+        public DishController(IDishService dishService, IIngredientService ingredientService)
         {
             this.dishService = dishService;
+            this.ingredientService = ingredientService;
         }
 
         public IActionResult Index()
@@ -24,7 +26,7 @@ namespace Horeca.MVC.Controllers
 
             DishListViewModel listModel = new DishListViewModel();
 
-            foreach(var item in dishes)
+            foreach (var item in dishes)
             {
                 DishViewModel model = DishMapper.MapModel(item);
 
@@ -154,6 +156,19 @@ namespace Horeca.MVC.Controllers
             {
                 return View(dish);
             }
+        }
+
+        public IActionResult EditIngredient(int id)
+        {
+            Ingredient ingredient = ingredientService.GetIngredientById(id);
+            IngredientViewModel model = IngredientMapper.MapModel(ingredient);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditIngredient(IngredientViewModel ingredient)
+        {
+            return View();
         }
     }
 }

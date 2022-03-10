@@ -5,7 +5,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Dishes;
 
-namespace HorecaMVC.Models.Mappers
+namespace Horeca.MVC.Models.Mappers
 {
     public static class DishMapper
     {
