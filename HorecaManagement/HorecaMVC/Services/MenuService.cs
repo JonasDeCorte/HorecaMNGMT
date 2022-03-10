@@ -49,7 +49,7 @@ namespace Horeca.MVC.Services
 
         public void UpdateMenu(Menu menu)
         {
-            throw new NotImplementedException();
+            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
         }
     }
 }
