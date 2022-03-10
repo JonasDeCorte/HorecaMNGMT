@@ -32,14 +32,42 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        public IActionResult Detail()
+        public IActionResult Detail(int id)
         {
-            return View();
+            MenuCard menuCard = menuCardService.GetMenuCardById(id);
+            if (menuCard.Name == null)
+            {
+                return View("NotFound");
+            }
+
+            MenuCardDetailViewModel model = MenuCardMapper.MapDetailModel(menuCard);
+
+            return View(model);
         }
 
         public IActionResult Create()
         {
-            return View();
+            var model = new MenuCardViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(MenuCardViewModel menuCard)
+        {
+            if (ModelState.IsValid)
+            {
+                MenuCard result = MenuCardMapper.MapMenuCard(menuCard, new MenuCard());
+
+                menuCardService.AddMenuCard(result);
+                Thread.Sleep(200);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(menuCard);
+            }
         }
 
         public IActionResult Edit()

@@ -33,6 +33,7 @@ namespace Horeca.MVC.Controllers
 
             return View(listModel);
         }
+
         public IActionResult Detail(int id)
         {
             Menu menu = menuService.GetMenuById(id);
