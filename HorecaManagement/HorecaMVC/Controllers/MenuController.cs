@@ -44,6 +44,19 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
+        public IActionResult Delete(int id)
+        {
+            if (id == null)
+            {
+                return View("NotFound");
+            }
+
+            menuService.DeleteMenu(id);
+            Thread.Sleep(200);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Create()
         {
             var model = new MenuViewModel();

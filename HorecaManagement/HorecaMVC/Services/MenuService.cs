@@ -23,7 +23,7 @@ namespace Horeca.MVC.Services
 
         public void DeleteMenu(int id)
         {
-            throw new NotImplementedException();
+            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
         }
 
         public Menu GetMenuById(int id)

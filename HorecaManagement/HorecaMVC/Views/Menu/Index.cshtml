@@ -45,7 +45,7 @@
                             <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
+                                data-bs-target="#deleteModal" data-id="@item.Id">
                                 Delete
                             </button>
                         </div>
@@ -76,7 +76,7 @@
                         <a asp-action="Detail" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Details</a>
                         <a asp-action="Edit" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Edit</a>
                         <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal">
+                            data-bs-target="#deleteModal" data-id="@Model.Menus[i].Id">
                             Delete
                         </button>
                     </td>
@@ -99,8 +99,20 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                <button type="button" class="btn btn-danger">Yes</button>
+                <a id="deleteButton" asp-action="Delete" class="btn btn-danger">Yes</a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteModal",OpenModalDelete);
+    });
+
+    function OpenModalDelete(){
+       var itemId = $(this).data("id");
+       $('#deleteButton').attr('href', "/Menu/Delete/" + itemId)
+       $("#deleteModal").modal();
+    }
+</script>
