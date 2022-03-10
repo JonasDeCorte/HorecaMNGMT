@@ -27,15 +27,20 @@ namespace Horeca.MVC.Services
         public Menu GetMenuById(int id)
         {
             var menu = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
-            Console.WriteLine(menu.Result);
             var result = JsonConvert.DeserializeObject<Menu>(menu.Result.Content.ReadAsStringAsync().Result);
-
-            var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}");
-            var listResult = JsonConvert.DeserializeObject<MenuDishesByIdDto>(dishes.Result.Content.ReadAsStringAsync().Result);
+            var listResult = GetMenuDishesById(id);
 
             result.Dishes = listResult.Dishes.ToList();
 
             return result;
+        }
+
+        public MenuDishesByIdDto GetMenuDishesById(int id)
+        {
+            var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}");
+            var listResult = JsonConvert.DeserializeObject<MenuDishesByIdDto>(dishes.Result.Content.ReadAsStringAsync().Result);
+
+            return listResult;
         }
 
         public void AddMenu(Menu menu)

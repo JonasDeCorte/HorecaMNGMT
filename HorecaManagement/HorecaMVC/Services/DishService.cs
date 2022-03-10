@@ -28,13 +28,19 @@ namespace Horeca.MVC.Services
         {
             var dish = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
             var result = JsonConvert.DeserializeObject<Dish>(dish.Result.Content.ReadAsStringAsync().Result);
-
-            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
-            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(ingredients.Result.Content.ReadAsStringAsync().Result);
-
+            var listResult = GetDishIngredientsById(id);
+            
             result.Ingredients = listResult.Ingredients.ToList();
 
             return result;
+        }
+
+        public DishIngredientsByIdDto GetDishIngredientsById(int id)
+        {
+            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
+            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(ingredients.Result.Content.ReadAsStringAsync().Result);
+
+            return listResult;
         }
 
         public void AddDish(Dish dish)
@@ -62,6 +68,13 @@ namespace Horeca.MVC.Services
         public void UpdateDish(Dish dish)
         {
             httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
+        }
+
+        public void UpdateDishIngredient(MutateIngredientByDishDto ingredient)
+        {
+            httpClient.PutAsJsonAsync(
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.Id}/{ClassConstants.Ingredients}" +
+                $"/{ingredient.Ingredient.Id}", ingredient);
         }
     }
 }
