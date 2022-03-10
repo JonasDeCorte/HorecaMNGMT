@@ -76,7 +76,7 @@ namespace Horeca.MVC.Controllers
             dishService.DeleteDishIngredient(ingredient);
             Thread.Sleep(200);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Detail", new { id = dishId });
         }
 
         public IActionResult Create()

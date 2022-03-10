@@ -2,6 +2,7 @@
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Menus;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Horeca.MVC.Services
 {
@@ -16,19 +17,11 @@ namespace Horeca.MVC.Services
             configuration = IConfig;
         }
 
-        public void AddMenu(Menu menu)
+        public IEnumerable<Menu> GetMenus()
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
-        }
-
-        public void AddMenuDish(int id, MutateDishMenuDto dish)
-        {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}", dish);
-        }
-
-        public void DeleteMenu(int id)
-        {
-            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
+            var menus = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
+            var result = JsonConvert.DeserializeObject<IEnumerable<Menu>>(menus.Result.Content.ReadAsStringAsync().Result);
+            return result;
         }
 
         public Menu GetMenuById(int id)
@@ -45,11 +38,26 @@ namespace Horeca.MVC.Services
             return result;
         }
 
-        public IEnumerable<Menu> GetMenus()
+        public void AddMenu(Menu menu)
         {
-            var menus = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
-            var result = JsonConvert.DeserializeObject<IEnumerable<Menu>>(menus.Result.Content.ReadAsStringAsync().Result);
-            return result;
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
+        }
+
+        public void AddMenuDish(int id, MutateDishMenuDto dish)
+        {
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}", dish);
+        }
+
+        public void DeleteMenu(int id)
+        {
+            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
+        }
+        public void DeleteMenuDish(DeleteDishMenuDto dish)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{dish.MenuId}/{ClassConstants.Dishes}/{dish.DishId}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void UpdateMenu(Menu menu)

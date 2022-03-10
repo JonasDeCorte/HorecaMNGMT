@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible">
+    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: none;">
         @foreach (var item in @Model.Menus)
         {
             <div class="col">
@@ -54,7 +54,7 @@
             </div>
         }
     </div>
-    <table id="tableView" class="table mt-2" style="display: none;">
+    <table id="tableView" class="table mt-2" style="display: visible;">
         <thead>
             <tr>
                 <th scope="col" class="col-1">#</th>

@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: visible;">
+    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: none;">
         @for (int i = 0; i < 3; i++)
         {
             <div class="col">
@@ -42,11 +42,12 @@
             </div>
         }
     </div>
-    <table id="tableView" class="table table-responsive mt-2" style="display: none;">
+    <table id="tableView" class="table table-responsive mt-2" style="display: visible;" >
         <thead>
             <tr>
                 <th scope="col" class="col-1">#</th>
-                <th scope="col" class="col-8">Name</th>
+                <th scope="col" class="col-3">Name</th>
+                <th scope="col" class="col-5">Description</th>
                 <th scope="col" class="col-3">Options</th>
             </tr>
         </thead>
