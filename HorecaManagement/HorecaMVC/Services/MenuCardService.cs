@@ -70,7 +70,7 @@ namespace Horeca.MVC.Services
 
         public void UpdateMenuCard(MenuCard menuCard)
         {
-            throw new NotImplementedException();
+            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}", menuCard);
         }
     }
 }

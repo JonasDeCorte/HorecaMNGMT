@@ -29,10 +29,10 @@
                     <div class="card-body">
                         <h5 class="card-title">@item.Name</h5>
                         <div>
-                            <a asp-action="Detail" class="btn btn-primary" asp-route-id="1">Details</a>
-                            <a asp-action="Edit" class="modalbutton btn btn-primary">Edit</a>
+                            <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary" asp-route-id="1">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="modalbutton btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="1">
+                                data-bs-target="#deleteModal" data-id="@item.Id">
                                 Delete
                             </button>
                         </div>
@@ -57,7 +57,7 @@
                     <td>@Model.MenuCards[i].Name</td>
                     <td>
                         <a asp-action="Detail" asp-route-id="@Model.MenuCards[i].Id" class="btn btn-primary">Details</a>
-                        <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                        <a asp-action="Edit" asp-route-id="@Model.MenuCards[i].Id" class="btn btn-primary">Edit</a>
                         <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#deleteModal" data-id="@Model.MenuCards[i].Id">
                             Delete

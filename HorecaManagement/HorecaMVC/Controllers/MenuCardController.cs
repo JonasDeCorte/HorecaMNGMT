@@ -71,9 +71,30 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            return View();
+            MenuCard menuCard = menuCardService.GetMenuCardById(id);
+            MenuCardViewModel model = MenuCardMapper.MapModel(menuCard);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MenuCardViewModel menuCard)
+        {
+            if (ModelState.IsValid)
+            {
+                MenuCard result = MenuCardMapper.MapMenuCard(menuCard, menuCardService.GetMenuCardById(menuCard.Id));
+
+                menuCardService.UpdateMenuCard(result);
+
+                Thread.Sleep(200);
+                return RedirectToAction(nameof(Detail), new { id = menuCard.Id });
+            }
+            else
+            {
+                return View(menuCard);
+            }
         }
 
         public IActionResult Delete(int id)
