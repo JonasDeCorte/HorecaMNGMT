@@ -64,7 +64,6 @@ namespace Horeca.MVC.Controllers
                 MenuCard result = MenuCardMapper.MapMenuCard(menuCard, new MenuCard());
 
                 menuCardService.AddMenuCard(result);
-                Thread.Sleep(200);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -91,7 +90,6 @@ namespace Horeca.MVC.Controllers
                 MutateDishMenuCardDto result = MenuCardMapper.MapCreateDish(id, dish);
 
                 menuCardService.AddMenuCardDish(id, result);
-                Thread.Sleep(200);
 
                 return RedirectToAction("Detail", new { id = id });
             }
@@ -118,7 +116,6 @@ namespace Horeca.MVC.Controllers
                 MutateMenuMenuCardDto result = MenuCardMapper.MapCreateMenu(id, menu);
 
                 menuCardService.AddMenuCardMenu(id, result);
-                Thread.Sleep(200);
 
                 return RedirectToAction("Detail", new { id = id });
             }
@@ -145,7 +142,6 @@ namespace Horeca.MVC.Controllers
 
                 menuCardService.UpdateMenuCard(result);
 
-                Thread.Sleep(200);
                 return RedirectToAction(nameof(Detail), new { id = menuCard.Id });
             }
             else
@@ -162,7 +158,6 @@ namespace Horeca.MVC.Controllers
             }
 
             menuCardService.DeleteMenuCard(id);
-            Thread.Sleep(200);
 
             return RedirectToAction(nameof(Index));
         }
@@ -180,7 +175,6 @@ namespace Horeca.MVC.Controllers
             dish.DishId = id;
 
             menuCardService.DeleteMenuCardDish(dish);
-            Thread.Sleep(200);
 
             return RedirectToAction("Detail", new { id = menuCardId });
         }
@@ -198,7 +192,6 @@ namespace Horeca.MVC.Controllers
             menu.MenuId = id;
 
             menuCardService.DeleteMenuCardMenu(menu);
-            Thread.Sleep(200);
 
             return RedirectToAction("Detail", new { id = menuCardId });
         }

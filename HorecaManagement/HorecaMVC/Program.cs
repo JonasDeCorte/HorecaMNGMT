@@ -1,4 +1,5 @@
 using Horeca.MVC.Services;
+using Horeca.MVC.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

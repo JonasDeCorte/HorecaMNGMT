@@ -17,7 +17,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Ingredient> ingredients = ingredientService.GetIngredients();
+            IEnumerable<Ingredient> ingredients = await ingredientService.GetIngredients();
 
             IngredientListViewModel listModel = new IngredientListViewModel();
 
@@ -31,10 +31,10 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            Ingredient ingredient = ingredientService.GetIngredientById(id);
-            if (ingredient.Name == null)
+            Ingredient ingredient = await ingredientService.GetIngredientById(id);
+            if (ingredient == null)
             {
                 return View("NotFound");
             }
@@ -46,12 +46,8 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Delete(int id)
         {
-            if(id == null)
-            {
-                return View("NotFound");
-            }
             ingredientService.DeleteIngredient(id);
-            Thread.Sleep(200);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -67,15 +63,10 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = new Ingredient();
-                result.Name = ingredient.Name;
-                result.BaseAmount = ingredient.BaseAmount;
-                result.IngredientType = ingredient.IngredientType;
-                result.Unit = ingredient.Unit;
+                Ingredient result = IngredientMapper.MapCreateIngredient(ingredient);
 
                 ingredientService.AddIngredient(result);
 
-                Thread.Sleep(200);
                 return RedirectToAction(nameof(Index));
             } else
             {
@@ -83,24 +74,24 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            Ingredient ingredient = ingredientService.GetIngredientById(id);
+            Ingredient ingredient = await ingredientService.GetIngredientById(id);
             IngredientViewModel model = IngredientMapper.MapModel(ingredient);
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(IngredientViewModel ingredient)
+        public async Task<IActionResult> Edit(IngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = IngredientMapper.MapIngredient(ingredient, ingredientService.GetIngredientById(ingredient.Id));
+                Ingredient result = IngredientMapper.MapIngredient(ingredient, 
+                    await ingredientService.GetIngredientById(ingredient.Id));
 
                 ingredientService.UpdateIngredient(result);
 
-                Thread.Sleep(200);
                 return RedirectToAction(nameof(Index));
             } else
             {

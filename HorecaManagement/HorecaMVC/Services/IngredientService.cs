@@ -15,18 +15,25 @@ namespace Horeca.MVC.Services
             configuration = iConfig;
         }
 
-        public IEnumerable<Ingredient> GetIngredients()
+        public async Task<IEnumerable<Ingredient>> GetIngredients()
         {
-            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
-            var result = JsonConvert.DeserializeObject<IEnumerable<Ingredient>>(ingredients.Result.Content.ReadAsStringAsync().Result);
+            HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+                $"{ClassConstants.Ingredient}");
+            var result = JsonConvert.DeserializeObject<IEnumerable<Ingredient>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
-        public Ingredient GetIngredientById(int id)
-        {
-            var ingredient = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{id}");
-            var result = JsonConvert.DeserializeObject<Ingredient>(ingredient.Result.Content.ReadAsStringAsync().Result);
-            return result;
+        public async Task<Ingredient> GetIngredientById(int id)
+        {;
+            HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+                $"{ClassConstants.Ingredient}/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return JsonConvert.DeserializeObject<Ingredient>(response.Content.ReadAsStringAsync().Result);
         }
 
         public void AddIngredient(Ingredient ingredient)
