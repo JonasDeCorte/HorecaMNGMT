@@ -18,28 +18,42 @@ namespace Horeca.MVC.Services
             configuration = iConfig;
         }
 
-        public IEnumerable<Dish> GetDishes()
+        public async Task<IEnumerable<Dish>> GetDishes()
         {
-            var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
-            var result = JsonConvert.DeserializeObject<IEnumerable<Dish>>(dishes.Result.Content.ReadAsStringAsync().Result);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
+            var result = JsonConvert.DeserializeObject<IEnumerable<Dish>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
-        public Dish GetDishById(int id)
+        public async Task<Dish> GetDishById(int id)
         {
-            var dish = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
-            var result = JsonConvert.DeserializeObject<Dish>(dish.Result.Content.ReadAsStringAsync().Result);
-            var listResult = GetDishIngredientsById(id);
-            
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = JsonConvert.DeserializeObject<Dish>(response.Content.ReadAsStringAsync().Result);
+
+            var listResult = await GetDishIngredientsById(id);
             result.Ingredients = listResult.Ingredients.ToList();
 
             return result;
         }
 
-        public DishIngredientsByIdDto GetDishIngredientsById(int id)
+        public async Task<DishIngredientsByIdDto> GetDishIngredientsById(int id)
         {
-            var ingredients = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
-            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(ingredients.Result.Content.ReadAsStringAsync().Result);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/" +
+                $"{id}/{ClassConstants.Ingredients}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(response.Content.ReadAsStringAsync()
+                .Result);
 
             return listResult;
         }

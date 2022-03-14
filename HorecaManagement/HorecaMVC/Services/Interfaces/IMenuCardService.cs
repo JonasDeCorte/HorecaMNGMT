@@ -1,7 +1,7 @@
 ﻿using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.MenuCards;
 
-namespace Horeca.MVC.Services
+namespace Horeca.MVC.Services.Interfaces
 {
     public interface IMenuCardService
     {

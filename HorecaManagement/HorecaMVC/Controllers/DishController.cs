@@ -2,7 +2,6 @@
 using Horeca.MVC.Models.Dishes;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Mappers;
-using Horeca.MVC.Services;
 using Horeca.MVC.Models.Ingredients;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.MVC.Services.Interfaces;
@@ -20,9 +19,9 @@ namespace Horeca.MVC.Controllers
             this.ingredientService = ingredientService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Dish> dishes = dishService.GetDishes();
+            IEnumerable<Dish> dishes = await dishService.GetDishes();
 
             DishListViewModel listModel = new DishListViewModel();
 
@@ -36,10 +35,10 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            Dish dish = dishService.GetDishById(id);
-            if (dish.Name == null)
+            Dish dish = await dishService.GetDishById(id);
+            if (dish == null)
             {
                 return View("NotFound");
             }
@@ -127,20 +126,20 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            Dish dish = dishService.GetDishById(id);
+            Dish dish = await dishService.GetDishById(id);
             DishViewModel model = DishMapper.MapModel(dish);
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(DishViewModel dish)
+        public async Task<IActionResult> Edit(DishViewModel dish)
         {
             if (ModelState.IsValid)
             {
-                Dish result = DishMapper.MapDish(dish, dishService.GetDishById(dish.Id));
+                Dish result = DishMapper.MapDish(dish, await dishService.GetDishById(dish.Id));
 
                 dishService.UpdateDish(result);
 

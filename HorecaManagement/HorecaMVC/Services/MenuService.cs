@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Constants;
+﻿using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Menus;
 using Newtonsoft.Json;
@@ -17,28 +18,47 @@ namespace Horeca.MVC.Services
             configuration = IConfig;
         }
 
-        public IEnumerable<Menu> GetMenus()
+        public async Task<IEnumerable<Menu>> GetMenus()
         {
-            var menus = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
-            var result = JsonConvert.DeserializeObject<IEnumerable<Menu>>(menus.Result.Content.ReadAsStringAsync().Result);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = JsonConvert.DeserializeObject<IEnumerable<Menu>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
-        public Menu GetMenuById(int id)
+        public async Task<Menu> GetMenuById(int id)
         {
-            var menu = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
-            var result = JsonConvert.DeserializeObject<Menu>(menu.Result.Content.ReadAsStringAsync().Result);
-            var listResult = GetMenuDishesById(id);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = JsonConvert.DeserializeObject<Menu>(response.Content.ReadAsStringAsync().Result);
+            var listResult = await GetMenuDishesById(id);
 
             result.Dishes = listResult.Dishes.ToList();
 
             return result;
         }
 
-        public MenuDishesByIdDto GetMenuDishesById(int id)
+        public async Task<MenuDishesByIdDto> GetMenuDishesById(int id)
         {
-            var dishes = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}");
-            var listResult = JsonConvert.DeserializeObject<MenuDishesByIdDto>(dishes.Result.Content.ReadAsStringAsync().Result);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/" +
+                $"{ClassConstants.Dishes}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var listResult = JsonConvert.DeserializeObject<MenuDishesByIdDto>(response.Content.ReadAsStringAsync().Result);
 
             return listResult;
         }

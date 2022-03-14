@@ -1,10 +1,10 @@
 ﻿using Horeca.Shared.Data.Entities;
-using Horeca.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Menus;
 using Horeca.MVC.Models.Mappers;
 using Horeca.Shared.Dtos.Menus;
 using Horeca.MVC.Models.Dishes;
+using Horeca.MVC.Services.Interfaces;
 
 namespace Horeca.MVC.Controllers
 {
@@ -17,10 +17,9 @@ namespace Horeca.MVC.Controllers
             this.menuService = menuService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Menu> menus;
-            menus = menuService.GetMenus();
+            IEnumerable<Menu> menus = await menuService.GetMenus();
 
             MenuListViewModel listModel = new MenuListViewModel();
 
@@ -34,10 +33,10 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            Menu menu = menuService.GetMenuById(id);
-            if (menu.Name == null)
+            Menu menu = await menuService.GetMenuById(id);
+            if (menu == null)
             {
                 return View("NotFound");
             }
@@ -125,20 +124,20 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            Menu menu = menuService.GetMenuById(id);
+            Menu menu = await menuService.GetMenuById(id);
             MenuViewModel model = MenuMapper.MapModel(menu);
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(MenuViewModel menu)
+        public async Task<IActionResult> Edit(MenuViewModel menu)
         {
             if (ModelState.IsValid)
             {
-                Menu result = MenuMapper.MapMenu(menu, menuService.GetMenuById(menu.Id));
+                Menu result = MenuMapper.MapMenu(menu, await menuService.GetMenuById(menu.Id));
 
                 menuService.UpdateMenu(result);
 

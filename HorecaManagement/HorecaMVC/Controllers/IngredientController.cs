@@ -3,6 +3,7 @@ using Horeca.MVC.Models.Ingredients;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services;
+using Horeca.MVC.Services.Interfaces;
 
 namespace Horeca.MVC.Controllers
 {

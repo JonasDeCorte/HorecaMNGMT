@@ -1,6 +1,6 @@
 ﻿using Horeca.Shared.Data.Entities;
 
-namespace Horeca.MVC.Services
+namespace Horeca.MVC.Services.Interfaces
 {
     public interface IIngredientService
     {
