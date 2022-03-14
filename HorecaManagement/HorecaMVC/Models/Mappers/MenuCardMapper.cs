@@ -2,6 +2,9 @@
 using Horeca.MVC.Models.MenuCards;
 using Horeca.MVC.Models.Menus;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Dishes;
+using Horeca.Shared.Dtos.MenuCards;
+using Horeca.Shared.Dtos.Menus;
 
 namespace Horeca.MVC.Models.Mappers
 {
@@ -45,6 +48,32 @@ namespace Horeca.MVC.Models.Mappers
             }
 
             return model;
+        }
+        public static MutateDishMenuCardDto MapCreateDish(int id, DishViewModel dish)
+        {
+            MutateDishMenuCardDto result = new MutateDishMenuCardDto();
+            result.MenuCardId = id;
+            result.Dish = new MutateDishDto();
+            result.Dish.Id = dish.Id;
+            result.Dish.Name = dish.Name;
+            result.Dish.DishType = dish.DishType;
+            result.Dish.Category = dish.Category;
+            result.Dish.Description = dish.Description;
+
+            return result;
+        }
+
+        public static MutateMenuMenuCardDto MapCreateMenu(int id, MenuViewModel menu)
+        {
+            MutateMenuMenuCardDto result = new MutateMenuMenuCardDto();
+            result.MenuCardId = id;
+            result.Menu = new MutateMenuDto();
+            result.Menu.Id = menu.Id;
+            result.Menu.Name = menu.Name;
+            result.Menu.Category = menu.Category;
+            result.Menu.Description = menu.Description;
+
+            return result;
         }
     }
 }

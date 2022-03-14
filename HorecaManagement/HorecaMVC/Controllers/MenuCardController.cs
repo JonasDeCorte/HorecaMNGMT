@@ -3,6 +3,9 @@ using Horeca.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Models.MenuCards;
+using Horeca.MVC.Models.Dishes;
+using Horeca.Shared.Dtos.MenuCards;
+using Horeca.MVC.Models.Menus;
 
 namespace Horeca.MVC.Controllers
 {
@@ -68,6 +71,60 @@ namespace Horeca.MVC.Controllers
             else
             {
                 return View(menuCard);
+            }
+        }
+
+        public IActionResult CreateDish(int id)
+        {
+            var model = new DishViewModel();
+
+            TempData["Id"] = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateDish(int id, DishViewModel dish)
+        {
+            if (ModelState.IsValid)
+            {
+                MutateDishMenuCardDto result = MenuCardMapper.MapCreateDish(id, dish);
+
+                menuCardService.AddMenuCardDish(id, result);
+                Thread.Sleep(200);
+
+                return RedirectToAction("Detail", new { id = id });
+            }
+            else
+            {
+                return View(dish);
+            }
+        }
+
+        public IActionResult CreateMenu(int id)
+        {
+            var model = new MenuViewModel();
+
+            TempData["Id"] = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateMenu(int id, MenuViewModel menu)
+        {
+            if (ModelState.IsValid)
+            {
+                MutateMenuMenuCardDto result = MenuCardMapper.MapCreateMenu(id, menu);
+
+                menuCardService.AddMenuCardMenu(id, result);
+                Thread.Sleep(200);
+
+                return RedirectToAction("Detail", new { id = id });
+            }
+            else
+            {
+                return View(menu);
             }
         }
 

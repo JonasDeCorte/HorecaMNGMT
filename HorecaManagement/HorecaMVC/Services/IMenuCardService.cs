@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.MenuCards;
 
 namespace Horeca.MVC.Services
 {
@@ -7,6 +8,8 @@ namespace Horeca.MVC.Services
         public IEnumerable<MenuCard> GetMenuCards();
         public MenuCard GetMenuCardById(int id);
         public void AddMenuCard(MenuCard menuCard);
+        public void AddMenuCardDish(int id, MutateDishMenuCardDto dish);
+        public void AddMenuCardMenu(int id, MutateMenuMenuCardDto menu);
         public void DeleteMenuCard(int id);
         public void UpdateMenuCard(MenuCard menuCard);
     }

@@ -63,6 +63,18 @@ namespace Horeca.MVC.Services
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}", menuCard);
         }
 
+        public void AddMenuCardDish(int id, MutateDishMenuCardDto dish)
+        {
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
+                $"{ClassConstants.Dishes}", dish);
+        }
+
+        public void AddMenuCardMenu(int id, MutateMenuMenuCardDto menu)
+        {
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
+                $"{ClassConstants.Menus}", menu);
+        }
+
         public void DeleteMenuCard(int id)
         {
             httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
