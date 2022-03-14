@@ -1,19 +1,15 @@
-﻿@{
+﻿@model Horeca.MVC.Models.MenuCards.MenuCardDetailViewModel
+
+@{
     ViewData["Title"] = "Menu Card Detail";
 }
 
 <div class="text-center">
     <div class="d-flex">
         <div class="d-flex flex-column">
-            <h1 class="display-4">Menu Card</h1>
+            <h1 class="display-4">@Model.Name</h1>
             <table class="table">
                 <tbody>
-                    <tr class="d-flex flex-column">
-                        <th scope="col">Description</th>
-                        <td scope="row">
-                            this is a description of a menu card yes
-                        </td>
-                    </tr>
                     <tr class="d-flex flex-column">
                         <th scope="col">Dishes</th>
                         <td scope="row">
@@ -26,21 +22,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Fries</td>
-                                        <td>Appetizer</td>
-                                        <td>Fries</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Fries</td>
-                                        <td>Main Course</td>
-                                        <td>Fries</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Fries</td>
-                                        <td>Dessert</td>
-                                        <td>Fries</td>
-                                    </tr>
+                                    @foreach (var item in @Model.Dishes)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.DishType</td>
+                                            <td>@item.Category</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </td>
@@ -57,14 +46,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Just fries</td>
-                                        <td>
-                                            This is a menu where every dish is fries. What drink do you want? Fries. What dessert? Fries.
-                                            Which appetizer? Believe it or not, fries.
-                                        </td>
-                                        <td>Fries</td>
-                                    </tr>
+                                    @foreach (var item in @Model.Menus)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.Category</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </td>

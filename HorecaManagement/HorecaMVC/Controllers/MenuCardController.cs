@@ -35,6 +35,7 @@ namespace Horeca.MVC.Controllers
         public IActionResult Detail(int id)
         {
             MenuCard menuCard = menuCardService.GetMenuCardById(id);
+
             if (menuCard.Name == null)
             {
                 return View("NotFound");

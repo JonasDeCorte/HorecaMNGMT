@@ -56,9 +56,9 @@
                     <th scope="row">@i</th>
                     <td>@Model.MenuCards[i].Name</td>
                     <td>
-                        <a asp-action="Detail" asp-route-id="1" class="btn btn-primary">Details</a>
+                        <a asp-action="Detail" asp-route-id="@Model.MenuCards[i].Id" class="btn btn-primary">Details</a>
                         <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
+                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#deleteModal" data-id="1">
                             Delete
                         </button>

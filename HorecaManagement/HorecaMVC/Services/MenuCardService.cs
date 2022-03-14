@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Constants;
+﻿using Horeca.MVC.Models.Mappers;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.MenuCards;
 using Newtonsoft.Json;
@@ -24,9 +25,27 @@ namespace Horeca.MVC.Services
         }
         public MenuCard GetMenuCardById(int id)
         {
-            var menu = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
+            var menu = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
             var result = JsonConvert.DeserializeObject<MenuCard>(menu.Result.Content.ReadAsStringAsync().Result);
+
             var listResult = GetMenuCardListsById(id);
+            var menus = listResult.Menus.Select(x => new Menu
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Category = x.Category,
+                Description = x.Description
+            });
+            var dishes = listResult.Dishes.Select(x => new Dish
+            {
+                Id = x.Id,
+                Name = x.Name,
+                DishType = x.DishType,
+                Category = x.Category
+            });
+
+            result.Menus.AddRange(menus);
+            result.Dishes.AddRange(dishes);
 
             return result;
         }
@@ -36,7 +55,6 @@ namespace Horeca.MVC.Services
             var menuCardList = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}" +
                 $"/{ClassConstants.Menus}/{ClassConstants.Dishes}");
             var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(menuCardList.Result.Content.ReadAsStringAsync().Result);
-
             return result;
         }
 
