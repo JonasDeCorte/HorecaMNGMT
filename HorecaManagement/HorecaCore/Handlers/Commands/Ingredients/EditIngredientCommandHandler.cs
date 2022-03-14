@@ -44,6 +44,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
                 Name = request.Model.Unit.Name
             };
             ingredient.Unit = modelUnit ?? ingredient.Unit;
+            ingredient.Unit.IsEnabled = true;
             repository.Units.Update(ingredient.Unit);
             repository.Ingredients.Update(ingredient);
 

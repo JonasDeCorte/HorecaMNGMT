@@ -110,6 +110,7 @@ namespace Horeca.API.Controllers
         /// add a dish to an existing menu
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         /// <response code="201">Success adding a new dish to an menu Dish</response>
         /// <response code="400">Bad request</response
@@ -117,8 +118,9 @@ namespace Horeca.API.Controllers
         [Route("{id}/dishes")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> AddDishToMenu([FromBody] MutateDishMenuDto model)
+        public async Task<IActionResult> AddDishToMenu([FromRoute] int id, [FromBody] MutateDishMenuDto model)
         {
+            model.Id = id;
             var command = new AddDishMenuCommand(model);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.Created, response);
@@ -145,7 +147,8 @@ namespace Horeca.API.Controllers
         /// <summary>
         ///  Delete an existing dish from a menu
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="id"></param>
+        /// <param name="dishId"></param>
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting Dish from a menu </response>
         /// <response code="400">Bad request</response
@@ -153,9 +156,9 @@ namespace Horeca.API.Controllers
         [Route("{id}/dishes/{dishId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> DeleteDishByMenuId(DeleteDishMenuDto model)
+        public async Task<IActionResult> DeleteDishByMenuId([FromRoute] int id, [FromRoute] int dishId)
         {
-            var command = new DeleteDishMenuCommand(model);
+            var command = new DeleteDishMenuCommand(new DeleteDishMenuDto { DishId = dishId, MenuId = id });
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
         }
@@ -164,6 +167,8 @@ namespace Horeca.API.Controllers
         /// edit an existing dish from an existing menu
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="dishId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         /// <response code="201">Success editing an existing dish from an existing menu</response>
         /// <response code="400">Bad request</response
@@ -171,8 +176,10 @@ namespace Horeca.API.Controllers
         [Route("{id}/dishes/{dishId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> EditDishFromMenu([FromBody] MutateDishMenuDto model)
+        public async Task<IActionResult> EditDishFromMenu([FromRoute] int id, [FromRoute] int dishId, [FromBody] MutateDishMenuDto model)
         {
+            model.Id = id;
+            model.Dish.Id = dishId;
             var command = new EditDishMenuCommand(model);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.Created, response);

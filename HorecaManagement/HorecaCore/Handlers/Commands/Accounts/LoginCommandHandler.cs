@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
-    public class LoginCommand : IRequest<object>
+    public class LoginCommand : IRequest<LoginResult>
     {
         public LoginCommand(LoginUserDto model)
         {
@@ -18,22 +18,23 @@ namespace Horeca.Core.Handlers.Commands.Accounts
         public LoginUserDto Model { get; }
     }
 
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, object>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+
         private readonly IConfiguration configuration;
 
-        public LoginCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public LoginCommandHandler(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             this.userManager = userManager;
-            this.roleManager = roleManager;
+
             this.configuration = configuration;
         }
 
-        public async Task<object> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByNameAsync(request.Model.Username);
+            LoginResult result = null;
             if (user != null && await userManager.CheckPasswordAsync(user, request.Model.Password))
             {
                 var userRoles = await userManager.GetRolesAsync(user);
@@ -51,13 +52,13 @@ namespace Horeca.Core.Handlers.Commands.Accounts
 
                 var token = AccountTokens.GetToken(authClaims, configuration);
 
-                return new
+                result = new LoginResult
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Expiration = token.ValidTo
                 };
             }
-            return null;
+            return result;
         }
     }
 }

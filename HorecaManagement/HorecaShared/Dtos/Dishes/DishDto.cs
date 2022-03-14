@@ -1,5 +1,4 @@
-﻿using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Dtos.Ingredients;
+﻿using Horeca.Shared.Dtos.Ingredients;
 
 namespace Horeca.Shared.Dtos.Dishes
 {
@@ -22,15 +21,11 @@ namespace Horeca.Shared.Dtos.Dishes
         public int IngredientId { get; set; }
     }
 
-    public class DishDtoDetailDto : DishDto
-    {
-        public List<Ingredient>? Ingredients { get; set; }
-    }
-
     public class DishIngredientsByIdDto
     {
         public int Id { get; set; }
-        public List<Ingredient>? Ingredients { get; set; }
+
+        public List<IngredientDto>? Ingredients { get; set; }
     }
 
     public class MutateIngredientByDishDto

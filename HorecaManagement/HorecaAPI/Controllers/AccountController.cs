@@ -57,8 +57,9 @@ namespace Horeca.API.Controllers
 
         [HttpPost]
         [Route("User/{username}/Roles")]
-        public async Task<IActionResult> AddRolesToUser([FromBody] MutateRolesUserDto model)
+        public async Task<IActionResult> AddRolesToUser([FromRoute] string username, [FromBody] MutateRolesUserDto model)
         {
+            model.Username = username;
             var command = new AddRolesToUserCommand(model);
             var response = await mediator.Send(command);
 
@@ -67,8 +68,9 @@ namespace Horeca.API.Controllers
 
         [HttpDelete]
         [Route("User/{username}/Roles")]
-        public async Task<IActionResult> DeleteRolesFromUser([FromBody] MutateRolesUserDto model)
+        public async Task<IActionResult> DeleteRolesFromUser([FromRoute] string username, [FromBody] MutateRolesUserDto model)
         {
+            model.Username = username;
             var command = new DeleteRolesFromUserCommand(model);
             var response = await mediator.Send(command);
 
