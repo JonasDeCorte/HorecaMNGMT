@@ -16,9 +16,10 @@
                             <table class="table" style="table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Dish Type</th>
-                                        <th scope="col">Category</th>
+                                        <th scope="col" class="col-3">Name</th>
+                                        <th scope="col" class="col-3">Dish Type</th>
+                                        <th scope="col" class="col-3">Category</th>
+                                        <th scope="col" class="col-3">Options</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -28,6 +29,12 @@
                                             <td>@item.Name</td>
                                             <td>@item.DishType</td>
                                             <td>@item.Category</td>
+                                            <td>
+                                                <button id="toDeleteDishModal" type="button" class="modalbutton btn btn-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                                    Delete
+                                                </button>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -40,9 +47,10 @@
                             <table class="table" style="table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Category</th>
+                                        <th scope="col" class="col-3">Name</th>
+                                        <th scope="col" class="col-4">Description</th>
+                                        <th scope="col" class="col-2">Category</th>
+                                        <th scope="col" class="col-3">Options</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,6 +60,12 @@
                                             <td>@item.Name</td>
                                             <td>@item.Description</td>
                                             <td>@item.Category</td>
+                                            <td>
+                                                <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                                    Delete
+                                                </button>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -73,3 +87,43 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete item from Menu Card</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this item from the Menu Card?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteButton" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteDishModal",OpenModalDeleteDish);
+       $(document).on("click","#toDeleteMenuModal",OpenModalDeleteMenu);
+    });
+
+    function OpenModalDeleteDish(){
+       var menuCardId = @Model.Id;
+       var dishId = $(this).data("id");
+       $('#deleteButton').attr('href', "/MenuCard/DeleteDish/" + menuCardId + "/" + dishId)
+       $("#deleteModal").modal();
+    }
+
+    function OpenModalDeleteMenu(){
+       var menuCardId = @Model.Id;
+       var menuId = $(this).data("id");
+       $('#deleteButton').attr('href', "/MenuCard/DeleteMenu/" + menuCardId + "/" + menuId)
+       $("#deleteModal").modal();
+    }
+</script>

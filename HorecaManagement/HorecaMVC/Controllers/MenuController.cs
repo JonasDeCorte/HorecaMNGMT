@@ -67,7 +67,6 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-            Console.WriteLine(menuId);
 
             DeleteDishMenuDto dish = new DeleteDishMenuDto();
             dish.MenuId = menuId;

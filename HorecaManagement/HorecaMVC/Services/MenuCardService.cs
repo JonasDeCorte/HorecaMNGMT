@@ -3,6 +3,7 @@ using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.MenuCards;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Horeca.MVC.Services
 {
@@ -78,6 +79,24 @@ namespace Horeca.MVC.Services
         public void DeleteMenuCard(int id)
         {
             httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
+        }
+
+        public void DeleteMenuCardDish(DeleteDishMenuCardDto dish)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{dish.MenuCardId}/{ClassConstants.Dishes}/" +
+                $"{dish.DishId}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
+        }
+
+        public void DeleteMenuCardMenu(DeleteMenuMenuCardDto menu)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{menu.MenuCardId}/{ClassConstants.Menus}/" +
+                $"{menu.MenuId}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void UpdateMenuCard(MenuCard menuCard)

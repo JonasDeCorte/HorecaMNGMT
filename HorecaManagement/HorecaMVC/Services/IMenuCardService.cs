@@ -11,6 +11,8 @@ namespace Horeca.MVC.Services
         public void AddMenuCardDish(int id, MutateDishMenuCardDto dish);
         public void AddMenuCardMenu(int id, MutateMenuMenuCardDto menu);
         public void DeleteMenuCard(int id);
+        public void DeleteMenuCardDish(DeleteDishMenuCardDto dish);
+        public void DeleteMenuCardMenu(DeleteMenuMenuCardDto menu);
         public void UpdateMenuCard(MenuCard menuCard);
     }
 }
