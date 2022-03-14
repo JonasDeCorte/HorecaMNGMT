@@ -75,5 +75,18 @@ namespace Horeca.MVC.Controllers
         {
             return View();
         }
+
+        public IActionResult Delete(int id)
+        {
+            if (id == null)
+            {
+                return View("NotFound");
+            }
+
+            menuCardService.DeleteMenuCard(id);
+            Thread.Sleep(200);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

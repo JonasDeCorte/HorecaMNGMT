@@ -65,7 +65,7 @@ namespace Horeca.MVC.Services
 
         public void DeleteMenuCard(int id)
         {
-            throw new NotImplementedException();
+            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
         }
 
         public void UpdateMenuCard(MenuCard menuCard)
