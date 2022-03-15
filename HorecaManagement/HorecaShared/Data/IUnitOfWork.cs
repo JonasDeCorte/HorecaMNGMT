@@ -11,9 +11,6 @@ namespace Horeca.Shared.Data
         IMenuRepository Menus { get; }
         IMenuCardRepository MenuCards { get; }
 
-        IReservationRepository Reservations { get; }
-        ITableRepository Tables { get; }
-
         Task CommitAsync();
     }
 }
