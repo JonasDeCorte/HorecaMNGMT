@@ -4,6 +4,7 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
     {
         private readonly IUnitOfWork repository;
         private readonly IValidator<MutateMenuCardDto> validator;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public CreateMenuCardCommandHandler(IUnitOfWork repository, IValidator<MutateMenuCardDto> validator)
         {
@@ -35,10 +37,14 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(CreateMenuCardCommand request, CancellationToken cancellationToken)
         {
+            logger.Info("trying to create {object} with Id: {Id}", nameof(MenuCard), request.Model.Id);
+
             var result = validator.Validate(request.Model);
 
             if (!result.IsValid)
             {
+                logger.Error("Invalid model with errors: ", result.Errors);
+
                 var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
                 throw new InvalidRequestBodyException
                 {
@@ -54,6 +60,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             repository.MenuCards.Add(entity);
 
             await repository.CommitAsync();
+            logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
             return request.Model.Id;
         }

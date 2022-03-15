@@ -72,7 +72,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            logger.Info("requesting to get a Menu");
+            logger.Info("requesting to get a Menu by id ");
 
             var query = new GetMenuByIdQuery(id);
             var response = await _mediator.Send(query);

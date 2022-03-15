@@ -28,7 +28,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
         public async Task<int> Handle(EditMenuCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
+            logger.Info("trying to edit {object} with Id: {Id}", request.Model, request.Model.Id);
 
             var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
 

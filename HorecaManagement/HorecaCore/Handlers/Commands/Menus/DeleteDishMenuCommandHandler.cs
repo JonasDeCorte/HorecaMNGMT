@@ -44,7 +44,6 @@ namespace Horeca.Core.Handlers.Commands.Menus
             await repository.CommitAsync();
 
             logger.Info("deleted {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menu, request.Model.MenuId);
-            ;
 
             return request.Model.DishId;
         }
