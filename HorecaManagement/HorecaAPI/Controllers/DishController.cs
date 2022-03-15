@@ -4,6 +4,7 @@ using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Dishes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using System.Net;
 
 namespace HorecaAPI.Controllers
@@ -13,6 +14,7 @@ namespace HorecaAPI.Controllers
     public class DishController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public DishController(IMediator mediator)
         {

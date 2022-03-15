@@ -2,6 +2,7 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Ingredients
 {
@@ -14,6 +15,7 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllIngrdedientsQueryHandler(IUnitOfWork repository, IMapper mapper)
 
@@ -26,6 +28,8 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
 
         {
             var entities = await Task.FromResult(repository.Ingredients.GetAllIncludingUnit());
+            logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(IngredientDto));
+
             return _mapper.Map<IEnumerable<IngredientDto>>(entities);
         }
     }

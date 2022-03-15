@@ -1,7 +1,9 @@
 ﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Ingredients
 {
@@ -18,6 +20,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
     public class EditIngredientCommandHandler : IRequestHandler<EditIngredientCommand, int>
     {
         private readonly IUnitOfWork repository;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public EditIngredientCommandHandler(IUnitOfWork repository)
         {
@@ -26,10 +29,14 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
         public async Task<int> Handle(EditIngredientCommand request, CancellationToken cancellationToken)
         {
+            logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
+
             var ingredient = repository.Ingredients.GetIngredientIncludingUnit(request.Model.Id);
 
             if (ingredient is null)
             {
+                logger.Error("{Object} with Id: {id} does not exist", nameof(ingredient), request.Model.Id);
+
                 throw new EntityNotFoundException("Entity does not exist");
             }
 
@@ -49,6 +56,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             repository.Ingredients.Update(ingredient);
 
             await repository.CommitAsync();
+            logger.Info("updated {@object} with Id: {id}", ingredient, ingredient.Id);
 
             return request.Model.Id;
         }

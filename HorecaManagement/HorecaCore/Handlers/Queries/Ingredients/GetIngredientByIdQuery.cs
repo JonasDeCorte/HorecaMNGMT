@@ -3,6 +3,7 @@ using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Ingredients
 {
@@ -19,6 +20,7 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
         {
             private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
+            private static Logger logger = LogManager.GetCurrentClassLogger();
 
             public GetIngredientByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
@@ -32,8 +34,11 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
 
                 if (ingredient == null)
                 {
+                    logger.Error("{object} with Id: {id} is null", nameof(ingredient), request.IngredientId);
+
                     throw new EntityNotFoundException($"No Ingredient found for Id {request.IngredientId}");
                 }
+                logger.Info("returning {@object} with id: {id}", ingredient, request.IngredientId);
 
                 return _mapper.Map<IngredientDto>(ingredient);
             }

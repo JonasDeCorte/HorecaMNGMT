@@ -4,6 +4,7 @@ using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using System.Net;
 
 namespace Horeca.API.Controllers
@@ -13,6 +14,7 @@ namespace Horeca.API.Controllers
     public class IngredientsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public IngredientsController(IMediator mediator)
         {
@@ -30,6 +32,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
+            logger.Info("requesting all ingredients");
             var query = new GetAllIngredientsQuery();
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -47,6 +50,8 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateIngredientDto model)
         {
+            logger.Info("requesting to create an ingredient");
+
             var command = new CreateIngredientCommand(model);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.Created, response);
@@ -64,6 +69,8 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateIngredientDto model)
         {
+            logger.Info("requesting to update an ingredient");
+
             var command = new EditIngredientCommand(model);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
@@ -82,6 +89,8 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
+            logger.Info("requesting to get an ingredient");
+
             var query = new GetIngredientByIdQuery(id);
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -100,6 +109,8 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
+            logger.Info("requesting to delete an ingredient");
+
             var command = new DeleteIngredientCommand(id);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
