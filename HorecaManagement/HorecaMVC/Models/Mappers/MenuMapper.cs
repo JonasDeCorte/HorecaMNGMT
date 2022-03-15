@@ -30,7 +30,6 @@ namespace Horeca.MVC.Models.Mappers
                 Description = menu.Description,
                 Category = menu.Category,
             };
-
             foreach (var dish in menu.Dishes)
             {
                 DishDto dishDto = new DishDto

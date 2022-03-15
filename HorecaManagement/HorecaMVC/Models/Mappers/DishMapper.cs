@@ -11,27 +11,28 @@ namespace Horeca.MVC.Models.Mappers
     {
         public static DishViewModel MapModel(DishDto dish)
         {
-            DishViewModel model = new DishViewModel();
-
-            model.Id = dish.Id;
-            model.Name = dish.Name;
-            model.Category = dish.Category;
-            model.DishType = dish.DishType;
-            model.Description = dish.Description;
+            DishViewModel model = new DishViewModel
+            {
+                Id = dish.Id,
+                Name = dish.Name,
+                Category = dish.Category,
+                DishType = dish.DishType,
+                Description = dish.Description
+            };
 
             return model;
         }
 
         public static DishDetailViewModel MapDetailModel(Dish dish)
         {
-            DishDetailViewModel model = new DishDetailViewModel();
-
-            model.Id = dish.Id;
-            model.Name = dish.Name;
-            model.Category = dish.Category;
-            model.DishType = dish.DishType;
-            model.Description = dish.Description;
-
+            DishDetailViewModel model = new DishDetailViewModel
+            {
+                Id = dish.Id,
+                Name = dish.Name,
+                Category = dish.Category,
+                DishType = dish.DishType,
+                Description = dish.Description
+            };
             foreach (var ingredient in dish.Ingredients)
             {
                 IngredientDto ingredientDto = new IngredientDto
@@ -53,20 +54,6 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
-        public static MutateDishDto MapMutateDish(DishViewModel dishModel, DishDto dish)
-        {
-            MutateDishDto result = new MutateDishDto
-            {
-                Id = dish.Id,
-                Name = dishModel.Name,
-                DishType = dishModel.DishType,
-                Description = dishModel.Description,
-                Category = dishModel.Category,
-            };
-
-            return result;
-        }
-
         public static Dish MapDishDetail(DishDto dishDto, DishIngredientsByIdDto ingredientList)
         {
             Dish dish = new Dish()
@@ -77,7 +64,6 @@ namespace Horeca.MVC.Models.Mappers
                 DishType = dishDto.DishType,
                 Description = dishDto.Description,
             };
-
             foreach(var ingredientDto in ingredientList.Ingredients)
             {
                 Ingredient ingredient = new Ingredient
@@ -97,16 +83,34 @@ namespace Horeca.MVC.Models.Mappers
             return dish;
         }
 
+        public static MutateDishDto MapMutateDish(DishViewModel dishModel, DishDto dish)
+        {
+            MutateDishDto result = new MutateDishDto
+            {
+                Id = dish.Id,
+                Name = dishModel.Name,
+                DishType = dishModel.DishType,
+                Description = dishModel.Description,
+                Category = dishModel.Category,
+            };
+
+            return result;
+        }
+
         public static MutateIngredientByDishDto MapCreateIngredient(int id, IngredientViewModel ingredient)
         {
-            MutateIngredientByDishDto result = new MutateIngredientByDishDto();
-            result.Id = id;
-            result.Ingredient = new MutateIngredientDto();
-            result.Ingredient.Id = ingredient.Id;
-            result.Ingredient.Name = ingredient.Name;
-            result.Ingredient.BaseAmount = ingredient.BaseAmount;
-            result.Ingredient.IngredientType = ingredient.IngredientType;
-            result.Ingredient.Unit = ingredient.Unit;
+            MutateIngredientByDishDto result = new MutateIngredientByDishDto
+            {
+                Id = id,
+                Ingredient = new MutateIngredientDto
+                {
+                    Id = ingredient.Id,
+                    Name = ingredient.Name,
+                    BaseAmount = ingredient.BaseAmount,
+                    IngredientType = ingredient.IngredientType,
+                    Unit = ingredient.Unit
+                }
+            };
 
             return result;
         }

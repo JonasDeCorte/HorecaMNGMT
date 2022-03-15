@@ -1,5 +1,4 @@
 ﻿using Horeca.MVC.Models.Ingredients;
-using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.Units;
 
