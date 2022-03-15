@@ -39,13 +39,13 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             if (request.Model.BaseAmount != ingredient.BaseAmount)
                 ingredient.BaseAmount = request.Model.BaseAmount;
 
-            var modelUnit = new Shared.Data.Entities.Unit
-            {
-                Name = request.Model.Unit.Name
-            };
+            var modelUnit = repository.Units.Get(request.Model.Unit.Id);
+            modelUnit.Name = request.Model.Unit.Name ?? modelUnit.Name;
+
             ingredient.Unit = modelUnit ?? ingredient.Unit;
             ingredient.Unit.IsEnabled = true;
-            repository.Units.Update(ingredient.Unit);
+
+            repository.Units.Update(modelUnit);
             repository.Ingredients.Update(ingredient);
 
             await repository.CommitAsync();
