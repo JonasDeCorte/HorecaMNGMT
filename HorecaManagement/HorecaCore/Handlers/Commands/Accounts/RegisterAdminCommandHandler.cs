@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Horeca.Core.Handlers.Commands.Accounts;
 
-
 public class RegisterAdminCommand : IRequest<int>
 {
     public RegisterAdminCommand(RegisterUserDto model)
@@ -19,13 +18,11 @@ public class RegisterAdminCommand : IRequest<int>
 
 public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand, int>
 {
-    private readonly IUnitOfWork repository;
     private readonly UserManager<ApplicationUser> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
 
-    public RegisterAdminCommandHandler(IUnitOfWork repository, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public RegisterAdminCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
-        this.repository = repository;
         this.userManager = userManager;
         this.roleManager = roleManager;
     }
@@ -44,7 +41,7 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
         };
         var result = await userManager.CreateAsync(user, request.Model.Password);
         if (!result.Succeeded)
-            throw new ArgumentNullException("Creating user failed");
+            throw new ArgumentNullException($"Creating {nameof(user)} failed");
 
         if (!await roleManager.RoleExistsAsync("Admin"))
             await roleManager.CreateAsync(new IdentityRole("Admin"));

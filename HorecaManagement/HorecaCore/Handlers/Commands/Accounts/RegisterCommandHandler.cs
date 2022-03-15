@@ -20,13 +20,11 @@ namespace Horeca.Core.Handlers.Commands.Accounts
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration configuration;
 
-        public RegisterCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public RegisterCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
-            this.configuration = configuration;
         }
 
         public async Task<int> Handle(RegisterCommand request, CancellationToken cancellationToken)

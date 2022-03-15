@@ -45,6 +45,7 @@ namespace Horeca.Core.Handlers.Commands.Reservations
                     Errors = errors
                 };
             }
+
             Table table = repository.Tables.Get(request.Model.TableId);
             if (table is not null)
                 throw new EntityNotFoundException($"{nameof(table)} with Id: {request.Model.Id}. Not found.");
@@ -58,6 +59,9 @@ namespace Horeca.Core.Handlers.Commands.Reservations
                 Table = table,
                 TimeOfReservation = request.Model.TimeOfReservation,
             };
+            entity.Table.HasReservation = true;
+            repository.Tables.Update(entity.Table);
+
             repository.Reservations.Add(entity);
             await repository.CommitAsync();
 

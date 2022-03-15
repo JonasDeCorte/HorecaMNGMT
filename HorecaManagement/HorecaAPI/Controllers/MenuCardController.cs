@@ -202,7 +202,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> EditMenuFromMenuCard([FromRoute] int id, [FromRoute] int menuId, [FromBody] MutateMenuMenuCardDto model)
         {
             model.MenuCardId = id;
-            model.Menu.Id = id;
+            model.Menu.Id = menuId;
             var command = new EditMenuMenuCardCommand(model);
             var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.Created, response);
