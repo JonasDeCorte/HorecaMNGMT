@@ -3,6 +3,7 @@ using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Horeca.Core.Handlers.Queries.Menus
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetDishesByMenuIdHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -34,11 +36,18 @@ namespace Horeca.Core.Handlers.Queries.Menus
 
         public async Task<MenuDishesByIdDto> Handle(GetDishesByMenuIdQuery request, CancellationToken cancellationToken)
         {
+            logger.Info("trying to return {object} with id: {id}", nameof(MenuDishesByIdDto), request.MenuId);
+
             var menu = await Task.FromResult(repository.Menus.GetMenuIncludingDependencies(request.MenuId));
             if (menu is null)
             {
+                logger.Error("{object} with Id: {id} is null", nameof(menu), request.MenuId);
+
                 throw new EntityNotFoundException($"No Menu found for Id {request.MenuId}");
             }
+
+            logger.Info("returning {@object} with id: {id}", menu, request.MenuId);
+
             return mapper.Map<MenuDishesByIdDto>(menu);
         }
     }

@@ -31,7 +31,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
             public async Task<int> Handle(CreateDishCommand request, CancellationToken cancellationToken)
             {
-                logger.Info("trying to create {@object} with Id: {Id}", nameof(Dish), request.Model.Id);
+                logger.Info("trying to create {object} with Id: {Id}", nameof(Dish), request.Model.Id);
 
                 var result = validator.Validate(request.Model);
 

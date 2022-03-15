@@ -31,7 +31,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.DishId);
 
             var ingredient = repository.Ingredients.Get(request.Model.IngredientId);
-            logger.Info("trying to delete {@object} with id {ingredId} from {@dish} with Id: {id}", ingredient, request.Model.IngredientId, dish, request.Model.DishId);
+            logger.Info("trying to delete {@object} with id {objId} from {@dish} with Id: {id}", ingredient, request.Model.IngredientId, dish, request.Model.DishId);
 
             dish.Ingredients.Remove(ingredient);
             repository.Ingredients.Delete(ingredient.Id);

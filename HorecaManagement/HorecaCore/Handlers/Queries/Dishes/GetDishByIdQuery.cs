@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 
             public async Task<DishDto> Handle(GetDishByIdQuery request, CancellationToken cancellationToken)
             {
-                logger.Info("trying to return {@object} with id: {id}", nameof(DishDto), request.DishId);
+                logger.Info("trying to return {object} with id: {id}", nameof(DishDto), request.DishId);
 
                 var dish = await Task.FromResult(repository.Dishes.Get(request.DishId));
 

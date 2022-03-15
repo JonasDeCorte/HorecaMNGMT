@@ -130,7 +130,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetIngredientsByDishId(int id)
         {
-            logger.Info("requesting a dish by id  with all his ingredients ");
+            logger.Info("requesting a dish by id  with all its ingredients ");
 
             var query = new GetIngredientsByDishIdQuery(id);
             var response = await _mediator.Send(query);
