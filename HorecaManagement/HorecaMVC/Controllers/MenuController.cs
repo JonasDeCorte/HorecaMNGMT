@@ -21,6 +21,11 @@ namespace Horeca.MVC.Controllers
         {
             IEnumerable<Menu> menus = await menuService.GetMenus();
 
+            if (menus == null)
+            {
+                return View("NotFound");
+            }
+
             MenuListViewModel listModel = new MenuListViewModel();
 
             foreach (var item in menus)
@@ -48,11 +53,6 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return View("NotFound");
-            }
-
             menuService.DeleteMenu(id);
 
             return RedirectToAction(nameof(Index));
@@ -61,11 +61,6 @@ namespace Horeca.MVC.Controllers
         [Route("/Menu/DeleteDish/{menuId}/{id}")]
         public IActionResult DeleteDish(int menuId, int id)
         {
-            if (menuId == 0 || id == null)
-            {
-                return View("NotFound");
-            }
-
             DeleteDishMenuDto dish = new DeleteDishMenuDto();
             dish.MenuId = menuId;
             dish.DishId = id;

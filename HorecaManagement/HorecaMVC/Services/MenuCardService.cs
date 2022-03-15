@@ -21,12 +21,24 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<MenuCard>> GetMenuCards()
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var result = JsonConvert.DeserializeObject<IEnumerable<MenuCard>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
         public async Task<MenuCard> GetMenuCardById(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var result = JsonConvert.DeserializeObject<MenuCard>(response.Content.ReadAsStringAsync().Result);
 
             var listResult = await GetMenuCardListsById(id);
@@ -55,6 +67,12 @@ namespace Horeca.MVC.Services
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}" +
                 $"/{ClassConstants.Menus}/{ClassConstants.Dishes}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(response.Content.ReadAsStringAsync().Result);
             return result;
         }

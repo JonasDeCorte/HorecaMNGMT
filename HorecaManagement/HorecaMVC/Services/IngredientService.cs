@@ -20,6 +20,12 @@ namespace Horeca.MVC.Services
         {
             HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var result = JsonConvert.DeserializeObject<IEnumerable<Ingredient>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }

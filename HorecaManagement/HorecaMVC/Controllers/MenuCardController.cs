@@ -22,6 +22,11 @@ namespace Horeca.MVC.Controllers
         {
             IEnumerable<MenuCard> menuCards = await menuCardService.GetMenuCards();
 
+            if (menuCards == null)
+            {
+                return View("NotFound");
+            }
+
             MenuCardListViewModel listModel = new MenuCardListViewModel();
 
             foreach (var item in menuCards)
@@ -38,7 +43,7 @@ namespace Horeca.MVC.Controllers
         {
             MenuCard menuCard = await menuCardService.GetMenuCardById(id);
 
-            if (menuCard.Name == null)
+            if (menuCard == null)
             {
                 return View("NotFound");
             }
@@ -151,11 +156,6 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return View("NotFound");
-            }
-
             menuCardService.DeleteMenuCard(id);
 
             return RedirectToAction(nameof(Index));

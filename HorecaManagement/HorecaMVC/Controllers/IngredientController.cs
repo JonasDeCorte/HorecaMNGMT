@@ -19,6 +19,10 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Ingredient> ingredients = await ingredientService.GetIngredients();
+            if (ingredients == null)
+            {
+                return View("NotFound");
+            }
 
             IngredientListViewModel listModel = new IngredientListViewModel();
 

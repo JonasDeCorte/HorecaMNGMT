@@ -22,6 +22,10 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Dish> dishes = await dishService.GetDishes();
+            if (dishes == null)
+            {
+                return View("NotFound");
+            }
 
             DishListViewModel listModel = new DishListViewModel();
 

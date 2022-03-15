@@ -21,6 +21,12 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<Dish>> GetDishes()
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var result = JsonConvert.DeserializeObject<IEnumerable<Dish>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
