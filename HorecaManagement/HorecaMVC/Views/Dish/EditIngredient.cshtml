@@ -1,0 +1,38 @@
+﻿@model Horeca.MVC.Models.Ingredients.MutateIngredientViewModel
+
+@{
+    ViewData["Title"] = "Edit Dish Ingredient";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <div>
+        <form asp-action="EditIngredient" class="w-75 mx-auto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="IngredientType" class="control-label"></label>
+                <input asp-for="IngredientType" class="form-control" />
+                <span asp-validation-for="IngredientType" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="BaseAmount" class="control-label"></label>
+                <input asp-for="BaseAmount" class="form-control" />
+                <span asp-validation-for="BaseAmount" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="Unit.Name" class="control-label">Unit</label>
+                <input asp-for="Unit.Name" class="form-control" />
+                <span asp-validation-for="Unit.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Detail" asp-route-id="@Model.DishId" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

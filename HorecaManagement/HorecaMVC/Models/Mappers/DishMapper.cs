@@ -97,11 +97,11 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateIngredientByDishDto MapCreateIngredient(int id, IngredientViewModel ingredient)
+        public static MutateIngredientByDishDto MapMutateIngredient(MutateIngredientViewModel ingredient)
         {
             MutateIngredientByDishDto result = new MutateIngredientByDishDto
             {
-                Id = id,
+                Id = ingredient.DishId,
                 Ingredient = new MutateIngredientDto
                 {
                     Id = ingredient.Id,
@@ -109,6 +109,25 @@ namespace Horeca.MVC.Models.Mappers
                     BaseAmount = ingredient.BaseAmount,
                     IngredientType = ingredient.IngredientType,
                     Unit = ingredient.Unit
+                }
+            };
+
+            return result;
+        }
+
+        public static MutateIngredientViewModel MapMutateIngredientModel(int dishId, IngredientDto ingredient)
+        {
+            MutateIngredientViewModel result = new MutateIngredientViewModel
+            {
+                DishId = dishId,
+                Id = ingredient.Id,
+                Name = ingredient.Name,
+                IngredientType = ingredient.IngredientType,
+                BaseAmount = ingredient.BaseAmount,
+                Unit = new UnitDto
+                {
+                    Id = ingredient.Unit.Id,
+                    Name = ingredient.Unit.Name
                 }
             };
 

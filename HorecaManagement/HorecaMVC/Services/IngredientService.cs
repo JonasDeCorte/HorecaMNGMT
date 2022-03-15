@@ -29,7 +29,7 @@ namespace Horeca.MVC.Services
         }
 
         public async Task<IngredientDto> GetIngredientById(int id)
-        {;
+        {
             HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}/{id}");
             if (!response.IsSuccessStatusCode)

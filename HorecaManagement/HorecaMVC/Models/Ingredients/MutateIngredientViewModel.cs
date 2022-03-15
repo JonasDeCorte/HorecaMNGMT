@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Ingredients
 {
-    public class IngredientViewModel
+    public class MutateIngredientViewModel
     {
+        public int DishId { get; set; }
         public int Id { get; set; }
 
         [Required]

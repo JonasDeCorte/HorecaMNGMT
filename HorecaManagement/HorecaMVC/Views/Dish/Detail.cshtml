@@ -52,8 +52,10 @@
                                     <td>@item.BaseAmount</td>
                                     <td>@item.Unit.Name</td>
                                     <td>
-                                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" data-id="@item.Id">
+                                        <a asp-action="EditIngredient" asp-route-dishId="@Model.Id" asp-route-id="@item.Id" 
+                                            class="btn btn-primary">Edit</a>
+                                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" 
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
                                             Delete
                                         </button>
                                     </td>

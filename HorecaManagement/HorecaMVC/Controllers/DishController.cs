@@ -100,21 +100,23 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult CreateIngredient(int id)
         {
-            var model = new IngredientViewModel();
-            TempData["Id"] = id;
+            var model = new MutateIngredientViewModel
+            {
+                DishId = id
+            };
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateIngredient(int id, IngredientViewModel ingredient)
+        public IActionResult CreateIngredient(MutateIngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, ingredient);
-                dishService.AddDishIngredient(id, result);
+                MutateIngredientByDishDto result = DishMapper.MapMutateIngredient(ingredient);
+                dishService.AddDishIngredient(ingredient.DishId, result);
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction("Detail", new { id = ingredient.DishId });
             }
             else
             {
@@ -146,18 +148,30 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public async Task<IActionResult> EditIngredient(int id)
+        [Route("/Dish/EditIngredient/{dishId}/{id}")]
+        public async Task<IActionResult> EditIngredient(int dishId, int id)
         {
             IngredientDto ingredient = await ingredientService.GetIngredientById(id);
-            IngredientViewModel model = IngredientMapper.MapModel(ingredient);
+            MutateIngredientViewModel model = DishMapper.MapMutateIngredientModel(dishId, ingredient);
 
             return View(model);
         }
 
+        [Route("/Dish/EditIngredient/{dishId}/{id}")]
         [HttpPost]
-        public IActionResult EditIngredient(IngredientViewModel ingredient)
+        public IActionResult EditIngredient(MutateIngredientViewModel ingredient)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                MutateIngredientByDishDto result = DishMapper.MapMutateIngredient(ingredient);
+                dishService.UpdateDishIngredient(result);
+
+                return RedirectToAction("Detail", new { id = ingredient.DishId });
+            }
+            else
+            {
+                return View(ingredient);
+            }
         }
     }
 }
