@@ -29,9 +29,9 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
         public async Task<int> Handle(EditIngredientCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
-
             var ingredient = repository.Ingredients.GetIngredientIncludingUnit(request.Model.Id);
+
+            logger.Info("trying to edit {@object} with Id: {Id}", ingredient, request.Model.Id);
 
             if (ingredient is null)
             {

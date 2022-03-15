@@ -31,9 +31,9 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
             repository.Ingredients.Delete(request.Id);
 
-            logger.Info("deleted {object} with Id: {id}", nameof(Ingredient), request.Id);
-
             await repository.CommitAsync();
+
+            logger.Info("deleted {object} with Id: {id}", nameof(Ingredient), request.Id);
 
             return request.Id;
         }

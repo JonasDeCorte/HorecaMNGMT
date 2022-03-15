@@ -32,6 +32,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
+            logger.Info("requesting all Dishes");
+
             var query = new GetAllDishesQuery();
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -49,6 +51,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateDishDto model)
         {
+            logger.Info("requesting to create a dish");
+
             var command = new CreateDishCommand(model);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.Created, response);
@@ -67,6 +71,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
+            logger.Info("requesting to get a dish");
+
             var query = new GetDishByIdQuery(id);
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -85,6 +91,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
+            logger.Info("requesting to delete a dish");
+
             var command = new DeleteDishCommand(id);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
@@ -102,6 +110,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateDishDto model)
         {
+            logger.Info("requesting to update a dish");
+
             var command = new EditDishCommand(model);
             var response = await _mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
@@ -120,6 +130,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetIngredientsByDishId(int id)
         {
+            logger.Info("requesting a dish by id  with all his ingredients ");
+
             var query = new GetIngredientsByDishIdQuery(id);
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -139,6 +151,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> AddIngredientToDish([FromRoute] int id, [FromBody] MutateIngredientByDishDto model)
         {
+            logger.Info("requesting adding an ingredient to a dish");
+
             model.Id = id;
             var command = new AddIngredientDishCommand(model);
             var response = await _mediator.Send(command);
@@ -160,6 +174,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> EditIngredientFromDish([FromRoute] int id, [FromRoute] int ingredientId, [FromBody] MutateIngredientByDishDto model)
         {
+            logger.Info("edit an existing ingredient from an existing Dish");
+
             model.Id = id;
             model.Ingredient.Id = ingredientId;
             var command = new EditIngredientDishCommand(model);
@@ -181,6 +197,8 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById([FromRoute] int id, [FromRoute] int ingredientId)
         {
+            logger.Info(" Delete an existing ingredient from a dish");
+
             var model = new DeleteIngredientDishDto
             {
                 DishId = id,

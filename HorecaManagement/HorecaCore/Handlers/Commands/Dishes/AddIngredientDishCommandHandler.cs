@@ -5,6 +5,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Dishes
 {
@@ -22,6 +23,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     {
         private readonly IUnitOfWork repository;
         private readonly IValidator<MutateIngredientDto> _validator;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateIngredientDto> validator)
         {
@@ -31,11 +33,15 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
         {
+            logger.Info("trying to add {@object} to Dish with Id: {Id}", request.Model.Ingredient, request.Model.Id);
+
             var result = _validator.Validate(request.Model.Ingredient);
             var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
 
             if (!result.IsValid)
             {
+                logger.Error("Invalid model with errors: ", result.Errors);
+
                 var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
                 throw new InvalidRequestBodyException
                 {
@@ -56,6 +62,8 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             repository.Ingredients.Add(entity);
             repository.Dishes.Update(dish);
             await repository.CommitAsync();
+
+            logger.Info("succes adding {@object} to dish with id {id}", entity, dish.Id);
 
             return entity.Id;
         }

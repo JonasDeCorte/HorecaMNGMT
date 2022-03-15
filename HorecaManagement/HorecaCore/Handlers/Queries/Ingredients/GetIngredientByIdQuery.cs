@@ -30,6 +30,8 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
 
             public async Task<IngredientDto> Handle(GetIngredientByIdQuery request, CancellationToken cancellationToken)
             {
+                logger.Info("trying to return {object} with id: {id}", nameof(IngredientDto), request.IngredientId);
+
                 var ingredient = await Task.FromResult(repository.Ingredients.GetIngredientIncludingUnit(request.IngredientId));
 
                 if (ingredient == null)
