@@ -23,9 +23,6 @@ namespace Horeca.Infrastructure.Data
 
         public IMenuCardRepository MenuCards => new MenuCardRepository(context);
 
-        public IReservationRepository Reservations => new ReservationRepository(context);
-        public ITableRepository Tables => new TableRepository(context);
-
         public async Task CommitAsync()
         {
             await context.SaveChangesAsync();

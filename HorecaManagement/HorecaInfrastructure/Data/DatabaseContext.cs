@@ -17,7 +17,6 @@ namespace Horeca.Infrastructure.Data
         {
             base.OnModelCreating(builder);
             builder.ApplyGlobalFilters<IDelete>(e => e.IsEnabled);
-            builder.Entity<Reservation>().HasOne(x => x.Table).WithOne(x => x.Reservation).HasForeignKey<Table>(x => x.ReservationId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -54,8 +53,5 @@ namespace Horeca.Infrastructure.Data
 
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuCard> MenuCards { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-
-        public DbSet<Table> Tables { get; set; }
     }
 }
