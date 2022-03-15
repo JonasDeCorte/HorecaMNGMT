@@ -29,6 +29,7 @@ namespace Horeca.MVC.Models.Mappers
 
             return result;
         }
+
         public static Ingredient MapIngredient(IngredientViewModel ingredientModel, Ingredient ingredient)
         {
             Ingredient result = ingredient;

@@ -5,8 +5,9 @@ namespace Horeca.MVC.Services.Interfaces
 {
     public interface IMenuCardService
     {
-        public IEnumerable<MenuCard> GetMenuCards();
-        public MenuCard GetMenuCardById(int id);
+        public Task<IEnumerable<MenuCard>> GetMenuCards();
+        public Task<MenuCard> GetMenuCardById(int id);
+        public Task<MenuCardsByIdDto> GetMenuCardListsById(int id);
         public void AddMenuCard(MenuCard menuCard);
         public void AddMenuCardDish(int id, MutateDishMenuCardDto dish);
         public void AddMenuCardMenu(int id, MutateMenuMenuCardDto menu);

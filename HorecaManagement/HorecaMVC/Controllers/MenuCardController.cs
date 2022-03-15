@@ -18,10 +18,9 @@ namespace Horeca.MVC.Controllers
             this.menuCardService = menuCardService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<MenuCard> menuCards;
-            menuCards = menuCardService.GetMenuCards();
+            IEnumerable<MenuCard> menuCards = await menuCardService.GetMenuCards();
 
             MenuCardListViewModel listModel = new MenuCardListViewModel();
 
@@ -35,9 +34,9 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            MenuCard menuCard = menuCardService.GetMenuCardById(id);
+            MenuCard menuCard = await menuCardService.GetMenuCardById(id);
 
             if (menuCard.Name == null)
             {
@@ -125,20 +124,20 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            MenuCard menuCard = menuCardService.GetMenuCardById(id);
+            MenuCard menuCard = await menuCardService.GetMenuCardById(id);
             MenuCardViewModel model = MenuCardMapper.MapModel(menuCard);
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(MenuCardViewModel menuCard)
+        public async Task<IActionResult> Edit(MenuCardViewModel menuCard)
         {
             if (ModelState.IsValid)
             {
-                MenuCard result = MenuCardMapper.MapMenuCard(menuCard, menuCardService.GetMenuCardById(menuCard.Id));
+                MenuCard result = MenuCardMapper.MapMenuCard(menuCard, await menuCardService.GetMenuCardById(menuCard.Id));
 
                 menuCardService.UpdateMenuCard(result);
 

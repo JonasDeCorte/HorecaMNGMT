@@ -18,18 +18,18 @@ namespace Horeca.MVC.Services
             configuration = iConfig;
         }
 
-        public IEnumerable<MenuCard> GetMenuCards()
+        public async Task<IEnumerable<MenuCard>> GetMenuCards()
         {
-            var menuCards = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}");
-            var result = JsonConvert.DeserializeObject<IEnumerable<MenuCard>>(menuCards.Result.Content.ReadAsStringAsync().Result);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}");
+            var result = JsonConvert.DeserializeObject<IEnumerable<MenuCard>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
-        public MenuCard GetMenuCardById(int id)
+        public async Task<MenuCard> GetMenuCardById(int id)
         {
-            var menu = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
-            var result = JsonConvert.DeserializeObject<MenuCard>(menu.Result.Content.ReadAsStringAsync().Result);
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
+            var result = JsonConvert.DeserializeObject<MenuCard>(response.Content.ReadAsStringAsync().Result);
 
-            var listResult = GetMenuCardListsById(id);
+            var listResult = await GetMenuCardListsById(id);
             var menus = listResult.Menus.Select(x => new Menu
             {
                 Id = x.Id,
@@ -51,11 +51,11 @@ namespace Horeca.MVC.Services
             return result;
         }
 
-        public MenuCardsByIdDto GetMenuCardListsById(int id)
+        public async Task<MenuCardsByIdDto> GetMenuCardListsById(int id)
         {
-            var menuCardList = httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}" +
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}" +
                 $"/{ClassConstants.Menus}/{ClassConstants.Dishes}");
-            var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(menuCardList.Result.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
