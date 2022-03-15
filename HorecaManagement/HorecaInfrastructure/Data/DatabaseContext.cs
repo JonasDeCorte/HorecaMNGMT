@@ -1,11 +1,12 @@
 ﻿using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
-
+using Horeca.Shared.Data.Entities.Account;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Infrastructure.Data
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

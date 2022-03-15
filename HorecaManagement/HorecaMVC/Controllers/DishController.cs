@@ -5,6 +5,7 @@ using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Models.Ingredients;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Dtos.Ingredients;
 
 namespace Horeca.MVC.Controllers
 {
@@ -21,14 +22,12 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Dish> dishes = await dishService.GetDishes();
+            IEnumerable<DishDto> dishes = await dishService.GetDishes();
             if (dishes == null)
             {
                 return View("NotFound");
             }
-
             DishListViewModel listModel = new DishListViewModel();
-
             foreach (var item in dishes)
             {
                 DishViewModel model = DishMapper.MapModel(item);
@@ -41,12 +40,11 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            Dish dish = await dishService.GetDishById(id);
+            Dish dish = await dishService.GetDishDetailById(id);
             if (dish == null)
             {
                 return View("NotFound");
             }
-
             DishDetailViewModel model = DishMapper.MapDetailModel(dish);
 
             return View(model);
@@ -58,7 +56,6 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-
             dishService.DeleteDish(id);
 
             return RedirectToAction(nameof(Index));
@@ -71,11 +68,9 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-
             DeleteIngredientDishDto ingredient = new DeleteIngredientDishDto();
             ingredient.DishId = dishId;
             ingredient.IngredientId = id;
-
             dishService.DeleteDishIngredient(ingredient);
 
             return RedirectToAction("Detail", new { id = dishId });
@@ -93,8 +88,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Dish result = DishMapper.MapDish(dish, new Dish());
-
+                MutateDishDto result = DishMapper.MapMutateDish(dish, new DishDto());
                 dishService.AddDish(result);
 
                 return RedirectToAction(nameof(Index));
@@ -107,7 +101,6 @@ namespace Horeca.MVC.Controllers
         public IActionResult CreateIngredient(int id)
         {
             var model = new IngredientViewModel();
-
             TempData["Id"] = id;
 
             return View(model);
@@ -119,7 +112,6 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, ingredient);
-
                 dishService.AddDishIngredient(id, result);
 
                 return RedirectToAction("Detail", new { id = id });
@@ -132,7 +124,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            Dish dish = await dishService.GetDishById(id);
+            DishDto dish = await dishService.GetDishById(id);
             DishViewModel model = DishMapper.MapModel(dish);
 
             return View(model);
@@ -143,8 +135,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Dish result = DishMapper.MapDish(dish, await dishService.GetDishById(dish.Id));
-
+                MutateDishDto result = DishMapper.MapMutateDish(dish, await dishService.GetDishById(dish.Id));
                 dishService.UpdateDish(result);
 
                 return RedirectToAction(nameof(Detail), new { id = dish.Id });
@@ -157,8 +148,9 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> EditIngredient(int id)
         {
-            Ingredient ingredient = await ingredientService.GetIngredientById(id);
+            IngredientDto ingredient = await ingredientService.GetIngredientById(id);
             IngredientViewModel model = IngredientMapper.MapModel(ingredient);
+
             return View(model);
         }
 

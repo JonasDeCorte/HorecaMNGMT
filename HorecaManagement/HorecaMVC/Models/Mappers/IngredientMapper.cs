@@ -1,44 +1,60 @@
 ﻿using Horeca.MVC.Models.Ingredients;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Ingredients;
+using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.MVC.Models.Mappers
 {
     public static class IngredientMapper
     {
-        public static IngredientViewModel MapModel(Ingredient ingredient)
+        public static IngredientViewModel MapModel(IngredientDto ingredient)
         {
-            IngredientViewModel model = new IngredientViewModel();
-
-            model.Id = ingredient.Id;
-            model.Name = ingredient.Name;
-            model.IngredientType = ingredient.IngredientType;
-            model.BaseAmount = ingredient.BaseAmount;
-            model.Unit = ingredient.Unit;
+            IngredientViewModel model = new IngredientViewModel
+            {
+                Id = ingredient.Id,
+                Name = ingredient.Name,
+                IngredientType = ingredient.IngredientType,
+                BaseAmount = ingredient.BaseAmount,
+                Unit = new UnitDto
+                {
+                    Id = ingredient.Unit.Id,
+                    Name = ingredient.Unit.Name
+                }
+            };
 
             return model;
         }
 
-        public static Ingredient MapCreateIngredient(IngredientViewModel ingredientModel)
+        public static MutateIngredientDto MapCreateIngredient(IngredientViewModel ingredientModel)
         {
-            Ingredient result = new Ingredient();
-
-            result.Name = ingredientModel.Name;
-            result.BaseAmount = ingredientModel.BaseAmount;
-            result.IngredientType = ingredientModel.IngredientType;
-            result.Unit = ingredientModel.Unit;
+            MutateIngredientDto result = new MutateIngredientDto
+            {
+                Name = ingredientModel.Name,
+                BaseAmount = ingredientModel.BaseAmount,
+                IngredientType = ingredientModel.IngredientType,
+                Unit = new UnitDto
+                {
+                    Name = ingredientModel.Unit.Name,
+                },
+            };
 
             return result;
         }
 
-        public static Ingredient MapIngredient(IngredientViewModel ingredientModel, Ingredient ingredient)
+        public static MutateIngredientDto MapUpdateIngredient(IngredientViewModel ingredientModel, IngredientDto ingredient)
         {
-            Ingredient result = ingredient;
-
-            result.Name = ingredientModel.Name;
-            result.IngredientType = ingredientModel.IngredientType;
-            result.BaseAmount = ingredientModel.BaseAmount;
-            result.Unit.Name = ingredientModel.Unit.Name;
-            result.Unit.IsEnabled = true;
+            MutateIngredientDto result = new MutateIngredientDto
+            {
+                Id = ingredient.Id,
+                Name = ingredientModel.Name,
+                IngredientType = ingredientModel.Name,
+                BaseAmount = ingredientModel.BaseAmount,
+                Unit = new UnitDto
+                {
+                    Id = ingredient.Unit.Id,
+                    Name = ingredientModel.Unit.Name,
+                }
+            };
 
             return result;
         }

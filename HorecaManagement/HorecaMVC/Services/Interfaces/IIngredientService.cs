@@ -1,13 +1,13 @@
-﻿using Horeca.Shared.Data.Entities;
+﻿using Horeca.Shared.Dtos.Ingredients;
 
 namespace Horeca.MVC.Services.Interfaces
 {
     public interface IIngredientService
     {
-        public Task<IEnumerable<Ingredient>> GetIngredients();
-        public Task<Ingredient> GetIngredientById(int id);
-        public void AddIngredient(Ingredient ingredient);
+        public Task<IEnumerable<IngredientDto>> GetIngredients();
+        public Task<IngredientDto> GetIngredientById(int id);
+        public void AddIngredient(MutateIngredientDto ingredient);
         public void DeleteIngredient(int id);
-        public void UpdateIngredient(Ingredient ingredient);
+        public void UpdateIngredient(MutateIngredientDto ingredient);
     }
 }

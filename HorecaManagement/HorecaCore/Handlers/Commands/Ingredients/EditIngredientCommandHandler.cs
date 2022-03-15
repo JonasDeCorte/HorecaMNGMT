@@ -1,6 +1,6 @@
 ﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
-using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 
 namespace Horeca.Core.Handlers.Commands.Ingredients
@@ -39,7 +39,12 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             if (request.Model.BaseAmount != ingredient.BaseAmount)
                 ingredient.BaseAmount = request.Model.BaseAmount;
 
-            ingredient.Unit = request.Model.Unit ?? ingredient.Unit;
+            var modelUnit = new Shared.Data.Entities.Unit
+            {
+                Name = request.Model.Unit.Name
+            };
+            ingredient.Unit = modelUnit ?? ingredient.Unit;
+            ingredient.Unit.IsEnabled = true;
             repository.Units.Update(ingredient.Unit);
             repository.Ingredients.Update(ingredient);
 

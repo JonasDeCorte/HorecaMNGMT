@@ -1,4 +1,5 @@
-﻿using Horeca.MVC.Services.Interfaces;
+﻿using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
@@ -18,7 +19,7 @@ namespace Horeca.MVC.Services
             configuration = iConfig;
         }
 
-        public async Task<IEnumerable<Dish>> GetDishes()
+        public async Task<IEnumerable<DishDto>> GetDishes()
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
 
@@ -27,51 +28,53 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Dish>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<DishDto>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
-        public async Task<Dish> GetDishById(int id)
+        public async Task<DishDto> GetDishById(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
-            var result = JsonConvert.DeserializeObject<Dish>(response.Content.ReadAsStringAsync().Result);
-
-            var listResult = await GetDishIngredientsById(id);
-            result.Ingredients = listResult.Ingredients.ToList();
+            var result = JsonConvert.DeserializeObject<DishDto>(response.Content.ReadAsStringAsync().Result);
 
             return result;
         }
 
-        public async Task<DishIngredientsByIdDto> GetDishIngredientsById(int id)
+        public async Task<DishIngredientsByIdDto> GetIngredientsByDishId(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/" +
                 $"{id}/{ClassConstants.Ingredients}");
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
             var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(response.Content.ReadAsStringAsync()
                 .Result);
 
             return listResult;
         }
 
-        public void AddDish(Dish dish)
+        public async Task<Dish> GetDishDetailById(int id)
+        {
+            var dishDto = await GetDishById(id);
+            var ingredientListDto = await GetIngredientsByDishId(id);
+
+            return DishMapper.MapDishDetail(dishDto, ingredientListDto);
+        }
+
+        public void AddDish(MutateDishDto dish)
         {
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
         }
 
         public void AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}", ingredient);
+            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/" +
+                $"{ClassConstants.Ingredients}", ingredient);
         }
 
         public void DeleteDish(int id)
@@ -81,12 +84,13 @@ namespace Horeca.MVC.Services
         public void DeleteDishIngredient(DeleteIngredientDishDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/{ClassConstants.Ingredients}/{ingredient.IngredientId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/" +
+                $"{ClassConstants.Ingredients}/{ingredient.IngredientId}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
             httpClient.SendAsync(request);
         }
 
-        public void UpdateDish(Dish dish)
+        public void UpdateDish(MutateDishDto dish)
         {
             httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
         }

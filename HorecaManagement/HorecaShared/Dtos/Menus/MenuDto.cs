@@ -16,11 +16,6 @@ namespace Horeca.Shared.Dtos.Menus
     {
     }
 
-    public class MenuDetailDto : MenuDto
-    {
-        public List<Dish> Dishes { get; set; } = new List<Dish>();
-    }
-
     public class MutateDishMenuDto
     {
         public int Id { get; set; }
@@ -30,7 +25,8 @@ namespace Horeca.Shared.Dtos.Menus
     public class MenuDishesByIdDto
     {
         public int Id { get; set; }
-        public List<Dish>? Dishes { get; set; }
+
+        public List<DishDto>? Dishes { get; set; }
     }
 
     public class DeleteDishMenuDto

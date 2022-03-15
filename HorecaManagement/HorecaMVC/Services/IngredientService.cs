@@ -1,6 +1,6 @@
 ﻿using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Constants;
-using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Ingredients;
 using Newtonsoft.Json;
 
 namespace Horeca.MVC.Services
@@ -16,34 +16,31 @@ namespace Horeca.MVC.Services
             configuration = iConfig;
         }
 
-        public async Task<IEnumerable<Ingredient>> GetIngredients()
+        public async Task<IEnumerable<IngredientDto>> GetIngredients()
         {
             HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}");
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Ingredient>>(response.Content.ReadAsStringAsync().Result);
-            return result;
+            return JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(response.Content.ReadAsStringAsync().Result);
         }
 
-        public async Task<Ingredient> GetIngredientById(int id)
+        public async Task<IngredientDto> GetIngredientById(int id)
         {;
             HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}/{id}");
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<Ingredient>(response.Content.ReadAsStringAsync().Result);
+            return JsonConvert.DeserializeObject<IngredientDto>(response.Content.ReadAsStringAsync().Result);
         }
 
-        public void AddIngredient(Ingredient ingredient)
+        public void AddIngredient(MutateIngredientDto ingredient)
         {
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}", ingredient);
         }
@@ -53,7 +50,7 @@ namespace Horeca.MVC.Services
             httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{id}");
         }
 
-        public void UpdateIngredient(Ingredient ingredient)
+        public void UpdateIngredient(MutateIngredientDto ingredient)
         {
             httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}", ingredient);
         }

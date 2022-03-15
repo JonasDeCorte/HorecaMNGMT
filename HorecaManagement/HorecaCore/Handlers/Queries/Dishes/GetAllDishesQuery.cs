@@ -13,20 +13,21 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 
     {
         private readonly IUnitOfWork repository;
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
 
         public GetAllDishesQueryHandler(IUnitOfWork repository, IMapper mapper)
 
         {
             this.repository = repository;
-            _mapper = mapper;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<DishDto>> Handle(GetAllDishesQuery request, CancellationToken cancellationToken)
 
         {
             var entities = await Task.FromResult(repository.Dishes.GetAll());
-            return _mapper.Map<IEnumerable<DishDto>>(entities);
+
+            return mapper.Map<IEnumerable<DishDto>>(entities);
         }
     }
 }

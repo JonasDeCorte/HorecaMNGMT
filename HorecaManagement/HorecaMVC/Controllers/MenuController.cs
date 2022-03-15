@@ -19,7 +19,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Menu> menus = await menuService.GetMenus();
+            IEnumerable<MenuDto> menus = await menuService.GetMenus();
 
             if (menus == null)
             {
@@ -40,7 +40,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            Menu menu = await menuService.GetMenuById(id);
+            Menu menu = await menuService.GetMenuDetailById(id);
             if (menu == null)
             {
                 return View("NotFound");
@@ -82,7 +82,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Menu result = MenuMapper.MapMenu(menu, new Menu());
+                MutateMenuDto result = MenuMapper.MapMutateMenu(menu, new MenuDto());
 
                 menuService.AddMenu(result);
 
@@ -121,7 +121,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            Menu menu = await menuService.GetMenuById(id);
+            MenuDto menu = await menuService.GetMenuById(id);
             MenuViewModel model = MenuMapper.MapModel(menu);
 
             return View(model);
@@ -132,7 +132,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Menu result = MenuMapper.MapMenu(menu, await menuService.GetMenuById(menu.Id));
+                MutateMenuDto result = MenuMapper.MapMutateMenu(menu, await menuService.GetMenuById(menu.Id));
 
                 menuService.UpdateMenu(result);
 

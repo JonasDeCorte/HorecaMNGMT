@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Units;
 using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Ingredients
@@ -19,6 +20,6 @@ namespace Horeca.MVC.Models.Ingredients
         public int BaseAmount { get; set; }
         [Display(Name = "Unit name")]
         [Required(ErrorMessage = "Unit name is required.")]
-        public Unit Unit { get; set; }
+        public UnitDto Unit { get; set; }
     }
 }

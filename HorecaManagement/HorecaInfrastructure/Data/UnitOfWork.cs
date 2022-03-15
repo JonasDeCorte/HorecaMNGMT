@@ -6,27 +6,26 @@ namespace Horeca.Infrastructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DatabaseContext _context;
+        private readonly DatabaseContext context;
 
         public UnitOfWork(DatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        public IIngredientRepository Ingredients => new IngredientRepository(_context);
+        public IIngredientRepository Ingredients => new IngredientRepository(context);
 
-        public IUnitRepository Units => new UnitRepository(_context);
+        public IUnitRepository Units => new UnitRepository(context);
 
-        public IDishRepository Dishes => new DishRepository(_context);
+        public IDishRepository Dishes => new DishRepository(context);
 
-        public IMenuRepository Menus => new MenuRepository(_context);
+        public IMenuRepository Menus => new MenuRepository(context);
 
-        public IMenuCardRepository MenuCards => new MenuCardRepository(_context);
+        public IMenuCardRepository MenuCards => new MenuCardRepository(context);
 
         public async Task CommitAsync()
         {
-            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 }

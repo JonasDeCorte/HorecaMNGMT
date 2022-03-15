@@ -18,8 +18,6 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
 
         public void Add(T entity)
         {
-            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
-
             _dbSet.Add(entity);
         }
 
@@ -43,22 +41,17 @@ namespace Horeca.Infrastructure.Data.Repositories.Generic
 
         public T Get(int id)
         {
-            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
-
             return _dbSet.Find(id);
         }
 
         public IEnumerable<T> GetAll()
         {
-            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
-
             return _dbSet.AsEnumerable();
         }
 
         public void Update(T entity)
         {
             _dbSet.Attach(entity);
-            Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
             _context.Entry(entity).State = EntityState.Modified;
         }
     }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services;
 using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Dtos.Ingredients;
 
 namespace Horeca.MVC.Controllers
 {
@@ -18,18 +19,15 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Ingredient> ingredients = await ingredientService.GetIngredients();
+            IEnumerable<IngredientDto> ingredients = await ingredientService.GetIngredients();
             if (ingredients == null)
             {
                 return View("NotFound");
             }
-
             IngredientListViewModel listModel = new IngredientListViewModel();
-
             foreach (var item in ingredients)
             {
                 IngredientViewModel model = IngredientMapper.MapModel(item);
-
                 listModel.Ingredients.Add(model);
             }
 
@@ -38,7 +36,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            Ingredient ingredient = await ingredientService.GetIngredientById(id);
+            IngredientDto ingredient = await ingredientService.GetIngredientById(id);
             if (ingredient == null)
             {
                 return View("NotFound");
@@ -68,7 +66,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = IngredientMapper.MapCreateIngredient(ingredient);
+                MutateIngredientDto result = IngredientMapper.MapCreateIngredient(ingredient);
 
                 ingredientService.AddIngredient(result);
 
@@ -81,7 +79,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            Ingredient ingredient = await ingredientService.GetIngredientById(id);
+            IngredientDto ingredient = await ingredientService.GetIngredientById(id);
             IngredientViewModel model = IngredientMapper.MapModel(ingredient);
 
             return View(model);
@@ -92,7 +90,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Ingredient result = IngredientMapper.MapIngredient(ingredient, 
+                MutateIngredientDto result = IngredientMapper.MapUpdateIngredient(ingredient, 
                     await ingredientService.GetIngredientById(ingredient.Id));
 
                 ingredientService.UpdateIngredient(result);

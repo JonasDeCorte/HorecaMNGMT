@@ -2,7 +2,7 @@
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Dtos;
+using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 
 namespace Horeca.Core.Handlers.Commands.Ingredients
@@ -59,7 +59,10 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
                 Name = request.Model.Name,
                 BaseAmount = request.Model.BaseAmount,
                 IngredientType = request.Model.IngredientType,
-                Unit = request.Model.Unit,
+                Unit = new Shared.Data.Entities.Unit
+                {
+                    Name = request.Model.Unit.Name,
+                },
             };
             repository.Ingredients.Add(entity);
 

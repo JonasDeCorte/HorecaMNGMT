@@ -1,4 +1,5 @@
-﻿using Horeca.MVC.Services.Interfaces;
+﻿using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Menus;
@@ -18,7 +19,7 @@ namespace Horeca.MVC.Services
             configuration = IConfig;
         }
 
-        public async Task<IEnumerable<Menu>> GetMenus()
+        public async Task<IEnumerable<MenuDto>> GetMenus()
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
 
@@ -27,43 +28,44 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Menu>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<MenuDto>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
-        public async Task<Menu> GetMenuById(int id)
+        public async Task<MenuDto> GetMenuById(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}");
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
-            var result = JsonConvert.DeserializeObject<Menu>(response.Content.ReadAsStringAsync().Result);
-            var listResult = await GetMenuDishesById(id);
-
-            result.Dishes = listResult.Dishes.ToList();
+            var result = JsonConvert.DeserializeObject<MenuDto>(response.Content.ReadAsStringAsync().Result);
 
             return result;
         }
 
-        public async Task<MenuDishesByIdDto> GetMenuDishesById(int id)
+        public async Task<MenuDishesByIdDto> GetDishesByMenuId(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/" +
                 $"{ClassConstants.Dishes}");
-
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
             var listResult = JsonConvert.DeserializeObject<MenuDishesByIdDto>(response.Content.ReadAsStringAsync().Result);
 
             return listResult;
         }
 
-        public void AddMenu(Menu menu)
+        public async Task<Menu> GetMenuDetailById(int id)
+        {
+            var menuDto = await GetMenuById(id);
+            var dishListDto = await GetDishesByMenuId(id);
+
+            return MenuMapper.MapMenuDetail(menuDto, dishListDto);
+        }
+
+        public void AddMenu(MutateMenuDto menu)
         {
             httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
         }
@@ -85,7 +87,7 @@ namespace Horeca.MVC.Services
             httpClient.SendAsync(request);
         }
 
-        public void UpdateMenu(Menu menu)
+        public void UpdateMenu(MutateMenuDto menu)
         {
             httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
         }

@@ -5,14 +5,15 @@ namespace Horeca.MVC.Services.Interfaces
 {
     public interface IMenuService
     {
-        public Task<IEnumerable<Menu>> GetMenus();
-        public Task<Menu> GetMenuById(int id);
-        public Task<MenuDishesByIdDto> GetMenuDishesById(int id);
-        public void AddMenu(Menu menu);
+        public Task<IEnumerable<MenuDto>> GetMenus();
+        public Task<MenuDto> GetMenuById(int id);
+        public Task<Menu> GetMenuDetailById(int id);
+        public Task<MenuDishesByIdDto> GetDishesByMenuId(int id);
+        public void AddMenu(MutateMenuDto menu);
         public void AddMenuDish(int id, MutateDishMenuDto dish);
         public void DeleteMenu(int id);
         public void DeleteMenuDish(DeleteDishMenuDto dish);
-        public void UpdateMenu(Menu menu);
+        public void UpdateMenu(MutateMenuDto menu);
 
     }
 }
