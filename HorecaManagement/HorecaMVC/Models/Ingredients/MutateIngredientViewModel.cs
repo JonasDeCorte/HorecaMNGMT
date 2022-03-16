@@ -6,7 +6,7 @@ namespace Horeca.MVC.Models.Ingredients
     public class MutateIngredientViewModel
     {
         public int DishId { get; set; }
-        public int Id { get; set; }
+        public int IngredientId { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]

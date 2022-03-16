@@ -100,27 +100,26 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult CreateIngredient(int id)
         {
-            var model = new MutateIngredientViewModel
-            {
-                DishId = id
-            };
+            IngredientViewModel model = new IngredientViewModel();
+
+            TempData["Id"] = id;
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateIngredient(MutateIngredientViewModel ingredient)
+        public IActionResult CreateIngredient(int id, IngredientViewModel model)
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapMutateIngredient(ingredient);
-                dishService.AddDishIngredient(ingredient.DishId, result);
+                MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, model);
+                dishService.AddDishIngredient(id, result);
 
-                return RedirectToAction("Detail", new { id = ingredient.DishId });
+                return RedirectToAction("Detail", new { id = id });
             }
             else
             {
-                return View(ingredient);
+                return View(model);
             }
         }
 
@@ -148,22 +147,22 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        [Route("/Dish/EditIngredient/{dishId}/{id}")]
-        public async Task<IActionResult> EditIngredient(int dishId, int id)
+        [Route("/Dish/EditIngredient/{dishId}/{ingredientId}")]
+        public async Task<IActionResult> EditIngredient(int dishId, int ingredientId)
         {
-            IngredientDto ingredient = await ingredientService.GetIngredientById(id);
+            IngredientDto ingredient = await ingredientService.GetIngredientById(ingredientId);
             MutateIngredientViewModel model = DishMapper.MapMutateIngredientModel(dishId, ingredient);
 
             return View(model);
         }
 
-        [Route("/Dish/EditIngredient/{dishId}/{id}")]
+        [Route("/Dish/EditIngredient/{dishId}/{ingredientId}")]
         [HttpPost]
         public IActionResult EditIngredient(MutateIngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapMutateIngredient(ingredient);
+                MutateIngredientByDishDto result = DishMapper.MapUpdateIngredient(ingredient);
                 dishService.UpdateDishIngredient(result);
 
                 return RedirectToAction("Detail", new { id = ingredient.DishId });

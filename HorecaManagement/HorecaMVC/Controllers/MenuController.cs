@@ -95,23 +95,24 @@ namespace Horeca.MVC.Controllers
         }
         public IActionResult CreateDish(int id)
         {
-            var model = new DishViewModel();
-
-            TempData["Id"] = id;
+            var model = new MutateDishViewModel
+            {
+                Id = id
+            };
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateDish(int id, DishViewModel dish)
+        public IActionResult CreateDish(MutateDishViewModel dish)
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuDto result = MenuMapper.MapCreateDish(id, dish);
+                MutateDishMenuDto result = MenuMapper.MapMutateDish(dish);
 
-                menuService.AddMenuDish(id, result);
+                menuService.AddMenuDish(dish.Id, result);
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction("Detail", new { id = dish.Id });
             }
             else
             {

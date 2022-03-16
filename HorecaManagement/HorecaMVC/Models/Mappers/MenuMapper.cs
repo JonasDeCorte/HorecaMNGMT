@@ -85,21 +85,35 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateDishMenuDto MapCreateDish(int id, DishViewModel dish)
+        public static MutateDishMenuDto MapMutateDish(MutateDishViewModel model)
         {
             MutateDishMenuDto result = new MutateDishMenuDto
             {
-                Id = id,
+                Id = model.Id,
                 Dish = new MutateDishDto
                 {
-                    Id = dish.Id,
-                    Name = dish.Name,
-                    DishType = dish.DishType,
-                    Category = dish.Category,
-                    Description = dish.Description
+                    Id = model.DishId,
+                    Name = model.Name,
+                    DishType = model.DishType,
+                    Category = model.Category,
+                    Description = model.Description
                 }
             };
 
+            return result;
+        }
+
+        public static MutateDishViewModel MapMutateDishModel(int menuId, DishDto dish)
+        {
+            MutateDishViewModel result = new MutateDishViewModel
+            {
+                Id = menuId,
+                DishId = dish.Id,
+                Name = dish.Name,
+                DishType = dish.DishType,
+                Category = dish.Category,
+                Description = dish.Description
+            };
             return result;
         }
     }
