@@ -1,7 +1,7 @@
-﻿@model Horeca.MVC.Models.Accounts.UserViewModel
+﻿@model Horeca.MVC.Models.Accounts.RegisterUserViewModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Register";
 }
 
 <div class="text-center">
@@ -14,12 +14,17 @@
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="mt-2">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" id="email" placeholder="Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
                 <label asp-for="Password" class="form-label">Password</label>
                 <input asp-for="Password" type="password" class="form-control" id="password" placeholder="Password">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <input type="submit" value="Login" formmethod="post" class="btn btn-primary" />
+                <input type="submit" value="Register" formmethod="post" class="btn btn-primary" />
                 <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
