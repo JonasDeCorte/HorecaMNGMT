@@ -47,6 +47,20 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
+        public static MutateDishViewModel MapMutateDishModel(int menuId, DishDto dish)
+        {
+            MutateDishViewModel result = new MutateDishViewModel
+            {
+                MenuId = menuId,
+                DishId = dish.Id,
+                Name = dish.Name,
+                DishType = dish.DishType,
+                Category = dish.Category,
+                Description = dish.Description
+            };
+            return result;
+        }
+
         public static MutateMenuDto MapMutateMenu(MenuViewModel menuModel, MenuDto menu)
         {
             MutateMenuDto result = new MutateMenuDto
@@ -85,14 +99,14 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateDishMenuDto MapMutateDish(MutateDishViewModel model)
+        public static MutateDishMenuDto MapCreateDish(int id, DishViewModel model)
         {
             MutateDishMenuDto result = new MutateDishMenuDto
             {
-                Id = model.Id,
+                Id = id,
                 Dish = new MutateDishDto
                 {
-                    Id = model.DishId,
+                    Id = model.Id,
                     Name = model.Name,
                     DishType = model.DishType,
                     Category = model.Category,
@@ -103,17 +117,21 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateDishViewModel MapMutateDishModel(int menuId, DishDto dish)
+        public static MutateDishMenuDto MapUpdateDish(MutateDishViewModel model)
         {
-            MutateDishViewModel result = new MutateDishViewModel
+            MutateDishMenuDto result = new MutateDishMenuDto
             {
-                Id = menuId,
-                DishId = dish.Id,
-                Name = dish.Name,
-                DishType = dish.DishType,
-                Category = dish.Category,
-                Description = dish.Description
+                Id = model.MenuId,
+                Dish = new MutateDishDto
+                {
+                    Id = model.DishId,
+                    Name = model.Name,
+                    DishType = model.DishType,
+                    Category = model.Category,
+                    Description = model.Description
+                }
             };
+
             return result;
         }
     }

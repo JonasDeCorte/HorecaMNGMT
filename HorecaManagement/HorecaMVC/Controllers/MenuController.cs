@@ -5,16 +5,19 @@ using Horeca.MVC.Models.Mappers;
 using Horeca.Shared.Dtos.Menus;
 using Horeca.MVC.Models.Dishes;
 using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Dtos.Dishes;
 
 namespace Horeca.MVC.Controllers
 {
     public class MenuController : Controller
     {
         private IMenuService menuService;
+        private IDishService dishService;
 
-        public MenuController(IMenuService menuService)
+        public MenuController(IMenuService menuService, IDishService dishService)
         {
             this.menuService = menuService;
+            this.dishService = dishService;
         }
 
         public async Task<IActionResult> Index()
@@ -95,24 +98,23 @@ namespace Horeca.MVC.Controllers
         }
         public IActionResult CreateDish(int id)
         {
-            var model = new MutateDishViewModel
-            {
-                Id = id
-            };
+            var model = new DishViewModel();
+
+            TempData["Id"] = id;
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateDish(MutateDishViewModel dish)
+        public IActionResult CreateDish(int id, DishViewModel dish)
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuDto result = MenuMapper.MapMutateDish(dish);
+                MutateDishMenuDto result = MenuMapper.MapCreateDish(id, dish);
 
-                menuService.AddMenuDish(dish.Id, result);
+                menuService.AddMenuDish(id, result);
 
-                return RedirectToAction("Detail", new { id = dish.Id });
+                return RedirectToAction("Detail", new { id = id });
             }
             else
             {
@@ -142,6 +144,32 @@ namespace Horeca.MVC.Controllers
             else
             {
                 return View(menu);
+            }
+        }
+
+        [Route("/Menu/EditDish/{MenuId}/{DishId}")]
+        public async Task<IActionResult> EditDish(int menuId, int dishId)
+        {
+            DishDto dish = await dishService.GetDishById(dishId);
+            MutateDishViewModel model = MenuMapper.MapMutateDishModel(menuId, dish);
+
+            return View(model);
+        }
+
+        [Route("/Menu/EditDish/{MenuId}/{DishId}")]
+        [HttpPost]
+        public IActionResult EditDish(MutateDishViewModel dish)
+        {
+            if (ModelState.IsValid)
+            {
+                MutateDishMenuDto result = MenuMapper.MapUpdateDish(dish);
+                menuService.UpdateMenuDish(result);
+
+                return RedirectToAction("Detail", new { id = dish.MenuId });
+            }
+            else
+            {
+                return View(dish);
             }
         }
     }

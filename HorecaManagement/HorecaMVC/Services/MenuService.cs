@@ -92,9 +92,12 @@ namespace Horeca.MVC.Services
             httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
         }
 
-        public void UpdateMenuDish(MutateDishMenuDto dish)
+        public void UpdateMenuDish(MutateDishMenuDto dishMenuDto)
         {
-            throw new NotImplementedException();
+            httpClient.PutAsJsonAsync(
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{dishMenuDto.Id}/" +
+                $"{ClassConstants.Dishes}" +
+                $"/{dishMenuDto.Dish.Id}", dishMenuDto);
         }
     }
 }
