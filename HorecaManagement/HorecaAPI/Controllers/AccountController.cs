@@ -3,6 +3,7 @@ using Horeca.Core.Handlers.Queries.Accounts;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -21,6 +22,7 @@ namespace Horeca.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto model)
         {
@@ -34,6 +36,7 @@ namespace Horeca.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("register")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
