@@ -1,3 +1,4 @@
+using Horeca.API.Middleware;
 using Horeca.Core;
 using Horeca.Infrastructure;
 using MediatR;
@@ -55,6 +56,12 @@ config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
 
 // Apply config
 NLog.LogManager.Configuration = config;
+
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,7 +76,7 @@ app.UseHttpsRedirection();
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<RequestResponseLogginMiddleware>();
 app.MapControllers();
 
 app.Run();

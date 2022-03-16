@@ -4,7 +4,6 @@ using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Units;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 using System.Net;
 
 namespace Horeca.API.Controllers
@@ -14,7 +13,6 @@ namespace Horeca.API.Controllers
     public class UnitController : ControllerBase
     {
         private readonly IMediator mediator;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public UnitController(IMediator mediator)
         {
@@ -32,8 +30,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            logger.Info("requesting all Units");
-
             var query = new GetAllUnitsQuery();
 
             var response = await mediator.Send(query);
@@ -53,7 +49,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
         {
-            logger.Info("requesting to create Unit {model}", model.Name);
             var command = new CreateUnitCommand(model);
             var response = await mediator.Send(command);
 
@@ -73,8 +68,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            logger.Info("requesting unit with Id {id}", id);
-
             var query = new GetUnitByIdQuery(id);
             var response = await mediator.Send(query);
             return Ok(response);
@@ -93,8 +86,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
-            logger.Info("requesting to delete unit with Id {id}", id);
-
             var command = new DeleteUnitCommand(id);
             var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
@@ -112,8 +103,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateUnitDto model)
         {
-            logger.Info("requesting to edit Unit with Id {id}", model.Id);
-
             var command = new EditUnitCommand(model);
             var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);

@@ -4,7 +4,6 @@ using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 using System.Net;
 
 namespace Horeca.API.Controllers
@@ -14,7 +13,6 @@ namespace Horeca.API.Controllers
     public class RoleController : ControllerBase
     {
         private readonly IMediator mediator;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public RoleController(IMediator mediator)
         {
@@ -32,8 +30,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            logger.Info("requesting all roles");
-
             var query = new GetAllRolesQuery();
 
             var response = await mediator.Send(query);
@@ -53,8 +49,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateRoleDto model)
         {
-            logger.Info("requesting to create a new role");
-
             var command = new CreateRoleCommand(model);
             var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.Created, response);
@@ -73,8 +67,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(string id)
         {
-            logger.Info("requesting to get a role by id ");
-
             var query = new GetRoleByIdQuery(id);
             var response = await mediator.Send(query);
             return Ok(response);
@@ -93,8 +85,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(string id)
         {
-            logger.Info("requesting to delete a role");
-
             var command = new DeleteRoleCommand(id);
             var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
@@ -112,8 +102,6 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateRoleDto model)
         {
-            logger.Info("requesting to update an exsiting role");
-
             var command = new EditRoleCommand(model);
             var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
