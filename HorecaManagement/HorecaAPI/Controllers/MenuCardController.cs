@@ -126,12 +126,12 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// add a menu to an existing menuCard
+        /// add a Dish to an existing menuCard
         /// </summary>
         /// <param name="model"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="201">Success adding a new menu to a menuCard</response>
+        /// <response code="201">Success adding a new Dish to a menuCard</response>
         /// <response code="400">Bad request</response
         [HttpPost]
         [Route("{id}/dishes")]
@@ -148,8 +148,7 @@ namespace Horeca.API.Controllers
         /// <summary>
         /// Retrieve the full menu card in detail.
         /// </summary>
-        /// <param name="id"></param>
-
+        /// <param name="id"></param
         /// <returns></returns>
         /// <response code="200">Success List of menus and dishes from menu by Id</response>
         /// <response code="400">Bad request</response

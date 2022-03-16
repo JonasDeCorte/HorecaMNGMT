@@ -2,6 +2,7 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Menus
 {
@@ -18,6 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class EditIngredientDishCommandHandler : IRequestHandler<EditDishMenuCommand, int>
     {
         private readonly IUnitOfWork repository;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public EditIngredientDishCommandHandler(IUnitOfWork repository)
         {
@@ -28,14 +30,20 @@ namespace Horeca.Core.Handlers.Commands.Menus
         {
             var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
 
+            logger.Info("trying to edit {@object} with Id: {Id}", menu, request.Model.Id);
+
             if (menu is null)
             {
+                logger.Error("{Object} with Id: {id} does not exist", nameof(menu), request.Model.Id);
+
                 throw new EntityNotFoundException("menu does not exist");
             }
             var dish = menu.Dishes.SingleOrDefault(x => x.Id == request.Model.Dish.Id);
 
             if (dish is null)
             {
+                logger.Error("{Object} with Id: {id} does not exist", nameof(dish), request.Model.Dish.Id);
+
                 throw new EntityNotFoundException("dish does not exist");
             }
 
@@ -48,6 +56,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
             repository.Menus.Update(menu);
 
             await repository.CommitAsync();
+            logger.Info("updated {@object} with Id: {id}", dish, dish.Id);
 
             return dish.Id;
         }

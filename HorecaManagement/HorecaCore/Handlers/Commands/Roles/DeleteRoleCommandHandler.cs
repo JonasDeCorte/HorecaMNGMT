@@ -1,6 +1,7 @@
 ﻿using Horeca.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Roles
 {
@@ -17,6 +18,7 @@ namespace Horeca.Core.Handlers.Commands.Roles
     public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, string>
     {
         private readonly RoleManager<IdentityRole> roleManager;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public DeleteRoleCommandHandler(RoleManager<IdentityRole> roleManager)
         {
@@ -25,12 +27,17 @@ namespace Horeca.Core.Handlers.Commands.Roles
 
         public async Task<string> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
-            var IdentityRole = await roleManager.FindByIdAsync(request.Id);
-            if (IdentityRole == null)
+            var identityRole = await roleManager.FindByIdAsync(request.Id);
+            logger.Info("trying to delete {@object} with Id: {id}", identityRole, request.Id);
+
+            if (identityRole == null)
             {
+                logger.Error("{object} with Id: {id} is null", nameof(IdentityRole), request.Id);
+
                 throw new EntityNotFoundException("Role doesn't exist");
             }
-            await roleManager.DeleteAsync(IdentityRole);
+            await roleManager.DeleteAsync(identityRole);
+            logger.Info("deleted {@object} with Id: {id}", identityRole, request.Id);
 
             return request.Id;
         }
