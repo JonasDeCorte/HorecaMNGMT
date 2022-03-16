@@ -67,12 +67,20 @@ namespace Horeca.MVC.Services
 
         public void AddMenu(MutateMenuDto menu)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void AddMenuDish(int id, MutateDishMenuDto dish)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}", dish);
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{id}/{ClassConstants.Dishes}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void DeleteMenu(int id)
@@ -89,15 +97,21 @@ namespace Horeca.MVC.Services
 
         public void UpdateMenu(MutateMenuDto menu)
         {
-            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}", menu);
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void UpdateMenuDish(MutateDishMenuDto dishMenuDto)
         {
-            httpClient.PutAsJsonAsync(
+            var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{dishMenuDto.Id}/" +
-                $"{ClassConstants.Dishes}" +
-                $"/{dishMenuDto.Dish.Id}", dishMenuDto);
+                $"{ClassConstants.Dishes}/{dishMenuDto.Dish.Id}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(dishMenuDto), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
     }
 }

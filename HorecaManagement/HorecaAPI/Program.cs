@@ -1,3 +1,4 @@
+using Horeca.API.Middleware;
 using Horeca.Core;
 using Horeca.Infrastructure;
 using MediatR;
@@ -44,6 +45,22 @@ builder.Services.AddCore();
 builder.Services.AddIdentity();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+var config = new NLog.Config.LoggingConfiguration();
+// Targets where to log to: File and Console
+var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "file.txt" };
+var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
+
+// Rules for mapping loggers to targets
+config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, logconsole);
+config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
+
+// Apply config
+NLog.LogManager.Configuration = config;
+
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
+});
 
 var app = builder.Build();
 
@@ -59,7 +76,7 @@ app.UseHttpsRedirection();
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<RequestResponseLogginMiddleware>();
 app.MapControllers();
 
 app.Run();

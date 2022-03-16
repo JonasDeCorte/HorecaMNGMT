@@ -12,11 +12,11 @@ namespace Horeca.API.Controllers
     [ApiController]
     public class UnitController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator mediator;
 
         public UnitController(IMediator mediator)
         {
-            _mediator = mediator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Horeca.API.Controllers
         {
             var query = new GetAllUnitsQuery();
 
-            var response = await _mediator.Send(query);
+            var response = await mediator.Send(query);
 
             return Ok(response);
         }
@@ -50,7 +50,8 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
         {
             var command = new CreateUnitCommand(model);
-            var response = await _mediator.Send(command);
+            var response = await mediator.Send(command);
+
             return StatusCode((int)HttpStatusCode.Created, response);
         }
 
@@ -68,7 +69,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var query = new GetUnitByIdQuery(id);
-            var response = await _mediator.Send(query);
+            var response = await mediator.Send(query);
             return Ok(response);
         }
 
@@ -86,7 +87,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             var command = new DeleteUnitCommand(id);
-            var response = await _mediator.Send(command);
+            var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
         }
 
@@ -103,7 +104,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> Update([FromBody] MutateUnitDto model)
         {
             var command = new EditUnitCommand(model);
-            var response = await _mediator.Send(command);
+            var response = await mediator.Send(command);
             return StatusCode((int)HttpStatusCode.OK, response);
         }
     }

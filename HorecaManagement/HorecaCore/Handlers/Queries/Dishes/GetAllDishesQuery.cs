@@ -2,6 +2,7 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Dishes;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Dishes
 {
@@ -14,6 +15,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllDishesQueryHandler(IUnitOfWork repository, IMapper mapper)
 
@@ -23,9 +25,10 @@ namespace Horeca.Core.Handlers.Queries.Dishes
         }
 
         public async Task<IEnumerable<DishDto>> Handle(GetAllDishesQuery request, CancellationToken cancellationToken)
-
         {
             var entities = await Task.FromResult(repository.Dishes.GetAll());
+
+            logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(DishDto));
 
             return mapper.Map<IEnumerable<DishDto>>(entities);
         }

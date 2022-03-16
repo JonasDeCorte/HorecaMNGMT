@@ -1,8 +1,6 @@
-﻿using Horeca.Shared.Data.Entities;
-using Horeca.MVC.Models.Ingredients;
+﻿using Horeca.MVC.Models.Ingredients;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Mappers;
-using Horeca.MVC.Services;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Ingredients;
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HorecaInfrastructure.Migrations
 {
-    public partial class identity : Migration
+    public partial class test1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,38 @@ namespace HorecaInfrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuCards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuCards", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,25 +190,89 @@ namespace HorecaInfrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Menus",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MenuCardId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Menus", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Role_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Menus_MenuCards_MenuCardId",
+                        column: x => x.MenuCardId,
+                        principalTable: "MenuCards",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Dishes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DishType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MenuCardId = table.Column<int>(type: "int", nullable: true),
+                    MenuId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dishes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Dishes_MenuCards_MenuCardId",
+                        column: x => x.MenuCardId,
+                        principalTable: "MenuCards",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Dishes_Menus_MenuId",
+                        column: x => x.MenuId,
+                        principalTable: "Menus",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IngredientType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BaseAmount = table.Column<int>(type: "int", nullable: false),
+                    UnitId = table.Column<int>(type: "int", nullable: false),
+                    DishId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Dishes_DishId",
+                        column: x => x.DishId,
+                        principalTable: "Dishes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Units_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Units",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -219,9 +315,29 @@ namespace HorecaInfrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Role_ApplicationUserId",
-                table: "Role",
-                column: "ApplicationUserId");
+                name: "IX_Dishes_MenuCardId",
+                table: "Dishes",
+                column: "MenuCardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dishes_MenuId",
+                table: "Dishes",
+                column: "MenuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_DishId",
+                table: "Ingredients",
+                column: "DishId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_UnitId",
+                table: "Ingredients",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_MenuCardId",
+                table: "Menus",
+                column: "MenuCardId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -242,13 +358,25 @@ namespace HorecaInfrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Dishes");
+
+            migrationBuilder.DropTable(
+                name: "Units");
+
+            migrationBuilder.DropTable(
+                name: "Menus");
+
+            migrationBuilder.DropTable(
+                name: "MenuCards");
         }
     }
 }

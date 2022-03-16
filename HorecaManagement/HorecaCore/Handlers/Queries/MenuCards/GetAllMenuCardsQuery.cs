@@ -2,6 +2,7 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.MenuCards
 {
@@ -17,6 +18,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllMenuCardsQueryHandler(IUnitOfWork repository, IMapper mapper)
 
@@ -29,6 +31,8 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
 
         {
             var entities = await Task.FromResult(repository.MenuCards.GetAll());
+            logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(MenuCardDto));
+
             return _mapper.Map<IEnumerable<MenuCardDto>>(entities);
         }
     }

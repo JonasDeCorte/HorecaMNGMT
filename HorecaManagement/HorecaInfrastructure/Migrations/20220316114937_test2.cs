@@ -4,7 +4,7 @@
 
 namespace HorecaInfrastructure.Migrations
 {
-    public partial class identity3 : Migration
+    public partial class test2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

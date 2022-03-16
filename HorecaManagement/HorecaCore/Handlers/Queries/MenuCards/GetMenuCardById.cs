@@ -3,6 +3,7 @@ using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.MenuCards
 {
@@ -20,6 +21,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetMenuCardByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -29,12 +31,17 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
 
         public async Task<MenuCardDto> Handle(GetMenuCardByIdQuery request, CancellationToken cancellationToken)
         {
+            logger.Info("trying to return {object} with id: {id}", nameof(MenuCardDto), request.MenuCardId);
+
             var menuCard = await Task.FromResult(repository.MenuCards.Get(request.MenuCardId));
 
             if (menuCard is null)
             {
+                logger.Error("{object} with Id: {id} is null", nameof(MenuCardDto), request.MenuCardId);
+
                 throw new EntityNotFoundException($"No MenuCard found for Id {request.MenuCardId}");
             }
+            logger.Info("returning {@object} with id: {id}", menuCard, request.MenuCardId);
 
             return mapper.Map<MenuCardDto>(menuCard);
         }

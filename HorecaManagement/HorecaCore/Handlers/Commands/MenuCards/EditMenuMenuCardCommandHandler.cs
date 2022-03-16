@@ -2,6 +2,7 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.MenuCards
 {
@@ -18,6 +19,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
     public class EditMenuMenuCardCommandHandler : IRequestHandler<EditMenuMenuCardCommand, int>
     {
         private readonly IUnitOfWork repository;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public EditMenuMenuCardCommandHandler(IUnitOfWork repository)
         {
@@ -27,14 +29,19 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
         public async Task<int> Handle(EditMenuMenuCardCommand request, CancellationToken cancellationToken)
         {
             var menuCard = repository.MenuCards.GetMenuCardIncludingDependencies(request.Model.MenuCardId);
+            logger.Info("trying to edit {@object} with Id: {Id}", menuCard, request.Model.MenuCardId);
 
             if (menuCard is null)
             {
+                logger.Error("{Object} with Id: {id} does not exist", nameof(menuCard), request.Model.MenuCardId);
+
                 throw new EntityNotFoundException("MenuCard does not exist");
             }
             var menu = menuCard.Menus.SingleOrDefault(x => x.Id == request.Model.Menu.Id);
             if (menu is null)
             {
+                logger.Error("{Object} with Id: {id} does not exist", nameof(menu), request.Model.Menu.Id);
+
                 throw new EntityNotFoundException("Menu does not exist");
             }
 
@@ -46,6 +53,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             repository.MenuCards.Update(menuCard);
 
             await repository.CommitAsync();
+            logger.Info("updated {@object} with Id: {id}", menu, menu.Id);
 
             return menuCard.Id;
         }

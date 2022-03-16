@@ -2,6 +2,7 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Menus
 {
@@ -13,6 +14,7 @@ namespace Horeca.Core.Handlers.Queries.Menus
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllMenuQueryHandler(IUnitOfWork repository, IMapper mapper)
 
@@ -25,6 +27,9 @@ namespace Horeca.Core.Handlers.Queries.Menus
 
         {
             var entities = await Task.FromResult(repository.Menus.GetAll());
+
+            logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(MenuDto));
+
             return _mapper.Map<IEnumerable<MenuDto>>(entities);
         }
     }

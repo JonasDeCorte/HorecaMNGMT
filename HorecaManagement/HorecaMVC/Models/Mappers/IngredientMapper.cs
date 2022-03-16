@@ -28,11 +28,13 @@ namespace Horeca.MVC.Models.Mappers
         {
             MutateIngredientDto result = new MutateIngredientDto
             {
+                Id = ingredientModel.Id,
                 Name = ingredientModel.Name,
                 BaseAmount = ingredientModel.BaseAmount,
                 IngredientType = ingredientModel.IngredientType,
                 Unit = new UnitDto
                 {
+                    Id = ingredientModel.Unit.Id,
                     Name = ingredientModel.Unit.Name,
                 },
             };
@@ -46,7 +48,7 @@ namespace Horeca.MVC.Models.Mappers
             {
                 Id = ingredient.Id,
                 Name = ingredientModel.Name,
-                IngredientType = ingredientModel.Name,
+                IngredientType = ingredientModel.IngredientType,
                 BaseAmount = ingredientModel.BaseAmount,
                 Unit = new UnitDto
                 {

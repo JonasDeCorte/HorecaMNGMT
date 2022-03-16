@@ -2,6 +2,7 @@
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Ingredients;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Horeca.MVC.Services
 {
@@ -42,7 +43,11 @@ namespace Horeca.MVC.Services
 
         public void AddIngredient(MutateIngredientDto ingredient)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}", ingredient);
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void DeleteIngredient(int id)
@@ -52,7 +57,11 @@ namespace Horeca.MVC.Services
 
         public void UpdateIngredient(MutateIngredientDto ingredient)
         {
-            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}", ingredient);
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
     }
 }

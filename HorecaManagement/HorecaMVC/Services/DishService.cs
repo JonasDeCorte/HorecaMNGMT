@@ -68,13 +68,20 @@ namespace Horeca.MVC.Services
 
         public void AddDish(MutateDishDto dish)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
         {
-            httpClient.PostAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/" +
-                $"{ClassConstants.Ingredients}", ingredient);
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void DeleteDish(int id)
@@ -86,20 +93,28 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/" +
                 $"{ClassConstants.Ingredients}/{ingredient.IngredientId}");
+
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
             httpClient.SendAsync(request);
         }
 
         public void UpdateDish(MutateDishDto dish)
         {
-            httpClient.PutAsJsonAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}", dish);
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
 
         public void UpdateDishIngredient(MutateIngredientByDishDto ingredient)
         {
-            httpClient.PutAsJsonAsync(
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.Id}/{ClassConstants.Ingredients}" +
-                $"/{ingredient.Ingredient.Id}", ingredient);
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.Id}" +
+                $"/{ClassConstants.Ingredients}/{ingredient.Ingredient.Id}");
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            httpClient.SendAsync(request);
         }
     }
 }
