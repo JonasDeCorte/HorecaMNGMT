@@ -1,6 +1,6 @@
 ﻿namespace Horeca.MVC.Models.Dishes
 {
-    public class MutateDishViewModel
+    public class MenuDishViewModel
     {
         public int MenuId { get; set; }
         public int DishId { get; set; }

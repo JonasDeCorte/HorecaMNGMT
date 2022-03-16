@@ -56,6 +56,32 @@ namespace Horeca.MVC.Models.Mappers
 
             return model;
         }
+        public static MenuCardDishViewModel MapMutateMenuCardDishModel(int menuCardId, DishDto dish)
+        {
+            MenuCardDishViewModel result = new MenuCardDishViewModel
+            {
+                MenuCardId = menuCardId,
+                DishId = dish.Id,
+                Name = dish.Name,
+                DishType = dish.DishType,
+                Category = dish.Category,
+                Description = dish.Description
+            };
+            return result;
+        }
+
+        public static MenuCardMenuViewModel MapMutateMenuCardMenuModel(int menuCardId, MenuDto menu)
+        {
+            MenuCardMenuViewModel result = new MenuCardMenuViewModel
+            {
+                MenuCardId = menuCardId,
+                MenuId = menu.Id,
+                Name = menu.Name,
+                Description = menu.Description,
+                Category = menu.Category
+            };
+            return result;
+        }
 
         public static MenuCard MapMenuCardDetail(MenuCardDto menuCard, MenuCardsByIdDto menuCardLists)
         {
@@ -135,6 +161,41 @@ namespace Horeca.MVC.Models.Mappers
                 }
             };
 
+            return result;
+        }
+
+        public static MutateDishMenuCardDto MapUpdateDish(MenuCardDishViewModel model)
+        {
+
+            MutateDishMenuCardDto result = new MutateDishMenuCardDto
+            {
+                MenuCardId = model.MenuCardId,
+                Dish = new MutateDishDto
+                {
+                    Id = model.DishId,
+                    Name = model.Name,
+                    DishType = model.DishType,
+                    Category = model.Category,
+                    Description = model.Description
+                }
+            };
+
+            return result;
+        }
+
+        public static MutateMenuMenuCardDto MapUpdateMenu(MenuCardMenuViewModel model)
+        {
+            MutateMenuMenuCardDto result = new MutateMenuMenuCardDto
+            {
+                MenuCardId = model.MenuCardId,
+                Menu = new MutateMenuDto
+                {
+                    Id = model.MenuId,
+                    Name = model.Name,
+                    Description = model.Description,
+                    Category = model.Category
+                }
+            };
             return result;
         }
     }

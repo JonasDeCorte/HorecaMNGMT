@@ -151,14 +151,14 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> EditIngredient(int dishId, int ingredientId)
         {
             IngredientDto ingredient = await ingredientService.GetIngredientById(ingredientId);
-            MutateIngredientViewModel model = DishMapper.MapMutateIngredientModel(dishId, ingredient);
+            DishIngredientViewModel model = DishMapper.MapMutateIngredientModel(dishId, ingredient);
 
             return View(model);
         }
 
         [Route("/Dish/EditIngredient/{dishId}/{ingredientId}")]
         [HttpPost]
-        public IActionResult EditIngredient(MutateIngredientViewModel ingredient)
+        public IActionResult EditIngredient(DishIngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {

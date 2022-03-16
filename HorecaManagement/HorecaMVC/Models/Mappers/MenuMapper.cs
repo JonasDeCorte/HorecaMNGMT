@@ -47,9 +47,9 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
-        public static MutateDishViewModel MapMutateDishModel(int menuId, DishDto dish)
+        public static MenuDishViewModel MapMutateDishModel(int menuId, DishDto dish)
         {
-            MutateDishViewModel result = new MutateDishViewModel
+            MenuDishViewModel result = new MenuDishViewModel
             {
                 MenuId = menuId,
                 DishId = dish.Id,
@@ -117,7 +117,7 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateDishMenuDto MapUpdateDish(MutateDishViewModel model)
+        public static MutateDishMenuDto MapUpdateDish(MenuDishViewModel model)
         {
             MutateDishMenuDto result = new MutateDishMenuDto
             {

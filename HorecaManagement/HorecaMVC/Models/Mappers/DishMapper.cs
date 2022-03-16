@@ -116,7 +116,7 @@ namespace Horeca.MVC.Models.Mappers
 
         }
 
-        public static MutateIngredientByDishDto MapUpdateIngredient(MutateIngredientViewModel ingredient)
+        public static MutateIngredientByDishDto MapUpdateIngredient(DishIngredientViewModel ingredient)
         {
             MutateIngredientByDishDto result = new MutateIngredientByDishDto
             {
@@ -134,9 +134,9 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateIngredientViewModel MapMutateIngredientModel(int dishId, IngredientDto ingredient)
+        public static DishIngredientViewModel MapMutateIngredientModel(int dishId, IngredientDto ingredient)
         {
-            MutateIngredientViewModel result = new MutateIngredientViewModel
+            DishIngredientViewModel result = new DishIngredientViewModel
             {
                 DishId = dishId,
                 IngredientId = ingredient.Id,

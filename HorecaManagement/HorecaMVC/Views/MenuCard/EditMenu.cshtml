@@ -1,13 +1,13 @@
-﻿@model Horeca.MVC.Models.Dishes.MenuDishViewModel
+﻿@model Horeca.MVC.Models.Menus.MenuCardMenuViewModel
 
 @{
-    ViewData["Title"] = "Edit Menu Dish";
+    ViewData["Title"] = "Edit Menu Card Menu";
 }
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
-        <form asp-action="EditDish" class="w-75 mx-auto">
+        <form asp-action="EditMenu" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-2">
                 <label asp-for="Name" class="control-label"></label>
@@ -15,23 +15,18 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="mt-2">
-                <label asp-for="DishType" class="control-label"></label>
-                <input asp-for="DishType" class="form-control" />
-                <span asp-validation-for="DishType" class="text-danger"></span>
-            </div>
-            <div class="mt-2">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea asp-for="Description" class="form-control row-3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="mt-2">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Detail" asp-route-id="@Model.MenuId" class="btn btn-secondary">Cancel</a>
+                <a asp-action="Detail" asp-route-id="@Model.MenuCardId" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

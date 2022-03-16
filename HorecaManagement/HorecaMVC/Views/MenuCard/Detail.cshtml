@@ -27,9 +27,13 @@
                                     {
                                         <tr>
                                             <td>@item.Name</td>
-                                            <td>@item.DishType</td>
+                                            <td>@item.Description</td>
                                             <td>@item.Category</td>
                                             <td>
+                                                <a asp-action="EditDish" asp-route-menuCardId="@Model.Id"
+                                                    asp-route-dishId="@item.Id" class="btn btn-primary">
+                                                    Edit
+                                                </a>
                                                 <button id="toDeleteDishModal" type="button" class="modalbutton btn btn-danger"
                                                     data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
                                                     Delete
@@ -61,6 +65,10 @@
                                             <td>@item.Description</td>
                                             <td>@item.Category</td>
                                             <td>
+                                                <a asp-action="EditMenu" asp-route-menuCardId="@Model.Id"
+                                                    asp-route-menuId="@item.Id" class="btn btn-primary">
+                                                    Edit
+                                                </a>
                                                 <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
                                                     data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
                                                     Delete
