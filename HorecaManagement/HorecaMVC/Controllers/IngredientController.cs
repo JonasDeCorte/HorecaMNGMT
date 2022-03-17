@@ -45,9 +45,13 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ingredientService.DeleteIngredient(id);
+            var response = await ingredientService.DeleteIngredient(id);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -60,13 +64,17 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(IngredientViewModel ingredient)
+        public async Task<IActionResult> Create(IngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
                 MutateIngredientDto result = IngredientMapper.MapCreateIngredient(ingredient);
 
-                ingredientService.AddIngredient(result);
+                var response = await ingredientService.AddIngredient(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction(nameof(Index));
             } else
@@ -91,7 +99,11 @@ namespace Horeca.MVC.Controllers
                 MutateIngredientDto result = IngredientMapper.MapUpdateIngredient(ingredient, 
                     await ingredientService.GetIngredientById(ingredient.Id));
 
-                ingredientService.UpdateIngredient(result);
+                var response = await ingredientService.UpdateIngredient(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction(nameof(Index));
             } else

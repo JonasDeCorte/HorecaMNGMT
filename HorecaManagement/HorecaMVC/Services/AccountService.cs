@@ -69,8 +69,8 @@ namespace Horeca.MVC.Services
 
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.User}");
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+                $"{ClassConstants.Account}/{ClassConstants.User}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;

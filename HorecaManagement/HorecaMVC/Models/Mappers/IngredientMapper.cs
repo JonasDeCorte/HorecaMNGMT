@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Models.Ingredients;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.Units;
 
@@ -22,6 +23,25 @@ namespace Horeca.MVC.Models.Mappers
             };
 
             return model;
+        }
+
+        public static IngredientDto MapIngredient(Ingredient ingredient)
+        {
+
+            IngredientDto ingredientDto = new IngredientDto
+            {
+                Id = ingredient.Id,
+                Name = ingredient.Name,
+                IngredientType = ingredient.IngredientType,
+                BaseAmount = ingredient.BaseAmount,
+                Unit = new UnitDto
+                {
+                    Id = ingredient.Unit.Id,
+                    Name = ingredient.Unit.Name,
+                },
+            };
+
+            return ingredientDto;
         }
 
         public static MutateIngredientDto MapCreateIngredient(IngredientViewModel ingredientModel)

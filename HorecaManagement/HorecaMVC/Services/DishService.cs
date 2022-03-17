@@ -62,59 +62,90 @@ namespace Horeca.MVC.Services
         {
             var dishDto = await GetDishById(id);
             var ingredientListDto = await GetIngredientsByDishId(id);
+            if (dishDto == null || ingredientListDto == null)
+            {
+                return null;
+            }
 
             return DishMapper.MapDishDetail(dishDto, ingredientListDto);
         }
 
-        public void AddDish(MutateDishDto dish)
+        public async Task<HttpResponseMessage> AddDish(MutateDishDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
 
             request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
+        public async Task<HttpResponseMessage> AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void DeleteDish(int id)
+        public async Task<HttpResponseMessage> DeleteDish(int id)
         {
-            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
+            var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
-        public void DeleteDishIngredient(DeleteIngredientDishDto ingredient)
+
+        public async Task<HttpResponseMessage> DeleteDishIngredient(DeleteIngredientDishDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/" +
                 $"{ClassConstants.Ingredients}/{ingredient.IngredientId}");
 
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+            return await httpClient.SendAsync(request);
         }
 
-        public void UpdateDish(MutateDishDto dish)
+        public async Task<HttpResponseMessage> UpdateDish(MutateDishDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void UpdateDishIngredient(MutateIngredientByDishDto ingredient)
+        public async Task<HttpResponseMessage> UpdateDishIngredient(MutateIngredientByDishDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.Id}" +
                 $"/{ClassConstants.Ingredients}/{ingredient.Ingredient.Id}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
     }
 }

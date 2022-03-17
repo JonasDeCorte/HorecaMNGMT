@@ -35,18 +35,7 @@ namespace Horeca.MVC.Models.Mappers
             };
             foreach (var ingredient in dish.Ingredients)
             {
-                IngredientDto ingredientDto = new IngredientDto
-                {
-                    Id = ingredient.Id,
-                    Name = ingredient.Name,
-                    IngredientType = ingredient.IngredientType,
-                    BaseAmount = ingredient.BaseAmount,
-                    Unit = new UnitDto
-                    {
-                        Id = ingredient.Unit.Id,
-                        Name = ingredient.Unit.Name,
-                    },
-                };
+                IngredientDto ingredientDto = IngredientMapper.MapIngredient(ingredient);
                 IngredientViewModel ingredientModel = IngredientMapper.MapModel(ingredientDto);
                 model.Ingredients.Add(ingredientModel);
             }
@@ -75,8 +64,8 @@ namespace Horeca.MVC.Models.Mappers
                     Unit = new Unit
                     {
                         Name = ingredientDto.Unit.Name,
-                    },
-                    UnitId = ingredientDto.Unit.Id,
+                        Id = ingredientDto.Unit.Id
+                    }
                 };
                 dish.Ingredients.Add(ingredient);
             }

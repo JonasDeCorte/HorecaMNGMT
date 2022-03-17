@@ -50,28 +50,29 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            var response = await dishService.DeleteDish(id);
+            if (response == null)
             {
-                return View("NotFound");
+                return View("OperationFailed");
             }
-            dishService.DeleteDish(id);
 
             return RedirectToAction(nameof(Index));
         }
 
         [Route("/Dish/DeleteIngredient/{dishId}/{id}")]
-        public IActionResult DeleteIngredient(int dishId, int id)
+        public async Task<IActionResult> DeleteIngredient(int dishId, int id)
         {
-            if (dishId == 0 || id == null)
-            {
-                return View("NotFound");
-            }
             DeleteIngredientDishDto ingredient = new DeleteIngredientDishDto();
             ingredient.DishId = dishId;
             ingredient.IngredientId = id;
-            dishService.DeleteDishIngredient(ingredient);
+
+            var response = await dishService.DeleteDishIngredient(ingredient);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
 
             return RedirectToAction("Detail", new { id = dishId });
         }
@@ -84,12 +85,16 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(DishViewModel dish)
+        public async Task<IActionResult> Create(DishViewModel dish)
         {
             if (ModelState.IsValid)
             {
                 MutateDishDto result = DishMapper.MapMutateDish(dish, new DishDto());
-                dishService.AddDish(result);
+                var response = await dishService.AddDish(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction(nameof(Index));
             } else
@@ -108,12 +113,16 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateIngredient(int id, IngredientViewModel model)
+        public async Task<IActionResult> CreateIngredient(int id, IngredientViewModel model)
         {
             if (ModelState.IsValid)
             {
                 MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, model);
-                dishService.AddDishIngredient(id, result);
+                var response = await dishService.AddDishIngredient(id, result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction("Detail", new { id = id });
             }
@@ -137,7 +146,11 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MutateDishDto result = DishMapper.MapMutateDish(dish, await dishService.GetDishById(dish.Id));
-                dishService.UpdateDish(result);
+                var response = await dishService.UpdateDish(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction(nameof(Detail), new { id = dish.Id });
             }
@@ -158,12 +171,16 @@ namespace Horeca.MVC.Controllers
 
         [Route("/Dish/EditIngredient/{dishId}/{ingredientId}")]
         [HttpPost]
-        public IActionResult EditIngredient(DishIngredientViewModel ingredient)
+        public async Task<IActionResult> EditIngredient(DishIngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
                 MutateIngredientByDishDto result = DishMapper.MapUpdateIngredient(ingredient);
-                dishService.UpdateDishIngredient(result);
+                var response = await dishService.UpdateDishIngredient(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction("Detail", new { id = ingredient.DishId });
             }

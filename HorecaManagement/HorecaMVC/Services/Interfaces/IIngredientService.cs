@@ -6,8 +6,8 @@ namespace Horeca.MVC.Services.Interfaces
     {
         public Task<IEnumerable<IngredientDto>> GetIngredients();
         public Task<IngredientDto> GetIngredientById(int id);
-        public void AddIngredient(MutateIngredientDto ingredient);
-        public void DeleteIngredient(int id);
-        public void UpdateIngredient(MutateIngredientDto ingredient);
+        public Task<HttpResponseMessage> AddIngredient(MutateIngredientDto ingredient);
+        public Task<HttpResponseMessage> DeleteIngredient(int id);
+        public Task<HttpResponseMessage> UpdateIngredient(MutateIngredientDto ingredient);
     }
 }

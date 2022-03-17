@@ -61,6 +61,10 @@ namespace Horeca.MVC.Services
         {
             var menuDto = await GetMenuById(id);
             var dishListDto = await GetDishesByMenuId(id);
+            if (menuDto == null || dishListDto == null)
+            {
+                return null;
+            }
 
             return MenuMapper.MapMenuDetail(menuDto, dishListDto);
         }

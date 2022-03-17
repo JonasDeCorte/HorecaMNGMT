@@ -41,27 +41,44 @@ namespace Horeca.MVC.Services
             return JsonConvert.DeserializeObject<IngredientDto>(response.Content.ReadAsStringAsync().Result);
         }
 
-        public void AddIngredient(MutateIngredientDto ingredient)
+        public async Task<HttpResponseMessage> AddIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void DeleteIngredient(int id)
+        public async Task<HttpResponseMessage> DeleteIngredient(int id)
         {
-            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{id}");
+            var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/" +
+                $"{ClassConstants.Ingredient}/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void UpdateIngredient(MutateIngredientDto ingredient)
+        public async Task<HttpResponseMessage> UpdateIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
     }
 }
