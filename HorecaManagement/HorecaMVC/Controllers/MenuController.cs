@@ -54,21 +54,29 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            menuService.DeleteMenu(id);
+            var response = await menuService.DeleteMenu(id);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
         [Route("/Menu/DeleteDish/{menuId}/{id}")]
-        public IActionResult DeleteDish(int menuId, int id)
+        public async Task<IActionResult> DeleteDish(int menuId, int id)
         {
             DeleteDishMenuDto dish = new DeleteDishMenuDto();
             dish.MenuId = menuId;
             dish.DishId = id;
 
-            menuService.DeleteMenuDish(dish);
+            var response = await menuService.DeleteMenuDish(dish);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
 
             return RedirectToAction("Detail", new { id = menuId });
         }
@@ -81,13 +89,17 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(MenuViewModel menu)
+        public async Task<IActionResult> Create(MenuViewModel menu)
         {
             if (ModelState.IsValid)
             {
                 MutateMenuDto result = MenuMapper.MapMutateMenu(menu, new MenuDto());
 
-                menuService.AddMenu(result);
+                var response = await menuService.AddMenu(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -106,13 +118,17 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateDish(int id, DishViewModel dish)
+        public async Task<IActionResult> CreateDish(int id, DishViewModel dish)
         {
             if (ModelState.IsValid)
             {
                 MutateDishMenuDto result = MenuMapper.MapCreateDish(id, dish);
 
-                menuService.AddMenuDish(id, result);
+                var response = await menuService.AddMenuDish(id, result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction("Detail", new { id = id });
             }
@@ -137,7 +153,11 @@ namespace Horeca.MVC.Controllers
             {
                 MutateMenuDto result = MenuMapper.MapMutateMenu(menu, await menuService.GetMenuById(menu.Id));
 
-                menuService.UpdateMenu(result);
+                var response = await menuService.UpdateMenu(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction(nameof(Detail), new { id = menu.Id });
             }
@@ -158,12 +178,17 @@ namespace Horeca.MVC.Controllers
 
         [Route("/Menu/EditDish/{MenuId}/{DishId}")]
         [HttpPost]
-        public IActionResult EditDish(MenuDishViewModel dish)
+        public async Task<IActionResult> EditDish(MenuDishViewModel dish)
         {
             if (ModelState.IsValid)
             {
                 MutateDishMenuDto result = MenuMapper.MapUpdateDish(dish);
-                menuService.UpdateMenuDish(result);
+
+                var response = await menuService.UpdateMenuDish(result);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction("Detail", new { id = dish.MenuId });
             }

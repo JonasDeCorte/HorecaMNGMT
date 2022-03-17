@@ -9,14 +9,14 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<MenuCardDto> GetMenuCardById(int id);
         public Task<MenuCardsByIdDto> GetListsByMenuCardId(int id);
         public Task<MenuCard> GetMenuCardDetailById(int id);
-        public void AddMenuCard(MutateMenuCardDto menuCard);
-        public void AddMenuCardDish(int id, MutateDishMenuCardDto dish);
-        public void AddMenuCardMenu(int id, MutateMenuMenuCardDto menu);
-        public void DeleteMenuCard(int id);
-        public void DeleteMenuCardDish(DeleteDishMenuCardDto dish);
-        public void DeleteMenuCardMenu(DeleteMenuMenuCardDto menu);
-        public void UpdateMenuCard(MutateMenuCardDto menuCard);
-        public void UpdateMenuCardDish(MutateDishMenuCardDto menuCard);
-        public void UpdateMenuCardMenu(MutateMenuMenuCardDto menuCard);
+        public Task<HttpResponseMessage> AddMenuCard(MutateMenuCardDto menuCard);
+        public Task<HttpResponseMessage> AddMenuCardDish(int id, MutateDishMenuCardDto dish);
+        public Task<HttpResponseMessage> AddMenuCardMenu(int id, MutateMenuMenuCardDto menu);
+        public Task<HttpResponseMessage> DeleteMenuCard(int id);
+        public Task<HttpResponseMessage> DeleteMenuCardDish(DeleteDishMenuCardDto dish);
+        public Task<HttpResponseMessage> DeleteMenuCardMenu(DeleteMenuMenuCardDto menu);
+        public Task<HttpResponseMessage> UpdateMenuCard(MutateMenuCardDto menuCard);
+        public Task<HttpResponseMessage> UpdateMenuCardDish(MutateDishMenuCardDto menuCard);
+        public Task<HttpResponseMessage> UpdateMenuCardMenu(MutateMenuMenuCardDto menuCard);
     }
 }

@@ -9,12 +9,12 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<MenuDto> GetMenuById(int id);
         public Task<Menu> GetMenuDetailById(int id);
         public Task<MenuDishesByIdDto> GetDishesByMenuId(int id);
-        public void AddMenu(MutateMenuDto menu);
-        public void AddMenuDish(int id, MutateDishMenuDto dish);
-        public void DeleteMenu(int id);
-        public void DeleteMenuDish(DeleteDishMenuDto dish);
-        public void UpdateMenu(MutateMenuDto menu);
-        public void UpdateMenuDish(MutateDishMenuDto dish);
+        public Task<HttpResponseMessage> AddMenu(MutateMenuDto menu);
+        public Task<HttpResponseMessage> AddMenuDish(int id, MutateDishMenuDto dish);
+        public Task<HttpResponseMessage> DeleteMenu(int id);
+        public Task<HttpResponseMessage> DeleteMenuDish(DeleteDishMenuDto dish);
+        public Task<HttpResponseMessage> UpdateMenu(MutateMenuDto menu);
+        public Task<HttpResponseMessage> UpdateMenuDish(MutateDishMenuDto dish);
 
     }
 }

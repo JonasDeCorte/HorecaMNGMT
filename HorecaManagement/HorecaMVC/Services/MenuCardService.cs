@@ -61,91 +61,140 @@ namespace Horeca.MVC.Services
         {
             MenuCardDto menuCardDto = await GetMenuCardById(id);
             MenuCardsByIdDto menuCardListsDto = await GetListsByMenuCardId(id);
+            if (menuCardDto == null || menuCardListsDto == null)
+            {
+                return null;
+            }
 
             return MenuCardMapper.MapMenuCardDetail(menuCardDto, menuCardListsDto);
         }
 
-        public void AddMenuCard(MutateMenuCardDto menuCard)
+        public async Task<HttpResponseMessage> AddMenuCard(MutateMenuCardDto menuCard)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(menuCard), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void AddMenuCardDish(int id, MutateDishMenuCardDto dish)
+        public async Task<HttpResponseMessage> AddMenuCardDish(int id, MutateDishMenuCardDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
                 $"{ClassConstants.Dishes}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void AddMenuCardMenu(int id, MutateMenuMenuCardDto menu)
+        public async Task<HttpResponseMessage> AddMenuCardMenu(int id, MutateMenuMenuCardDto menu)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
                 $"{ClassConstants.Menus}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void DeleteMenuCard(int id)
+        public async Task<HttpResponseMessage> DeleteMenuCard(int id)
         {
-            httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
+            var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void DeleteMenuCardDish(DeleteDishMenuCardDto dish)
+        public async Task<HttpResponseMessage> DeleteMenuCardDish(DeleteDishMenuCardDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{dish.MenuCardId}/" +
                 $"{ClassConstants.Dishes}/{dish.DishId}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void DeleteMenuCardMenu(DeleteMenuMenuCardDto menu)
+        public async Task<HttpResponseMessage> DeleteMenuCardMenu(DeleteMenuMenuCardDto menu)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{menu.MenuCardId}/{ClassConstants.Menus}/" +
                 $"{menu.MenuId}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void UpdateMenuCard(MutateMenuCardDto menuCard)
+        public async Task<HttpResponseMessage> UpdateMenuCard(MutateMenuCardDto menuCard)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(menuCard), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void UpdateMenuCardDish(MutateDishMenuCardDto dishMenuCardDto)
+        public async Task<HttpResponseMessage> UpdateMenuCardDish(MutateDishMenuCardDto dishMenuCardDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{dishMenuCardDto.MenuCardId}/" +
                 $"{ClassConstants.Dishes}/{dishMenuCardDto.Dish.Id}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(dishMenuCardDto), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public void UpdateMenuCardMenu(MutateMenuMenuCardDto menuMenuCardDto)
+        public async Task<HttpResponseMessage> UpdateMenuCardMenu(MutateMenuMenuCardDto menuMenuCardDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{menuMenuCardDto.MenuCardId}/" +
                 $"{ClassConstants.Menus}/{menuMenuCardDto.Menu.Id}");
-
             request.Content = new StringContent(JsonConvert.SerializeObject(menuMenuCardDto), Encoding.UTF8, "application/json");
-            httpClient.SendAsync(request);
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
     }
 }
