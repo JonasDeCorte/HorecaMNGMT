@@ -1,0 +1,42 @@
+﻿@model Horeca.MVC.Models.Accounts.UserListViewModel
+
+@{
+    ViewData["Title"] = "User Overview";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Users</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
+                </div>
+            </div>
+        </div>
+    </div>
+    <table id="tableView" class="table table-responsive mt-2">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model.Users)
+            {
+                <tr>
+                    <td>@item.Username</td>
+                    <td>
+                        roles
+                    </td>
+                    <td>
+                        <a asp-action="Detail" asp-route-username="@item.Username" class="btn btn-primary">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.Username" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

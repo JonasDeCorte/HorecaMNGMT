@@ -15,6 +15,35 @@ namespace Horeca.MVC.Controllers
             this.accountService = accountService;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<UserDto> users = await accountService.GetUsers();
+            if (users == null)
+            {
+                return View("NotFound");
+            }
+            UserListViewModel listModel = new UserListViewModel();
+            foreach(var user in users)
+            {
+                UserRolesViewModel model = AccountMapper.MapUserModel(user);
+                listModel.Users.Add(model);
+            }
+
+            return View(listModel);
+        }
+
+        public async Task<IActionResult> Detail(string username)
+        {
+            UserDto user = await accountService.GetUserByName(username);
+            if (user == null)
+            {
+                return View("NotFound");
+            }
+            UserRolesViewModel model = AccountMapper.MapUserModel(user);
+
+            return View(model);
+        }
+
         public IActionResult Login()
         {
             var model = new UserViewModel();
@@ -31,7 +60,7 @@ namespace Horeca.MVC.Controllers
 
                 accountService.LoginUser(user);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { area = "Home" });
             } else
             {
                 return View(model);
@@ -54,7 +83,7 @@ namespace Horeca.MVC.Controllers
 
                 accountService.RegisterUser(user);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { area = "Home" } );
             }
             else
             {

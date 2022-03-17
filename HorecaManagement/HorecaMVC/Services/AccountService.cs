@@ -69,7 +69,8 @@ namespace Horeca.MVC.Services
 
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}");
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
+                $"{ClassConstants.User}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -82,7 +83,7 @@ namespace Horeca.MVC.Services
         public async Task<UserDto> GetUserByName(string username)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Account}/{username}");
+                $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;

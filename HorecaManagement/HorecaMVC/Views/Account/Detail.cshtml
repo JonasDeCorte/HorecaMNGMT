@@ -1,0 +1,33 @@
+﻿@model Horeca.MVC.Models.Accounts.UserRolesViewModel
+
+@{
+    ViewData["Title"] = "User Detail";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Username</h1>
+    <div class="d-flex">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Role Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in @Model.Roles)
+                {
+                    <tr>
+                        <td scope="row">@role</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td scope="row" colspan="2">
+                        <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
