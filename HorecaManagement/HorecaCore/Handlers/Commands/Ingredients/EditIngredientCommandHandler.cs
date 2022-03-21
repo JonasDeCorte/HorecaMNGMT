@@ -58,7 +58,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             await repository.CommitAsync();
             logger.Info("updated {@object} with Id: {id}", ingredient, ingredient.Id);
 
-            return request.Model.Id;
+            return ingredient.Id;
         }
     }
 }

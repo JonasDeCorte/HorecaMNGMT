@@ -6,7 +6,7 @@ using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
-    public class RegisterCommand : IRequest<int>
+    public class RegisterCommand : IRequest<string>
     {
         public RegisterCommand(RegisterUserDto model)
         {
@@ -16,19 +16,18 @@ namespace Horeca.Core.Handlers.Commands.Accounts
         public RegisterUserDto Model { get; }
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, int>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public RegisterCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public RegisterCommandHandler(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
-            this.roleManager = roleManager;
         }
 
-        public async Task<int> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to register {object} with username: {username}", nameof(ApplicationUser), request.Model.Username);
 
@@ -44,7 +43,8 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             {
                 Email = request.Model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = request.Model.Username
+                UserName = request.Model.Username,
+                ExternalId = Guid.NewGuid().ToString(),
             };
             var result = await userManager.CreateAsync(user, request.Model.Password);
             logger.Info("added new user {user}", user.NormalizedUserName);
@@ -55,17 +55,6 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                 throw new ArgumentNullException("Creating user failed");
             }
 
-            if (!await roleManager.RoleExistsAsync("User"))
-            {
-                await roleManager.CreateAsync(new IdentityRole("User"));
-                logger.Info("added role user");
-            }
-
-            if (await roleManager.RoleExistsAsync("User"))
-            {
-                await userManager.AddToRoleAsync(user, "User");
-                logger.Info("added role user to new user {user}", user.NormalizedUserName);
-            }
             return user.Id;
         }
     }

@@ -39,7 +39,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
             logger.Info("Deleted {@object} with id {ingredId} from {@dish} with Id: {id}", ingredient, request.Model.IngredientId, dish, request.Model.DishId);
 
-            return request.Model.IngredientId;
+            return ingredient.Id;
         }
     }
 }
