@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Queries.Accounts
                 Username = x.UserName
             }).ToList());
 
-            logger.Info("{amount} of {nameof} have been returned", result.Count(), nameof(RoleDto));
+            logger.Info("{amount} of {nameof} have been returned", result.Count(), nameof(BaseUserDto));
 
             return result;
         }

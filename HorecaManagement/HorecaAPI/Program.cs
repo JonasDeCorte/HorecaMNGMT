@@ -1,11 +1,16 @@
+using Horeca.API.Authorization;
 using Horeca.API.Middleware;
 using Horeca.Core;
 using Horeca.Infrastructure;
 using Horeca.Infrastructure.Data.Repositories;
+using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Data.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +19,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "HORECA MANAGEMENT API", Version = "v1" });
+    option.OperationFilter<SwaggerAuthorizeOperationFilter>();
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -35,7 +42,7 @@ builder.Services.AddSwaggerGen(option =>
                 {
                     Type=ReferenceType.SecurityScheme,
                     Id="Bearer"
-                }
+                },
             },
             new string[]{}
         }
@@ -46,9 +53,20 @@ builder.Services.AddCore();
 builder.Services.AddIdentity();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
+// Register our custom Authorization handler
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+
+// Overrides the DefaultAuthorizationPolicyProvider with our own
+// https://github.com/dotnet/aspnetcore/blob/main/src/Security/Authorization/Core/src/DefaultAuthorizationPolicyProvider.cs
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+builder.Services.AddScoped<IUserPermissionService, UserPermissionService>();
+
 var config = new NLog.Config.LoggingConfiguration();
+
 // Targets where to log to: File and Console
 var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "file.txt" };
+logfile.ArchiveEvery = NLog.Targets.FileArchivePeriod.Day;
 var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
 
 // Rules for mapping loggers to targets
@@ -71,6 +89,8 @@ app.UseHttpsRedirection();
 
 // Authentication & Authorization
 app.UseAuthentication();
+app.UseMiddleware<PermissionsMiddleware>();
+
 app.UseAuthorization();
 app.UseMiddleware<RequestResponseLogginMiddleware>();
 

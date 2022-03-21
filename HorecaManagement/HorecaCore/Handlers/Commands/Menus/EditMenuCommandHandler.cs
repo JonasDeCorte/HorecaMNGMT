@@ -48,7 +48,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
             logger.Info("updated {@object} with Id: {id}", menu, menu.Id);
 
-            return request.Model.Id;
+            return menu.Id;
         }
     }
 }

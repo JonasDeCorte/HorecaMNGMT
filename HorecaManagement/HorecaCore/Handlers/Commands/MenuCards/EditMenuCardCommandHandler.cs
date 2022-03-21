@@ -44,7 +44,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             await repository.CommitAsync();
             logger.Info("updated {@object} with Id: {id}", menuCard, menuCard.Id);
 
-            return request.Model.Id;
+            return menuCard.Id;
         }
     }
 }

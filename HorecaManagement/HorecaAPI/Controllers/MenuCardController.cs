@@ -1,5 +1,8 @@
 ﻿using Horeca.Core.Handlers.Commands.MenuCards;
 using Horeca.Core.Handlers.Queries.MenuCards;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
@@ -25,6 +28,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success retrieving MenuCard list</response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Read)]
+        ///
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MenuCardDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -42,6 +47,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success Retrieving MenuCard by Id</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Read)]
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(typeof(MenuCardDto), (int)HttpStatusCode.OK)]
@@ -60,6 +67,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success creating new MenuCard </response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Create)]
         [HttpPost]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -77,6 +86,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting MenuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -95,6 +106,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success updating exsiting MenuCard</response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Update)]
         [HttpPut]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -113,6 +125,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success adding a new menu to a menuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Create)]
         [HttpPost]
         [Route("{id}/menus")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -133,6 +147,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success adding a new Dish to a menuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Create)]
         [HttpPost]
         [Route("{id}/dishes")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -152,6 +168,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success List of menus and dishes from menu by Id</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Read)]
         [HttpGet]
         [Route("{id}/menus/dishes")]
         [ProducesResponseType(typeof(MenuCardsByIdDto), (int)HttpStatusCode.OK)]
@@ -172,6 +190,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success editing an existing dish from an existing menuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Update)]
         [HttpPut]
         [Route("{id}/dishes/{dishId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -194,6 +214,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success editing an existing menu from an existing menuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Update)]
         [HttpPut]
         [Route("{id}/menus/{menuId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -215,6 +237,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting  menu from a menuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}/menus/{menuId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -234,6 +258,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting  dish from a menuCard</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}/dishes/{dishId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]

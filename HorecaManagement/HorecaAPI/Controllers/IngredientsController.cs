@@ -1,5 +1,8 @@
 ﻿using Horeca.Core.Handlers.Commands.Ingredients;
 using Horeca.Core.Handlers.Queries.Ingredients;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
@@ -25,6 +28,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success retrieving ingredient list</response>
         /// <response code="400">Bad request</response>
+        ///
+        [PermissionAuthorize(nameof(Ingredient), Permissions.Read)]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<IngredientDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -42,6 +47,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success creating new ingredient</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(Ingredient), Permissions.Create)]
         [HttpPost]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -59,6 +66,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success updating exsiting ingredient</response>
         /// <response code="400">Bad request</response>
+        ///
+        [PermissionAuthorize(nameof(Ingredient), Permissions.Update)]
         [HttpPut]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -76,6 +85,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success Retrieve ingredient by Id</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(Ingredient), Permissions.Read)]
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
@@ -94,6 +105,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting ingredient</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(Ingredient), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
