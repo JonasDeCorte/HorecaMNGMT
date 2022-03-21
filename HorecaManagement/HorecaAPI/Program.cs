@@ -1,6 +1,8 @@
 using Horeca.API.Middleware;
 using Horeca.Core;
 using Horeca.Infrastructure;
+using Horeca.Infrastructure.Data.Repositories;
+using Horeca.Shared.Data.Repositories;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -25,7 +27,7 @@ builder.Services.AddSwaggerGen(option =>
         Scheme = "Bearer"
     });
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+   {
         {
             new OpenApiSecurityScheme
             {
@@ -37,9 +39,8 @@ builder.Services.AddSwaggerGen(option =>
             },
             new string[]{}
         }
-    });
+   });
 });
-
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddCore();
 builder.Services.AddIdentity();
@@ -57,11 +58,6 @@ config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
 // Apply config
 NLog.LogManager.Configuration = config;
 
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -77,6 +73,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<RequestResponseLogginMiddleware>();
+
 app.MapControllers();
 
 app.Run();

@@ -10,14 +10,14 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
     {
     }
 
-    public class GetAllIngrdedientsQueryHandler : IRequestHandler<GetAllIngredientsQuery, IEnumerable<IngredientDto>>
+    public class GetAllIngredientsQueryHandler : IRequestHandler<GetAllIngredientsQuery, IEnumerable<IngredientDto>>
 
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public GetAllIngrdedientsQueryHandler(IUnitOfWork repository, IMapper mapper)
+        public GetAllIngredientsQueryHandler(IUnitOfWork repository, IMapper mapper)
 
         {
             this.repository = repository;
