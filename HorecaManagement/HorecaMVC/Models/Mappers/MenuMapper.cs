@@ -32,14 +32,7 @@ namespace Horeca.MVC.Models.Mappers
             };
             foreach (var dish in menu.Dishes)
             {
-                DishDto dishDto = new DishDto
-                {
-                    Id = dish.Id,
-                    Name = dish.Name,
-                    Description = dish.Description,
-                    Category = dish.Category,
-                    DishType = dish.DishType
-                };
+                DishDto dishDto = DishMapper.MapDishDto(dish);
                 DishViewModel dishModel = DishMapper.MapModel(dishDto);
                 model.Dishes.Add(dishModel);
             }
@@ -61,6 +54,41 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
+        public static Menu MapMenu(MenuDto menuDto)
+        {
+            Menu result = new Menu
+            {
+                Id = menuDto.Id,
+                Name = menuDto.Name,
+                Description = menuDto.Description,
+                Category = menuDto.Category,
+            };
+            return result;
+        }
+
+        public static Menu MapMenuDetail(MenuDto menuDto, MenuDishesByIdDto dishList)
+        {
+            Menu result = MapMenu(menuDto);
+            foreach (var dishDto in dishList.Dishes)
+            {
+                Dish dishResult = DishMapper.MapDish(dishDto);
+                result.Dishes.Add(dishResult);
+            }
+            return result;
+        }
+        
+        public static MenuDto MapMenuDto(Menu menu)
+        {
+            MenuDto menuDto = new MenuDto
+            {
+                Id = menu.Id,
+                Name = menu.Name,
+                Category = menu.Category,
+                Description = menu.Description
+            };
+            return menuDto;
+        }
+
         public static MutateMenuDto MapMutateMenu(MenuViewModel menuModel, MenuDto menu)
         {
             MutateMenuDto result = new MutateMenuDto
@@ -71,31 +99,6 @@ namespace Horeca.MVC.Models.Mappers
                 Category = menuModel.Category,
             };
 
-            return result;
-        }
-
-        public static Menu MapMenuDetail(MenuDto menu, MenuDishesByIdDto dishList)
-        {
-            Menu result = new Menu
-            {
-                Id = menu.Id,
-                Name = menu.Name,
-                Description = menu.Description,
-                Category = menu.Category,
-            };
-
-            foreach (var dishDto in dishList.Dishes)
-            {
-                Dish dishResult = new Dish
-                {
-                    Id = dishDto.Id,
-                    Name = dishDto.Name,
-                    Description = dishDto.Description,
-                    Category = dishDto.Category,
-                    DishType = dishDto.DishType,
-                };
-                result.Dishes.Add(dishResult);
-            }
             return result;
         }
 

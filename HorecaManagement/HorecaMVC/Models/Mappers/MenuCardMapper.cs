@@ -17,7 +17,6 @@ namespace Horeca.MVC.Models.Mappers
                 Id = menuCard.Id,
                 Name = menuCard.Name
             };
-
             return model;
         }
 
@@ -30,26 +29,13 @@ namespace Horeca.MVC.Models.Mappers
             };
             foreach (var dish in menuCard.Dishes)
             {
-                DishDto dishDto = new DishDto
-                {
-                    Id = dish.Id,
-                    Name = dish.Name,
-                    Description = dish.Description,
-                    Category = dish.Category,
-                    DishType = dish.DishType
-                };
+                DishDto dishDto = DishMapper.MapDishDto(dish);
                 DishViewModel dishModel = DishMapper.MapModel(dishDto);
                 model.Dishes.Add(dishModel);
             }
             foreach (var menu in menuCard.Menus)
             {
-                MenuDto menuDto = new MenuDto
-                {
-                    Id = menu.Id,
-                    Name = menu.Name,
-                    Category = menu.Category,
-                    Description = menu.Description
-                };
+                MenuDto menuDto = MenuMapper.MapMenuDto(menu);
                 MenuViewModel menuModel = MenuMapper.MapModel(menuDto);
                 model.Menus.Add(menuModel);
             }
@@ -92,25 +78,12 @@ namespace Horeca.MVC.Models.Mappers
             };
             foreach (var dishDto in menuCardLists.Dishes)
             {
-                Dish dishResult = new Dish
-                {
-                    Id = dishDto.Id,
-                    Name = dishDto.Name,
-                    Description = dishDto.Description,
-                    Category = dishDto.Category,
-                    DishType = dishDto.DishType,
-                };
+                Dish dishResult = DishMapper.MapDish(dishDto);
                 result.Dishes.Add(dishResult);
             }
             foreach (var menuDto in menuCardLists.Menus)
             {
-                Menu menuResult = new Menu
-                {
-                    Id = menuDto.Id,
-                    Name = menuDto.Name,
-                    Description = menuDto.Description,
-                    Category = menuDto.Category
-                };
+                Menu menuResult = MenuMapper.MapMenu(menuDto);
                 result.Menus.Add(menuResult);
             }
             return result;

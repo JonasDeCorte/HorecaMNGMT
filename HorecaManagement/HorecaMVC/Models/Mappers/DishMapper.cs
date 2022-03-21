@@ -35,7 +35,7 @@ namespace Horeca.MVC.Models.Mappers
             };
             foreach (var ingredient in dish.Ingredients)
             {
-                IngredientDto ingredientDto = IngredientMapper.MapIngredient(ingredient);
+                IngredientDto ingredientDto = IngredientMapper.MapIngredientDto(ingredient);
                 IngredientViewModel ingredientModel = IngredientMapper.MapModel(ingredientDto);
                 model.Ingredients.Add(ingredientModel);
             }
@@ -43,33 +43,60 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
-        public static Dish MapDishDetail(DishDto dishDto, DishIngredientsByIdDto ingredientList)
+        public static DishIngredientViewModel MapUpdateIngredientModel(int dishId, IngredientDto ingredient)
         {
-            Dish dish = new Dish()
+            DishIngredientViewModel result = new DishIngredientViewModel
+            {
+                DishId = dishId,
+                IngredientId = ingredient.Id,
+                Name = ingredient.Name,
+                IngredientType = ingredient.IngredientType,
+                BaseAmount = ingredient.BaseAmount,
+                Unit = new UnitDto
+                {
+                    Id = ingredient.Unit.Id,
+                    Name = ingredient.Unit.Name
+                }
+            };
+
+            return result;
+        }
+
+        public static Dish MapDish(DishDto dishDto)
+        {
+            Dish dish = new Dish
             {
                 Id = dishDto.Id,
                 Name = dishDto.Name,
+                Description = dishDto.Description,
                 Category = dishDto.Category,
                 DishType = dishDto.DishType,
-                Description = dishDto.Description,
             };
+            return dish;
+        }
+
+        public static Dish MapDishDetail(DishDto dishDto, DishIngredientsByIdDto ingredientList)
+        {
+            Dish dish = MapDish(dishDto);
             foreach(var ingredientDto in ingredientList.Ingredients)
             {
-                Ingredient ingredient = new Ingredient
-                {
-                    Id = ingredientDto.Id,
-                    Name = ingredientDto.Name,
-                    IngredientType = ingredientDto.IngredientType,
-                    BaseAmount = ingredientDto.BaseAmount,
-                    Unit = new Unit
-                    {
-                        Name = ingredientDto.Unit.Name,
-                        Id = ingredientDto.Unit.Id
-                    }
-                };
+                Ingredient ingredient = IngredientMapper.MapIngredient(ingredientDto);
                 dish.Ingredients.Add(ingredient);
             }
             return dish;
+        }
+
+        public static DishDto MapDishDto(Dish dish)
+        {
+            DishDto dishDto = new DishDto
+            {
+                Id = dish.Id,
+                Name = dish.Name,
+                Description = dish.Description,
+                Category = dish.Category,
+                DishType = dish.DishType
+            };
+            return dishDto;
         }
 
         public static MutateDishDto MapMutateDish(DishViewModel dishModel, DishDto dish)
@@ -117,25 +144,6 @@ namespace Horeca.MVC.Models.Mappers
                     BaseAmount = ingredient.BaseAmount,
                     IngredientType = ingredient.IngredientType,
                     Unit = ingredient.Unit
-                }
-            };
-
-            return result;
-        }
-
-        public static DishIngredientViewModel MapMutateIngredientModel(int dishId, IngredientDto ingredient)
-        {
-            DishIngredientViewModel result = new DishIngredientViewModel
-            {
-                DishId = dishId,
-                IngredientId = ingredient.Id,
-                Name = ingredient.Name,
-                IngredientType = ingredient.IngredientType,
-                BaseAmount = ingredient.BaseAmount,
-                Unit = new UnitDto
-                {
-                    Id = ingredient.Unit.Id,
-                    Name = ingredient.Unit.Name
                 }
             };
 

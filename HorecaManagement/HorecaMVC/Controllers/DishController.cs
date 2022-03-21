@@ -164,7 +164,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> EditIngredient(int dishId, int ingredientId)
         {
             IngredientDto ingredient = await ingredientService.GetIngredientById(ingredientId);
-            DishIngredientViewModel model = DishMapper.MapMutateIngredientModel(dishId, ingredient);
+            DishIngredientViewModel model = DishMapper.MapUpdateIngredientModel(dishId, ingredient);
 
             return View(model);
         }

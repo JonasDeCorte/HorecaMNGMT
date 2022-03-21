@@ -54,36 +54,38 @@
             </div>
         }
     </div>
-    <table id="tableView" class="table table-responsive mt-2" style="display: visible;">
-        <thead>
-            <tr>
-                <th scope="col" class="col-1">#</th>
-                <th scope="col" class="col-2">Name</th>
-                <th scope="col" class="col-2">Category</th>
-                <th scope="col" class="col-4">Description</th>
-                <th scope="col" class="col-3">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < @Model.Menus.Count; i++)
-            {
+    <div class="table-responsive">
+        <table id="tableView" class="table mt-2" style="display: visible;">
+            <thead>
                 <tr>
-                    <th scope="row">@i</th>
-                    <td>@Model.Menus[i].Name</td>
-                    <td>@Model.Menus[i].Category</td>
-                    <td>@Model.Menus[i].Description</td>
-                    <td>
-                        <a asp-action="Detail" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Details</a>
-                        <a asp-action="Edit" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Edit</a>
-                        <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal" data-id="@Model.Menus[i].Id">
-                            Delete
-                        </button>
-                    </td>
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-2">Name</th>
+                    <th scope="col" class="col-2">Category</th>
+                    <th scope="col" class="col-4">Description</th>
+                    <th scope="col" class="col-3">Options</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @Model.Menus.Count; i++)
+                {
+                    <tr>
+                        <th scope="row">@i</th>
+                        <td>@Model.Menus[i].Name</td>
+                        <td>@Model.Menus[i].Category</td>
+                        <td>@Model.Menus[i].Description</td>
+                        <td>
+                            <a asp-action="Detail" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Edit</a>
+                            <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal" data-id="@Model.Menus[i].Id">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"

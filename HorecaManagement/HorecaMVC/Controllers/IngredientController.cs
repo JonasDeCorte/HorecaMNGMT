@@ -68,7 +68,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientDto result = IngredientMapper.MapCreateIngredient(ingredient);
+                MutateIngredientDto result = IngredientMapper.MapCreateIngredientDto(ingredient);
 
                 var response = await ingredientService.AddIngredient(result);
                 if (response == null)
@@ -96,7 +96,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientDto result = IngredientMapper.MapUpdateIngredient(ingredient, 
+                MutateIngredientDto result = IngredientMapper.MapUpdateIngredientDto(ingredient, 
                     await ingredientService.GetIngredientById(ingredient.Id));
 
                 var response = await ingredientService.UpdateIngredient(result);
