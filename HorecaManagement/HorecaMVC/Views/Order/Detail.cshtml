@@ -3,65 +3,69 @@
 }
 
 <div class="text-center">
-    <div class="d-flex">
-        <div class="d-flex flex-column">
-            <h1 class="display-4">Order 1</h1>
+    <div class="d-flex flex-column">
+        <h1 class="display-4">Order 1 - Table 0</h1>
+        <div class="table-responsive">
             <table class="table">
                 <tbody>
                     <tr class="d-flex flex-column">
                         <th scope="col">Dishes</th>
                         <td scope="row">
-                            <table class="table" style="table-layout: fixed">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="col-3">Name</th>
-                                        <th scope="col" class="col-3">Dish Type</th>
-                                        <th scope="col" class="col-3">Category</th>
-                                        <th scope="col" class="col-3">Options</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table class="table table-hover mt-2" style="table-layout: fixed">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="col-3">Name</th>
+                                            <th scope="col" class="col-3">Dish Type</th>
+                                            <th scope="col" class="col-3">Category</th>
+                                            <th scope="col" class="col-3">Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         <tr>
                                             <td>Name</td>
                                             <td>Description</td>
                                             <td>Category</td>
                                             <td>
                                                 <button id="toDeleteDishModal" type="button" class="modalbutton btn btn-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="0">
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="0">
                                                     Delete
                                                 </button>
                                             </td>
                                         </tr>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                     <tr class="d-flex flex-column">
                         <th scope="col">Menus</th>
                         <td scope="row">
-                            <table class="table" style="table-layout: fixed">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="col-3">Name</th>
-                                        <th scope="col" class="col-4">Description</th>
-                                        <th scope="col" class="col-2">Category</th>
-                                        <th scope="col" class="col-3">Options</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table class="table table-hover mt-2" style="table-layout: fixed">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="col-3">Name</th>
+                                            <th scope="col" class="col-4">Description</th>
+                                            <th scope="col" class="col-2">Category</th>
+                                            <th scope="col" class="col-3">Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         <tr>
                                             <td>Name</td>
                                             <td>Description</td>
                                             <td>Category</td>
                                             <td>
                                                 <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="0">
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="0">
                                                     Delete
                                                 </button>
                                             </td>
                                         </tr>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

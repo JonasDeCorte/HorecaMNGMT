@@ -75,6 +75,7 @@ namespace Horeca.MVC.Controllers
                 {
                     return View("OperationFailed");
                 }
+                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
 
                 return RedirectToAction(nameof(Index));
             } else

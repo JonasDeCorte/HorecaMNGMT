@@ -10,7 +10,8 @@
         <img src="https://www.lutosa.com/wp-content/uploads/2021/05/19683_-_skinny_fries_5.5-5.5_skin-on-1.png" alt="..."
              style="max-width: 100%; height: auto;" />
     </div>
-    <table class="table">
+    <div class="table-responsive">
+    <table class="table mt-2">
         <tbody>
             <tr class="d-flex flex-column">
                 <th scope="col">Category</th>
@@ -23,36 +24,39 @@
             <tr class="d-flex flex-column">
                 <th scope="col">Dishes</th>
                 <td scope="row">
-                    <table class="table" style="table-layout: fixed">
-                        <thead>
-                            <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Dish Type</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in @Model.Dishes)
-                            {
+                    <div class="table-responsive">
+                        <table class="table table-hover" style="table-layout: fixed">
+                            <thead>
                                 <tr>
-                                    <td>@item.Name</td>
-                                    <td>@item.DishType</td>
-                                    <td>@item.Category</td>
-                                    <td>
-                                        <a asp-action="EditDish" asp-route-menuId="@Model.Id" 
-                                            asp-route-dishId="@item.Id" 
-                                            class="btn btn-primary">Edit
-                                        </a>
-                                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" data-id="@item.Id">
-                                            Delete
-                                        </button>
-                                    </td>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Dish Type</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Options</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in @Model.Dishes)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.DishType</td>
+                                        <td>@item.Category</td>
+                                        <td>
+                                            <a asp-action="EditDish" asp-route-menuId="@Model.Id"
+                                           asp-route-dishId="@item.Id"
+                                           class="btn btn-primary">
+                                                Edit
+                                            </a>
+                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="@item.Id">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -66,6 +70,7 @@
             </tr>
         </tfoot>
     </table>
+    </div>
 </div>
 
 <div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"

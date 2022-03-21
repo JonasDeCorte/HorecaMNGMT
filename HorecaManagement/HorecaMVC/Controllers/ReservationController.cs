@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Horeca.MVC.Controllers
+namespace HorecaMVC.Controllers
 {
-    public class OrderController : Controller
+    public class ReservationController : Controller
     {
         public IActionResult Index()
         {
@@ -16,7 +16,7 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Create()
         {
-            return RedirectToAction("Detail", new { id = 0 });
+            return View();
         }
 
         public IActionResult Edit()

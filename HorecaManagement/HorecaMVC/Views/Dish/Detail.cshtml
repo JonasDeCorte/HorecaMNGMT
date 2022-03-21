@@ -35,35 +35,37 @@
             <tr class="d-flex flex-column">
                 <th scope="col" colspan="2">Ingredients</th>
                 <td scope="row">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Unit</th>
-                                <th scope="col">Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in @Model.Ingredients)
-                            {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td scope="row">@item.Name</td>
-                                    <td>@item.BaseAmount</td>
-                                    <td>@item.Unit.Name</td>
-                                    <td>
-                                        <a asp-action="EditIngredient" asp-route-dishId="@Model.Id" 
-                                            asp-route-ingredientId="@item.Id" 
-                                            class="btn btn-primary">Edit</a>
-                                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" 
-                                            data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
-                                            Delete
-                                        </button>
-                                    </td>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Options</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in @Model.Ingredients)
+                                {
+                                    <tr>
+                                        <td scope="row">@item.Name</td>
+                                        <td>@item.BaseAmount</td>
+                                        <td>@item.Unit.Name</td>
+                                        <td>
+                                            <a asp-action="EditIngredient" asp-route-dishId="@Model.Id"
+                                           asp-route-ingredientId="@item.Id"
+                                           class="btn btn-primary">Edit</a>
+                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </td>
             </tr>
         </tbody>
