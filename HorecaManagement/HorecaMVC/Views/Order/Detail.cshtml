@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Order Detail";
+}
+
+<div class="text-center">
+    <div class="d-flex">
+        <div class="d-flex flex-column">
+            <h1 class="display-4">Order 1</h1>
+            <table class="table">
+                <tbody>
+                    <tr class="d-flex flex-column">
+                        <th scope="col">Dishes</th>
+                        <td scope="row">
+                            <table class="table" style="table-layout: fixed">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="col-3">Name</th>
+                                        <th scope="col" class="col-3">Dish Type</th>
+                                        <th scope="col" class="col-3">Category</th>
+                                        <th scope="col" class="col-3">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Description</td>
+                                            <td>Category</td>
+                                            <td>
+                                                <button id="toDeleteDishModal" type="button" class="modalbutton btn btn-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="0">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="d-flex flex-column">
+                        <th scope="col">Menus</th>
+                        <td scope="row">
+                            <table class="table" style="table-layout: fixed">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="col-3">Name</th>
+                                        <th scope="col" class="col-4">Description</th>
+                                        <th scope="col" class="col-2">Category</th>
+                                        <th scope="col" class="col-3">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Description</td>
+                                            <td>Category</td>
+                                            <td>
+                                                <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="0">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td scope="row" colspan="2">
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            <a asp-action="CreateDish" class="btn btn-primary">Add Dish</a>
+                            <a asp-action="CreateMenu" class="btn btn-primary">Add Menu</a>
+                            <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete item from Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this item from the order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteButton" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteDishModal",OpenModalDeleteDish);
+       $(document).on("click","#toDeleteMenuModal",OpenModalDeleteMenu);
+    });
+
+    function OpenModalDeleteDish(){
+       var menuCardId = 0;
+       var dishId = $(this).data("id");
+       $('#deleteButton').attr('href', "/MenuCard/DeleteDish/" + menuCardId + "/" + dishId)
+       $("#deleteModal").modal();
+    }
+
+    function OpenModalDeleteMenu(){
+       var menuCardId = 0;
+       var menuId = $(this).data("id");
+       $('#deleteButton').attr('href', "/MenuCard/DeleteMenu/" + menuCardId + "/" + menuId)
+       $("#deleteModal").modal();
+    }
+</script>
