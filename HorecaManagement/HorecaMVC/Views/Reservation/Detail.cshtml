@@ -1,1 +1,37 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Reservation Detail";
+}
+
+<div class="text-center">
+    <div class="d-flex flex-column">
+        <h1 class="display-4">Reservation 1</h1>
+        <div class="table-responsive">
+            <table class="table mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Seats</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">1</td>
+                        <td>4</td>
+                        <td>5:00 21st of march</td>
+                        <td>johanscheisser@gmail.com</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td scope="row" colspan="4">
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
