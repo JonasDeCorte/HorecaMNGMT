@@ -66,3 +66,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table {
+    counter-reset: rowNumber;
+}
+
+table td:first-child:before {
+    counter-increment: rowNumber;
+    content: counter(rowNumber);
+    font-weight: bold;
+}

@@ -4,6 +4,11 @@ namespace Horeca.MVC.Controllers
 {
     public class OrderController : Controller
     {
+        public OrderController()
+        {
+
+        }
+
         public IActionResult Index()
         {
             return View();
