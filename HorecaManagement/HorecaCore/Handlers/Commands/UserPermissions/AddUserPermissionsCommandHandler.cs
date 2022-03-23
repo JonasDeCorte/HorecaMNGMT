@@ -33,10 +33,10 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
         public async Task<string> Handle(AddUserPermissionsCommand request, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByEmailAsync(request.Model.UserEmail);
+            var user = await userManager.FindByNameAsync(request.Model.UserName);
             if (user is null)
             {
-                logger.Error("User not found with email: {email}", request.Model.UserEmail);
+                logger.Error("User not found with username: {username}", request.Model.UserName);
                 throw new EntityNotFoundException("User not found");
             }
 
