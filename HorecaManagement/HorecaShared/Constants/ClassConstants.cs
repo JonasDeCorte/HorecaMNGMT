@@ -19,6 +19,6 @@
         public const string Login = "login";
         public const string Register = "register";
         public const string RegisterAdmin = "register-admin";
-        public const string Roles = "Roles";
+        public const string UserPermissions = "UserPermissions";
     }
 }

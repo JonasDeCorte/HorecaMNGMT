@@ -52,13 +52,17 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(UserViewModel model)
+        public async Task<IActionResult> Login(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
                 LoginUserDto user = AccountMapper.MapLoginUser(model);
 
-                accountService.LoginUser(user);
+                var response = await accountService.LoginUser(user);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction("Index", new { area = "Home" });
             } else
@@ -75,13 +79,17 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterUserViewModel model)
+        public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
             if (ModelState.IsValid)
             {
                 RegisterUserDto user = AccountMapper.MapRegisterUser(model);
 
-                accountService.RegisterUser(user);
+                var response = accountService.RegisterUser(user);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
 
                 return RedirectToAction("Index", new { area = "Home" } );
             }
@@ -89,6 +97,11 @@ namespace Horeca.MVC.Controllers
             {
                 return View(model);
             }
+        }
+
+        public IActionResult EditPermissions(string username)
+        {
+            throw new NotImplementedException();
         }
     }
 }
