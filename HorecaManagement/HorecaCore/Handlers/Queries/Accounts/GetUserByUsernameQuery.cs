@@ -2,6 +2,7 @@
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using NLog;
 
@@ -20,11 +21,13 @@ namespace Horeca.Core.Handlers.Queries.Accounts
     public class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserDto>
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public GetUserByUsernameQueryHandler(UserManager<ApplicationUser> userManager)
+        public GetUserByUsernameQueryHandler(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<UserDto> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
@@ -38,12 +41,17 @@ namespace Horeca.Core.Handlers.Queries.Accounts
                     logger.Error("user doesn't exist");
                     throw new EntityNotFoundException("User doesn't exist");
                 }
-                var roles = await userManager.GetRolesAsync(user);
+
                 logger.Info("returning {name} with user {user}", nameof(UserDto), user.UserName);
+                var perms = new List<Tuple<string, string>>();
+                foreach (var item in httpContextAccessor.HttpContext.User.Claims)
+                {
+                    perms.Add(new Tuple<string, string>(item.Type, item.Value));
+                }
 
                 return new UserDto
                 {
-                    Roles = roles.ToList(),
+                    Permissions = perms,
                     Username = user.UserName
                 };
             }
