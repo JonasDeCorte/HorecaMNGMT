@@ -49,6 +49,8 @@ namespace Horeca.Core.Handlers.Commands.Accounts
 
                 var token = AccountTokens.GetToken(authClaims, configuration);
 
+                await userManager.UpdateAsync(user);
+
                 result = new LoginResult
                 {
                     AccessToken = new JwtSecurityTokenHandler().WriteToken(token),

@@ -1,4 +1,6 @@
-﻿using Horeca.Shared.Data.Entities.Account;
+﻿using Horeca.Shared.Data;
+using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -19,12 +21,13 @@ namespace Horeca.Core.Handlers.Commands.Accounts
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     {
         private readonly UserManager<ApplicationUser> userManager;
-
+        private readonly IUnitOfWork repository;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public RegisterCommandHandler(UserManager<ApplicationUser> userManager)
+        public RegisterCommandHandler(UserManager<ApplicationUser> userManager, IUnitOfWork repository)
         {
             this.userManager = userManager;
+            this.repository = repository;
         }
 
         public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -45,10 +48,18 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Model.Username,
                 ExternalId = Guid.NewGuid().ToString(),
+                IsEnabled = true,
             };
             var result = await userManager.CreateAsync(user, request.Model.Password);
             logger.Info("added new user {user}", user.NormalizedUserName);
-
+            var NewUserPerm = repository.PermissionRepository.Get(1);
+            var userPerm = new UserPermission
+            {
+                PermissionId = NewUserPerm.Id,
+                UserId = user.Id
+            };
+            repository.UserPermissionRepository.Add(userPerm);
+            await repository.CommitAsync();
             if (!result.Succeeded)
             {
                 logger.Error("creating user failed");
