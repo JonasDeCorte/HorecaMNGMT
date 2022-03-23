@@ -47,10 +47,17 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                 };
 
                 var token = AccountTokens.GetToken(authClaims, configuration);
+                var refreshToken = AccountTokens.GenerateRefreshToken();
+
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+                await userManager.UpdateAsync(user);
 
                 result = new LoginResult
                 {
                     AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                    RefreshToken = refreshToken,
                     Expiration = token.ValidTo
                 };
             }
