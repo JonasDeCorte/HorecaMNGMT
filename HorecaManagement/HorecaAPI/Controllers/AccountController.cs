@@ -24,6 +24,8 @@ namespace Horeca.API.Controllers
         }
 
         [HttpGet("me")]
+        [AllowAnonymous]
+
         public IActionResult Get()
         {
             // return all the user claims in all identities
@@ -73,6 +75,8 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
+        [AllowAnonymous] // for now to test
+
         [Route("UserPermissions")]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
