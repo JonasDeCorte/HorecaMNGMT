@@ -1,4 +1,4 @@
-﻿namespace Horeca.Core.Handlers.Commands.Accounts
+﻿namespace Horeca.Shared
 {
     public class LoginResult
     {

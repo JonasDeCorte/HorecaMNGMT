@@ -2,15 +2,13 @@ using Horeca.API.Authorization;
 using Horeca.API.Middleware;
 using Horeca.Core;
 using Horeca.Infrastructure;
-using Horeca.Infrastructure.Data.Repositories;
+using Horeca.Infrastructure.Data;
 using Horeca.Shared.AuthUtils.PolicyProvider;
-using Horeca.Shared.Data.Repositories;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +51,6 @@ builder.Services.AddCore();
 builder.Services.AddIdentity();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-
 // Register our custom Authorization handler
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 
@@ -85,8 +82,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+DataSeeder.Seed(app);
 app.UseHttpsRedirection();
-
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseMiddleware<PermissionsMiddleware>();
