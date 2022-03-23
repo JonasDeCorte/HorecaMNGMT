@@ -16,6 +16,7 @@ namespace Horeca.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.ApplyGlobalFilters<IDelete>(e => e.IsEnabled);
 
             builder.Entity<UserPermission>().HasOne(p => p.User)
