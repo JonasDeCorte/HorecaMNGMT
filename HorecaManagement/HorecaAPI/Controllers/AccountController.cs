@@ -1,7 +1,9 @@
 ﻿using Horeca.Core.Handlers.Commands.Accounts;
+using Horeca.Core.Handlers.Commands.UserPermissions;
 using Horeca.Core.Handlers.Queries.Accounts;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
+using Horeca.Shared.Dtos.UserPermissions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,13 @@ namespace Horeca.API.Controllers
 
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet("me")]
+        public IActionResult Get()
+        {
+            // return all the user claims in all identities
+            return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
         }
 
         [HttpPost]
@@ -58,26 +67,19 @@ namespace Horeca.API.Controllers
             return StatusCode((int)HttpStatusCode.Created, response);
         }
 
-        [HttpPost]
-        [Route("User/{username}/Roles")]
-        public async Task<IActionResult> AddRolesToUser([FromRoute] string username, [FromBody] MutateRolesUserDto model)
+        /// <summary>
+        /// adds permissions to the user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("UserPermissions")]
+        public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
-            model.Username = username;
-            var command = new AddRolesToUserCommand(model);
+            var command = new AddUserPermissionsCommand(model);
             var response = await mediator.Send(command);
 
-            return StatusCode((int)HttpStatusCode.Created, response);
-        }
-
-        [HttpDelete]
-        [Route("User/{username}/Roles")]
-        public async Task<IActionResult> DeleteRolesFromUser([FromRoute] string username, [FromBody] MutateRolesUserDto model)
-        {
-            model.Username = username;
-            var command = new DeleteRolesFromUserCommand(model);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.OK, response);
         }
 
         [HttpGet]

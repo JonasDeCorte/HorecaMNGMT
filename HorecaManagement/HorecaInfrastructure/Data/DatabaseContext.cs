@@ -17,6 +17,14 @@ namespace Horeca.Infrastructure.Data
         {
             base.OnModelCreating(builder);
             builder.ApplyGlobalFilters<IDelete>(e => e.IsEnabled);
+
+            builder.Entity<UserPermission>().HasOne(p => p.User)
+            .WithMany(p => p.Permissions)
+            .HasForeignKey(pt => pt.UserId);
+
+            builder.Entity<UserPermission>().HasOne(p => p.Permission)
+                .WithMany()
+                .HasForeignKey(pt => pt.PermissionId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -53,5 +61,8 @@ namespace Horeca.Infrastructure.Data
 
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuCard> MenuCards { get; set; }
+
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<UserPermission> UserPermissions { get; set; }
     }
 }

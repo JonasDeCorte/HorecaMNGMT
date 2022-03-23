@@ -1,5 +1,8 @@
 ﻿using Horeca.Core.Handlers.Commands.Dishes;
 using Horeca.Core.Handlers.Queries.Dishes;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Dishes;
 using MediatR;
@@ -25,6 +28,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success retrieving Dish list</response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Dish), Permissions.Read)]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<DishDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -42,6 +46,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success creating new Dish</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Create)]
         [HttpPost]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -59,6 +64,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success Retrieving Dish by Id</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Read)]
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(typeof(DishDto), (int)HttpStatusCode.OK)]
@@ -77,6 +83,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting Dish</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -95,6 +102,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success updating exsiting Dish</response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Dish), Permissions.Update)]
         [HttpPut]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -112,6 +120,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success List of ingredients from dish  by Id</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Read)]
         [HttpGet]
         [Route("{id}/ingredients")]
         [ProducesResponseType(typeof(DishIngredientsByIdDto), (int)HttpStatusCode.OK)]
@@ -131,6 +140,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success adding a new ingredient to an existing Dish</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Create)]
         [HttpPost]
         [Route("{id}/ingredients")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -152,6 +162,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success editing an existing ingredient from  an existing Dish</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Update)]
         [HttpPut]
         [Route("{id}/ingredients/{ingredientId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -173,6 +184,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting ingredient from a Dish</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Dish), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}/ingredients/{ingredientId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]

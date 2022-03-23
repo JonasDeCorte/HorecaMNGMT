@@ -63,7 +63,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             await repository.CommitAsync();
             logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
-            return request.Model.Id;
+            return entity.Id;
         }
     }
 }

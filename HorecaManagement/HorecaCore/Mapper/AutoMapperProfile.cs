@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.MenuCards;
@@ -20,6 +21,7 @@ namespace Horeca.Core.Mapper
             CreateMap<Menu, MenuDto>();
             CreateMap<MenuCard, MenuCardDto>();
             CreateMap<MenuCard, MenuCardsByIdDto>();
+            CreateMap<Permission, PermissionDto>();
         }
     }
 }

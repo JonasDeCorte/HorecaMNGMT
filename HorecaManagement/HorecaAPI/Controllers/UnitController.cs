@@ -1,5 +1,7 @@
 ﻿using Horeca.Core.Handlers.Commands.Units;
 using Horeca.Core.Handlers.Queries.Units;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Units;
 using MediatR;
@@ -25,6 +27,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success retrieving Unit list</response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UnitDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -45,6 +48,7 @@ namespace Horeca.API.Controllers
         /// <response code="201">Success creating new Unit</response>
         /// <response code="400">Bad request</response
         [HttpPost]
+        [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
@@ -64,6 +68,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [HttpGet]
         [Route("{id}")]
+        [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Read)]
         [ProducesResponseType(typeof(UnitDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
@@ -80,6 +85,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an exsiting Unit</response>
         /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Delete)]
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -99,6 +105,7 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success updating exsiting Unit</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
+        [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateUnitDto model)

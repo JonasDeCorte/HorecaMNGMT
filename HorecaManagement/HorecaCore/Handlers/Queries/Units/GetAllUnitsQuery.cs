@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Horeca.Shared.Data;
+using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Units;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Units
@@ -15,13 +17,15 @@ namespace Horeca.Core.Handlers.Queries.Units
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> userManager;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public GetAllUnitsQueryHandler(IUnitOfWork repository, IMapper mapper)
+        public GetAllUnitsQueryHandler(IUnitOfWork repository, IMapper mapper, UserManager<ApplicationUser> userManager)
 
         {
             this.repository = repository;
             _mapper = mapper;
+            this.userManager = userManager;
         }
 
         public async Task<IEnumerable<UnitDto>> Handle(GetAllUnitsQuery request, CancellationToken cancellationToken)

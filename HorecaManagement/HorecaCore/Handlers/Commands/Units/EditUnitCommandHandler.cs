@@ -46,7 +46,7 @@ namespace Horeca.Core.Handlers.Commands.Units
             await repository.CommitAsync();
             logger.Info("updated {@object} with Id: {id}", unit, unit.Id);
 
-            return request.Model.Id;
+            return unit.Id;
         }
     }
 }
