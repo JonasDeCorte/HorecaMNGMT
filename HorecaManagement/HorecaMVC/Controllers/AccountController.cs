@@ -2,6 +2,7 @@
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Accounts;
+using Horeca.Shared.Dtos.UserPermissions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
@@ -100,6 +101,16 @@ namespace Horeca.MVC.Controllers
         }
 
         public IActionResult EditPermissions(string username)
+        {
+            MutateUserPermissionsDto model = new MutateUserPermissionsDto
+            {
+                UserName = username
+            }; // Verander nog naar een ViewModel
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditPermissions(MutateUserPermissionsDto model)
         {
             throw new NotImplementedException();
         }
