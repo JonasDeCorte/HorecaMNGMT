@@ -11,8 +11,5 @@ namespace Horeca.Shared.Data.Entities.Account
         public string ExternalId { get; set; }
 
         public List<UserPermission> Permissions { get; private set; } = new();
-
-        public string? RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

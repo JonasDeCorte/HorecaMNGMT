@@ -48,6 +48,7 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = request.Model.Username,
             ExternalId = Guid.NewGuid().ToString(),
+            IsEnabled = true,
         };
         var result = await userManager.CreateAsync(user, request.Model.Password);
         logger.Info("added new admin {user}", user.NormalizedUserName);

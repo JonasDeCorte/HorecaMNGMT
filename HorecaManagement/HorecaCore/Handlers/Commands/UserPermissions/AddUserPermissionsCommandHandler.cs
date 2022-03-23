@@ -4,6 +4,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.UserPermissions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using NLog;
 
@@ -23,12 +24,14 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
     {
         private readonly IUnitOfWork repository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddUserPermissionsCommandHandler(IUnitOfWork repository, UserManager<ApplicationUser> userManager)
+        public AddUserPermissionsCommandHandler(IUnitOfWork repository, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             this.repository = repository;
             this.userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> Handle(AddUserPermissionsCommand request, CancellationToken cancellationToken)
@@ -66,7 +69,10 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             await repository.CommitAsync();
 
-            logger.Info("user has  a total of: {count} permissions", user.Permissions.Count());
+            var permissionsIdentity = await repository.UserPermissionRepository.GetUserPermissionsIdentity(user.ExternalId, cancellationToken);
+            logger.Info("requesting permission identity to add to the user {@object}", permissionsIdentity);
+
+            httpContextAccessor.HttpContext.User.AddIdentity(permissionsIdentity);
 
             return user.Id;
         }

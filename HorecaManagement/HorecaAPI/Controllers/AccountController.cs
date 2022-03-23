@@ -3,7 +3,6 @@ using Horeca.Core.Handlers.Commands.UserPermissions;
 using Horeca.Core.Handlers.Queries.Accounts;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
-using Horeca.Shared.Dtos.Tokens;
 using Horeca.Shared.Dtos.UserPermissions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +24,8 @@ namespace Horeca.API.Controllers
         }
 
         [HttpGet("me")]
+        [AllowAnonymous]
+
         public IActionResult Get()
         {
             // return all the user claims in all identities
@@ -74,6 +75,8 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
+        [AllowAnonymous] // for now to test
+
         [Route("UserPermissions")]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
@@ -98,16 +101,6 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var command = new GetAllUsersQuery();
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
-        }
-
-        [HttpPost]
-        [Route("refresh-token")]
-        public async Task<IActionResult> RefreshToken(TokenDto model)
-        {
-            var command = new RefreshTokenCommand(model);
             var response = await mediator.Send(command);
 
             return StatusCode((int)HttpStatusCode.Created, response);

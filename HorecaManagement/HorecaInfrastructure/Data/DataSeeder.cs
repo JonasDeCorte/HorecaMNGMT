@@ -70,37 +70,41 @@ namespace Horeca.Infrastructure.Data
                 }
                 List<Permission> perms = new List<Permission>()
             {
+                    new Permission()
+                {
+                    Name = $"{nameof(ApplicationUser)}_NewUser"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(Unit)}_{Permissions.Read}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Unit)}_{Permissions.Create}"
+                    Name = $"{nameof(Unit)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Unit)}_{Permissions.Update}"
+                    Name = $"{nameof(Unit)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Unit)}_{Permissions.Delete}"
+                    Name = $"{nameof(Unit)}_{Permissions.Delete}"
                 },
                      new Permission()
+                     {
+                         Name = $"{nameof(Ingredient)}_{Permissions.Read}"
+                     },
+                new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Read}"
+                    Name = $"{nameof(Ingredient)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Ingredient)}_{Permissions.Create}"
+                    Name = $"{nameof(Ingredient)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Ingredient)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                Name = $"{nameof(Ingredient)}_{Permissions.Delete}"
+                    Name = $"{nameof(Ingredient)}_{Permissions.Delete}"
                 },
                 new Permission()
                 {
@@ -108,15 +112,15 @@ namespace Horeca.Infrastructure.Data
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Dish)}_{Permissions.Create}"
+                    Name = $"{nameof(Dish)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Dish)}_{Permissions.Update}"
+                    Name = $"{nameof(Dish)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Dish)}_{Permissions.Delete}"
+                    Name = $"{nameof(Dish)}_{Permissions.Delete}"
                 },
                 new Permission()
                 {
@@ -124,64 +128,64 @@ namespace Horeca.Infrastructure.Data
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Menu)}_{Permissions.Create}"
+                    Name = $"{nameof(Menu)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Menu)}_{Permissions.Update}"
+                    Name = $"{nameof(Menu)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Menu)}_{Permissions.Delete}"
+                    Name = $"{nameof(Menu)}_{Permissions.Delete}"
                 },
                  new Permission()
+                 {
+                     Name = $"{nameof(MenuCard)}_{Permissions.Read}"
+                 },
+                new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Read}"
+                    Name = $"{nameof(MenuCard)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(MenuCard)}_{Permissions.Create}"
+                    Name = $"{nameof(MenuCard)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(MenuCard)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
+                    Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
                 },
                  new Permission()
+                 {
+                     Name = $"{nameof(Permission)}_{Permissions.Read}"
+                 },
+                new Permission()
                 {
-                    Name = $"{nameof(Permission)}_{Permissions.Read}"
+                    Name = $"{nameof(Permission)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Permission)}_{Permissions.Create}"
+                    Name = $"{nameof(Permission)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(Permission)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                Name = $"{nameof(Permission)}_{Permissions.Delete}"
+                    Name = $"{nameof(Permission)}_{Permissions.Delete}"
                 },
 
                  new Permission()
+                 {
+                     Name = $"{nameof(ApplicationUser)}_{Permissions.Read}"
+                 },
+                new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Read}"
+                    Name = $"{nameof(ApplicationUser)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(ApplicationUser)}_{Permissions.Create}"
+                    Name = $"{nameof(ApplicationUser)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                Name = $"{nameof(ApplicationUser)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                Name = $"{nameof(ApplicationUser)}_{Permissions.Delete}"
+                    Name = $"{nameof(ApplicationUser)}_{Permissions.Delete}"
                 },
             };
 
