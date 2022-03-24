@@ -4,6 +4,7 @@ using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -11,16 +12,24 @@ namespace Horeca.MVC.Services
     public class DishService : IDishService
     {
         private readonly HttpClient httpClient;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private IConfiguration configuration;
 
-        public DishService(HttpClient httpClient, IConfiguration iConfig)
+        public DishService(HttpClient httpClient, IConfiguration iConfig, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
+            this.httpContextAccessor = httpContextAccessor;
             configuration = iConfig;
+        }
+        public void Authorizer()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                httpContextAccessor.HttpContext.Session.GetString("JWToken"));
         }
 
         public async Task<IEnumerable<DishDto>> GetDishes()
         {
+            Authorizer();
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
 
             if (!response.IsSuccessStatusCode)

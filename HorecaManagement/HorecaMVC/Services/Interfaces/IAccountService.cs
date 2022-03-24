@@ -1,11 +1,11 @@
 ﻿using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.UserPermissions;
+using System.Security.Claims;
 
 namespace Horeca.MVC.Services.Interfaces
 {
     public interface IAccountService
     {
-        public Task<HttpResponseMessage> GetUserClaims();
         public Task<string> LoginUser(LoginUserDto user);
         public Task<HttpResponseMessage> RegisterUser(RegisterUserDto user);
         public Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user);

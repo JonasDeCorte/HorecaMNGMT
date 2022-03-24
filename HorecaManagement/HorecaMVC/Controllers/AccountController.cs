@@ -65,6 +65,8 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
+                HttpContext.Session.SetString("JWToken", response);
+
                 return RedirectToAction("Index", new { area = "Home" });
             } else
             {
@@ -86,7 +88,7 @@ namespace Horeca.MVC.Controllers
             {
                 RegisterUserDto user = AccountMapper.MapRegisterUser(model);
 
-                var response = accountService.RegisterUser(user);
+                var response = await accountService.RegisterUser(user);
                 if (response == null)
                 {
                     return View("OperationFailed");

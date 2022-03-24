@@ -19,11 +19,6 @@ namespace Horeca.MVC.Services
             configuration = IConfig;
         }
 
-        public async Task<HttpResponseMessage> GetUserClaims()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<string> LoginUser(LoginUserDto user)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
