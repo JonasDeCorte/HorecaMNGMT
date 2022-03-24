@@ -9,7 +9,7 @@ using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
-    public class LoginCommand : IRequest<LoginResult>
+    public class LoginCommand : IRequest<TokenResultDto>
     {
         public LoginCommand(LoginUserDto model)
         {
@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
         public LoginUserDto Model { get; }
     }
 
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, TokenResultDto>
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
@@ -33,7 +33,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             this.authenticateService = authenticateService;
         }
 
-        public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<TokenResultDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByNameAsync(request.Model.Username);
 
@@ -53,7 +53,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
 
             var result = await authenticateService.Authenticate(user, cancellationToken);
 
-            return new LoginResult()
+            return new TokenResultDto()
             {
                 AccessToken = result.AccessToken,
                 RefreshToken = result.RefreshToken

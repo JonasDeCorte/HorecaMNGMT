@@ -18,14 +18,14 @@ namespace Horeca.Core.Services
             this.context = context;
         }
 
-        public async Task<LoginResult> Authenticate(ApplicationUser user, CancellationToken cancellationToken)
+        public async Task<TokenResultDto> Authenticate(ApplicationUser user, CancellationToken cancellationToken)
         {
             var refreshToken = refreshTokenService.Generate(user);
             await context.RefreshTokens.AddAsync(new RefreshToken(user.Id, refreshToken), cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
             var accessToken = accessTokenService.Generate(user);
 
-            return new LoginResult
+            return new TokenResultDto
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,

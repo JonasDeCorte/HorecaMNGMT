@@ -1,6 +1,6 @@
 ﻿namespace Horeca.Shared
 {
-    public class LoginResult
+    public class TokenResultDto
     {   /// <summary>
         /// The Access token.
         /// </summary>
