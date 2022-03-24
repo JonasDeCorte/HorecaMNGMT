@@ -6,7 +6,7 @@ namespace Horeca.Shared.Dtos.Accounts
     {
         public string Username { get; set; }
 
-        public List<string> Roles { get; set; }
+        public List<Tuple<string, string>> Permissions { get; set; }
     }
 
     public class BaseUserDto
@@ -29,9 +29,5 @@ namespace Horeca.Shared.Dtos.Accounts
         public string? Email { get; set; }
 
         public string? Password { get; set; }
-    }
-
-    public class MutateRolesUserDto : UserDto
-    {
     }
 }
