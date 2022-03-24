@@ -45,13 +45,13 @@ namespace Horeca.Shared.AuthUtils.PolicyProvider
 
         public static string GetClassNameFromPolicy(string policyName)
         {
-            return policyName.Substring(PolicyPrefix.Length + 2)
+            return policyName[(PolicyPrefix.Length + 2)..]
                 .Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries)[0];
         }
 
         public static string[] GetPermissionsFromPolicy(string policyName)
         {
-            return policyName.Substring(PolicyPrefix.Length + 2)
+            return policyName[(PolicyPrefix.Length + 2)..]
                 .Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
         }
     }

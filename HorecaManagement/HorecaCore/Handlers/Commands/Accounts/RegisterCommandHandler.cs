@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Accounts;
@@ -22,7 +23,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public RegisterCommandHandler(UserManager<ApplicationUser> userManager, IUnitOfWork repository)
         {
@@ -37,9 +38,8 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             var userExists = await userManager.FindByNameAsync(request.Model.Username);
             if (userExists != null)
             {
-                logger.Error("creating user failed, user already exists");
-
-                throw new ArgumentException("User already exist");
+                logger.Error(RegisterException.Instance);
+                throw new RegisterException();
             }
 
             ApplicationUser user = new()
@@ -51,19 +51,29 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                 IsEnabled = true,
             };
             var result = await userManager.CreateAsync(user, request.Model.Password);
-            logger.Info("added new user {user}", user.NormalizedUserName);
-            var NewUserPerm = repository.PermissionRepository.Get(1);
-            var userPerm = new UserPermission
+            if (result.Succeeded)
             {
-                PermissionId = NewUserPerm.Id,
-                UserId = user.Id
-            };
-            repository.UserPermissionRepository.Add(userPerm);
-            await repository.CommitAsync();
+                logger.Info("added new user {user}", user.NormalizedUserName);
+
+                var NewUserPerm = repository.PermissionRepository.Get(1);
+
+                var userPerm = new UserPermission
+                {
+                    PermissionId = NewUserPerm.Id,
+                    UserId = user.Id
+                };
+
+                repository.UserPermissionRepository.Add(userPerm);
+
+                await repository.CommitAsync();
+
+                logger.Info("added default permission new user {userperm}", userPerm);
+            }
+
             if (!result.Succeeded)
             {
-                logger.Error("creating user failed");
-                throw new ArgumentNullException("Creating user failed");
+                logger.Error(RegisterException.Instance);
+                throw new RegisterException();
             }
 
             return user.Id;

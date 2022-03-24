@@ -1,9 +1,11 @@
 using Horeca.API.Authorization;
 using Horeca.API.Middleware;
 using Horeca.Core;
+using Horeca.Core.Services;
 using Horeca.Infrastructure;
 using Horeca.Infrastructure.Data;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -51,6 +53,7 @@ builder.Services.AddCore();
 builder.Services.AddIdentity();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
 // Register our custom Authorization handler
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 
@@ -73,6 +76,12 @@ config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
 // Apply config
 NLog.LogManager.Configuration = config;
 
+builder.Services.AddScoped<IApplicationDbContext>(x => x.GetService<DatabaseContext>()!);
+builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
+builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
+builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+builder.Services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
+builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

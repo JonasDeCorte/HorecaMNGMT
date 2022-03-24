@@ -1,12 +1,11 @@
-﻿using Horeca.Shared;
-using Horeca.Shared.AuthUtils;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared;
 using Horeca.Shared.Data.Entities.Account;
+using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
@@ -23,42 +22,42 @@ namespace Horeca.Core.Handlers.Commands.Accounts
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IConfiguration configuration;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IAuthenticateService authenticateService;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public LoginCommandHandler(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public LoginCommandHandler(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAuthenticateService authenticateService)
         {
             this.userManager = userManager;
-            this.configuration = configuration;
+            this.signInManager = signInManager;
+            this.authenticateService = authenticateService;
         }
 
         public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByNameAsync(request.Model.Username);
 
-            LoginResult result = null;
-
-            if (user != null && await userManager.CheckPasswordAsync(user, request.Model.Password))
+            if (user == null)
             {
-                var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(StandardJwtClaimTypes.Subject, user.ExternalId)
-                };
-
-                var token = AccountTokens.GetToken(authClaims, configuration);
-
-                await userManager.UpdateAsync(user);
-
-                result = new LoginResult
-                {
-                    AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                    Expiration = token.ValidTo
-                };
+                logger.Error(UserNotFoundException.Instance);
+                throw new UserNotFoundException();
             }
 
-            return result;
+            var signInResult = await signInManager.PasswordSignInAsync(user, request.Model.Password, false, false);
+
+            if (!signInResult.Succeeded)
+            {
+                logger.Error(SignInException.Instance);
+                throw new SignInException();
+            }
+
+            var result = await authenticateService.Authenticate(user, cancellationToken);
+
+            return new LoginResult()
+            {
+                AccessToken = result.AccessToken,
+                RefreshToken = result.RefreshToken
+            };
         }
     }
 }

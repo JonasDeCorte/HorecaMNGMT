@@ -1,12 +1,13 @@
 ﻿using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
+using Horeca.Shared.Data.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Infrastructure.Data
 {
-    public class DatabaseContext : IdentityDbContext<ApplicationUser>
+    public class DatabaseContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -65,5 +66,6 @@ namespace Horeca.Infrastructure.Data
 
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

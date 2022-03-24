@@ -22,7 +22,7 @@ namespace Horeca.Core.Handlers.Queries.Accounts
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetUserByUsernameQueryHandler(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
@@ -34,27 +34,26 @@ namespace Horeca.Core.Handlers.Queries.Accounts
         {
             logger.Info("trying to get {object} with username: {Id}", nameof(IdentityUser), request.Username);
 
+            var user = await userManager.FindByNameAsync(request.Username);
+
+            if (user == null)
             {
-                var user = await userManager.FindByNameAsync(request.Username);
-                if (user == null)
-                {
-                    logger.Error("user doesn't exist");
-                    throw new EntityNotFoundException("User doesn't exist");
-                }
-
-                logger.Info("returning {name} with user {user}", nameof(UserDto), user.UserName);
-                var perms = new List<Tuple<string, string>>();
-                foreach (var item in httpContextAccessor.HttpContext.User.Claims)
-                {
-                    perms.Add(new Tuple<string, string>(item.Type, item.Value));
-                }
-
-                return new UserDto
-                {
-                    Permissions = perms,
-                    Username = user.UserName
-                };
+                logger.Error(UserNotFoundException.Instance);
+                throw new UserNotFoundException();
             }
+
+            logger.Info("returning {name} with user {user}", nameof(UserDto), user.UserName);
+
+            var permissionsToReturn = new List<Tuple<string, string>>();
+            var permissions = httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type.Equals("permissions"));
+
+            permissionsToReturn.AddRange(permissions.Select(permission => new Tuple<string, string>(permission.Type, permission.Value)));
+
+            return new UserDto
+            {
+                Permissions = permissionsToReturn,
+                Username = user.UserName
+            };
         }
     }
 }

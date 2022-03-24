@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HorecaCore\HorecaCore.csproj" />
     <ProjectReference Include="..\HorecaShared\HorecaShared.csproj" />
   </ItemGroup>
 
