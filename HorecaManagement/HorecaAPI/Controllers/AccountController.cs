@@ -3,6 +3,7 @@ using Horeca.Core.Handlers.Commands.UserPermissions;
 using Horeca.Core.Handlers.Queries.Accounts;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
+using Horeca.Shared.Dtos.Tokens;
 using Horeca.Shared.Dtos.UserPermissions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,11 +26,17 @@ namespace Horeca.API.Controllers
 
         [HttpGet("me")]
         [AllowAnonymous]
-
         public IActionResult Get()
         {
             // return all the user claims in all identities
             return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
+        }
+
+        [HttpPost]
+        [Route("RefreshToken")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
+        {
+            return Ok(await mediator.Send(new RefreshCommand(model)));
         }
 
         [HttpPost]
@@ -76,7 +83,6 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [AllowAnonymous] // for now to test
-
         [Route("UserPermissions")]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
@@ -104,6 +110,18 @@ namespace Horeca.API.Controllers
             var response = await mediator.Send(command);
 
             return StatusCode((int)HttpStatusCode.Created, response);
+        }
+
+        [HttpDelete]
+        [Route("UserPermissions/{username}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> RemovePermissions([FromRoute] string username, DeleteUserPermissionsDto model)
+        {
+            model.UserName = username;
+            var command = new DeleteUserPermissionsCommand(model);
+            var response = await mediator.Send(command);
+            return StatusCode((int)HttpStatusCode.OK, response);
         }
     }
 }

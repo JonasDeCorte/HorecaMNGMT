@@ -11,66 +11,65 @@ namespace Horeca.Infrastructure.Data
     {
         public static async void Seed(IApplicationBuilder app)
         {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<DatabaseContext>();
+            var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+            for (int i = 1; i < 11; i++)
             {
-                var context = serviceScope.ServiceProvider.GetService<DatabaseContext>();
-                var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-                for (int i = 1; i < 11; i++)
+                Ingredient ingredient = new()
                 {
-                    Ingredient ingredient = new Ingredient
+                    BaseAmount = i,
+                    IngredientType = $"type: {i}",
+                    Name = $"name: Ingredient {i}",
+                    Unit = new Unit
                     {
-                        BaseAmount = i,
-                        IngredientType = $"type: {i}",
-                        Name = $"name: Ingredient {i}",
-                        Unit = new Unit
-                        {
-                            Name = $"Unit name: {i}"
-                        }
-                    };
+                        Name = $"Unit name: {i}"
+                    }
+                };
 
-                    context.Ingredients.Add(ingredient);
+                context.Ingredients.Add(ingredient);
 
-                    Dish dish = new Dish
-                    {
-                        Category = $"Category {i}",
-                        Description = $"Description {i}",
-                        Name = $"name {i}",
-                        DishType = $"DishType {i}",
-                        Ingredients = new List<Ingredient>
+                Dish dish = new()
+                {
+                    Category = $"Category {i}",
+                    Description = $"Description {i}",
+                    Name = $"name {i}",
+                    DishType = $"DishType {i}",
+                    Ingredients = new List<Ingredient>
                      {
                          ingredient
                      }
-                    };
+                };
 
-                    context.Dishes.Add(dish);
+                context.Dishes.Add(dish);
 
-                    Menu menu = new Menu()
+                Menu menu = new()
+                {
+                    Name = $"name {i}",
+                    Description = $"Description {i}",
+                    Category = $"Category {i}",
+                    Dishes = new()
                     {
-                        Name = $"name {i}",
-                        Description = $"Description {i}",
-                        Category = $"Category {i}",
-                        Dishes = new()
-                        {
-                            dish
-                        },
-                    };
+                        dish
+                    },
+                };
 
-                    context.Menus.Add(menu);
+                context.Menus.Add(menu);
 
-                    MenuCard card = new MenuCard
-                    {
-                        Name = $"name {i}",
-                        Menus = new List<Menu> { menu },
-                        Dishes = new List<Dish> { dish }
-                    };
+                MenuCard card = new()
+                {
+                    Name = $"name {i}",
+                    Menus = new List<Menu> { menu },
+                    Dishes = new List<Dish> { dish }
+                };
 
-                    context.MenuCards.Add(card);
-                }
-                List<Permission> perms = new List<Permission>()
+                context.MenuCards.Add(card);
+            }
+            List<Permission> perms = new()
             {
-                    new Permission()
+                new Permission()
                 {
                     Name = $"{nameof(ApplicationUser)}_NewUser"
                 },
@@ -90,10 +89,10 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(Unit)}_{Permissions.Delete}"
                 },
-                     new Permission()
-                     {
-                         Name = $"{nameof(Ingredient)}_{Permissions.Read}"
-                     },
+                new Permission()
+                {
+                    Name = $"{nameof(Ingredient)}_{Permissions.Read}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(Ingredient)}_{Permissions.Create}"
@@ -138,10 +137,10 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(Menu)}_{Permissions.Delete}"
                 },
-                 new Permission()
-                 {
-                     Name = $"{nameof(MenuCard)}_{Permissions.Read}"
-                 },
+                new Permission()
+                {
+                    Name = $"{nameof(MenuCard)}_{Permissions.Read}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(MenuCard)}_{Permissions.Create}"
@@ -154,10 +153,10 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
                 },
-                 new Permission()
-                 {
-                     Name = $"{nameof(Permission)}_{Permissions.Read}"
-                 },
+                new Permission()
+                {
+                    Name = $"{nameof(Permission)}_{Permissions.Read}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Create}"
@@ -171,10 +170,10 @@ namespace Horeca.Infrastructure.Data
                     Name = $"{nameof(Permission)}_{Permissions.Delete}"
                 },
 
-                 new Permission()
-                 {
-                     Name = $"{nameof(ApplicationUser)}_{Permissions.Read}"
-                 },
+                new Permission()
+                {
+                    Name = $"{nameof(ApplicationUser)}_{Permissions.Read}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(ApplicationUser)}_{Permissions.Create}"
@@ -189,75 +188,74 @@ namespace Horeca.Infrastructure.Data
                 },
             };
 
-                context.Permissions.AddRange(perms);
+            context.Permissions.AddRange(perms);
 
-                ApplicationUser superAdmin = new ApplicationUser()
+            ApplicationUser superAdmin = new()
+            {
+                Email = "SuperAdmin@gmail.com",
+                UserName = "SuperAdmin",
+                ExternalId = Guid.NewGuid().ToString(),
+                IsEnabled = true,
+            };
+            await userManager.CreateAsync(superAdmin, "SuperAdmin123!");
+            var listPermissions = context.Permissions.ToList();
+
+            foreach (var permission in listPermissions)
+            {
+                var userPerm = new UserPermission
                 {
-                    Email = "SuperAdmin@gmail.com",
-                    UserName = "SuperAdmin",
-                    ExternalId = Guid.NewGuid().ToString(),
-                    IsEnabled = true,
+                    PermissionId = permission.Id,
+                    UserId = superAdmin.Id
                 };
-                await userManager.CreateAsync(superAdmin, "SuperAdmin123!");
-                var listPermissions = context.Permissions.ToList();
+                context.UserPermissions.Add(userPerm);
+            }
 
-                foreach (var permission in listPermissions)
+            ApplicationUser chef = new()
+            {
+                Email = "Chef@gmail.com",
+                UserName = "Chef",
+                IsEnabled = true,
+                ExternalId = Guid.NewGuid().ToString(),
+            };
+            await userManager.CreateAsync(chef, "Chef123!");
+
+            foreach (var permission in listPermissions)
+            {
+                if (permission.Id <= 20)
                 {
-                    var userPerm = new UserPermission
+                    var chefPerm = new UserPermission
                     {
                         PermissionId = permission.Id,
-                        UserId = superAdmin.Id
+                        UserId = chef.Id
                     };
-                    context.UserPermissions.Add(userPerm);
+                    context.UserPermissions.Add(chefPerm);
                 }
-
-                ApplicationUser chef = new ApplicationUser()
-                {
-                    Email = "Chef@gmail.com",
-                    UserName = "Chef",
-                    IsEnabled = true,
-                    ExternalId = Guid.NewGuid().ToString(),
-                };
-                await userManager.CreateAsync(chef, "Chef123!");
-
-                foreach (var permission in listPermissions)
-                {
-                    if (permission.Id <= 20)
-                    {
-                        var chefPerm = new UserPermission
-                        {
-                            PermissionId = permission.Id,
-                            UserId = chef.Id
-                        };
-                        context.UserPermissions.Add(chefPerm);
-                    }
-                }
-
-                ApplicationUser zaal = new ApplicationUser()
-                {
-                    Email = "zaal@gmail.com",
-                    UserName = "zaal",
-                    IsEnabled = true,
-                    ExternalId = Guid.NewGuid().ToString(),
-                };
-                await userManager.CreateAsync(zaal, "Zaal123!");
-
-                foreach (var permission in listPermissions)
-                {
-                    if (permission.Id <= 20)
-
-                    {
-                        var zaalPerms = new UserPermission
-                        {
-                            PermissionId = permission.Id,
-                            UserId = zaal.Id
-                        };
-                        context.UserPermissions.Add(zaalPerms);
-                    }
-                }
-
-                await context.SaveChangesAsync();
             }
+
+            ApplicationUser zaal = new()
+            {
+                Email = "zaal@gmail.com",
+                UserName = "zaal",
+                IsEnabled = true,
+                ExternalId = Guid.NewGuid().ToString(),
+            };
+            await userManager.CreateAsync(zaal, "Zaal123!");
+
+            foreach (var permission in listPermissions)
+            {
+                if (permission.Id <= 20)
+
+                {
+                    var zaalPerms = new UserPermission
+                    {
+                        PermissionId = permission.Id,
+                        UserId = zaal.Id
+                    };
+                    context.UserPermissions.Add(zaalPerms);
+                }
+            }
+
+            await context.SaveChangesAsync();
         }
     }
 }

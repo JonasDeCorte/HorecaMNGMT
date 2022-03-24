@@ -7,7 +7,7 @@ namespace Horeca.Shared.AuthUtils
 {
     public static class HttpContextExtensions
     {
-        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
         {
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             PropertyNameCaseInsensitive = true

@@ -1,4 +1,5 @@
-﻿using Horeca.Infrastructure.Data;
+﻿using Horeca.Core.Helpers;
+using Horeca.Infrastructure.Data;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -36,24 +37,30 @@ namespace Horeca.Infrastructure
         // Adding Authentication
         public static AuthenticationBuilder AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            return services.AddAuthentication(options =>
-             {
-                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-             }).AddJwtBearer(options =>// Adding Jwt Bearer
-             {
-                 options.SaveToken = true;
-                 options.RequireHttpsMetadata = false;
-                 options.TokenValidationParameters = new TokenValidationParameters()
-                 {
-                     ValidateIssuer = true,
-                     ValidateAudience = true,
-                     ValidAudience = configuration["JWT:ValidAudience"],
-                     ValidIssuer = configuration["JWT:ValidIssuer"],
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
-                 };
-             });
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(nameof(JwtSettings), jwtSettings);
+            services.AddSingleton(jwtSettings);
+            return services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+             .AddJwtBearer(x =>
+            {
+                x.SaveToken = true;
+                x.RequireHttpsMetadata = false;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.AccessTokenSecret)),
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)

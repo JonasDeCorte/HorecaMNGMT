@@ -18,13 +18,18 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async ValueTask<ClaimsIdentity?> GetUserPermissionsIdentity(string sub, CancellationToken cancellationToken)
         {
-            var userPermissions = await context.UserPermissions
+            List<Claim>? userPermissions = await context.UserPermissions
                   .Include(x => x.Permission)
                   .Include(x => x.User)
-                  .Where(x => x.User.ExternalId == sub)
+                  .Where(x => x.User.ExternalId == sub && x.IsEnabled)
                   .Select(x => new Claim(AppClaimTypes.Permissions, x.Permission.Name))
                   .ToListAsync(cancellationToken);
 
+            return CreatePermissionsIdentity(userPermissions);
+        }
+
+        private ClaimsIdentity? CreatePermissionsIdentity(List<Claim> userPermissions)
+        {
             if (!userPermissions.Any())
                 return null;
 

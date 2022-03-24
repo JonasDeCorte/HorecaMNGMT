@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Accounts;
@@ -23,7 +24,7 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
     private readonly UserManager<ApplicationUser> userManager;
     private readonly IUnitOfWork repository;
 
-    private static Logger logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
     public RegisterAdminCommandHandler(UserManager<ApplicationUser> userManager, IUnitOfWork repository)
     {
@@ -38,8 +39,8 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
         var userExists = await userManager.FindByNameAsync(request.Model.Username);
         if (userExists != null)
         {
-            logger.Error("creating user failed, user already exists");
-            throw new ArgumentException("User already exist");
+            logger.Error(RegisterException.Instance);
+            throw new RegisterException();
         }
 
         ApplicationUser user = new()
@@ -55,9 +56,8 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
 
         if (!result.Succeeded)
         {
-            logger.Error("creating user failed");
-
-            throw new ArgumentNullException($"Creating {nameof(user)} failed");
+            logger.Error(RegisterException.Instance);
+            throw new RegisterException();
         }
 
         var listPermissions = repository.PermissionRepository.GetAll();
@@ -74,7 +74,7 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
             repository.UserPermissionRepository.Add(userPerm);
         }
         await repository.CommitAsync();
-        logger.Info("added: {permCount} to {user}", user.Permissions.Count(), user.NormalizedUserName);
+        logger.Info("added: {permCount} to {user}", user.Permissions.Count, user.NormalizedUserName);
         return user.Id;
     }
 }
