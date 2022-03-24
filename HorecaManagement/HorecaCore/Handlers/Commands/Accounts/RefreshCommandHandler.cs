@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
-    public class RefreshCommand : IRequest<LoginResult>
+    public class RefreshCommand : IRequest<TokenResultDto>
     {
         public RefreshCommand(RefreshTokenDto model)
         {
@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
         public RefreshTokenDto Model { get; }
     }
 
-    public class RefreshCommandHandler : IRequestHandler<RefreshCommand, LoginResult>
+    public class RefreshCommandHandler : IRequestHandler<RefreshCommand, TokenResultDto>
     {
         private readonly IAuthenticateService authenticateService;
         private readonly IRefreshTokenValidator refreshTokenValidator;
@@ -35,7 +35,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             this.authenticateService = authenticateService;
         }
 
-        public async Task<LoginResult> Handle(RefreshCommand request, CancellationToken cancellationToken)
+        public async Task<TokenResultDto> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
             var isValidRefreshToken = refreshTokenValidator.Validate(request.Model.RefreshToken);
             if (!isValidRefreshToken)
