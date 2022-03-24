@@ -3,6 +3,6 @@
     public class UserRolesViewModel
     {
         public string Username { get; set; }
-        public List<string> Roles { get; set; }
+        public List<Tuple<string, string>> Permissions { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.UserPermissions;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -11,12 +12,19 @@ namespace Horeca.MVC.Services
     public class AccountService : IAccountService
     {
         private HttpClient httpClient;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private IConfiguration configuration;
 
-        public AccountService(HttpClient httpClient, IConfiguration IConfig)
+        public AccountService(HttpClient httpClient, IConfiguration IConfig, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
+            this.httpContextAccessor = httpContextAccessor;
             configuration = IConfig;
+        }
+        public void Authorizer()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                httpContextAccessor.HttpContext.Session.GetString("JWToken"));
         }
 
         public async Task<string> LoginUser(LoginUserDto user)
@@ -96,6 +104,7 @@ namespace Horeca.MVC.Services
 
         public async Task<UserDto> GetUserByName(string username)
         {
+            Authorizer();
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
             if (!response.IsSuccessStatusCode)

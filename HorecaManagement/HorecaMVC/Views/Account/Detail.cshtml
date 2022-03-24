@@ -14,10 +14,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var role in @Model.Roles)
+                @for (int i = 7; i < @Model.Permissions.Count; i++)
                 {
                     <tr>
-                        <td scope="row">@role</td>
+                        <td scope="row">@Model.Permissions[i].Item2</td>
                     </tr>
                 }
             </tbody>

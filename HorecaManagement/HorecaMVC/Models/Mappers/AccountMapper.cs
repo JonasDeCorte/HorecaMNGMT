@@ -10,7 +10,7 @@ namespace Horeca.MVC.Models.Mappers
             UserRolesViewModel userViewModel = new UserRolesViewModel
             {
                 Username = userDto.Username,
-                Roles = userDto.Roles
+                Permissions = userDto.Permissions
             };
             return userViewModel;
         }

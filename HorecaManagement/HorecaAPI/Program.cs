@@ -82,7 +82,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//DataSeeder.Seed(app);
+DataSeeder.Seed(app);
 app.UseHttpsRedirection();
 // Authentication & Authorization
 app.UseAuthentication();
