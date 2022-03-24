@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace Horeca.Infrastructure
@@ -66,6 +67,38 @@ namespace Horeca.Infrastructure
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             return services.AddDatabaseContext(configuration).AddUnitOfWork();
+        }
+
+        public static IServiceCollection AddSwaggerService(this IServiceCollection services)
+        {
+            return services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "HORECA MANAGEMENT API", Version = "v1" });
+                option.OperationFilter<SwaggerAuthorizeOperationFilter>();
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+   {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                },
+            },
+            new string[]{}
+        }
+   });
+            });
         }
     }
 }
