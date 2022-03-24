@@ -21,7 +21,7 @@ namespace Horeca.MVC.Services
             this.httpContextAccessor = httpContextAccessor;
             configuration = IConfig;
         }
-        public void Authorizer()
+        public void CheckToken()
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
                 httpContextAccessor.HttpContext.Session.GetString("JWToken"));
@@ -60,6 +60,7 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
         {
+            CheckToken();
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
                 $"{ClassConstants.RegisterAdmin}");
@@ -75,6 +76,7 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> UpdatePermissions(MutateUserPermissionsDto model)
         {
+            CheckToken();
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
                 $"{ClassConstants.UserPermissions}");
@@ -104,7 +106,7 @@ namespace Horeca.MVC.Services
 
         public async Task<UserDto> GetUserByName(string username)
         {
-            Authorizer();
+            CheckToken();
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
             if (!response.IsSuccessStatusCode)
