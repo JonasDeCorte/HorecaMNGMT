@@ -1,14 +1,9 @@
 using Horeca.API.Authorization;
 using Horeca.API.Middleware;
 using Horeca.Core;
-using Horeca.Core.Services;
 using Horeca.Infrastructure;
 using Horeca.Infrastructure.Data;
-using Horeca.Shared.AuthUtils.PolicyProvider;
-using Horeca.Shared.Data.Services;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
@@ -28,22 +23,8 @@ builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerService();
 builder.Services.AddCustomAuthorizationServices();
-
-var config = new NLog.Config.LoggingConfiguration();
-
-// Targets where to log to: File and Console
-var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "file.txt" };
-logfile.ArchiveEvery = NLog.Targets.FileArchivePeriod.Day;
-var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
-
-// Rules for mapping loggers to targets
-config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, logconsole);
-config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
-
-// Apply config
-NLog.LogManager.Configuration = config;
-
 builder.Services.RegisterServices();
+builder.Services.AddNlogConfiguration();
 
 var app = builder.Build();
 
