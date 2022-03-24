@@ -137,7 +137,7 @@ namespace Horeca.Infrastructure
                     Id="Bearer"
                 },
             },
-            new string[]{}
+            Array.Empty<string>()
         }
    });
             });
