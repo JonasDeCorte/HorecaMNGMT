@@ -39,6 +39,23 @@ namespace Horeca.Infrastructure
             return services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
         }
 
+        public static void AddNlogConfiguration(this IServiceCollection services)
+        {
+            var config = new NLog.Config.LoggingConfiguration();
+
+            // Targets where to log to: File and Console
+            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "file.txt" };
+            logfile.ArchiveEvery = NLog.Targets.FileArchivePeriod.Day;
+            var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
+
+            // Rules for mapping loggers to targets
+            config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, logconsole);
+            config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
+
+            // Apply config
+            NLog.LogManager.Configuration = config;
+        }
+
         // Adding Authentication
         public static AuthenticationBuilder AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
