@@ -20,17 +20,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(3);
-});
-
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IMenuCardService, MenuCardService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 
 var app = builder.Build();
 
@@ -46,8 +43,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

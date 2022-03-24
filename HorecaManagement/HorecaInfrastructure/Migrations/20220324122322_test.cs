@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HorecaInfrastructure.Migrations
 {
-    public partial class Initial : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,6 +82,23 @@ namespace HorecaInfrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Permissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -415,6 +432,9 @@ namespace HorecaInfrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ingredients");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "UserPermissions");

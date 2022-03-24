@@ -4,7 +4,6 @@ using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.UserPermissions;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -12,22 +11,19 @@ namespace Horeca.MVC.Services
     public class AccountService : IAccountService
     {
         private HttpClient httpClient;
-        private readonly IHttpContextAccessor httpContextAccessor;
         private IConfiguration configuration;
+        private ITokenService tokenService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AccountService(HttpClient httpClient, IConfiguration IConfig, IHttpContextAccessor httpContextAccessor)
+        public AccountService(HttpClient httpClient, IConfiguration IConfig, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
+            this.tokenService = tokenService;
             this.httpContextAccessor = httpContextAccessor;
             configuration = IConfig;
         }
-        public void CheckToken()
-        {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-                httpContextAccessor.HttpContext.Session.GetString("JWToken"));
-        }
 
-        public async Task<string> LoginUser(LoginUserDto user)
+        public async Task<HttpResponseMessage> LoginUser(LoginUserDto user)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
@@ -39,8 +35,12 @@ namespace Horeca.MVC.Services
             {
                 return null;
             }
+
             LoginResult result = JsonConvert.DeserializeObject<LoginResult>(response.Content.ReadAsStringAsync().Result);
-            return result.AccessToken;
+            tokenService.SetAccessToken(result.AccessToken);
+            tokenService.SetRefreshToken(result.RefreshToken);
+
+            return response;
         }
 
         public async Task<HttpResponseMessage> RegisterUser(RegisterUserDto user)
@@ -60,7 +60,7 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
         {
-            CheckToken();
+            tokenService.CheckAccessToken();
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
                 $"{ClassConstants.RegisterAdmin}");
@@ -76,7 +76,6 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> UpdatePermissions(MutateUserPermissionsDto model)
         {
-            CheckToken();
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
                 $"{ClassConstants.UserPermissions}");
@@ -106,7 +105,7 @@ namespace Horeca.MVC.Services
 
         public async Task<UserDto> GetUserByName(string username)
         {
-            CheckToken();
+            tokenService.CheckAccessToken();
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
             if (!response.IsSuccessStatusCode)

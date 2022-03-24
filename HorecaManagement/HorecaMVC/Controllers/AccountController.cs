@@ -64,9 +64,6 @@ namespace Horeca.MVC.Controllers
                 {
                     return View("OperationFailed");
                 }
-
-                HttpContext.Session.SetString("JWToken", response);
-
                 return RedirectToAction("Index", new { area = "Home" });
             } else
             {

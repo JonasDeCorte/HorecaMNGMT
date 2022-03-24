@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220324085022_refresh")]
-    partial class refresh
+    [Migration("20220324122322_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
