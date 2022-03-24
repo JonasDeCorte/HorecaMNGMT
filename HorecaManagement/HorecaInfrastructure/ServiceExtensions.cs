@@ -1,9 +1,13 @@
 ﻿using Horeca.Core.Helpers;
+using Horeca.Core.Services;
 using Horeca.Infrastructure.Data;
+using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities.Account;
+using Horeca.Shared.Data.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -67,6 +71,27 @@ namespace Horeca.Infrastructure
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             return services.AddDatabaseContext(configuration).AddUnitOfWork();
+        }
+
+        public static void RegisterServices(this IServiceCollection services)
+        {
+            services.AddScoped<IApplicationDbContext>(x => x.GetService<DatabaseContext>()!);
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IAccessTokenService, AccessTokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+        }
+
+        public static void AddCustomAuthorizationServices(this IServiceCollection services)
+        {
+            // Register our custom Authorization handler
+            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+
+            // Overrides the DefaultAuthorizationPolicyProvider with our own
+            // https://github.com/dotnet/aspnetcore/blob/main/src/Security/Authorization/Core/src/DefaultAuthorizationPolicyProvider.cs
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+            services.AddScoped<IUserPermissionService, UserPermissionService>();
         }
 
         public static IServiceCollection AddSwaggerService(this IServiceCollection services)

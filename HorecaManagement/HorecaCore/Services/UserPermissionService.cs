@@ -1,25 +1,15 @@
-﻿using Horeca.Infrastructure.Data;
-using Horeca.Shared.AuthUtils;
+﻿using Horeca.Shared.AuthUtils;
+using Horeca.Shared.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace Horeca.API.Authorization
+namespace Horeca.Core.Services
 {
-    public interface IUserPermissionService
-    {
-        /// <summary>
-        /// Returns a new identity containing the user permissions as Claims
-        /// </summary>
-        /// <param name="sub">The user external id (sub claim)</param>
-        /// <param name="cancellationToken"></param>
-        ValueTask<ClaimsIdentity?> GetUserPermissionsIdentity(string sub, CancellationToken cancellationToken);
-    }
-
     public class UserPermissionService : IUserPermissionService
     {
-        private readonly DatabaseContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
 
-        public UserPermissionService(DatabaseContext dbContext)
+        public UserPermissionService(IApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -41,7 +31,7 @@ namespace Horeca.API.Authorization
             if (!claimPermissions.Any())
                 return null;
 
-            var permissionsIdentity = new ClaimsIdentity(nameof(PermissionsMiddleware), "name", "role");
+            var permissionsIdentity = new ClaimsIdentity("permissions", "name", "role");
             permissionsIdentity.AddClaims(claimPermissions);
 
             return permissionsIdentity;

@@ -27,13 +27,7 @@ builder.Services.AddIdentity();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerService();
-// Register our custom Authorization handler
-builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
-
-// Overrides the DefaultAuthorizationPolicyProvider with our own
-// https://github.com/dotnet/aspnetcore/blob/main/src/Security/Authorization/Core/src/DefaultAuthorizationPolicyProvider.cs
-builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
-builder.Services.AddScoped<IUserPermissionService, UserPermissionService>();
+builder.Services.AddCustomAuthorizationServices();
 
 var config = new NLog.Config.LoggingConfiguration();
 
@@ -49,12 +43,8 @@ config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
 // Apply config
 NLog.LogManager.Configuration = config;
 
-builder.Services.AddScoped<IApplicationDbContext>(x => x.GetService<DatabaseContext>()!);
-builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
-builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
-builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
-builder.Services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
-builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
+builder.Services.RegisterServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
