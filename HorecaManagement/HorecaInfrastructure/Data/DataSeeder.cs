@@ -227,7 +227,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var permission in listPermissions)
             {
-                if (permission.Id <= 20)
+                if (permission.Id <= 21)
                 {
                     var chefPerm = new UserPermission
                     {
@@ -249,7 +249,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var permission in listPermissions)
             {
-                if (permission.Id <= 20)
+                if (permission.Id <= 21)
 
                 {
                     var zaalPerms = new UserPermission
