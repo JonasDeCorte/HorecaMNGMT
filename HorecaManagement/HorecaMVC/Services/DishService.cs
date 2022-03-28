@@ -16,20 +16,18 @@ namespace Horeca.MVC.Services
         private readonly IHttpContextAccessor httpContextAccessor;
         private IConfiguration configuration;
 
-        public DishService(HttpClient httpClient, IConfiguration iConfig, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public DishService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
             this.tokenService = tokenService;
             this.httpContextAccessor = httpContextAccessor;
-            configuration = iConfig;
+            this.configuration = configuration;
         }
 
         public async Task<IEnumerable<DishDto>> GetDishes()
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-                httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
+            tokenService.CheckAccessToken(httpClient);
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
-
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<DishDto>>(response.Content.ReadAsStringAsync().Result);
@@ -38,9 +36,8 @@ namespace Horeca.MVC.Services
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 // not implemented
-                Console.WriteLine("ge zit erin");
+                Console.WriteLine("je bent unauthorized");
             }
-
             return null;
         }
 

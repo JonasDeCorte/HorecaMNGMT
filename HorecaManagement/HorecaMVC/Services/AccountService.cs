@@ -13,13 +13,11 @@ namespace Horeca.MVC.Services
         private HttpClient httpClient;
         private IConfiguration configuration;
         private ITokenService tokenService;
-        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AccountService(HttpClient httpClient, IConfiguration IConfig, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public AccountService(HttpClient httpClient, IConfiguration IConfig, ITokenService tokenService)
         {
             this.httpClient = httpClient;
             this.tokenService = tokenService;
-            this.httpContextAccessor = httpContextAccessor;
             configuration = IConfig;
         }
 
@@ -60,7 +58,7 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
         {
-            tokenService.CheckAccessToken();
+            tokenService.CheckAccessToken(httpClient);
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
                 $"{ClassConstants.RegisterAdmin}");
@@ -105,7 +103,7 @@ namespace Horeca.MVC.Services
 
         public async Task<UserDto> GetUserByName(string username)
         {
-            tokenService.CheckAccessToken();
+            tokenService.CheckAccessToken(httpClient);
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
             if (!response.IsSuccessStatusCode)

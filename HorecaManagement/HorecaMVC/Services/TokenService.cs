@@ -20,16 +20,16 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public void CheckAccessToken()
+        public void CheckAccessToken(HttpClient httpClient)
         {
+            //httpClient.DefaultRequestHeaders.Add("Bearer", httpContextAccessor.HttpContext.Request.Cookies["JWToken"]); 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-                httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
+                 httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
         }
 
         public void SetAccessToken(string accessToken)
         {
             httpContextAccessor.HttpContext.Response.Cookies.Append("JWToken", accessToken);
-            CheckAccessToken();
         }
 
         public string GetRefreshToken()
