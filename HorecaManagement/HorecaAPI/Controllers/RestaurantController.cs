@@ -51,7 +51,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(mediator.Send(new GetRestaurantByIdQuery(id)));
+            return Ok(await mediator.Send(new GetRestaurantByIdQuery(id)));
         }
 
         /// <summary>
@@ -68,6 +68,23 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> Post([FromBody] MutateRestaurantDto model)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddRestaurantCommand(model)));
+        }
+
+        /// <summary>
+        ///  Delete an existing Restaurant
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="204">Success delete an existing Restaurant</response>
+        /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteRestaurantCommand(id)));
         }
     }
 }

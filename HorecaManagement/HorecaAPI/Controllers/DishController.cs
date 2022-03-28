@@ -81,7 +81,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting Dish</response>
+        /// <response code="204">Success delete an existing Dish</response>
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Dish), Permissions.Delete)]
         [HttpDelete]
@@ -100,7 +100,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Success updating exsiting Dish</response>
+        /// <response code="200">Success updating existing Dish</response>
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Dish), Permissions.Update)]
         [HttpPut]
@@ -182,7 +182,7 @@ namespace Horeca.API.Controllers
         /// <param name="id"></param>
         /// <param name="ingredientId"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting ingredient from a Dish</response>
+        /// <response code="204">Success delete an existing ingredient from a Dish</response>
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Dish), Permissions.Delete)]
         [HttpDelete]
