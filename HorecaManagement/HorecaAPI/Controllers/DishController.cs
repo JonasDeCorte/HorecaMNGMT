@@ -15,11 +15,11 @@ namespace Horeca.API.Controllers
     [ApiController]
     public class DishController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator mediator;
 
         public DishController(IMediator mediator)
         {
-            _mediator = mediator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -34,9 +34,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            var query = new GetAllDishesQuery();
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetAllDishesQuery()));
         }
 
         /// <summary>
@@ -52,9 +50,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateDishDto model)
         {
-            var command = new CreateDishCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateDishCommand(model)));
         }
 
         /// <summary>
@@ -71,9 +67,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetDishByIdQuery(id);
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetDishByIdQuery(id)));
         }
 
         /// <summary>
@@ -90,9 +84,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var command = new DeleteDishCommand(id);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteDishCommand(id)));
         }
 
         /// <summary>
@@ -108,9 +100,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateDishDto model)
         {
-            var command = new EditDishCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditDishCommand(model)));
         }
 
         /// <summary>
@@ -127,9 +117,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetIngredientsByDishId(int id)
         {
-            var query = new GetIngredientsByDishIdQuery(id);
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetIngredientsByDishIdQuery(id)));
         }
 
         /// <summary>
@@ -148,9 +136,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> AddIngredientToDish([FromRoute] int id, [FromBody] MutateIngredientByDishDto model)
         {
             model.Id = id;
-            var command = new AddIngredientDishCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddIngredientDishCommand(model)));
         }
 
         /// <summary>
@@ -171,9 +157,8 @@ namespace Horeca.API.Controllers
         {
             model.Id = id;
             model.Ingredient.Id = ingredientId;
-            var command = new EditIngredientDishCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.Created, response);
+
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new EditIngredientDishCommand(model)));
         }
 
         /// <summary>
@@ -196,9 +181,8 @@ namespace Horeca.API.Controllers
                 DishId = id,
                 IngredientId = ingredientId
             };
-            var command = new DeleteIngredientDishCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteIngredientDishCommand(model)));
         }
     }
 }
