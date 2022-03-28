@@ -25,7 +25,7 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
 
         public async Task<IEnumerable<RestaurantDto>> Handle(GetAllRestaurantsQuery request, CancellationToken cancellationToken)
         {
-            var result = await Task.FromResult(repository.RestaurantRepository.GetAll().Select(x => new RestaurantDto
+            var result = await Task.FromResult(repository.Restaurants.GetAll().Select(x => new RestaurantDto
             {
                 Id = x.Id,
                 Name = x.Name

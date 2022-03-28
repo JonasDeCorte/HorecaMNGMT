@@ -33,7 +33,7 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
         {
             logger.Info("trying to return {object} with id: {id}", nameof(DetailRestaurantDto), request.RestaurantId);
 
-            var restaurant = await Task.FromResult(repository.RestaurantRepository.GetRestaurantIncludingDependenciesById(request.RestaurantId));
+            var restaurant = await Task.FromResult(repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId));
 
             if (restaurant is null)
             {

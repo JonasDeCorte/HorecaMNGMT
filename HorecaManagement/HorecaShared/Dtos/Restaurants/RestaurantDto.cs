@@ -14,4 +14,9 @@ namespace Horeca.Shared.Dtos.Restaurants
         public List<BaseUserDto> Employees { get; set; }
         public List<MenuCardDto> MenuCards { get; set; }
     }
+
+    public class MutateRestaurantDto : RestaurantDto
+    {
+        public string OwnerName { get; set; }
+    }
 }

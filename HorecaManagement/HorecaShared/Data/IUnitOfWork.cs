@@ -12,9 +12,9 @@ namespace Horeca.Shared.Data
         IMenuCardRepository MenuCards { get; }
 
         IPermissionRepository PermissionRepository { get; }
-        IUserPermissionRepository UserPermissionRepository { get; }
+        IUserPermissionRepository UserPermissions { get; }
 
-        IRestaurantRepository RestaurantRepository { get; }
+        IRestaurantRepository Restaurants { get; }
 
         Task CommitAsync();
     }

@@ -45,7 +45,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             logger.Info("user needs a total of: {count} permissions", request.Model.PermissionIds.Count);
 
-            var userperms = repository.UserPermissionRepository.GetAllUserPermissionsByUserId(user.Id);
+            var userperms = repository.UserPermissions.GetAllUserPermissionsByUserId(user.Id);
 
             logger.Info("requesting all user  permissions with a total of: {count}", userperms.Count);
 
@@ -60,7 +60,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             foreach (var permId in request.Model.PermissionIds)
             {
-                repository.UserPermissionRepository.Add(new UserPermission
+                repository.UserPermissions.Add(new UserPermission
                 {
                     PermissionId = permId,
                     UserId = user.Id

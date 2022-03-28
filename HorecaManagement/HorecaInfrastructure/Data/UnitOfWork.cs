@@ -25,9 +25,9 @@ namespace Horeca.Infrastructure.Data
 
         public IPermissionRepository PermissionRepository => new PermissionRepository(context);
 
-        public IUserPermissionRepository UserPermissionRepository => new UserPermissionRepository(context);
+        public IUserPermissionRepository UserPermissions => new UserPermissionRepository(context);
 
-        public IRestaurantRepository RestaurantRepository => new RestaurantRepository(context);
+        public IRestaurantRepository Restaurants => new RestaurantRepository(context);
 
         public async Task CommitAsync()
         {
