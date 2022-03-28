@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class DeleteIngredientDishCommandHandler : IRequestHandler<DeleteIngredientDishCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public DeleteIngredientDishCommandHandler(IUnitOfWork repository)
         {

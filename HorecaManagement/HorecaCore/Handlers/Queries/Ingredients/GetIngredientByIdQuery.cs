@@ -20,7 +20,7 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
         {
             private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
-            private static Logger logger = LogManager.GetCurrentClassLogger();
+            private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
             public GetIngredientByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
@@ -36,9 +36,9 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
 
                 if (ingredient == null)
                 {
-                    logger.Error("{object} with Id: {id} is null", nameof(ingredient), request.IngredientId);
+                    logger.Error(EntityNotFoundException.Instance);
 
-                    throw new EntityNotFoundException($"No Ingredient found for Id {request.IngredientId}");
+                    throw new EntityNotFoundException();
                 }
                 logger.Info("returning {@object} with id: {id}", ingredient, request.IngredientId);
 

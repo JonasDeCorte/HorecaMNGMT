@@ -71,6 +71,22 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
+        /// Update an existing restaurant
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <response code="200">Success updating existing restaurant</response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Update)]
+        [HttpPut]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> Update([FromBody] EditRestaurantDto model)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditRestaurantCommand(model)));
+        }
+
+        /// <summary>
         ///  Delete an existing Restaurant
         /// </summary>
         /// <param name="id"></param>

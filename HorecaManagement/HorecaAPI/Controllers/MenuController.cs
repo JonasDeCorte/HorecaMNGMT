@@ -84,7 +84,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting Menu</response>
+        /// <response code="204">Success delete an existing Menu</response>
         /// <response code="400">Bad request</response
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Delete)]
@@ -100,11 +100,11 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// Update an exsiting Menu
+        /// Update an existing Menu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Success updating exsiting Menu</response>
+        /// <response code="200">Success updating existing Menu</response>
         /// <response code="400">Bad request</response>
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Update)]
@@ -165,7 +165,7 @@ namespace Horeca.API.Controllers
         /// <param name="id"></param>
         /// <param name="dishId"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting Dish from a menu </response>
+        /// <response code="204">Success delete an existing Dish from a menu </response>
         /// <response code="400">Bad request</response
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Delete)]

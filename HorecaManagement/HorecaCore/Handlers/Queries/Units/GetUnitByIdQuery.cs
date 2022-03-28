@@ -20,7 +20,7 @@ namespace Horeca.Core.Handlers.Queries.Units
         {
             private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
-            private static Logger logger = LogManager.GetCurrentClassLogger();
+            private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
             public GetUnitByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
@@ -34,9 +34,9 @@ namespace Horeca.Core.Handlers.Queries.Units
 
                 if (unit == null)
                 {
-                    logger.Error("{object} with Id: {id} is null", nameof(unit), request.UnitId);
+                    logger.Error(EntityNotFoundException.Instance);
 
-                    throw new EntityNotFoundException($"No {nameof(unit)} found for Id {request.UnitId}");
+                    throw new EntityNotFoundException();
                 }
                 logger.Info("returning {@object} with id: {id}", unit, request.UnitId);
                 return _mapper.Map<UnitDto>(unit);

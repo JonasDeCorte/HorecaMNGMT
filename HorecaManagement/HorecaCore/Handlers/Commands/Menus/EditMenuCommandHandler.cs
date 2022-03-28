@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class EditMenuCommandHandler : IRequestHandler<EditMenuCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public EditMenuCommandHandler(IUnitOfWork repository)
         {
@@ -34,9 +34,9 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
             if (menu is null)
             {
-                logger.Error("{Object} with Id: {id} does not exist", nameof(menu), request.Model.Id);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("Entity does not exist");
+                throw new EntityNotFoundException();
             }
 
             menu.Category = request.Model.Category ?? menu.Category;

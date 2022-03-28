@@ -83,7 +83,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting Unit</response>
+        /// <response code="204">Success delete an existing Unit</response>
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Delete)]
         [HttpDelete]
@@ -98,11 +98,11 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// Update an exsiting Unit
+        /// Update an existing Unit
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Success updating exsiting Unit</response>
+        /// <response code="200">Success updating existing Unit</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]

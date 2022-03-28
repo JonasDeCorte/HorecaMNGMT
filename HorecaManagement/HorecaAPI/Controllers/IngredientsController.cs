@@ -60,11 +60,11 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// Update an exsiting ingredient
+        /// Update an existing ingredient
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Success updating exsiting ingredient</response>
+        /// <response code="200">Success updating existing ingredient</response>
         /// <response code="400">Bad request</response>
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Update)]
@@ -103,7 +103,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting ingredient</response>
+        /// <response code="204">Success delete an existing ingredient</response>
         /// <response code="400">Bad request</response
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Delete)]

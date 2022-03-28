@@ -19,4 +19,8 @@ namespace Horeca.Shared.Dtos.Restaurants
     {
         public string OwnerName { get; set; }
     }
+
+    public class EditRestaurantDto : RestaurantDto
+    {
+    }
 }

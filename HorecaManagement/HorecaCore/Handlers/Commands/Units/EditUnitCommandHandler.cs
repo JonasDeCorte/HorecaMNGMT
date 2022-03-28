@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Units
     public class EditUnitCommandHandler : IRequestHandler<EditUnitCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public EditUnitCommandHandler(IUnitOfWork repository)
         {
@@ -34,9 +34,9 @@ namespace Horeca.Core.Handlers.Commands.Units
 
             if (unit is null)
             {
-                logger.Error("{Object} with Id: {id} does not exist", nameof(Shared.Data.Entities.Unit), request.Model.Id);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("Entity does not exist");
+                throw new EntityNotFoundException();
             }
 
             unit.Name = request.Model.Name ?? unit.Name;

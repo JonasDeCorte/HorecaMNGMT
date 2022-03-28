@@ -23,7 +23,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
     {
         private readonly IUnitOfWork repository;
         private readonly IValidator<MutateIngredientDto> _validator;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public CreateIngredientCommandHandler(IUnitOfWork repository, IValidator<MutateIngredientDto> validator)
         {

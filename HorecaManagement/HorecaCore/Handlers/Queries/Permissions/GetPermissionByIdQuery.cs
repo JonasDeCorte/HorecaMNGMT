@@ -37,9 +37,9 @@ namespace Horeca.Core.Handlers.Queries.Permissions
 
             if (permission is null)
             {
-                logger.Error("{object} with Id: {id} is null", nameof(permission), request.PermissionId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("role does not exist");
+                throw new EntityNotFoundException();
             }
             logger.Info("returning {@object} with id: {id}", permission, request.PermissionId);
 

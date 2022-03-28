@@ -15,7 +15,7 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllIngredientsQueryHandler(IUnitOfWork repository, IMapper mapper)
 

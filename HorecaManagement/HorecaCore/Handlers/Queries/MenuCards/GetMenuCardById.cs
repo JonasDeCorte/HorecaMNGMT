@@ -21,7 +21,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetMenuCardByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -37,9 +37,9 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
 
             if (menuCard is null)
             {
-                logger.Error("{object} with Id: {id} is null", nameof(MenuCardDto), request.MenuCardId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException($"No MenuCard found for Id {request.MenuCardId}");
+                throw new EntityNotFoundException();
             }
             logger.Info("returning {@object} with id: {id}", menuCard, request.MenuCardId);
 

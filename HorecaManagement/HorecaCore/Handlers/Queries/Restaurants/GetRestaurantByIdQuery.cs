@@ -37,9 +37,9 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
 
             if (restaurant is null)
             {
-                logger.Error("{object} with Id: {id} is null", nameof(restaurant), request.RestaurantId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("Restaurant does not exist");
+                throw new EntityNotFoundException();
             }
             logger.Info("returning {@object} with id: {id}", restaurant, request.RestaurantId);
 

@@ -96,7 +96,7 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// Update an exsiting Dish
+        /// Update an existing Dish
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

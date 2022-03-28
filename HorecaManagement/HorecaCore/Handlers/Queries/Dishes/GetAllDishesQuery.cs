@@ -15,7 +15,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllDishesQueryHandler(IUnitOfWork repository, IMapper mapper)
 
