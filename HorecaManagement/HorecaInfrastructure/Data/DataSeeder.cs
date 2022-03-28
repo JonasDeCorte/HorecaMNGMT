@@ -157,6 +157,23 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
                 },
+
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Delete}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Read}"

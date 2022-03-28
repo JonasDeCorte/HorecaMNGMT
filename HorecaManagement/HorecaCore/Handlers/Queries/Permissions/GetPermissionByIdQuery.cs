@@ -21,7 +21,7 @@ namespace Horeca.Core.Handlers.Queries.Permissions
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetPermissionByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
         {

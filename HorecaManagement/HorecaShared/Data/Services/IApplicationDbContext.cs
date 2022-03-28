@@ -16,6 +16,8 @@ namespace Horeca.Shared.Data.Services
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
 
+        public DbSet<Restaurant> Restaurants { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
