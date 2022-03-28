@@ -1,10 +1,12 @@
 ﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using NLog;
+using System.Linq;
 
 namespace Horeca.Core.Handlers.Queries.Accounts
 {
@@ -21,18 +23,18 @@ namespace Horeca.Core.Handlers.Queries.Accounts
     public class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserDto>
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUnitOfWork repository;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public GetUserByUsernameQueryHandler(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
+        public GetUserByUsernameQueryHandler(UserManager<ApplicationUser> userManager, IUnitOfWork repository)
         {
             this.userManager = userManager;
-            this.httpContextAccessor = httpContextAccessor;
+            this.repository = repository;
         }
 
         public async Task<UserDto> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to get {object} with username: {Id}", nameof(IdentityUser), request.Username);
+            logger.Info("trying to get {object} with username: {Id}", nameof(ApplicationUser), request.Username);
 
             var user = await userManager.FindByNameAsync(request.Username);
 
@@ -44,11 +46,13 @@ namespace Horeca.Core.Handlers.Queries.Accounts
 
             logger.Info("returning {name} with user {user}", nameof(UserDto), user.UserName);
 
-            var permissionsToReturn = new List<Tuple<string, string>>();
-            var permissions = httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type.Equals("permissions"));
+            List<Tuple<int, string>>? permissionsToReturn = new();
 
-            permissionsToReturn.AddRange(permissions.Select(permission => new Tuple<string, string>(permission.Type, permission.Value)));
+            var userPermissions = repository.UserPermissions.GetAllUserPermissionsByUserId(user.Id);
 
+            permissionsToReturn.AddRange(from item in userPermissions
+                                         let permission = repository.PermissionRepository.Get(item.PermissionId)
+                                         select new Tuple<int, string>(permission.Id, permission.Name));
             return new UserDto
             {
                 Permissions = permissionsToReturn,
