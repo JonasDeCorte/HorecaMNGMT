@@ -33,11 +33,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            var query = new GetAllUnitsQuery();
-
-            var response = await mediator.Send(query);
-
-            return Ok(response);
+            return Ok(await mediator.Send(new GetAllUnitsQuery()));
         }
 
         /// <summary>
@@ -53,10 +49,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
         {
-            var command = new CreateUnitCommand(model);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateUnitCommand(model)));
         }
 
         /// <summary>
@@ -73,9 +66,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetUnitByIdQuery(id);
-            var response = await mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetUnitByIdQuery(id)));
         }
 
         /// <summary>
@@ -92,9 +83,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var command = new DeleteUnitCommand(id);
-            var response = await mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUnitCommand(id)));
         }
 
         /// <summary>
@@ -110,9 +99,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateUnitDto model)
         {
-            var command = new EditUnitCommand(model);
-            var response = await mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditUnitCommand(model)));
         }
     }
 }
