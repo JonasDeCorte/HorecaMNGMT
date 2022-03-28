@@ -27,6 +27,8 @@ namespace Horeca.Infrastructure.Data
             builder.Entity<UserPermission>().HasOne(p => p.Permission)
                 .WithMany()
                 .HasForeignKey(pt => pt.PermissionId);
+
+            builder.Entity<ApplicationUser>().HasMany(x => x.Restaurants).WithMany(x => x.Employees);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -67,5 +69,7 @@ namespace Horeca.Infrastructure.Data
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+        public DbSet<Restaurant> Restaurants { get; set; }
     }
 }
