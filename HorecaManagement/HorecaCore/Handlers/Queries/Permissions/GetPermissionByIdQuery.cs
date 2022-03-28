@@ -21,7 +21,7 @@ namespace Horeca.Core.Handlers.Queries.Permissions
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetPermissionByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -37,9 +37,9 @@ namespace Horeca.Core.Handlers.Queries.Permissions
 
             if (permission is null)
             {
-                logger.Error("{object} with Id: {id} is null", nameof(permission), request.PermissionId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("role does not exist");
+                throw new EntityNotFoundException();
             }
             logger.Info("returning {@object} with id: {id}", permission, request.PermissionId);
 

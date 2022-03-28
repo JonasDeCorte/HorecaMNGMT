@@ -20,7 +20,7 @@ namespace Horeca.Core.Handlers.Commands.Units
         {
             private readonly IUnitOfWork repository;
             private readonly IValidator<MutateUnitDto> _validator;
-            private static Logger logger = LogManager.GetCurrentClassLogger();
+            private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
             public CreateUnitCommandHandler(IUnitOfWork repository, IValidator<MutateUnitDto> validator)
             {

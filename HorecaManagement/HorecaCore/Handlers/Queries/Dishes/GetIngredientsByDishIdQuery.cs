@@ -21,7 +21,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetIngredientsByDishIdHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -36,9 +36,9 @@ namespace Horeca.Core.Handlers.Queries.Dishes
             var dish = await Task.FromResult(repository.Dishes.GetDishIncludingDependencies(request.DishId));
             if (dish is null)
             {
-                logger.Error("{object} with Id: {id} is null", nameof(dish), request.DishId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException($"No Dish found for Id {request.DishId}");
+                throw new EntityNotFoundException();
             }
 
             logger.Info("returning {@object} with id: {id}", dish, request.DishId);

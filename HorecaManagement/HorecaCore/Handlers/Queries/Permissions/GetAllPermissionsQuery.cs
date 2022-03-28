@@ -16,7 +16,7 @@ namespace Horeca.Core.Handlers.Queries.Permissions
     public class GetAllPermissionsQueryHandler : IRequestHandler<GetAllPermissionsQuery, IEnumerable<PermissionDto>>
     {
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllPermissionsQueryHandler(IUnitOfWork repository)
 
@@ -32,7 +32,7 @@ namespace Horeca.Core.Handlers.Queries.Permissions
                 PermissionName = x.Name
             }).ToList());
 
-            logger.Info("{amount} of {nameof} have been returned", result.Count(), nameof(PermissionDto));
+            logger.Info("{amount} of {nameof} have been returned", result.Count, nameof(PermissionDto));
 
             return result;
         }

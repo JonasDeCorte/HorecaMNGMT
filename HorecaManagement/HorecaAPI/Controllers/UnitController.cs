@@ -33,11 +33,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            var query = new GetAllUnitsQuery();
-
-            var response = await mediator.Send(query);
-
-            return Ok(response);
+            return Ok(await mediator.Send(new GetAllUnitsQuery()));
         }
 
         /// <summary>
@@ -53,10 +49,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
         {
-            var command = new CreateUnitCommand(model);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateUnitCommand(model)));
         }
 
         /// <summary>
@@ -73,9 +66,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetUnitByIdQuery(id);
-            var response = await mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetUnitByIdQuery(id)));
         }
 
         /// <summary>
@@ -83,7 +74,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting Unit</response>
+        /// <response code="204">Success delete an existing Unit</response>
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Delete)]
         [HttpDelete]
@@ -92,17 +83,15 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var command = new DeleteUnitCommand(id);
-            var response = await mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUnitCommand(id)));
         }
 
         /// <summary>
-        /// Update an exsiting Unit
+        /// Update an existing Unit
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Success updating exsiting Unit</response>
+        /// <response code="200">Success updating existing Unit</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]
@@ -110,9 +99,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateUnitDto model)
         {
-            var command = new EditUnitCommand(model);
-            var response = await mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditUnitCommand(model)));
         }
     }
 }

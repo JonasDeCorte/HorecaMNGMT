@@ -26,7 +26,7 @@ namespace Horeca.Core.Handlers.Queries.Menus
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetDishesByMenuIdHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -41,9 +41,9 @@ namespace Horeca.Core.Handlers.Queries.Menus
             var menu = await Task.FromResult(repository.Menus.GetMenuIncludingDependencies(request.MenuId));
             if (menu is null)
             {
-                logger.Error("{object} with Id: {id} is null", nameof(menu), request.MenuId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException($"No Menu found for Id {request.MenuId}");
+                throw new EntityNotFoundException();
             }
 
             logger.Info("returning {@object} with id: {id}", menu, request.MenuId);

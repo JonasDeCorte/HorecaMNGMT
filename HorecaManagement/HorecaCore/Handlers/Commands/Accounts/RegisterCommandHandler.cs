@@ -63,7 +63,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                     UserId = user.Id
                 };
 
-                repository.UserPermissionRepository.Add(userPerm);
+                repository.UserPermissions.Add(userPerm);
 
                 await repository.CommitAsync();
 

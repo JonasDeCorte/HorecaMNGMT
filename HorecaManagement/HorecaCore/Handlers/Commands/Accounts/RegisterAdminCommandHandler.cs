@@ -71,7 +71,7 @@ public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand,
                 PermissionId = permission.Id,
                 UserId = user.Id
             };
-            repository.UserPermissionRepository.Add(userPerm);
+            repository.UserPermissions.Add(userPerm);
         }
         await repository.CommitAsync();
         logger.Info("added: {permCount} to {user}", user.Permissions.Count, user.NormalizedUserName);

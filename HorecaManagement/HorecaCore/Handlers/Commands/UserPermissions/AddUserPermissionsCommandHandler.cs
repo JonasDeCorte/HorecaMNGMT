@@ -4,7 +4,6 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.UserPermissions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using NLog;
 
@@ -46,7 +45,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             logger.Info("user needs a total of: {count} permissions", request.Model.PermissionIds.Count);
 
-            var userperms = repository.UserPermissionRepository.GetAll().Where(x => x.UserId.Equals(user.Id)).ToList();
+            var userperms = repository.UserPermissions.GetAllUserPermissionsByUserId(user.Id);
 
             logger.Info("requesting all user  permissions with a total of: {count}", userperms.Count);
 
@@ -61,7 +60,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             foreach (var permId in request.Model.PermissionIds)
             {
-                repository.UserPermissionRepository.Add(new UserPermission
+                repository.UserPermissions.Add(new UserPermission
                 {
                     PermissionId = permId,
                     UserId = user.Id

@@ -27,7 +27,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
     {
         private readonly IUnitOfWork repository;
         private readonly IValidator<MutateMenuCardDto> validator;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public CreateMenuCardCommandHandler(IUnitOfWork repository, IValidator<MutateMenuCardDto> validator)
         {

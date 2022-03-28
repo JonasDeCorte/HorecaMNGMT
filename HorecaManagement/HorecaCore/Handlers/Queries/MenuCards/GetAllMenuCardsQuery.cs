@@ -18,7 +18,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllMenuCardsQueryHandler(IUnitOfWork repository, IMapper mapper)
 

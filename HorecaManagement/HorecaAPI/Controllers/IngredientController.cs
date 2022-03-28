@@ -15,11 +15,11 @@ namespace Horeca.API.Controllers
     [ApiController]
     public class IngredientController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator mediator;
 
         public IngredientController(IMediator mediator)
         {
-            _mediator = mediator;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -35,9 +35,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            var query = new GetAllIngredientsQuery();
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetAllIngredientsQuery()));
         }
 
         /// <summary>
@@ -54,17 +52,15 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateIngredientDto model)
         {
-            var command = new CreateIngredientCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateIngredientCommand(model)));
         }
 
         /// <summary>
-        /// Update an exsiting ingredient
+        /// Update an existing ingredient
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <response code="200">Success updating exsiting ingredient</response>
+        /// <response code="200">Success updating existing ingredient</response>
         /// <response code="400">Bad request</response>
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Update)]
@@ -73,9 +69,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateIngredientDto model)
         {
-            var command = new EditIngredientCommand(model);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditIngredientCommand(model)));
         }
 
         /// <summary>
@@ -93,9 +87,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetIngredientByIdQuery(id);
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetIngredientByIdQuery(id)));
         }
 
         /// <summary>
@@ -103,7 +95,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <response code="204">Success delete an exsiting ingredient</response>
+        /// <response code="204">Success delete an existing ingredient</response>
         /// <response code="400">Bad request</response
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Delete)]
@@ -113,9 +105,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var command = new DeleteIngredientCommand(id);
-            var response = await _mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteIngredientCommand(id)));
         }
     }
 }

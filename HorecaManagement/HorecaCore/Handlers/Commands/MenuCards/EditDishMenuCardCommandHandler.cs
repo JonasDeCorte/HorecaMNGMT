@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
     public class EditDishMenuCardCommandHandler : IRequestHandler<EditDishMenuCardCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public EditDishMenuCardCommandHandler(IUnitOfWork repository)
         {
@@ -34,16 +34,16 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
             if (menuCard is null)
             {
-                logger.Error("{Object} with Id: {id} does not exist", nameof(menuCard), request.Model.MenuCardId);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("MenuCard does not exist");
+                throw new EntityNotFoundException();
             }
             var dish = menuCard.Dishes.SingleOrDefault(x => x.Id == request.Model.Dish.Id);
             if (dish is null)
             {
-                logger.Error("{Object} with Id: {id} does not exist", nameof(dish), request.Model.Dish.Id);
+                logger.Error(EntityNotFoundException.Instance);
 
-                throw new EntityNotFoundException("Dish does not exist");
+                throw new EntityNotFoundException();
             }
 
             dish.Category = request.Model.Dish.Category ?? dish.Category;

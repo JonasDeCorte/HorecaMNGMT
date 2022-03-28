@@ -8,8 +8,11 @@ namespace Horeca.Shared.Data.Entities.Account
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public bool IsEnabled { get; set; }
 
+        public bool IsOwner { get; set; }
         public string ExternalId { get; set; }
 
         public List<UserPermission> Permissions { get; private set; } = new();
+
+        public List<Restaurant> Restaurants { get; set; } = new();
     }
 }

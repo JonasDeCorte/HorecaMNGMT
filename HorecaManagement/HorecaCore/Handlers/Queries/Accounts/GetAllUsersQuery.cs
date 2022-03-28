@@ -16,7 +16,7 @@ namespace Horeca.Core.Handlers.Queries.Accounts
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<BaseUserDto>>
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllUsersQueryHandler(UserManager<ApplicationUser> userManager)
         {
@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Queries.Accounts
                 Username = x.UserName
             }).ToList());
 
-            logger.Info("{amount} of {nameof} have been returned", result.Count(), nameof(BaseUserDto));
+            logger.Info("{amount} of {nameof} have been returned", result.Count, nameof(BaseUserDto));
 
             return result;
         }

@@ -9,14 +9,18 @@ namespace Horeca.Infrastructure.Data
 {
     public static class DataSeeder
     {
+        public const int AmountOfEachType = 15;
+
         public static async void Seed(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             var context = serviceScope.ServiceProvider.GetService<DatabaseContext>();
             var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-            for (int i = 1; i < 11; i++)
+
+            for (int i = 1; i < AmountOfEachType; i++)
             {
                 Ingredient ingredient = new()
                 {
@@ -153,6 +157,23 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
                 },
+
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Restaurant)}_{Permissions.Delete}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Read}"
@@ -196,8 +217,10 @@ namespace Horeca.Infrastructure.Data
                 UserName = "SuperAdmin",
                 ExternalId = Guid.NewGuid().ToString(),
                 IsEnabled = true,
+                IsOwner = true,
             };
             await userManager.CreateAsync(superAdmin, "SuperAdmin123!");
+
             var listPermissions = context.Permissions.ToList();
 
             foreach (var permission in listPermissions)
@@ -221,7 +244,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var permission in listPermissions)
             {
-                if (permission.Id <= 20)
+                if (permission.Id <= 21)
                 {
                     var chefPerm = new UserPermission
                     {
@@ -243,7 +266,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var permission in listPermissions)
             {
-                if (permission.Id <= 20)
+                if (permission.Id <= 21)
 
                 {
                     var zaalPerms = new UserPermission
@@ -254,7 +277,18 @@ namespace Horeca.Infrastructure.Data
                     context.UserPermissions.Add(zaalPerms);
                 }
             }
-
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                Restaurant restaurant = new()
+                {
+                    Name = $"McDonalds{i}"
+                };
+                restaurant.Employees.Add(zaal);
+                restaurant.Employees.Add(chef);
+                restaurant.Employees.Add(superAdmin);
+                restaurant.MenuCards.Add(context.MenuCards.Find(i));
+                context.Restaurants.Add(restaurant);
+            }
             await context.SaveChangesAsync();
         }
     }

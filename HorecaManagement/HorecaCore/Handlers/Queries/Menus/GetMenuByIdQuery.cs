@@ -20,7 +20,7 @@ namespace Horeca.Core.Handlers.Queries.Menus
         {
             private readonly IUnitOfWork repository;
             private readonly IMapper _mapper;
-            private static Logger logger = LogManager.GetCurrentClassLogger();
+            private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
             public GetMenuByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
@@ -36,9 +36,9 @@ namespace Horeca.Core.Handlers.Queries.Menus
 
                 if (menu is null)
                 {
-                    logger.Error("{object} with Id: {id} is null", nameof(menu), request.MenuId);
+                    logger.Error(EntityNotFoundException.Instance);
 
-                    throw new EntityNotFoundException($"No menu found for Id {request.MenuId}");
+                    throw new EntityNotFoundException();
                 }
                 logger.Info("returning {@object} with id: {id}", menu, request.MenuId);
 

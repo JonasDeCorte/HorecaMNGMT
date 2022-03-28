@@ -2,6 +2,7 @@
 using Horeca.Shared;
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Accounts;
+using Horeca.Shared.Dtos.Tokens;
 using Horeca.Shared.Dtos.UserPermissions;
 using Newtonsoft.Json;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            LoginResult result = JsonConvert.DeserializeObject<LoginResult>(response.Content.ReadAsStringAsync().Result);
+            TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             tokenService.SetAccessToken(result.AccessToken);
             tokenService.SetRefreshToken(result.RefreshToken);
 

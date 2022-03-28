@@ -18,7 +18,7 @@ namespace Horeca.Core.Handlers.Queries.Units
         private readonly IUnitOfWork repository;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> userManager;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllUnitsQueryHandler(IUnitOfWork repository, IMapper mapper, UserManager<ApplicationUser> userManager)
 

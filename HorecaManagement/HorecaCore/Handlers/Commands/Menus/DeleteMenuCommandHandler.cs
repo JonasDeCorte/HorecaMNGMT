@@ -18,7 +18,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class DeleteMenuCommandHandler : IRequestHandler<DeleteMenuCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public DeleteMenuCommandHandler(IUnitOfWork repository)
         {

@@ -49,7 +49,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             logger.Info("user wants to remove a total of: {count} permissions", request.Model.PermissionIds.Count);
 
-            var userPermissions = repository.UserPermissionRepository
+            var userPermissions = repository.UserPermissions
                 .GetAll()
                 .Where(x => x.UserId.Equals(user.Id)).ToList();
 
@@ -68,7 +68,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
             foreach (var userperm in userpermToDelete)
             {
-                repository.UserPermissionRepository.Delete(userperm.Id);
+                repository.UserPermissions.Delete(userperm.Id);
                 logger.Info("removed permission : {object}", userperm.Id);
             }
 

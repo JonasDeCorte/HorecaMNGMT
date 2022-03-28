@@ -23,7 +23,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
     {
         private readonly IUnitOfWork repository;
         private readonly IValidator<MutateMenuDto> _validator;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public CreateMenuCommandHandler(IUnitOfWork repository, IValidator<MutateMenuDto> validator)
         {

@@ -32,6 +32,11 @@ namespace Horeca.API.Controllers
             return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
         }
 
+        /// <summary>
+        /// call to update the access token
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("RefreshToken")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
@@ -39,20 +44,24 @@ namespace Horeca.API.Controllers
             return Ok(await mediator.Send(new RefreshCommand(model)));
         }
 
+        /// <summary>
+        /// logs in call
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto model)
         {
-            var command = new LoginCommand(model);
-            var response = await mediator.Send(command);
-            if (response is not null)
-            {
-                return Ok(response);
-            }
-            return Unauthorized();
+            return Ok(await mediator.Send(new LoginCommand(model)));
         }
 
+        /// <summary>
+        /// register a normal user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [Route("register")]
@@ -60,20 +69,19 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto model)
         {
-            var command = new RegisterCommand(model);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new RegisterCommand(model)));
         }
 
+        /// <summary>
+        /// registers an admin (has all permissions)
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto model)
         {
-            var command = new RegisterAdminCommand(model);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new RegisterAdminCommand(model)));
         }
 
         /// <summary>
@@ -86,22 +94,25 @@ namespace Horeca.API.Controllers
         [Route("UserPermissions")]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
-            var command = new AddUserPermissionsCommand(model);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddUserPermissionsCommand(model)));
         }
 
+        /// <summary>
+        /// Gets user by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("User/{username}")]
         public async Task<IActionResult> GetUserByUsername(string username)
         {
-            var command = new GetUserByUsernameQuery(username);
-            var response = await mediator.Send(command);
-
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetUserByUsernameQuery(username)));
         }
 
+        /// <summary>
+        /// gets all users
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("User")]
         public async Task<IActionResult> GetAll()
@@ -109,9 +120,15 @@ namespace Horeca.API.Controllers
             var command = new GetAllUsersQuery();
             var response = await mediator.Send(command);
 
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetAllUsersQuery()));
         }
 
+        /// <summary>
+        /// deletes a specified users permissions
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("UserPermissions/{username}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -119,9 +136,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> RemovePermissions([FromRoute] string username, DeleteUserPermissionsDto model)
         {
             model.UserName = username;
-            var command = new DeleteUserPermissionsCommand(model);
-            var response = await mediator.Send(command);
-            return StatusCode((int)HttpStatusCode.OK, response);
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUserPermissionsCommand(model)));
         }
     }
 }

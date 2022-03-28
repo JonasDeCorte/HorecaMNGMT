@@ -29,11 +29,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
         {
-            var query = new GetAllPermissionsQuery();
-
-            var response = await mediator.Send(query);
-
-            return Ok(response);
+            return Ok(await mediator.Send(new GetAllPermissionsQuery()));
         }
 
         /// <summary>
@@ -49,9 +45,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetPermissionByIdQuery(id);
-            var response = await mediator.Send(query);
-            return Ok(response);
+            return Ok(await mediator.Send(new GetPermissionByIdQuery(id)));
         }
     }
 }

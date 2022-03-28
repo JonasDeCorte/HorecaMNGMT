@@ -5,6 +5,6 @@ namespace Horeca.Shared.Data.Repositories
 {
     public interface IUserPermissionRepository : IRepository<UserPermission>
     {
-        public ValueTask<ClaimsIdentity?> GetUserPermissionsIdentity(string sub, CancellationToken cancellationToken);
+        List<UserPermission> GetAllUserPermissionsByUserId(string userId);
     }
 }

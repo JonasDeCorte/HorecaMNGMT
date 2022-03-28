@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220324122322_test")]
-    partial class test
+    [Migration("20220328133707_test1")]
+    partial class test1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace HorecaInfrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ApplicationUserRestaurant", b =>
+                {
+                    b.Property<string>("EmployeesId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RestaurantsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "RestaurantsId");
+
+                    b.HasIndex("RestaurantsId");
+
+                    b.ToTable("ApplicationUserRestaurant");
+                });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Account.ApplicationUser", b =>
                 {
@@ -51,6 +66,9 @@ namespace HorecaInfrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOwner")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -250,10 +268,15 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuCards");
                 });
@@ -312,6 +335,32 @@ namespace HorecaInfrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Restaurant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Restaurants");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Unit", b =>
@@ -506,6 +555,21 @@ namespace HorecaInfrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ApplicationUserRestaurant", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Account.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
+                        .WithMany()
+                        .HasForeignKey("RestaurantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
                 {
                     b.HasOne("Horeca.Shared.Data.Entities.MenuCard", null)
@@ -537,6 +601,13 @@ namespace HorecaInfrastructure.Migrations
                     b.HasOne("Horeca.Shared.Data.Entities.MenuCard", null)
                         .WithMany("Menus")
                         .HasForeignKey("MenuCardId");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuCard", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
+                        .WithMany("MenuCards")
+                        .HasForeignKey("RestaurantId");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.UserPermission", b =>
@@ -629,6 +700,11 @@ namespace HorecaInfrastructure.Migrations
                     b.Navigation("Dishes");
 
                     b.Navigation("Menus");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Restaurant", b =>
+                {
+                    b.Navigation("MenuCards");
                 });
 #pragma warning restore 612, 618
         }

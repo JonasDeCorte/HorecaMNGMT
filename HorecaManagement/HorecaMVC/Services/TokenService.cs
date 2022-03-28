@@ -1,6 +1,6 @@
 ﻿using Horeca.MVC.Services.Interfaces;
-using Horeca.Shared;
 using Horeca.Shared.Constants;
+using Horeca.Shared.Dtos.Tokens;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -56,7 +56,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            LoginResult result = JsonConvert.DeserializeObject<LoginResult>(response.Content.ReadAsStringAsync().Result);
+            TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             SetAccessToken(result.AccessToken);
             SetRefreshToken(result.RefreshToken);
 
