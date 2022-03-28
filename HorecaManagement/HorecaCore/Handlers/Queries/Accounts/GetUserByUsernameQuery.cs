@@ -46,16 +46,19 @@ namespace Horeca.Core.Handlers.Queries.Accounts
 
             logger.Info("returning {name} with user {user}", nameof(UserDto), user.UserName);
 
-            List<Tuple<int, string>>? permissionsToReturn = new();
-
             var userPermissions = repository.UserPermissions.GetAllUserPermissionsByUserId(user.Id);
 
-            permissionsToReturn.AddRange(from item in userPermissions
-                                         let permission = repository.PermissionRepository.Get(item.PermissionId)
-                                         select new Tuple<int, string>(permission.Id, permission.Name));
+            List<PermissionDto>? permissions = (from userpermission in userPermissions
+                                                let permission = repository.PermissionRepository.Get(userpermission.PermissionId)
+                                                select new PermissionDto
+                                                {
+                                                    Id = permission.Id,
+                                                    PermissionName = permission.Name,
+                                                }).ToList();
+
             return new UserDto
             {
-                Permissions = permissionsToReturn,
+                Permissions = permissions,
                 Username = user.UserName
             };
         }
