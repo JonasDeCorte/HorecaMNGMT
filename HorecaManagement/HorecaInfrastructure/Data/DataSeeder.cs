@@ -269,6 +269,7 @@ namespace Horeca.Infrastructure.Data
                 restaurant.Employees.Add(zaal);
                 restaurant.Employees.Add(chef);
                 restaurant.Employees.Add(superAdmin);
+                restaurant.MenuCards.Add(context.MenuCards.Find(i));
                 context.Restaurants.Add(restaurant);
             }
             await context.SaveChangesAsync();

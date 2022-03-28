@@ -266,10 +266,15 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuCards");
                 });
@@ -596,6 +601,13 @@ namespace HorecaInfrastructure.Migrations
                         .HasForeignKey("MenuCardId");
                 });
 
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuCard", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
+                        .WithMany("MenuCards")
+                        .HasForeignKey("RestaurantId");
+                });
+
             modelBuilder.Entity("Horeca.Shared.Data.Entities.UserPermission", b =>
                 {
                     b.HasOne("Horeca.Shared.Data.Entities.Permission", "Permission")
@@ -686,6 +698,11 @@ namespace HorecaInfrastructure.Migrations
                     b.Navigation("Dishes");
 
                     b.Navigation("Menus");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Restaurant", b =>
+                {
+                    b.Navigation("MenuCards");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220328081859_test")]
-    partial class test
+    [Migration("20220328083744_MenuCardToRestaurant")]
+    partial class MenuCardToRestaurant
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace HorecaInfrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ApplicationUserRestaurant", b =>
+                {
+                    b.Property<string>("EmployeesId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RestaurantsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "RestaurantsId");
+
+                    b.HasIndex("RestaurantsId");
+
+                    b.ToTable("ApplicationUserRestaurant");
+                });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Account.ApplicationUser", b =>
                 {
@@ -79,9 +94,6 @@ namespace HorecaInfrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -104,8 +116,6 @@ namespace HorecaInfrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -258,10 +268,15 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuCards");
                 });
@@ -540,15 +555,19 @@ namespace HorecaInfrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Account.ApplicationUser", b =>
+            modelBuilder.Entity("ApplicationUserRestaurant", b =>
                 {
-                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
-                        .WithMany("Employees")
-                        .HasForeignKey("RestaurantId")
+                    b.HasOne("Horeca.Shared.Data.Entities.Account.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Restaurant");
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
+                        .WithMany()
+                        .HasForeignKey("RestaurantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
@@ -582,6 +601,13 @@ namespace HorecaInfrastructure.Migrations
                     b.HasOne("Horeca.Shared.Data.Entities.MenuCard", null)
                         .WithMany("Menus")
                         .HasForeignKey("MenuCardId");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuCard", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
+                        .WithMany("MenuCards")
+                        .HasForeignKey("RestaurantId");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.UserPermission", b =>
@@ -678,7 +704,7 @@ namespace HorecaInfrastructure.Migrations
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Restaurant", b =>
                 {
-                    b.Navigation("Employees");
+                    b.Navigation("MenuCards");
                 });
 #pragma warning restore 612, 618
         }
