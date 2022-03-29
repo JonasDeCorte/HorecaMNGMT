@@ -4,10 +4,10 @@ namespace Horeca.MVC.Services.Interfaces
 {
     public interface ITokenService
     {
-        public string GetRefreshToken();
-        public void CheckAccessToken(HttpClient httpClient);
-        public void SetRefreshToken(string refreshToken);
+        public string GetAccessToken();
         public void SetAccessToken(string accessToken);
+        public string GetRefreshToken();
+        public void SetRefreshToken(string refreshToken);
         public Task<HttpResponseMessage> RefreshTokens();
     }
 }

@@ -20,10 +20,9 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public void CheckAccessToken(HttpClient httpClient)
+        public string GetAccessToken()
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-                 httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
+            return "Bearer " + httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
         }
 
         public void SetAccessToken(string accessToken)
@@ -43,7 +42,6 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RefreshTokens()
         {
-            Console.WriteLine(GetRefreshToken());
             RefreshTokenDto refreshTokenDto = new RefreshTokenDto()
             {
                 RefreshToken = GetRefreshToken()
