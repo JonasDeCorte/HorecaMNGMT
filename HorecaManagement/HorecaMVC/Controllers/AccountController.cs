@@ -62,7 +62,7 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.LoginUser(user);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View("Login");
                 }
                 return RedirectToAction("Index", new { area = "Home" });
             } else
@@ -88,7 +88,7 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.RegisterUser(user);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View("Register");
                 }
 
                 return RedirectToAction("Index", new { area = "Home" } );

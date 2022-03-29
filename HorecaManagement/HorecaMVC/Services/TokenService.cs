@@ -43,11 +43,14 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RefreshTokens()
         {
-            var refreshToken = GetRefreshToken();
+            Console.WriteLine(GetRefreshToken());
+            RefreshTokenDto refreshTokenDto = new RefreshTokenDto()
+            {
+                RefreshToken = GetRefreshToken()
+            };
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"RefreshToken");
-            request.Content = new StringContent(JsonConvert.SerializeObject(refreshToken), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.RefreshToken}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

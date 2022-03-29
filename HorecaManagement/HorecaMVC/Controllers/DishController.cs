@@ -25,6 +25,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<DishDto> dishes = await dishService.GetDishes(HttpContext.Request.Headers["Authorization"]);
+
             if (dishes == null)
             {
                 return View("NotFound");

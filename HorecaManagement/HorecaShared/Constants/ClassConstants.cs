@@ -20,5 +20,6 @@
         public const string Register = "register";
         public const string RegisterAdmin = "register-admin";
         public const string UserPermissions = "UserPermissions";
+        public const string RefreshToken = "RefreshToken";
     }
 }

@@ -23,6 +23,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
             request.Headers.Add("Authorization", token);
+
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
