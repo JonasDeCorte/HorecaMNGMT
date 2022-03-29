@@ -62,6 +62,7 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
                     RestaurantId = request.Model.RestaurantId,
                     Status = request.Model.Status,
                 };
+                repository.RestaurantSchedules.Add(entity);
 
                 await repository.CommitAsync();
 

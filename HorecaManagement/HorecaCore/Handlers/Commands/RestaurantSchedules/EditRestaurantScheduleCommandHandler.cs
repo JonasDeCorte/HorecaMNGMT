@@ -29,9 +29,9 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
 
         public async Task<int> Handle(EditRestaurantScheduleCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.ScheduleId);
+            logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
 
-            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Model.ScheduleId);
+            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Model.Id);
 
             if (restaurantSchedule is null)
             {

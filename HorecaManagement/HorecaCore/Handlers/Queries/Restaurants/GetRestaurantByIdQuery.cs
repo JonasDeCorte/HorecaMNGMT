@@ -38,7 +38,6 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
 
             var restaurant = await Task.FromResult(repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId));
             List<Shared.Data.Entities.RestaurantSchedule>? restaurantSchedules = await repository.RestaurantSchedules.GetRestaurantSchedules(restaurant.Id);
-
             if (restaurant is null)
             {
                 logger.Error(EntityNotFoundException.Instance);
@@ -47,30 +46,20 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
             }
             logger.Info("returning {@object} with id: {id}", restaurant, restaurant.Id);
 
-            return new DetailRestaurantDto()
+            DetailRestaurantDto? mapped = mapper.Map<DetailRestaurantDto>(restaurant);
+
+            mapped.RestaurantSchedules = restaurantSchedules.Select(x => new RestaurantScheduleDto()
             {
-                Employees = restaurant.Employees.Select(x => new BaseUserDto()
-                {
-                    Username = x.UserName
-                }).ToList(),
-                Id = restaurant.Id,
-                MenuCards = restaurant.MenuCards.Select(x => new MenuCardDto()
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                }).ToList(),
-                Name = restaurant.Name,
-                RestaurantSchedules = (List<RestaurantScheduleDto>)restaurantSchedules.Select(x => new RestaurantScheduleDto()
-                {
-                    RestaurantId = x.Restaurant.Id,
-                    AvailableSeat = x.AvailableSeat,
-                    Capacity = x.Capacity,
-                    EndTime = x.EndTime,
-                    ScheduleDate = x.ScheduleDate,
-                    StartTime = x.StartTime,
-                    Status = x.Status
-                }).ToList(),
-            };
+                Id = x.Id,
+                RestaurantId = restaurant.Id,
+                AvailableSeat = x.AvailableSeat,
+                Capacity = x.Capacity,
+                EndTime = x.EndTime,
+                ScheduleDate = x.ScheduleDate,
+                StartTime = x.StartTime,
+                Status = x.Status
+            }).ToList();
+            return mapped;
         }
     }
 }

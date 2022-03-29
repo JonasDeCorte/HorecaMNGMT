@@ -302,9 +302,32 @@ namespace Horeca.Infrastructure.Data
                     EndTime = newSchedule.AddHours(2),
                     Capacity = 20,
                     AvailableSeat = 20,
-                    Status = (int)Constants.ScheduleStatus.Available,
+                    Status = i % 2 == 0 ? (int)Constants.ScheduleStatus.Available : (int)Constants.ScheduleStatus.Expired,
                 };
                 context.RestaurantSchedules.Add(restaurantSchedule);
+
+                Booking booking = new()
+                {
+                    FullName = $"Random name {i}",
+                    BookingDate = DateTime.Today,
+                    CheckIn = DateTime.Today.AddHours(i),
+                    CheckOut = DateTime.Today.AddHours(i + 5 / 2),
+                    PhoneNo = $"{Guid.NewGuid()}",
+                    BookingNo = $"{Guid.NewGuid()}",
+                    BookingStatus = i % 2 == 0 ? Constants.BookingStatus.PENDING : Constants.BookingStatus.EXPIRED,
+                    UserId = i % 2 == 0 ? superAdmin.Id : zaal.Id,
+                    User = i % 2 == 0 ? superAdmin : zaal,
+                };
+                context.Bookings.Add(booking);
+                BookingDetail bookingDetail = new()
+                {
+                    BookingId = booking.Id,
+                    Booking = booking,
+                    Pax = i,
+                    RestaurantSchedule = restaurantSchedule,
+                    RestaurantScheduleId = restaurantSchedule.Id,
+                };
+                context.BookingDetails.Add(bookingDetail);
             }
             await context.SaveChangesAsync();
         }

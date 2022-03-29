@@ -31,6 +31,10 @@ namespace Horeca.Infrastructure.Data
 
         public IRestaurantScheduleRepository RestaurantSchedules => new RestaurantScheduleRepository(context);
 
+        public IBookingDetailRepository BookingDetailRepository => new BookingDetailRepository(context);
+
+        public IBookingRepository BookingRepository => new BookingRepository(context);
+
         public async Task CommitAsync()
         {
             await context.SaveChangesAsync();

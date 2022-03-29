@@ -24,8 +24,4 @@
     <ProjectReference Include="..\HorecaShared\HorecaShared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

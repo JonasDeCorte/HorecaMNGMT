@@ -1,4 +1,5 @@
-﻿using Horeca.Core.Exceptions;
+﻿using AutoMapper;
+using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.RestaurantSchedules;
 using MediatR;
@@ -20,10 +21,12 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IUnitOfWork repository;
+        private readonly IMapper mapper;
 
-        public GetScheduleByIdQueryHandler(IUnitOfWork repository)
+        public GetScheduleByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         public async Task<RestaurantScheduleByIdDto> Handle(GetScheduleByIdQuery request, CancellationToken cancellationToken)
@@ -40,18 +43,10 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
             }
             logger.Info("returning {@object} with id: {id}", restaurantSchedule, restaurantSchedule.Id);
 
-            return new RestaurantScheduleByIdDto()
-            {
-                AvailableSeat = restaurantSchedule.AvailableSeat,
-                Capacity = restaurantSchedule.Capacity,
-                EndTime = restaurantSchedule.EndTime,
-                RestaurantId = restaurant.Id,
-                RestaurantName = restaurant.Name,
-                ScheduleDate = restaurantSchedule.ScheduleDate,
-                StartTime = restaurantSchedule.StartTime,
-                Status = restaurantSchedule.Status,
-                ScheduleId = restaurantSchedule.Id
-            };
+            restaurantSchedule.Restaurant = restaurant;
+            restaurantSchedule.RestaurantId = restaurant.Id;
+
+            return mapper.Map<RestaurantScheduleByIdDto>(restaurantSchedule);
         }
     }
 }

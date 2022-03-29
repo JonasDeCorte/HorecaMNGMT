@@ -1,11 +1,13 @@
-﻿using Horeca.Shared.Data;
+﻿using AutoMapper;
+using Horeca.Shared.Data;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.RestaurantSchedules;
 using MediatR;
 using NLog;
 
 namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
 {
-    public class GetAvailableRestaurantSchedulesQuery : IRequest<List<RestaurantScheduleDto>>
+    public class GetAvailableRestaurantSchedulesQuery : IRequest<IEnumerable<RestaurantScheduleDto>>
     {
         public GetAvailableRestaurantSchedulesQuery(int restaurantId)
         {
@@ -15,33 +17,27 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
         public int RestaurantId { get; }
     }
 
-    public class GetAvailableRestaurantSchedulesQueryHandler : IRequestHandler<GetAvailableRestaurantSchedulesQuery, List<RestaurantScheduleDto>>
+    public class GetAvailableRestaurantSchedulesQueryHandler : IRequestHandler<GetAvailableRestaurantSchedulesQuery, IEnumerable<RestaurantScheduleDto>>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IUnitOfWork repository;
+        private readonly IMapper mapper;
 
-        public GetAvailableRestaurantSchedulesQueryHandler(IUnitOfWork repository)
+        public GetAvailableRestaurantSchedulesQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
             this.repository = repository;
+            this.mapper = mapper;
         }
 
-        public async Task<List<RestaurantScheduleDto>> Handle(GetAvailableRestaurantSchedulesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RestaurantScheduleDto>> Handle(GetAvailableRestaurantSchedulesQuery request, CancellationToken cancellationToken)
         {
-            var schedules = await repository.RestaurantSchedules.GetAvailableRestaurantSchedules(request.RestaurantId);
+            List<RestaurantSchedule>? schedules = await repository.RestaurantSchedules.GetAvailableRestaurantSchedules(request.RestaurantId);
 
             logger.Info("Restaurant schedules have been retrieved {@schedules}", schedules);
 
-            return schedules.Select(x => new RestaurantScheduleDto()
-            {
-                RestaurantId = x.RestaurantId,
-                ScheduleId = x.Id,
-                AvailableSeat = x.AvailableSeat,
-                Capacity = x.Capacity,
-                EndTime = x.EndTime,
-                ScheduleDate = x.ScheduleDate,
-                StartTime = x.StartTime,
-                Status = x.Status
-            }).ToList();
+            return mapper.Map<IEnumerable<RestaurantScheduleDto>>(schedules);
+
+         
         }
     }
 }

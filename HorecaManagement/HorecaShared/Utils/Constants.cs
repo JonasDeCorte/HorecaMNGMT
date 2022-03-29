@@ -8,6 +8,13 @@ namespace Horeca.Shared.Utils
 {
     public class Constants
     {
+        public static class BookingStatus
+        {
+            public const string PENDING = "Pending";
+            public const string EXPIRED = "Expired";
+            public const string COMPLETE = "Completed";
+        }
+
         /// <summary>
         /// Working Days for Operating Hour
         /// </summary>

@@ -2,7 +2,7 @@
 {
     public class RestaurantScheduleDto
     {
-        public int ScheduleId { get; set; }
+        public int Id { get; set; }
         public int RestaurantId { get; set; }
 
         public DateTime ScheduleDate { get; set; }
