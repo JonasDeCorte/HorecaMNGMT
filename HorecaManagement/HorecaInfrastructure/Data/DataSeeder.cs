@@ -1,6 +1,7 @@
 ﻿using Horeca.Shared.AuthUtils;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
+using Horeca.Shared.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -277,12 +278,12 @@ namespace Horeca.Infrastructure.Data
                     context.UserPermissions.Add(zaalPerms);
                 }
             }
+
             for (int i = 1; i < AmountOfEachType; i++)
             {
                 Restaurant restaurant = new()
                 {
                     Name = $"McDonalds{i}",
-                    TotalCapacity = 100,
                 };
                 restaurant.Employees.Add(zaal);
                 restaurant.Employees.Add(chef);
@@ -290,24 +291,20 @@ namespace Horeca.Infrastructure.Data
                 restaurant.MenuCards.Add(context.MenuCards.Find(i));
                 context.Restaurants.Add(restaurant);
 
-                Floorplan floorplan = new()
+                await context.SaveChangesAsync();
+
+                DateTime newSchedule = DateTime.Today.AddDays(1);
+                RestaurantSchedule restaurantSchedule = new()
                 {
-                    Level = $"{i}",
-                    Name = $"restaurant.Name: {i}",
-                    TotalCapacity = restaurant.TotalCapacity
+                    RestaurantId = restaurant.Id,
+                    ScheduleDate = newSchedule,
+                    StartTime = newSchedule.AddHours(1),
+                    EndTime = newSchedule.AddHours(2),
+                    Capacity = 20,
+                    AvailableSeat = 20,
+                    Status = (int)Constants.ScheduleStatus.Available,
                 };
-
-                Table table = new()
-                {
-                    Name = $"{i }",
-                    AmountOfPeople = i,
-                };
-
-                floorplan.AddTable(table);
-
-                restaurant.TotalCapacity -= table.AmountOfPeople;
-                context.Floorplans.Add(floorplan);
-                restaurant.Floorplans.Add(floorplan);
+                context.RestaurantSchedules.Add(restaurantSchedule);
             }
             await context.SaveChangesAsync();
         }

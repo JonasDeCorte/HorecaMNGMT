@@ -72,8 +72,6 @@ namespace Horeca.Infrastructure.Data
 
         public DbSet<Restaurant> Restaurants { get; set; }
 
-        public DbSet<Floorplan> Floorplans { get; set; }
-
-        public DbSet<Table> Tables { get; set; }
+        public DbSet<RestaurantSchedule> RestaurantSchedules { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.MenuCards;
+using Horeca.Shared.Dtos.RestaurantSchedules;
 
 namespace Horeca.Shared.Dtos.Restaurants
 {
@@ -11,6 +12,7 @@ namespace Horeca.Shared.Dtos.Restaurants
 
     public class DetailRestaurantDto : RestaurantDto
     {
+        public List<RestaurantScheduleDto> RestaurantSchedules { get; set; }
         public List<BaseUserDto> Employees { get; set; }
         public List<MenuCardDto> MenuCards { get; set; }
     }
