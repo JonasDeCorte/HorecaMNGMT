@@ -4,6 +4,7 @@ using Horeca.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220329064421_floorplan")]
+    partial class floorplan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,44 +166,6 @@ namespace HorecaInfrastructure.Migrations
                     b.HasIndex("MenuId");
 
                     b.ToTable("Dishes");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Floorplan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalCapacity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("Floorplans");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
@@ -400,40 +364,6 @@ namespace HorecaInfrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurants");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Table", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AmountOfPeople")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("FloorplanId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FloorplanId");
-
-                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Unit", b =>
@@ -654,13 +584,6 @@ namespace HorecaInfrastructure.Migrations
                         .HasForeignKey("MenuId");
                 });
 
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Floorplan", b =>
-                {
-                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
-                        .WithMany("Floorplans")
-                        .HasForeignKey("RestaurantId");
-                });
-
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
                 {
                     b.HasOne("Horeca.Shared.Data.Entities.Dish", null)
@@ -688,13 +611,6 @@ namespace HorecaInfrastructure.Migrations
                     b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
                         .WithMany("MenuCards")
                         .HasForeignKey("RestaurantId");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Table", b =>
-                {
-                    b.HasOne("Horeca.Shared.Data.Entities.Floorplan", null)
-                        .WithMany("Tables")
-                        .HasForeignKey("FloorplanId");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.UserPermission", b =>
@@ -777,11 +693,6 @@ namespace HorecaInfrastructure.Migrations
                     b.Navigation("Ingredients");
                 });
 
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Floorplan", b =>
-                {
-                    b.Navigation("Tables");
-                });
-
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Menu", b =>
                 {
                     b.Navigation("Dishes");
@@ -796,8 +707,6 @@ namespace HorecaInfrastructure.Migrations
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Restaurant", b =>
                 {
-                    b.Navigation("Floorplans");
-
                     b.Navigation("MenuCards");
                 });
 #pragma warning restore 612, 618

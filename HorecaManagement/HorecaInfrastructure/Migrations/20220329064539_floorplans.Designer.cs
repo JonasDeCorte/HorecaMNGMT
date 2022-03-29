@@ -4,6 +4,7 @@ using Horeca.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorecaInfrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220329064539_floorplans")]
+    partial class floorplans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +203,7 @@ namespace HorecaInfrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Floorplans");
+                    b.ToTable("Floorplan");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
@@ -433,7 +435,7 @@ namespace HorecaInfrastructure.Migrations
 
                     b.HasIndex("FloorplanId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Unit", b =>

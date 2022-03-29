@@ -71,5 +71,9 @@ namespace Horeca.Infrastructure.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public DbSet<Restaurant> Restaurants { get; set; }
+
+        public DbSet<Floorplan> Floorplans { get; set; }
+
+        public DbSet<Table> Tables { get; set; }
     }
 }

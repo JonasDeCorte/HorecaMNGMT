@@ -281,13 +281,33 @@ namespace Horeca.Infrastructure.Data
             {
                 Restaurant restaurant = new()
                 {
-                    Name = $"McDonalds{i}"
+                    Name = $"McDonalds{i}",
+                    TotalCapacity = 100,
                 };
                 restaurant.Employees.Add(zaal);
                 restaurant.Employees.Add(chef);
                 restaurant.Employees.Add(superAdmin);
                 restaurant.MenuCards.Add(context.MenuCards.Find(i));
                 context.Restaurants.Add(restaurant);
+
+                Floorplan floorplan = new()
+                {
+                    Level = $"{i}",
+                    Name = $"restaurant.Name: {i}",
+                    TotalCapacity = restaurant.TotalCapacity
+                };
+
+                Table table = new()
+                {
+                    Name = $"{i }",
+                    AmountOfPeople = i,
+                };
+
+                floorplan.AddTable(table);
+
+                restaurant.TotalCapacity -= table.AmountOfPeople;
+                context.Floorplans.Add(floorplan);
+                restaurant.Floorplans.Add(floorplan);
             }
             await context.SaveChangesAsync();
         }

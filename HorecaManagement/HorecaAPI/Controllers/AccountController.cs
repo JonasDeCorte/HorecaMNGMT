@@ -117,9 +117,6 @@ namespace Horeca.API.Controllers
         [Route("User")]
         public async Task<IActionResult> GetAll()
         {
-            var command = new GetAllUsersQuery();
-            var response = await mediator.Send(command);
-
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetAllUsersQuery()));
         }
 
