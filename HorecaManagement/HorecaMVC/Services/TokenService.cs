@@ -22,7 +22,6 @@ namespace Horeca.MVC.Services
 
         public void CheckAccessToken(HttpClient httpClient)
         {
-            //httpClient.DefaultRequestHeaders.Add("Bearer", httpContextAccessor.HttpContext.Request.Cookies["JWToken"]); 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
                  httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
         }

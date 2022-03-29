@@ -6,6 +6,7 @@ using Horeca.MVC.Models.Ingredients;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Ingredients;
+using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
@@ -20,9 +21,10 @@ namespace Horeca.MVC.Controllers
             this.ingredientService = ingredientService;
         }
 
+        [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<DishDto> dishes = await dishService.GetDishes();
+            IEnumerable<DishDto> dishes = await dishService.GetDishes(HttpContext.Request.Headers["Authorization"]);
             if (dishes == null)
             {
                 return View("NotFound");

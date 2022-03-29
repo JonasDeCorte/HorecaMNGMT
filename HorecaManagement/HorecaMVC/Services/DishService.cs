@@ -4,7 +4,6 @@ using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -12,22 +11,19 @@ namespace Horeca.MVC.Services
     public class DishService : IDishService
     {
         private readonly HttpClient httpClient;
-        private ITokenService tokenService;
-        private readonly IHttpContextAccessor httpContextAccessor;
         private IConfiguration configuration;
 
-        public DishService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public DishService(HttpClient httpClient, IConfiguration configuration)
         {
             this.httpClient = httpClient;
-            this.tokenService = tokenService;
-            this.httpContextAccessor = httpContextAccessor;
             this.configuration = configuration;
         }
-
-        public async Task<IEnumerable<DishDto>> GetDishes()
+        
+        public async Task<IEnumerable<DishDto>> GetDishes(string token)
         {
-            tokenService.CheckAccessToken(httpClient);
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
+            request.Headers.Add("Authorization", token);
+            var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<DishDto>>(response.Content.ReadAsStringAsync().Result);
@@ -35,8 +31,7 @@ namespace Horeca.MVC.Services
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                // not implemented
-                Console.WriteLine("je bent unauthorized");
+                Console.WriteLine("Unauthorized");
             }
             return null;
         }

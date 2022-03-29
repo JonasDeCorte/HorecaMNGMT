@@ -5,7 +5,7 @@ namespace Horeca.MVC.Services.Interfaces
 {
     public interface IDishService
     {
-        public Task<IEnumerable<DishDto>> GetDishes();
+        public Task<IEnumerable<DishDto>> GetDishes(string token);
         public Task<DishDto> GetDishById(int id);
         public Task<DishIngredientsByIdDto> GetIngredientsByDishId(int id);
         public Task<Dish> GetDishDetailById(int id);

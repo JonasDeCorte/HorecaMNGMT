@@ -1,3 +1,4 @@
+using Horeca.MVC.Controllers.Filters;
 using Horeca.MVC.Services;
 using Horeca.MVC.Services.Interfaces;
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IMenuCardService, MenuCardService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<TokenFilter>();
 
 var app = builder.Build();
 
