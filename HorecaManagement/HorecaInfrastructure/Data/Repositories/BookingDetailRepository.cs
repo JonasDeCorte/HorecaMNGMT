@@ -46,5 +46,13 @@ namespace Horeca.Infrastructure.Data.Repositories
                                            .Include(x => x.Booking)
                                            .FirstOrDefaultAsync(b => b.BookingId == bookingID);
         }
+
+        public async Task<IEnumerable<BookingDetail>> GetDetailsForRestaurantSchedule(int scheduleId)
+        {
+            return await context.BookingDetails.Include(b => b.RestaurantSchedule)
+                .ThenInclude(x => x.Restaurant)
+                .Include(x => x.Booking)
+                .Where(x => x.RestaurantScheduleId.Equals(scheduleId)).ToListAsync();
+        }
     }
 }

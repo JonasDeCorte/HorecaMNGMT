@@ -21,7 +21,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<int> Handle(GetPendingBookingCountQuery request, CancellationToken cancellationToken)
         {
-            return repository.BookingRepository.AdminGetPendingBookingCount();
+            return repository.Bookings.AdminGetPendingBookingCount();
         }
     }
 }

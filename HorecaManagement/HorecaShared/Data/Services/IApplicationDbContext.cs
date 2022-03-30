@@ -21,6 +21,7 @@ namespace Horeca.Shared.Data.Services
         public DbSet<RestaurantSchedule> RestaurantSchedules { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<BookingDetail> BookingDetails { get; set; }
+        public DbSet<Table> Tables { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

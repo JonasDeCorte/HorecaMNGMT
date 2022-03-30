@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<IEnumerable<BookingDto>> Handle(GetAllBookingsOfStatusQuery request, CancellationToken cancellationToken)
         {
-            var bookings = repository.BookingRepository.GetAll();
+            var bookings = repository.Bookings.GetAll();
             bookings = FilterBookingStatus(bookings, request.Status);
 
             return mapper.Map<IEnumerable<BookingDto>>(bookings);

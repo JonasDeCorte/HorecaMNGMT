@@ -32,7 +32,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Booking), request);
 
-                var bookingFromDB = repository.BookingRepository.Get(request.Model.BookingId);
+                var bookingFromDB = repository.Bookings.Get(request.Model.BookingId);
 
                 if (bookingFromDB == null)
                 {
@@ -44,7 +44,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 bookingFromDB = UpdateEntity(request, bookingFromDB);
                 bookingFromDB.BookingStatus = Constants.BookingStatus.PENDING;
 
-                repository.BookingRepository.Update(bookingFromDB);
+                repository.Bookings.Update(bookingFromDB);
 
                 await repository.CommitAsync();
                 return bookingFromDB.Id;

@@ -29,7 +29,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<BookingDto> Handle(GetByBookingNoQuery request, CancellationToken cancellationToken)
         {
-            Booking? booking = await repository.BookingRepository.GetByNumber(request.BookingNo);
+            Booking? booking = await repository.Bookings.GetByNumber(request.BookingNo);
             return mapper.Map<BookingDto>(booking);
         }
     }

@@ -29,7 +29,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
         {
             logger.Info("trying to delete {object} with Id: {id}", nameof(Booking), request.Id);
 
-            repository.BookingRepository.Delete(request.Id);
+            repository.Bookings.Delete(request.Id);
 
             await repository.CommitAsync();
 

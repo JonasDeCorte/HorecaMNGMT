@@ -69,14 +69,14 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     UserId = request.Model.Booking.UserID,
                 };
 
-                entity = await repository.BookingRepository.Add(entity);
+                entity = await repository.Bookings.Add(entity);
                 BookingDetail bookingDetail = new()
                 {
                     BookingId = entity.Id,
                     RestaurantScheduleId = request.Model.ScheduleID,
                     Pax = request.Model.Pax
                 };
-                await repository.BookingDetailRepository.CreateBookingDetail(bookingDetail);
+                await repository.BookingDetails.CreateBookingDetail(bookingDetail);
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
                 return new BookingDto()

@@ -28,7 +28,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<BookingHistoryDto> Handle(GetAllBookingsByUserIDQuery request, CancellationToken cancellationToken)
         {
-            var bookingList = await repository.BookingRepository.GetByUserID(request.UserId, request.Status);
+            var bookingList = await repository.Bookings.GetByUserID(request.UserId, request.Status);
             BookingDetailDto bookingDetailDto = null;
             BookingHistoryDto bookingHistoryDto = new()
             {
@@ -48,7 +48,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
             };
             foreach (var item in bookingList)
             {
-                var bookingDetail = await repository.BookingDetailRepository.GetDetailsByID(item.Id);
+                var bookingDetail = await repository.BookingDetails.GetDetailsByID(item.Id);
                 bookingDetailDto = new BookingDetailDto()
                 {
                     Booking = new BookingDto

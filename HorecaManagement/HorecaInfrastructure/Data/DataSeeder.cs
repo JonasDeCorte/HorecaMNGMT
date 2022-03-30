@@ -329,6 +329,16 @@ namespace Horeca.Infrastructure.Data
                 };
                 context.BookingDetails.Add(bookingDetail);
             }
+            var bookingDetails = context.BookingDetails.ToList();
+            foreach (var bookingDetail in bookingDetails)
+            {
+                Table table = new()
+                {
+                    Pax = bookingDetail.Pax,
+                    RestaurantScheduleId = bookingDetail.RestaurantScheduleId,
+                };
+                context.Tables.Add(table);
+            }
             await context.SaveChangesAsync();
         }
     }

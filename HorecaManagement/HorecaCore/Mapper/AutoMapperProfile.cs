@@ -9,6 +9,7 @@ using Horeca.Shared.Dtos.MenuCards;
 using Horeca.Shared.Dtos.Menus;
 using Horeca.Shared.Dtos.Restaurants;
 using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Tables;
 using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.Core.Mapper
@@ -32,6 +33,7 @@ namespace Horeca.Core.Mapper
             CreateMap<RestaurantSchedule, RestaurantScheduleDto>();
             CreateMap<RestaurantSchedule, RestaurantScheduleByIdDto>();
             CreateMap<Restaurant, DetailRestaurantDto>();
+            CreateMap<Table, TableDto>();
         }
     }
 }
