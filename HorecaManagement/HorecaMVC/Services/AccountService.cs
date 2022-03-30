@@ -1,5 +1,4 @@
 ﻿using Horeca.MVC.Services.Interfaces;
-using Horeca.Shared;
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Tokens;

@@ -1,4 +1,5 @@
-﻿using Horeca.MVC.Models.Accounts;
+﻿using Horeca.MVC.Controllers.Filters;
+using Horeca.MVC.Models.Accounts;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Accounts;
@@ -16,6 +17,7 @@ namespace Horeca.MVC.Controllers
             this.accountService = accountService;
         }
 
+        [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Index()
         {
             IEnumerable<UserDto> users = await accountService.GetUsers();
@@ -33,6 +35,7 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
+        [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Detail(string username)
         {
             UserDto user = await accountService.GetUserByName(username);
@@ -99,6 +102,7 @@ namespace Horeca.MVC.Controllers
             }
         }
 
+        [TypeFilter(typeof(TokenFilter))]
         public IActionResult EditPermissions(string username)
         {
             MutateUserPermissionsDto model = new MutateUserPermissionsDto
