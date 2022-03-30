@@ -1,12 +1,11 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Bookings
@@ -24,12 +23,14 @@ namespace Horeca.Core.Handlers.Commands.Bookings
         {
             private readonly IUnitOfWork repository;
             private readonly IValidator<MakeBookingDto> validator;
+            private readonly IMapper mapper;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public AddBookingCommandHandler(IUnitOfWork repository, IValidator<MakeBookingDto> validator)
+            public AddBookingCommandHandler(IUnitOfWork repository, IValidator<MakeBookingDto> validator, IMapper mapper)
             {
                 this.repository = repository;
                 this.validator = validator;
+                this.mapper = mapper;
             }
 
             public async Task<BookingDto> Handle(AddBookingCommand request, CancellationToken cancellationToken)
@@ -70,6 +71,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 };
 
                 entity = await repository.Bookings.Add(entity);
+
                 BookingDetail bookingDetail = new()
                 {
                     BookingId = entity.Id,
@@ -79,18 +81,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 await repository.BookingDetails.CreateBookingDetail(bookingDetail);
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
-                return new BookingDto()
-                {
-                    BookingDate = entity.BookingDate,
-                    Id = entity.Id,
-                    BookingNo = entity.BookingNo,
-                    BookingStatus = entity.BookingStatus,
-                    CheckIn = entity.CheckIn,
-                    CheckOut = entity.CheckOut,
-                    FullName = entity.FullName,
-                    PhoneNo = entity.PhoneNo,
-                    UserID = entity.UserId,
-                };
+                return mapper.Map<BookingDto>(entity);
             }
         }
     }
