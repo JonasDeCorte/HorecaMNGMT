@@ -2,7 +2,6 @@
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Tokens;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -20,11 +19,14 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public void CheckAccessToken(HttpClient httpClient)
+        public string GetAccessToken()
         {
-            //httpClient.DefaultRequestHeaders.Add("Bearer", httpContextAccessor.HttpContext.Request.Cookies["JWToken"]); 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-                 httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
+            return "Bearer " + httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
+        }
+
+        public void AddTokenToHeader(HttpRequestMessage request)
+        {
+            request.Headers.Add("Authorization", GetAccessToken());
         }
 
         public void SetAccessToken(string accessToken)
@@ -44,11 +46,13 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RefreshTokens()
         {
-            var refreshToken = GetRefreshToken();
+            RefreshTokenDto refreshTokenDto = new RefreshTokenDto()
+            {
+                RefreshToken = GetRefreshToken()
+            };
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"RefreshToken");
-            request.Content = new StringContent(JsonConvert.SerializeObject(refreshToken), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.RefreshToken}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Ingredients;
+using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
+    [TypeFilter(typeof(TokenFilter))]
     public class IngredientController : Controller
     {
         private IIngredientService ingredientService;
@@ -75,7 +77,6 @@ namespace Horeca.MVC.Controllers
                 {
                     return View("OperationFailed");
                 }
-                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
 
                 return RedirectToAction(nameof(Index));
             } else

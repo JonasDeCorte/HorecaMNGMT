@@ -59,7 +59,6 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
         {
-            tokenService.CheckAccessToken(httpClient);
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
                 $"{ClassConstants.RegisterAdmin}");
@@ -104,7 +103,6 @@ namespace Horeca.MVC.Services
 
         public async Task<UserDto> GetUserByName(string username)
         {
-            tokenService.CheckAccessToken(httpClient);
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
             if (!response.IsSuccessStatusCode)
