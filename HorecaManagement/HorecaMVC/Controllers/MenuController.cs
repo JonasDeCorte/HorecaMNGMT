@@ -170,7 +170,7 @@ namespace Horeca.MVC.Controllers
         [Route("/Menu/EditDish/{MenuId}/{DishId}")]
         public async Task<IActionResult> EditDish(int menuId, int dishId)
         {
-            DishDto dish = await dishService.GetDishById(dishId, "");
+            DishDto dish = await dishService.GetDishById(dishId);
             MenuDishViewModel model = MenuMapper.MapMutateDishModel(menuId, dish);
 
             return View(model);

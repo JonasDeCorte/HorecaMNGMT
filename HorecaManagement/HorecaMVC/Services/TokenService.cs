@@ -2,7 +2,6 @@
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Tokens;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -23,6 +22,11 @@ namespace Horeca.MVC.Services
         public string GetAccessToken()
         {
             return "Bearer " + httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
+        }
+
+        public void AddTokenToHeader(HttpRequestMessage request)
+        {
+            request.Headers.Add("Authorization", GetAccessToken());
         }
 
         public void SetAccessToken(string accessToken)

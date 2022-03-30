@@ -10,17 +10,22 @@ namespace Horeca.MVC.Services
     {
         private readonly HttpClient httpClient;
         private IConfiguration configuration;
+        private readonly ITokenService tokenService;
 
-        public IngredientService(HttpClient httpClient, IConfiguration iConfig)
+        public IngredientService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService)
         {
             this.httpClient = httpClient;
-            configuration = iConfig;
+            this.configuration = configuration;
+            this.tokenService = tokenService;
         }
 
         public async Task<IEnumerable<IngredientDto>> GetIngredients()
         {
-            HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}");
+            tokenService.AddTokenToHeader(request);
+
+            var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -31,13 +36,15 @@ namespace Horeca.MVC.Services
 
         public async Task<IngredientDto> GetIngredientById(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}/{id}");
+            tokenService.AddTokenToHeader(request);
+
+            var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
             return JsonConvert.DeserializeObject<IngredientDto>(response.Content.ReadAsStringAsync().Result);
         }
 
@@ -46,6 +53,7 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -57,9 +65,11 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> DeleteIngredient(int id)
         {
-            var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Ingredient}/{id}");
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{id}");
+            tokenService.AddTokenToHeader(request);
 
+            var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -72,6 +82,7 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

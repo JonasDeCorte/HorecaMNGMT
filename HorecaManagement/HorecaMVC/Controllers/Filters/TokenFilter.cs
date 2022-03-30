@@ -12,12 +12,7 @@ namespace Horeca.MVC.Controllers.Filters
             this.tokenService = tokenService;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            base.OnActionExecuting(context);
-        }
-
-        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             try
             {

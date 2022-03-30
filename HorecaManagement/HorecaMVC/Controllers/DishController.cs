@@ -26,7 +26,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<DishDto> dishes = await dishService.GetDishes(tokenService.GetAccessToken());
+            IEnumerable<DishDto> dishes = await dishService.GetDishes();
 
             if (dishes == null)
             {
@@ -45,7 +45,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            Dish dish = await dishService.GetDishDetailById(id, tokenService.GetAccessToken());
+            Dish dish = await dishService.GetDishDetailById(id);
             if (dish == null)
             {
                 return View("NotFound");
@@ -57,7 +57,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await dishService.DeleteDish(id, tokenService.GetAccessToken());
+            var response = await dishService.DeleteDish(id);
             if (response == null)
             {
                 return View("OperationFailed");
@@ -73,7 +73,7 @@ namespace Horeca.MVC.Controllers
             ingredient.DishId = dishId;
             ingredient.IngredientId = id;
 
-            var response = await dishService.DeleteDishIngredient(ingredient, tokenService.GetAccessToken());
+            var response = await dishService.DeleteDishIngredient(ingredient);
             if (response == null)
             {
                 return View("OperationFailed");
@@ -95,7 +95,7 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MutateDishDto result = DishMapper.MapMutateDish(dish, new DishDto());
-                var response = await dishService.AddDish(result, tokenService.GetAccessToken());
+                var response = await dishService.AddDish(result);
                 if (response == null)
                 {
                     return View("OperationFailed");
@@ -123,7 +123,7 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, model);
-                var response = await dishService.AddDishIngredient(id, result, tokenService.GetAccessToken());
+                var response = await dishService.AddDishIngredient(id, result);
                 if (response == null)
                 {
                     return View("OperationFailed");
@@ -139,7 +139,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            DishDto dish = await dishService.GetDishById(id, tokenService.GetAccessToken());
+            DishDto dish = await dishService.GetDishById(id);
             DishViewModel model = DishMapper.MapModel(dish);
 
             return View(model);
@@ -150,8 +150,8 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateDishDto result = DishMapper.MapMutateDish(dish, await dishService.GetDishById(dish.Id, tokenService.GetAccessToken()));
-                var response = await dishService.UpdateDish(result, tokenService.GetAccessToken());
+                MutateDishDto result = DishMapper.MapMutateDish(dish, await dishService.GetDishById(dish.Id));
+                var response = await dishService.UpdateDish(result);
                 if (response == null)
                 {
                     return View("OperationFailed");
@@ -181,7 +181,7 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MutateIngredientByDishDto result = DishMapper.MapUpdateIngredient(ingredient);
-                var response = await dishService.UpdateDishIngredient(result, tokenService.GetAccessToken());
+                var response = await dishService.UpdateDishIngredient(result);
                 if (response == null)
                 {
                     return View("OperationFailed");
