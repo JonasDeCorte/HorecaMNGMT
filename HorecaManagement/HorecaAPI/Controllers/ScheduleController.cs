@@ -1,9 +1,11 @@
 ﻿using Horeca.Core.Handlers.Commands.RestaurantSchedules;
 using Horeca.Core.Handlers.Queries.RestaurantSchedules;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.RestaurantSchedules;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -32,6 +34,7 @@ namespace HorecaAPI.Controllers
 
         [HttpGet]
         [Route("All/{id}")]
+        [PermissionAuthorize(nameof(RestaurantSchedule), Permissions.Read)]
         [ProducesResponseType(typeof(List<RestaurantScheduleDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAll(int id)
@@ -51,6 +54,7 @@ namespace HorecaAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [PermissionAuthorize(nameof(RestaurantSchedule), Permissions.Read)]
         [ProducesResponseType(typeof(RestaurantScheduleByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get(int id)
@@ -69,6 +73,7 @@ namespace HorecaAPI.Controllers
         /// <response code="204">No content</response>
         /// <response code="400">Bad request</
         [HttpPost]
+        [PermissionAuthorize(nameof(RestaurantSchedule), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateRestaurantScheduleDto model)
@@ -89,6 +94,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success updating existing restaurant</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
+        [PermissionAuthorize(nameof(RestaurantSchedule), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateRestaurantScheduleDto model)
@@ -105,6 +111,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
         [HttpDelete]
         [Route("{id}")]
+        [PermissionAuthorize(nameof(RestaurantSchedule), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)

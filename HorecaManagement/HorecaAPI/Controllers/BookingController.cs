@@ -1,9 +1,11 @@
 ﻿using Horeca.Core.Handlers.Commands.Bookings;
 using Horeca.Core.Handlers.Queries.Bookings;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Bookings;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -30,6 +32,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response>
         [HttpGet]
         [Route("Admin/ListCount")]
+        [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get()
@@ -48,6 +51,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response>
         [HttpGet]
         [Route("Admin/{status}")]
+        [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAllBookingsOfStatus([FromRoute] string status)
@@ -66,6 +70,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response>
         [HttpGet]
         [Route("Details/BookingNo/{bookingNo}")]
+        [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetByBookingNo([FromRoute] string bookingNo)
@@ -85,6 +90,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response>
         [HttpGet]
         [Route("Member/{userID}/{status}")]
+        [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingHistoryDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAllBookingsByUserID([FromRoute] string userID, [FromRoute] string status = "all")
@@ -102,6 +108,7 @@ namespace HorecaAPI.Controllers
         ///  /// <response code="201">Success creating new booking</response>
         /// <response code="400">Bad request</response
         [HttpPost]
+        [PermissionAuthorize(nameof(Booking), Permissions.Create)]
         [ProducesResponseType(typeof(BookingDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MakeBookingDto model)
@@ -120,6 +127,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success updating existing booking</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
+        [PermissionAuthorize(nameof(Booking), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] EditBookingDto model)
@@ -136,6 +144,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
         [HttpDelete]
         [Route("{id}")]
+        [PermissionAuthorize(nameof(Booking), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
