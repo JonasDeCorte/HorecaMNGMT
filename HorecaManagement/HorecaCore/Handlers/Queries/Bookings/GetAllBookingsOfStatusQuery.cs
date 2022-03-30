@@ -4,6 +4,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Utils;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Bookings
 {
@@ -21,6 +22,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllBookingsOfStatusQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -30,8 +32,15 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<IEnumerable<BookingDto>> Handle(GetAllBookingsOfStatusQuery request, CancellationToken cancellationToken)
         {
+            logger.Info("requested to return bookings with request: {@req}", request);
+
             var bookings = repository.Bookings.GetAll();
+
+            logger.Info("bookings found with: {req} items", bookings.Count());
+
             bookings = FilterBookingStatus(bookings, request.Status);
+
+            logger.Info("filtered bookings with status: {status} have been found: {req} items", request.Status, bookings.Count());
 
             return mapper.Map<IEnumerable<BookingDto>>(bookings);
         }

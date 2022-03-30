@@ -3,6 +3,7 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Bookings;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Bookings
 {
@@ -20,6 +21,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetByBookingNoQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
@@ -29,7 +31,12 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<BookingDto> Handle(GetByBookingNoQuery request, CancellationToken cancellationToken)
         {
+            logger.Info("requested to return bookingDto with request: {@req}", request);
+
             Booking? booking = await repository.Bookings.GetByNumber(request.BookingNo);
+
+            logger.Info("returning booking : {req} ", booking.Id);
+
             return mapper.Map<BookingDto>(booking);
         }
     }

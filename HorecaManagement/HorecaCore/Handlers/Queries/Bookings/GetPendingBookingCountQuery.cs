@@ -1,5 +1,6 @@
 ﻿using Horeca.Shared.Data;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Bookings
 {
@@ -13,6 +14,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
     public class GetPendingBookingCountHandler : IRequestHandler<GetPendingBookingCountQuery, int>
     {
         private readonly IUnitOfWork repository;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetPendingBookingCountHandler(IUnitOfWork repository)
         {
@@ -21,6 +23,8 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<int> Handle(GetPendingBookingCountQuery request, CancellationToken cancellationToken)
         {
+            logger.Info("admin requested pending bookings created : {req} ", request);
+
             return repository.Bookings.AdminGetPendingBookingCount();
         }
     }

@@ -48,6 +48,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
             repository.CommitAsync();
 
             var bookedTables = repository.Tables.GetAll().Where(x => x.RestaurantScheduleId.Equals(request.RestaurantScheduleId));
+            logger.Info("there are: {count} booked tables", bookedTables.Count());
 
             return mapper.Map<IEnumerable<TableDto>>(bookedTables);
         }

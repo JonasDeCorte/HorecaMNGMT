@@ -2,6 +2,7 @@
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Dtos.RestaurantSchedules;
 using MediatR;
+using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Bookings
 {
@@ -19,6 +20,8 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
     public class GetAllBookingsByUserIDQueryHandler : IRequestHandler<GetAllBookingsByUserIDQuery, BookingHistoryDto>
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly IUnitOfWork repository;
 
         public GetAllBookingsByUserIDQueryHandler(IUnitOfWork repository)
@@ -28,7 +31,11 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         public async Task<BookingHistoryDto> Handle(GetAllBookingsByUserIDQuery request, CancellationToken cancellationToken)
         {
+            logger.Info("requested to return bookinghistory with request: {@req}", request);
+
             var bookingList = await repository.Bookings.GetByUserID(request.UserId, request.Status);
+            logger.Info("bookinglist found with: {req} items", bookingList.Count());
+
             BookingDetailDto bookingDetailDto = null;
             BookingHistoryDto bookingHistoryDto = new()
             {
@@ -80,6 +87,8 @@ namespace Horeca.Core.Handlers.Queries.Bookings
                 };
                 bookingHistoryDto.BookingDetails.Add(bookingDetailDto);
             }
+            logger.Info("bookinghistory created : {@req} ", bookingHistoryDto);
+
             return bookingHistoryDto;
         }
     }
