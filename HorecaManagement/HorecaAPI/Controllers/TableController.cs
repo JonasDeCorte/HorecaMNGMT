@@ -1,4 +1,7 @@
 ﻿using Horeca.Core.Handlers.Commands.Tables;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Tables;
 using MediatR;
@@ -30,6 +33,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
         [HttpPost]
         [Route("{restaurantScheduleId}")]
+        [PermissionAuthorize(nameof(Table), Permissions.Create)]
         [ProducesResponseType(typeof(TableDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromRoute] int restaurantScheduleId, [FromBody] MutateTableDto model)
