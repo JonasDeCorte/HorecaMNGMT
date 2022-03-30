@@ -1,6 +1,10 @@
 ﻿using Horeca.Core.Handlers.Commands.Accounts;
 using Horeca.Core.Handlers.Commands.UserPermissions;
 using Horeca.Core.Handlers.Queries.Accounts;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Tokens;
@@ -38,6 +42,7 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         [Route("RefreshToken")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
         {
@@ -79,6 +84,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("register-admin")]
+        [PermissionAuthorize(nameof(ApplicationUser), Permissions.Create)]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto model)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new RegisterAdminCommand(model)));
@@ -90,7 +96,7 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [AllowAnonymous] // for now to test
+        [PermissionAuthorize(nameof(Permission), Permissions.Update)]
         [Route("UserPermissions")]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
@@ -104,6 +110,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("User/{username}")]
+        [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
         public async Task<IActionResult> GetUserByUsername(string username)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetUserByUsernameQuery(username)));
@@ -115,6 +122,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("User")]
+        [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
         public async Task<IActionResult> GetAll()
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetAllUsersQuery()));
@@ -128,6 +136,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("UserPermissions/{username}")]
+        [PermissionAuthorize(nameof(Permission), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> RemovePermissions([FromRoute] string username, DeleteUserPermissionsDto model)

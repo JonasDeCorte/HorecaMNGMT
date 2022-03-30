@@ -2,7 +2,14 @@
 {
     public class Table : BaseEntity
     {
-        public string Name { get; set; }
-        public int AmountOfPeople { get; set; }
+        public int RestaurantScheduleId { get; set; }
+
+        public RestaurantSchedule RestaurantSchedule { get; set; }
+
+        public int? BookingDetailId { get; set; }
+
+        public BookingDetail? BookingDetail { get; set; }
+
+        public int Pax { get; set; }
     }
 }

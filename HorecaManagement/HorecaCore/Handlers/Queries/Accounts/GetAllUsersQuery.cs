@@ -27,6 +27,7 @@ namespace Horeca.Core.Handlers.Queries.Accounts
         {
             var result = await Task.FromResult(userManager.Users.Select(x => new BaseUserDto
             {
+                Id = x.Id,
                 Username = x.UserName
             }).ToList());
 
