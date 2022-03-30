@@ -58,6 +58,7 @@ namespace Horeca.Core.Handlers.Queries.Accounts
 
             return new UserDto
             {
+                Id = user.Id,
                 Permissions = permissions,
                 Username = user.UserName
             };
