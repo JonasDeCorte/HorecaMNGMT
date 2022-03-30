@@ -158,7 +158,6 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
                 },
-
                 new Permission()
                 {
                     Name = $"{nameof(Restaurant)}_{Permissions.Read}"
@@ -175,6 +174,71 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(Restaurant)}_{Permissions.Delete}"
                 },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Delete}"
+                },
+
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Read}"
@@ -207,7 +271,7 @@ namespace Horeca.Infrastructure.Data
                 new Permission()
                 {
                     Name = $"{nameof(ApplicationUser)}_{Permissions.Delete}"
-                },
+                }
             };
 
             context.Permissions.AddRange(perms);
@@ -245,7 +309,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var permission in listPermissions)
             {
-                if (permission.Id <= 21)
+                if (permission.Id <= listPermissions.Count - 8)
                 {
                     var chefPerm = new UserPermission
                     {
@@ -267,7 +331,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var permission in listPermissions)
             {
-                if (permission.Id <= 21)
+                if (permission.Id <= listPermissions.Count - 8)
 
                 {
                     var zaalPerms = new UserPermission
