@@ -10,7 +10,7 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<HttpResponseMessage> RegisterUser(RegisterUserDto user);
         public Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user);
         public Task<HttpResponseMessage> UpdatePermissions(MutateUserPermissionsDto model);
-        public Task<IEnumerable<UserDto>> GetUsers();
+        public Task<IEnumerable<BaseUserDto>> GetUsers();
         public Task<UserDto> GetUserByName(string username);
     }
 }

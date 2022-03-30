@@ -1,4 +1,4 @@
-﻿@model Horeca.MVC.Models.Accounts.UserRolesViewModel
+﻿@model Horeca.MVC.Models.Accounts.UserPermissionsViewModel
 
 @{
     ViewData["Title"] = "User Detail";
@@ -25,6 +25,7 @@
                 <tr>
                     <td scope="row" colspan="2">
                         <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                        <a asp-action="EditPermissions" asp-route-username="@Model.Username" class="btn btn-primary">Edit Permissions</a>
                     </td>
                 </tr>
             </tfoot>

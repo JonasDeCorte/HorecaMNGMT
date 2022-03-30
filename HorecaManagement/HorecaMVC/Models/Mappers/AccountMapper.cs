@@ -5,17 +5,30 @@ namespace Horeca.MVC.Models.Mappers
 {
     public static class AccountMapper
     {
-        public static UserRolesViewModel MapUserModel(UserDto userDto)
+        public static UserViewModel MapUserModel(BaseUserDto userDto)
         {
-            UserRolesViewModel userViewModel = new UserRolesViewModel
+            UserViewModel userViewModel = new UserViewModel
             {
-                Username = userDto.Username,
-                Permissions = userDto.Permissions
+                Id = userDto.Id,
+                Username = userDto.Username
             };
             return userViewModel;
         }
+        public static UserPermissionsViewModel MapUserPermissionsModel(UserDto userDto)
+        {
+            UserPermissionsViewModel userPermissionsModel = new UserPermissionsViewModel
+            {
+                Id = userDto.Id,
+                Username = userDto.Username
+            };
+            foreach (var permission in userDto.Permissions)
+            {
+                userPermissionsModel.Permissions.Add(permission);
+            }
+            return userPermissionsModel;
+        }
 
-        public static LoginUserDto MapLoginUser(UserViewModel userModel)
+        public static LoginUserDto MapLoginUser(LoginUserViewModel userModel)
         {
             LoginUserDto result = new LoginUserDto
             {

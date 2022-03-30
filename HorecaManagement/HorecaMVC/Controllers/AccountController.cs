@@ -3,7 +3,6 @@ using Horeca.MVC.Models.Accounts;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Accounts;
-using Horeca.Shared.Dtos.UserPermissions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
@@ -20,7 +19,7 @@ namespace Horeca.MVC.Controllers
         [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<UserDto> users = await accountService.GetUsers();
+            IEnumerable<BaseUserDto> users = await accountService.GetUsers();
             if (users == null)
             {
                 return View("NotFound");
@@ -28,7 +27,7 @@ namespace Horeca.MVC.Controllers
             UserListViewModel listModel = new UserListViewModel();
             foreach(var user in users)
             {
-                UserRolesViewModel model = AccountMapper.MapUserModel(user);
+                UserViewModel model = AccountMapper.MapUserModel(user);
                 listModel.Users.Add(model);
             }
 
@@ -43,20 +42,20 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-            UserRolesViewModel model = AccountMapper.MapUserModel(user);
+            UserPermissionsViewModel model = AccountMapper.MapUserPermissionsModel(user);
 
             return View(model);
         }
 
         public IActionResult Login()
         {
-            var model = new UserViewModel();
+            var model = new LoginUserViewModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserViewModel model)
+        public async Task<IActionResult> Login(LoginUserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -102,18 +101,15 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        [TypeFilter(typeof(TokenFilter))]
-        public IActionResult EditPermissions(string username)
+        public async Task<IActionResult> EditPermissions(string username)
         {
-            MutateUserPermissionsDto model = new MutateUserPermissionsDto
-            {
-                UserName = username
-            }; // Verander nog naar een ViewModel
+            UserDto dto = await accountService.GetUserByName(username);
+            UserPermissionsViewModel model = AccountMapper.MapUserPermissionsModel(dto);
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult EditPermissions(MutateUserPermissionsDto model)
+        public IActionResult EditPermissions(UserPermissionsViewModel model)
         {
             throw new NotImplementedException();
         }

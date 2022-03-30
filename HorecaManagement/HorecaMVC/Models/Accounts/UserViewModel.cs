@@ -1,12 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Horeca.MVC.Models.Accounts
+﻿namespace Horeca.MVC.Models.Accounts
 {
     public class UserViewModel
     {
-        [Required]
+        public string Id { get; set; }
         public string Username { get; set; }
-        [Required]
-        public string Password { get; set; }
     }
 }

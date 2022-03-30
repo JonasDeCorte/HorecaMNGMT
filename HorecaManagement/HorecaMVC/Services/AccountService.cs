@@ -87,7 +87,7 @@ namespace Horeca.MVC.Services
 
         }
 
-        public async Task<IEnumerable<UserDto>> GetUsers()
+        public async Task<IEnumerable<BaseUserDto>> GetUsers()
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}");
@@ -96,7 +96,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<UserDto>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
