@@ -1,15 +1,18 @@
 ﻿using Horeca.Shared.AuthUtils;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
+using Horeca.Shared.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace Horeca.Infrastructure.Data
 {
     public static class DataSeeder
     {
         public const int AmountOfEachType = 15;
+        private static List<IEnumerable<Permission>>? listListPerms = new List<IEnumerable<Permission>>();
 
         public static async void Seed(IApplicationBuilder app)
         {
@@ -19,6 +22,8 @@ namespace Horeca.Infrastructure.Data
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+
+            #region Add Ingredients, Unit, Dishes, Menu's, MenuCards
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -71,6 +76,204 @@ namespace Horeca.Infrastructure.Data
 
                 context.MenuCards.Add(card);
             }
+
+            #endregion Add Ingredients, Unit, Dishes, Menu's, MenuCards
+
+            #region permissions
+
+            AddPermissions(context);
+
+            var listPermissions = context.Permissions.ToList();
+
+            var dishPerms = listPermissions.Where(x => x.Name.StartsWith("Dish_"));
+            var unitPerms = listPermissions.Where(x => x.Name.StartsWith("Unit_"));
+            var ingredientPerms = listPermissions.Where(x => x.Name.StartsWith("Ingredient_"));
+            var menuPerms = listPermissions.Where(x => x.Name.StartsWith("Menu_"));
+            var menuCardPerms = listPermissions.Where(x => x.Name.StartsWith("MenuCard_"));
+            var restaurantPerms = listPermissions.Where(x => x.Name.StartsWith("Restaurant_"));
+            var restaurantSchedulePerms = listPermissions.Where(x => x.Name.StartsWith("RestauranSchedule_"));
+            var bookingPerms = listPermissions.Where(x => x.Name.StartsWith("Booking_"));
+            var bookingDetailPerms = listPermissions.Where(x => x.Name.StartsWith("BookingDetail_"));
+            var tablePerms = listPermissions.Where(x => x.Name.StartsWith("Table_"));
+            var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
+            var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
+
+            #endregion permissions
+
+            #region ApplicationUser superAdmin
+
+            ApplicationUser superAdmin = new()
+            {
+                Email = "SuperAdmin@gmail.com",
+                UserName = "SuperAdmin",
+                ExternalId = Guid.NewGuid().ToString(),
+                IsEnabled = true,
+                IsOwner = true,
+            };
+            await userManager.CreateAsync(superAdmin, "SuperAdmin123!");
+            foreach (var permission in listPermissions)
+            {
+                var userPerm = new UserPermission
+                {
+                    PermissionId = permission.Id,
+                    UserId = superAdmin.Id
+                };
+                context.UserPermissions.Add(userPerm);
+            }
+
+            #endregion ApplicationUser superAdmin
+
+            #region ApplicationUser Chef
+
+            ApplicationUser chef = new()
+            {
+                Email = "Chef@gmail.com",
+                UserName = "Chef",
+                IsEnabled = true,
+                ExternalId = Guid.NewGuid().ToString(),
+            };
+            await userManager.CreateAsync(chef, "Chef123!");
+            listListPerms.Add(unitPerms);
+            listListPerms.Add(ingredientPerms);
+            listListPerms.Add(dishPerms);
+            listListPerms.Add(menuPerms);
+            listListPerms.Add(menuCardPerms);
+            listListPerms.Add(tablePerms);
+            AddApplicationUserPermissions(context, chef, listListPerms);
+            listListPerms.Clear();
+
+            #endregion ApplicationUser Chef
+
+            #region ApplicationUser Zaal
+
+            ApplicationUser zaal = new()
+            {
+                Email = "zaal@gmail.com",
+                UserName = "zaal",
+                IsEnabled = true,
+                ExternalId = Guid.NewGuid().ToString(),
+            };
+            await userManager.CreateAsync(zaal, "Zaal123!");
+            listListPerms.Add(unitPerms);
+            listListPerms.Add(ingredientPerms);
+            listListPerms.Add(dishPerms);
+            listListPerms.Add(menuPerms);
+            listListPerms.Add(menuCardPerms);
+            listListPerms.Add(tablePerms);
+            listListPerms.Add(bookingPerms);
+            listListPerms.Add(bookingDetailPerms);
+            listListPerms.Add(restaurantSchedulePerms);
+            AddApplicationUserPermissions(context, zaal, listListPerms);
+            listListPerms.Clear();
+
+            #endregion ApplicationUser Zaal
+
+            #region ApplicationUser restaurantBeheerder
+
+            ApplicationUser restaurantBeheerder = new()
+            {
+                Email = "restaurantBeheerder@gmail.com",
+                UserName = "restaurantBeheerder",
+                IsEnabled = true,
+                ExternalId = Guid.NewGuid().ToString(),
+            };
+            await userManager.CreateAsync(restaurantBeheerder, "restaurantBeheerder123!");
+            listListPerms.Add(tablePerms);
+            listListPerms.Add(bookingPerms);
+            listListPerms.Add(bookingDetailPerms);
+            listListPerms.Add(restaurantPerms);
+            listListPerms.Add(restaurantSchedulePerms);
+            listListPerms.Add(permissionPerms);
+            listListPerms.Add(ApplicationUserPerms);
+            AddApplicationUserPermissions(context, restaurantBeheerder, listListPerms);
+            listListPerms.Clear();
+
+            #endregion ApplicationUser restaurantBeheerder
+
+            #region Add Restaurants, Bookings, Tables
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                Restaurant restaurant = new()
+                {
+                    Name = $"McDonalds{i}",
+                };
+                restaurant.Employees.Add(zaal);
+                restaurant.Employees.Add(chef);
+                restaurant.Employees.Add(superAdmin);
+                restaurant.MenuCards.Add(context.MenuCards.Find(i));
+                context.Restaurants.Add(restaurant);
+
+                await context.SaveChangesAsync();
+
+                DateTime newSchedule = DateTime.Today.AddDays(1);
+                RestaurantSchedule restaurantSchedule = new()
+                {
+                    RestaurantId = restaurant.Id,
+                    ScheduleDate = newSchedule,
+                    StartTime = newSchedule.AddHours(1),
+                    EndTime = newSchedule.AddHours(2),
+                    Capacity = 20,
+                    AvailableSeat = 20,
+                    Status = i % 2 == 0 ? (int)Constants.ScheduleStatus.Available : (int)Constants.ScheduleStatus.Expired,
+                };
+                context.RestaurantSchedules.Add(restaurantSchedule);
+
+                Booking booking = new()
+                {
+                    FullName = $"Random name {i}",
+                    BookingDate = DateTime.Today,
+                    CheckIn = DateTime.Today.AddHours(i),
+                    CheckOut = DateTime.Today.AddHours(i + 5 / 2),
+                    PhoneNo = $"{Guid.NewGuid()}",
+                    BookingNo = $"{Guid.NewGuid()}",
+                    BookingStatus = i % 2 == 0 ? Constants.BookingStatus.PENDING : Constants.BookingStatus.EXPIRED,
+                    UserId = i % 2 == 0 ? superAdmin.Id : zaal.Id,
+                    User = i % 2 == 0 ? superAdmin : zaal,
+                };
+                context.Bookings.Add(booking);
+                BookingDetail bookingDetail = new()
+                {
+                    BookingId = booking.Id,
+                    Booking = booking,
+                    Pax = i,
+                    RestaurantSchedule = restaurantSchedule,
+                    RestaurantScheduleId = restaurantSchedule.Id,
+                };
+                context.BookingDetails.Add(bookingDetail);
+            }
+            var bookingDetails = context.BookingDetails.ToList();
+            foreach (var bookingDetail in bookingDetails)
+            {
+                Table table = new()
+                {
+                    Pax = bookingDetail.Pax,
+                    BookingDetailId = bookingDetail.Id,
+                    RestaurantScheduleId = bookingDetail.RestaurantScheduleId,
+                };
+                context.Tables.Add(table);
+            }
+
+            #endregion Add Restaurants, Bookings, Tables
+
+            await context.SaveChangesAsync();
+        }
+
+        private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)
+        {
+            foreach (var item in listListPerms.SelectMany(listPerm => listPerm))
+            {
+                var perms = new UserPermission
+                {
+                    PermissionId = item.Id,
+                    UserId = applicationUser.Id
+                };
+                context.UserPermissions.Add(perms);
+            }
+        }
+
+        private static void AddPermissions(DatabaseContext? context)
+        {
             List<Permission> perms = new()
             {
                 new Permission()
@@ -157,7 +360,6 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
                 },
-
                 new Permission()
                 {
                     Name = $"{nameof(Restaurant)}_{Permissions.Read}"
@@ -174,6 +376,71 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(Restaurant)}_{Permissions.Delete}"
                 },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Booking)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(BookingDetail)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Table)}_{Permissions.Delete}"
+                },
+
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Read}"
@@ -206,110 +473,11 @@ namespace Horeca.Infrastructure.Data
                 new Permission()
                 {
                     Name = $"{nameof(ApplicationUser)}_{Permissions.Delete}"
-                },
+                }
             };
 
             context.Permissions.AddRange(perms);
-
-            ApplicationUser superAdmin = new()
-            {
-                Email = "SuperAdmin@gmail.com",
-                UserName = "SuperAdmin",
-                ExternalId = Guid.NewGuid().ToString(),
-                IsEnabled = true,
-                IsOwner = true,
-            };
-            await userManager.CreateAsync(superAdmin, "SuperAdmin123!");
-
-            var listPermissions = context.Permissions.ToList();
-
-            foreach (var permission in listPermissions)
-            {
-                var userPerm = new UserPermission
-                {
-                    PermissionId = permission.Id,
-                    UserId = superAdmin.Id
-                };
-                context.UserPermissions.Add(userPerm);
-            }
-
-            ApplicationUser chef = new()
-            {
-                Email = "Chef@gmail.com",
-                UserName = "Chef",
-                IsEnabled = true,
-                ExternalId = Guid.NewGuid().ToString(),
-            };
-            await userManager.CreateAsync(chef, "Chef123!");
-
-            foreach (var permission in listPermissions)
-            {
-                if (permission.Id <= 21)
-                {
-                    var chefPerm = new UserPermission
-                    {
-                        PermissionId = permission.Id,
-                        UserId = chef.Id
-                    };
-                    context.UserPermissions.Add(chefPerm);
-                }
-            }
-
-            ApplicationUser zaal = new()
-            {
-                Email = "zaal@gmail.com",
-                UserName = "zaal",
-                IsEnabled = true,
-                ExternalId = Guid.NewGuid().ToString(),
-            };
-            await userManager.CreateAsync(zaal, "Zaal123!");
-
-            foreach (var permission in listPermissions)
-            {
-                if (permission.Id <= 21)
-
-                {
-                    var zaalPerms = new UserPermission
-                    {
-                        PermissionId = permission.Id,
-                        UserId = zaal.Id
-                    };
-                    context.UserPermissions.Add(zaalPerms);
-                }
-            }
-            for (int i = 1; i < AmountOfEachType; i++)
-            {
-                Restaurant restaurant = new()
-                {
-                    Name = $"McDonalds{i}",
-                    TotalCapacity = 100,
-                };
-                restaurant.Employees.Add(zaal);
-                restaurant.Employees.Add(chef);
-                restaurant.Employees.Add(superAdmin);
-                restaurant.MenuCards.Add(context.MenuCards.Find(i));
-                context.Restaurants.Add(restaurant);
-
-                Floorplan floorplan = new()
-                {
-                    Level = $"{i}",
-                    Name = $"restaurant.Name: {i}",
-                    TotalCapacity = restaurant.TotalCapacity
-                };
-
-                Table table = new()
-                {
-                    Name = $"{i }",
-                    AmountOfPeople = i,
-                };
-
-                floorplan.AddTable(table);
-
-                restaurant.TotalCapacity -= table.AmountOfPeople;
-                context.Floorplans.Add(floorplan);
-                restaurant.Floorplans.Add(floorplan);
-            }
-            await context.SaveChangesAsync();
+            context.SaveChangesAsync();
         }
     }
 }

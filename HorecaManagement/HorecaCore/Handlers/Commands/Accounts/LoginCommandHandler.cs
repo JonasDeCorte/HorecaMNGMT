@@ -35,6 +35,8 @@ namespace Horeca.Core.Handlers.Commands.Accounts
 
         public async Task<TokenResultDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
+            logger.Info("trying to login {object} with username: {username}", nameof(ApplicationUser), request.Model.Username);
+
             var user = await userManager.FindByNameAsync(request.Model.Username);
 
             if (user == null)
@@ -50,6 +52,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                 logger.Error(SignInException.Instance);
                 throw new SignInException();
             }
+            logger.Info("Authenticating {object} with username: {username}", nameof(ApplicationUser), request.Model.Username);
 
             var result = await authenticateService.Authenticate(user, cancellationToken);
 

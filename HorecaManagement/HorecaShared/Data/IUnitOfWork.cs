@@ -15,6 +15,11 @@ namespace Horeca.Shared.Data
         IUserPermissionRepository UserPermissions { get; }
 
         IRestaurantRepository Restaurants { get; }
+        IRestaurantScheduleRepository RestaurantSchedules { get; }
+        IBookingDetailRepository BookingDetails { get; }
+        IBookingRepository Bookings { get; }
+
+        ITableRepository Tables { get; }
 
         Task CommitAsync();
     }

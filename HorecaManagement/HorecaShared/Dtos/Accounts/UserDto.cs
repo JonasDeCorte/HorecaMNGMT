@@ -1,16 +1,14 @@
-﻿using Horeca.Shared.Data.Entities.Account;
-
-namespace Horeca.Shared.Dtos.Accounts
+﻿namespace Horeca.Shared.Dtos.Accounts
 {
-    public class UserDto
+    public class UserDto : BaseUserDto
     {
-        public string Username { get; set; }
-
         public List<PermissionDto>? Permissions { get; set; }
     }
 
     public class BaseUserDto
     {
+        public string Id { get; set; }
+
         public string Username { get; set; }
     }
 
