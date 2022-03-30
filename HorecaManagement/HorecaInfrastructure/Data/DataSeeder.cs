@@ -248,6 +248,7 @@ namespace Horeca.Infrastructure.Data
                 Table table = new()
                 {
                     Pax = bookingDetail.Pax,
+                    BookingDetailId = bookingDetail.Id,
                     RestaurantScheduleId = bookingDetail.RestaurantScheduleId,
                 };
                 context.Tables.Add(table);
@@ -476,6 +477,7 @@ namespace Horeca.Infrastructure.Data
             };
 
             context.Permissions.AddRange(perms);
+            context.SaveChangesAsync();
         }
     }
 }

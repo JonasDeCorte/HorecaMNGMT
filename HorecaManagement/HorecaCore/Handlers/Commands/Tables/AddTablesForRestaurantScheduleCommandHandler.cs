@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Tables;
@@ -7,50 +8,57 @@ using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Tables
 {
-    public class AddTablesForRestaurantScheduleCommand : IRequest<IEnumerable<TableDto>>
+    public class AddTableForRestaurantScheduleCommand : IRequest<TableDto>
     {
-        public AddTablesForRestaurantScheduleCommand(int restaurantScheduleId)
+        public AddTableForRestaurantScheduleCommand(MutateTableDto model)
         {
-            RestaurantScheduleId = restaurantScheduleId;
+            Model = model;
         }
 
-        public int RestaurantScheduleId { get; }
+        public MutateTableDto Model { get; }
     }
 
-    public class AddTablesForRestaurantScheduleCommandHandler : IRequestHandler<AddTablesForRestaurantScheduleCommand, IEnumerable<TableDto>>
+    public class AddTableForRestaurantScheduleCommandHandler : IRequestHandler<AddTableForRestaurantScheduleCommand, TableDto>
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddTablesForRestaurantScheduleCommandHandler(IUnitOfWork repository, IMapper mapper)
+        public AddTableForRestaurantScheduleCommandHandler(IUnitOfWork repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<TableDto>> Handle(AddTablesForRestaurantScheduleCommand request, CancellationToken cancellationToken)
+        public async Task<TableDto> Handle(AddTableForRestaurantScheduleCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to create {object} with request: {@Id}", nameof(Table), request);
+            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Model.RestaurantScheduleId);
 
-            var bookingDetails = await repository.BookingDetails.GetDetailsForRestaurantSchedule(request.RestaurantScheduleId);
-            foreach (var bookingDetail in bookingDetails)
+            if (restaurantSchedule == null)
             {
-                Table table = new()
-                {
-                    RestaurantScheduleId = bookingDetail.RestaurantScheduleId,
-                    Pax = bookingDetail.Pax,
-                    RestaurantSchedule = bookingDetail.RestaurantSchedule
-                };
-                logger.Info("adding {@object} with id {id}", table, table.Id);
-                repository.Tables.Add(table);
+                logger.Error(EntityNotFoundException.Instance);
+
+                throw new EntityNotFoundException();
             }
-            repository.CommitAsync();
 
-            var bookedTables = repository.Tables.GetAll().Where(x => x.RestaurantScheduleId.Equals(request.RestaurantScheduleId));
-            logger.Info("there are: {count} booked tables", bookedTables.Count());
+            var table = new Table()
+            {
+                RestaurantScheduleId = restaurantSchedule.Id,
+                RestaurantSchedule = restaurantSchedule,
+                Pax = request.Model.Pax,
+            };
+            logger.Info("adding {@object} with id {id}", table, table.Id);
 
-            return mapper.Map<IEnumerable<TableDto>>(bookedTables);
+            repository.Tables.Add(table);
+
+            restaurantSchedule.AvailableSeat -= table.Pax;
+            logger.Info("updating {object} with id {id}", restaurantSchedule, restaurantSchedule.Id);
+            repository.RestaurantSchedules.Update(restaurantSchedule);
+
+            await repository.CommitAsync();
+
+            return mapper.Map<TableDto>(table);
         }
     }
 }

@@ -6,6 +6,10 @@
 
         public RestaurantSchedule RestaurantSchedule { get; set; }
 
+        public int? BookingDetailId { get; set; }
+
+        public BookingDetail? BookingDetail { get; set; }
+
         public int Pax { get; set; }
     }
 }

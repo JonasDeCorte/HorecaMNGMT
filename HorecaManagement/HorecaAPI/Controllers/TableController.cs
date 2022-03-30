@@ -2,7 +2,6 @@
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Tables;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -23,6 +22,7 @@ namespace HorecaAPI.Controllers
         /// Adds tables for all the bookings with the specified restaurant schedule Id
         /// </summary>
         /// <param name="restaurantScheduleId">restaurantScheduleId</param>
+        /// <param name="model">mutateTableDto object</param>
         /// <returns>
         ///list of added tables for each booking for the specified restaurant schedule id
         /// </returns>
@@ -30,11 +30,12 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
         [HttpPost]
         [Route("{restaurantScheduleId}")]
-        [ProducesResponseType(typeof(IEnumerable<TableDto>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(TableDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromRoute] int restaurantScheduleId)
+        public async Task<IActionResult> Post([FromRoute] int restaurantScheduleId, [FromBody] MutateTableDto model)
         {
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddTablesForRestaurantScheduleCommand(restaurantScheduleId)));
+            model.RestaurantScheduleId = restaurantScheduleId;
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddTableForRestaurantScheduleCommand(model)));
         }
     }
 }

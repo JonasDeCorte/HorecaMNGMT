@@ -26,6 +26,15 @@ namespace Horeca.Infrastructure.Data.Repositories
                 schedule.AvailableSeat -= bookingDetail.Pax;
                 context.RestaurantSchedules.Update(schedule);
                 context.BookingDetails.Add(bookingDetail);
+
+                context.Tables.Add(new Table()
+                {
+                    Pax = bookingDetail.Pax,
+                    RestaurantScheduleId = schedule.Id,
+                    RestaurantSchedule = schedule,
+                    BookingDetail = bookingDetail,
+                    BookingDetailId = bookingDetail.Id,
+                });
                 await context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
