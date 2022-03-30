@@ -8,9 +8,12 @@ using Horeca.MVC.Models.Menus;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Menus;
+using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
+
+    [TypeFilter(typeof(TokenFilter))]
     public class MenuCardController : Controller
     {
         private IMenuCardService menuCardService;

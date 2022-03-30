@@ -23,7 +23,6 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}");
-            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -38,7 +37,6 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Ingredient}/{id}");
-            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -53,7 +51,6 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -67,7 +64,6 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{id}");
-            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -82,7 +78,6 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
             request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
-            tokenService.AddTokenToHeader(request);
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
