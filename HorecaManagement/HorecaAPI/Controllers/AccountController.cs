@@ -50,6 +50,19 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
+        /// call to remove the refresh token
+        /// </summary>
+        /// <param name="token">refresh token </param>
+        /// <returns></returns>
+        [HttpDelete]
+        [AllowAnonymous]
+        [Route("RefreshToken/revoke")]
+        public async Task<IActionResult> RevokeToken([FromBody] string token)
+        {
+            return Ok(await mediator.Send(new RevokeTokenCommand(token)));
+        }
+
+        /// <summary>
         /// logs in call
         /// </summary>
         /// <param name="model"></param>

@@ -1,11 +1,11 @@
 ﻿using Horeca.Core.Exceptions;
-using Horeca.Shared;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Tokens;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
@@ -25,6 +25,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
         private readonly IRefreshTokenValidator refreshTokenValidator;
         private readonly IApplicationDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public RefreshCommandHandler(IRefreshTokenValidator refreshTokenValidator, IApplicationDbContext context,
             UserManager<ApplicationUser> userManager, IAuthenticateService authenticateService)
@@ -37,16 +38,24 @@ namespace Horeca.Core.Handlers.Commands.Accounts
 
         public async Task<TokenResultDto> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
+            logger.Info("requesting a refresh with token:  {username}", request.Model.RefreshToken);
+
             var isValidRefreshToken = refreshTokenValidator.Validate(request.Model.RefreshToken);
             if (!isValidRefreshToken)
+            {
+                logger.Error(InvalidRefreshTokenException.Instance);
                 throw new InvalidRefreshTokenException();
+            }
 
             var refreshToken =
                 await context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == request.Model.RefreshToken,
                     cancellationToken);
 
             if (refreshToken is null)
+            {
+                logger.Error(InvalidRefreshTokenException.Instance);
                 throw new InvalidRefreshTokenException();
+            }
 
             context.RefreshTokens.Remove(refreshToken);
             await context.SaveChangesAsync(cancellationToken);
