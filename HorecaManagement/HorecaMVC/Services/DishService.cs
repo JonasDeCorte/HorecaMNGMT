@@ -31,7 +31,7 @@ namespace Horeca.MVC.Services
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                Console.WriteLine("Unauthorized");
+                return null;
             }
             return null;
         }
