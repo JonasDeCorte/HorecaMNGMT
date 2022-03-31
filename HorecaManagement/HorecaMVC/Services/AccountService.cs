@@ -71,7 +71,7 @@ namespace Horeca.MVC.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> UpdatePermissions(MutateUserPermissionsDto model)
+        public async Task<HttpResponseMessage> AddPermissions(MutateUserPermissionsDto model)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
@@ -87,29 +87,49 @@ namespace Horeca.MVC.Services
 
         }
 
-        public async Task<IEnumerable<UserDto>> GetUsers()
+        public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
         {
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
+                $"{ClassConstants.UserPermissions}/{model.UserName}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
+
+        }
+
+        public async Task<IEnumerable<BaseUserDto>> GetUsers()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}");
+
+            var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<UserDto>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
 
         public async Task<UserDto> GetUserByName(string username)
         {
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
+
+            var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-            var result = JsonConvert.DeserializeObject<UserDto>(response.Content.ReadAsStringAsync().Result);
 
+            var result = JsonConvert.DeserializeObject<UserDto>(response.Content.ReadAsStringAsync().Result);
             return result;
         }
     }

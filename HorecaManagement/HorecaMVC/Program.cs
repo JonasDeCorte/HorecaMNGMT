@@ -1,7 +1,7 @@
 using Horeca.MVC.Controllers.Filters;
 using Horeca.MVC.Services;
 using Horeca.MVC.Services.Interfaces;
-using HorecaMVC.Services.Handler;
+using HorecaMVC.Services.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,15 +12,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<HttpHandler>();
+builder.Services.AddHttpClient();
 builder.Services.AddHttpClient("HttpMessageHandler")
     .AddHttpMessageHandler<HttpHandler>();
+
 builder.Services.AddHttpClient<IDishService, DishService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IIngredientService, IngredientService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IMenuService, MenuService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IMenuCardService, MenuCardService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IAccountService, AccountService>("HttpMessageHandler");
+builder.Services.AddHttpClient<IPermissionService, PermissionService>("HttpMessageHandler");
 
-builder.Services.AddHttpClient();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<TokenFilter>();
 

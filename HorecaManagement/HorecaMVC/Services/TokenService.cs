@@ -19,16 +19,6 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public string GetAccessToken()
-        {
-            return "Bearer " + httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
-        }
-
-        public void AddTokenToHeader(HttpRequestMessage request)
-        {
-            request.Headers.Add("Authorization", GetAccessToken());
-        }
-
         public void SetAccessToken(string accessToken)
         {
             httpContextAccessor.HttpContext.Response.Cookies.Append("JWToken", accessToken);

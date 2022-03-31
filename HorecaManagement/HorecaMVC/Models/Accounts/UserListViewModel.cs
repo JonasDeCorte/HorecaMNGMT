@@ -2,6 +2,6 @@
 {
     public class UserListViewModel
     {
-        public List<UserRolesViewModel> Users { get; set; } = new List<UserRolesViewModel>();
+        public List<UserViewModel> Users { get; set; } = new List<UserViewModel>();
     }
 }

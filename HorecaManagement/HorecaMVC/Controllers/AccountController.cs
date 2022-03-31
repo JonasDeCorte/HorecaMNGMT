@@ -11,16 +11,18 @@ namespace Horeca.MVC.Controllers
     public class AccountController : Controller
     {
         private IAccountService accountService;
+        private IPermissionService permissionService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IPermissionService permissionService)
         {
             this.accountService = accountService;
+            this.permissionService = permissionService;
         }
 
         [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<UserDto> users = await accountService.GetUsers();
+            IEnumerable<BaseUserDto> users = await accountService.GetUsers();
             if (users == null)
             {
                 return View("NotFound");
@@ -28,7 +30,7 @@ namespace Horeca.MVC.Controllers
             UserListViewModel listModel = new UserListViewModel();
             foreach(var user in users)
             {
-                UserRolesViewModel model = AccountMapper.MapUserModel(user);
+                UserViewModel model = AccountMapper.MapUserModel(user);
                 listModel.Users.Add(model);
             }
 
@@ -43,20 +45,20 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-            UserRolesViewModel model = AccountMapper.MapUserModel(user);
+            UserPermissionsViewModel model = AccountMapper.MapUserPermissionsModel(user);
 
             return View(model);
         }
 
         public IActionResult Login()
         {
-            var model = new UserViewModel();
+            var model = new LoginUserViewModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserViewModel model)
+        public async Task<IActionResult> Login(LoginUserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -102,20 +104,83 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        [TypeFilter(typeof(TokenFilter))]
-        public IActionResult EditPermissions(string username)
+        public async Task<IActionResult> AddPermissions(string username)
         {
-            MutateUserPermissionsDto model = new MutateUserPermissionsDto
+            UserDto user = await accountService.GetUserByName(username);
+            if (user == null)
             {
-                UserName = username
-            }; // Verander nog naar een ViewModel
-            return View(model);
+                return View("NotFound");
+            }
+            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
+            var permissions = await permissionService.GetPermissions();
+            ViewData["Permissions"] = AccountMapper.MapAddPermissionsList(userModel, permissions);
+
+            MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
+            {
+                Username = userModel.Username
+            };
+
+            return View(editModel);
         }
 
         [HttpPost]
-        public IActionResult EditPermissions(MutateUserPermissionsDto model)
+        public async Task<IActionResult> AddPermissions(MutatePermissionsViewModel model)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                MutateUserPermissionsDto dto = AccountMapper.MapMutatePermissionsDto(model);
+
+                var response = await accountService.AddPermissions(dto);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
+
+                return RedirectToAction("Detail", new { username = model.Username });
+            } else
+            {
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> RemovePermissions(string username)
+        {
+            UserDto user = await accountService.GetUserByName(username);
+            if (user == null)
+            {
+                return View("NotFound");
+            }
+            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
+
+            ViewData["Permissions"] = AccountMapper.MapRemovePermissionsList(userModel);
+            MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
+            {
+                Username = userModel.Username
+            };
+
+            return View(editModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemovePermissions(MutatePermissionsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                MutateUserPermissionsDto dto = AccountMapper.MapMutatePermissionsDto(model);
+
+                var response = await accountService.RemovePermissions(dto);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
+
+                return RedirectToAction("Detail", new { username = model.Username });
+            } 
+            else
+            {
+                return View(model);
+            }
+
         }
     }
 }
