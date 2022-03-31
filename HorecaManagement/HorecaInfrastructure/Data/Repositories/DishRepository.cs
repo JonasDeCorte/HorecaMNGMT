@@ -16,8 +16,7 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public Dish GetDishIncludingDependencies(int id)
         {
-            Console.WriteLine(context.ChangeTracker.DebugView.LongView);
-            return context.Dishes.Include(x => x.Ingredients).ThenInclude(x => x.Unit).Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return context.Dishes.Include(x => x.DishIngredients).ThenInclude(x => x.Ingredient).ThenInclude(x => x.Unit).Where(x => x.Id.Equals(id)).FirstOrDefault();
         }
     }
 }

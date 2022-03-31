@@ -28,6 +28,16 @@ namespace Horeca.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(pt => pt.PermissionId);
 
+            builder.Entity<DishIngredient>().HasKey(x => new { x.DishId, x.IngredientId });
+
+            builder.Entity<DishIngredient>().HasOne(p => p.Dish)
+           .WithMany(p => p.DishIngredients)
+           .HasForeignKey(pt => pt.DishId);
+
+            builder.Entity<DishIngredient>().HasOne(p => p.Ingredient)
+            .WithMany(p => p.Dishes)
+            .HasForeignKey(pt => pt.IngredientId);
+
             builder.Entity<ApplicationUser>().HasMany(x => x.Restaurants).WithMany(x => x.Employees);
         }
 
@@ -78,5 +88,6 @@ namespace Horeca.Infrastructure.Data
         public DbSet<BookingDetail> BookingDetails { get; set; }
 
         public DbSet<Table> Tables { get; set; }
+        public DbSet<DishIngredient> DishIngredients { get; set; }
     }
 }

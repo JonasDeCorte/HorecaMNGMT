@@ -6,6 +6,6 @@
         public string Description { get; set; }
         public string Category { get; set; }
         public string DishType { get; set; }
-        public List<Ingredient> Ingredients { get; set; } = new();
+        public List<DishIngredient> DishIngredients { get; set; } = new();
     }
 }

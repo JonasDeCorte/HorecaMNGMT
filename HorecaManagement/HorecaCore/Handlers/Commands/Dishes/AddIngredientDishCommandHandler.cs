@@ -34,32 +34,51 @@ namespace Horeca.Core.Handlers.Commands.Dishes
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to add {@object} to Dish with Id: {Id}", request.Model.Ingredient, request.Model.Id);
-
-            var result = _validator.Validate(request.Model.Ingredient);
             var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
-
-            if (!result.IsValid)
+            Ingredient entity = null;
+            if (request.Model.Ingredient.Id == 0)
             {
-                logger.Error("Invalid model with errors: ", result.Errors);
-
-                var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                throw new InvalidRequestBodyException
+                var result = _validator.Validate(request.Model.Ingredient);
+                if (!result.IsValid)
                 {
-                    Errors = errors
+                    logger.Error("Invalid model with errors: ", result.Errors);
+
+                    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
+                    throw new InvalidRequestBodyException
+                    {
+                        Errors = errors
+                    };
+                }
+
+                Shared.Data.Entities.Unit unit = repository.Units.Get(request.Model.Ingredient.Unit.Id);
+
+                logger.Info("check if unit exists in database with id {id} ", request.Model.Ingredient.Unit.Id);
+
+                entity = new Ingredient
+                {
+                    Name = request.Model.Ingredient.Name,
+                    BaseAmount = request.Model.Ingredient.BaseAmount,
+                    IngredientType = request.Model.Ingredient.IngredientType,
+                    Unit = unit ?? new Shared.Data.Entities.Unit
+                    {
+                        Name = request.Model.Ingredient.Unit.Name,
+                    },
                 };
             }
-            var entity = new Ingredient
+            else
             {
-                Name = request.Model.Ingredient.Name,
-                BaseAmount = request.Model.Ingredient.BaseAmount,
-                IngredientType = request.Model.Ingredient.IngredientType,
-                Unit = new Shared.Data.Entities.Unit
-                {
-                    Name = request.Model.Ingredient.Unit.Name,
-                }
-            };
-            dish.Ingredients.Add(entity);
-            repository.Ingredients.Add(entity);
+                logger.Info("ingredients exists, get ingredient from database  {id} ", request.Model.Ingredient.Id);
+
+                entity = repository.Ingredients.GetIngredientIncludingUnit(request.Model.Ingredient.Id);
+                logger.Info("ingredients exists, get ingredient from database  {@entity} ", entity);
+            }
+
+            dish.DishIngredients.Add(new DishIngredient()
+            {
+                Ingredient = entity,
+                Dish = dish,
+            });
+
             repository.Dishes.Update(dish);
             await repository.CommitAsync();
 
