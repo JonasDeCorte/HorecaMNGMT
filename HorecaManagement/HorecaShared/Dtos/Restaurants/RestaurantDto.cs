@@ -12,9 +12,9 @@ namespace Horeca.Shared.Dtos.Restaurants
 
     public class DetailRestaurantDto : RestaurantDto
     {
-        public List<RestaurantScheduleDto> RestaurantSchedules { get; set; }
-        public List<BaseUserDto> Employees { get; set; }
-        public List<MenuCardDto> MenuCards { get; set; }
+        public List<RestaurantScheduleDto> RestaurantSchedules { get; set; } = new();
+        public List<BaseUserDto> Employees { get; set; } = new();
+        public List<MenuCardDto> MenuCards { get; set; } = new();
     }
 
     public class MutateRestaurantDto : RestaurantDto

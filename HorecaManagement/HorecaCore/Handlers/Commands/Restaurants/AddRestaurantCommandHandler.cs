@@ -63,7 +63,11 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
                     throw new IsNotOwnerException();
                 }
 
-                owner.Restaurants.Add(entity);
+                owner.Restaurants.Add(new RestaurantUser
+                {
+                    Restaurant = entity,
+                    User = owner,
+                });
 
                 await userManager.UpdateAsync(owner);
 

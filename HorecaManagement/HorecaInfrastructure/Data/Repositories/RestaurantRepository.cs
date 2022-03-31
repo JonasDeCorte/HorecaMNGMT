@@ -16,7 +16,11 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public Restaurant GetRestaurantIncludingDependenciesById(int restaurantId)
         {
-            return context.Restaurants.Include(x => x.MenuCards).Include(x => x.Employees).Where(x => x.Id.Equals(restaurantId)).FirstOrDefault();
+            return context.Restaurants
+                .Include(x => x.MenuCards)
+                .Include(x => x.Employees)
+                .ThenInclude(x => x.User)
+                .Where(x => x.Id.Equals(restaurantId)).FirstOrDefault();
         }
     }
 }
