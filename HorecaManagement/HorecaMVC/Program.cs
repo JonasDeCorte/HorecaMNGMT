@@ -1,7 +1,7 @@
 using Horeca.MVC.Controllers.Filters;
 using Horeca.MVC.Services;
 using Horeca.MVC.Services.Interfaces;
-using HorecaMVC.Services.Handler;
+using HorecaMVC.Services.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 

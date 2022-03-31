@@ -1,6 +1,6 @@
 ﻿using Horeca.MVC.Services.Interfaces;
 
-namespace HorecaMVC.Services.Handler
+namespace HorecaMVC.Services.Handlers
 {
     public class HttpHandler : DelegatingHandler
     {

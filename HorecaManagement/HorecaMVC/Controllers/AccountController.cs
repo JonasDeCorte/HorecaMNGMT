@@ -113,7 +113,7 @@ namespace Horeca.MVC.Controllers
             }
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
             var permissions = await permissionService.GetPermissions();
-            ViewData["Permissions"] = AccountMapper.MapPermissionList(userModel, permissions);
+            ViewData["Permissions"] = AccountMapper.MapAddPermissionsList(userModel, permissions);
 
             MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
             {
@@ -151,9 +151,8 @@ namespace Horeca.MVC.Controllers
                 return View("NotFound");
             }
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
-            var permissions = await permissionService.GetPermissions();
-            ViewData["Permissions"] = AccountMapper.MapPermissionList(userModel, permissions);
 
+            ViewData["Permissions"] = AccountMapper.MapRemovePermissionsList(userModel);
             MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
             {
                 Username = userModel.Username
@@ -162,13 +161,22 @@ namespace Horeca.MVC.Controllers
             return View(editModel);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> RemovePermissions(MutatePermissionsViewModel model)
         {
             if (ModelState.IsValid)
             {
-                return View();
-            } else
+                MutateUserPermissionsDto dto = AccountMapper.MapMutatePermissionsDto(model);
+
+                var response = await accountService.RemovePermissions(dto);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
+
+                return RedirectToAction("Detail", new { username = model.Username });
+            } 
+            else
             {
                 return View(model);
             }

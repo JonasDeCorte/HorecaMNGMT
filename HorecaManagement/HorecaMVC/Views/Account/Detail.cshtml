@@ -25,7 +25,12 @@
                 <tr>
                     <td scope="row" colspan="2">
                         <a asp-action="Index" class="btn btn-secondary">Go Back</a>
-                        <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">Add Permissions</a>
+                        <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
+                            Add Permissions
+                        </a>
+                        <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
+                            Remove Permissions
+                        </a>
                     </td>
                 </tr>
             </tfoot>

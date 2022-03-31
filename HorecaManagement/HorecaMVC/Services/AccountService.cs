@@ -87,6 +87,22 @@ namespace Horeca.MVC.Services
 
         }
 
+        public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
+                $"{ClassConstants.UserPermissions}/{model.UserName}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
+
+        }
+
         public async Task<IEnumerable<BaseUserDto>> GetUsers()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
