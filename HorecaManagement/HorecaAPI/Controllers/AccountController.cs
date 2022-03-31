@@ -28,6 +28,19 @@ namespace Horeca.API.Controllers
             this.mediator = mediator;
         }
 
+        /// <summary>
+        /// return access token superadmin
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("SuperAdminAccessToken")]
+        public async Task<IActionResult> LoginSuperAdmin()
+        {
+            return Ok(await mediator.Send(new LoginCommand(new LoginUserDto() { Password = "SuperAdmin123!", Username = "SuperAdmin" })));
+        }
+
         [HttpGet("me")]
         [AllowAnonymous]
         public IActionResult Get()
