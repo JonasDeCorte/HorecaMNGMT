@@ -28,7 +28,8 @@ namespace Horeca.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(pt => pt.PermissionId);
 
-            builder.Entity<DishIngredient>().HasKey(x => new { x.DishId, x.IngredientId });
+            builder.Entity<DishIngredient>()
+                .HasKey(x => new { x.DishId, x.IngredientId });
 
             builder.Entity<DishIngredient>().HasOne(p => p.Dish)
            .WithMany(p => p.DishIngredients)
@@ -38,7 +39,13 @@ namespace Horeca.Infrastructure.Data
             .WithMany(p => p.Dishes)
             .HasForeignKey(pt => pt.IngredientId);
 
-            builder.Entity<ApplicationUser>().HasMany(x => x.Restaurants).WithMany(x => x.Employees);
+            builder.Entity<RestaurantUser>().HasOne(p => p.User)
+           .WithMany(p => p.Restaurants)
+           .HasForeignKey(pt => pt.UserId);
+
+            builder.Entity<RestaurantUser>().HasOne(p => p.Restaurant)
+            .WithMany(p => p.Employees)
+            .HasForeignKey(pt => pt.RestaurantId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

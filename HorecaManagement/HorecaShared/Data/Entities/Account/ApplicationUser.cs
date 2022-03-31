@@ -13,6 +13,6 @@ namespace Horeca.Shared.Data.Entities.Account
 
         public List<UserPermission> Permissions { get; private set; } = new();
 
-        public List<Restaurant> Restaurants { get; set; } = new();
+        public List<RestaurantUser> Restaurants { get; set; } = new();
     }
 }

@@ -202,9 +202,21 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"McDonalds{i}",
                 };
-                restaurant.Employees.Add(zaal);
-                restaurant.Employees.Add(chef);
-                restaurant.Employees.Add(superAdmin);
+                restaurant.Employees.Add(new RestaurantUser
+                {
+                    Restaurant = restaurant,
+                    User = zaal
+                });
+                restaurant.Employees.Add(new RestaurantUser
+                {
+                    Restaurant = restaurant,
+                    User = chef
+                });
+                restaurant.Employees.Add(new RestaurantUser
+                {
+                    Restaurant = restaurant,
+                    User = superAdmin
+                });
                 restaurant.MenuCards.Add(context.MenuCards.Find(i));
                 context.Restaurants.Add(restaurant);
 

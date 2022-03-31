@@ -1,4 +1,5 @@
-﻿using Horeca.Core.Handlers.Commands.Restaurants;
+﻿using Horeca.Core.Handlers.Commands.Accounts;
+using Horeca.Core.Handlers.Commands.Restaurants;
 using Horeca.Core.Handlers.Queries.Restaurants;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
@@ -101,6 +102,24 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> DeleteById(int id)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteRestaurantCommand(id)));
+        }
+
+        /// <summary>
+        /// Add an employee to a restaurant
+        /// </summary>
+        /// <param name="employeeId">id from the employee</param>
+        /// <param name="restaurantId">Id of the restaurant</param>
+        /// <returns></returns>
+        /// <response code="200">Success Adding an employee to the specified restaurant</response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Update)]
+        [HttpPost]
+        [Route("{restaurantId}/Employee/{employeeId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> AddEmployeeToRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddEmployeeCommand(employeeId, restaurantId)));
         }
     }
 }
