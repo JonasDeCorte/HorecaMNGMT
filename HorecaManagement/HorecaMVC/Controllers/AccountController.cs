@@ -3,6 +3,7 @@ using Horeca.MVC.Models.Accounts;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Accounts;
+using Horeca.Shared.Dtos.UserPermissions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
@@ -10,10 +11,12 @@ namespace Horeca.MVC.Controllers
     public class AccountController : Controller
     {
         private IAccountService accountService;
+        private IPermissionService permissionService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IPermissionService permissionService)
         {
             this.accountService = accountService;
+            this.permissionService = permissionService;
         }
 
         [TypeFilter(typeof(TokenFilter))]
@@ -101,17 +104,75 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public async Task<IActionResult> EditPermissions(string username)
+        public async Task<IActionResult> AddPermissions(string username)
         {
-            UserDto dto = await accountService.GetUserByName(username);
-            UserPermissionsViewModel model = AccountMapper.MapUserPermissionsModel(dto);
-            return View(model);
+            UserDto user = await accountService.GetUserByName(username);
+            if (user == null)
+            {
+                return View("NotFound");
+            }
+            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
+            var permissions = await permissionService.GetPermissions();
+            ViewData["Permissions"] = AccountMapper.MapPermissionList(userModel, permissions);
+
+            MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
+            {
+                Username = userModel.Username
+            };
+
+            return View(editModel);
         }
 
         [HttpPost]
-        public IActionResult EditPermissions(UserPermissionsViewModel model)
+        public async Task<IActionResult> AddPermissions(MutatePermissionsViewModel model)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                MutateUserPermissionsDto dto = AccountMapper.MapMutatePermissionsDto(model);
+
+                var response = await accountService.AddPermissions(dto);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
+
+                return RedirectToAction("Detail", new { username = model.Username });
+            } else
+            {
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> RemovePermissions(string username)
+        {
+            UserDto user = await accountService.GetUserByName(username);
+            if (user == null)
+            {
+                return View("NotFound");
+            }
+            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
+            var permissions = await permissionService.GetPermissions();
+            ViewData["Permissions"] = AccountMapper.MapPermissionList(userModel, permissions);
+
+            MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
+            {
+                Username = userModel.Username
+            };
+
+            return View(editModel);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemovePermissions(MutatePermissionsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View();
+            } else
+            {
+                return View(model);
+            }
+
         }
     }
 }

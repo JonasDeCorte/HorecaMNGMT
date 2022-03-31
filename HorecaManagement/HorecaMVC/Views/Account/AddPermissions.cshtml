@@ -1,0 +1,33 @@
+﻿@using Horeca.MVC.Models.Accounts
+@model Horeca.MVC.Models.Accounts.MutatePermissionsViewModel
+
+@{
+    ViewData["Title"] = "Add to Permissions";
+    var allPermissions = ViewData["Permissions"] as List<PermissionViewModel>;
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <div>
+        <form asp-action="AddPermissions" class="w-75 mx-auto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-2">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="PermissionId" class="control-label"></label>
+                <select asp-for="PermissionId" asp-items="@(new MultiSelectList(allPermissions, 
+                    "Id", "PermissionName"))" 
+                    class="form-control" multiple="multiple" size="30">
+                    <option value="0">Please select</option>
+                </select>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Detail" asp-route-username="@Model.Username" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
