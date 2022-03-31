@@ -2,6 +2,7 @@
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Dishes;
+using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 using NLog;
 
@@ -42,8 +43,27 @@ namespace Horeca.Core.Handlers.Queries.Dishes
             }
 
             logger.Info("returning {@object} with id: {id}", dish, request.DishId);
-
-            return _mapper.Map<DishIngredientsByIdDto>(dish);
+            List<IngredientDto> ingreddto = new();
+            foreach (var item in dish.DishIngredients)
+            {
+                ingreddto.Add(new IngredientDto()
+                {
+                    BaseAmount = item.Ingredient.BaseAmount,
+                    Id = item.Ingredient.Id,
+                    IngredientType = item.Ingredient.IngredientType,
+                    Name = item.Ingredient.Name,
+                    Unit = new Shared.Dtos.Units.UnitDto()
+                    {
+                        Name = item.Ingredient.Unit.Name,
+                        Id = item.Ingredient.Unit.Id,
+                    }
+                });
+            }
+            return new DishIngredientsByIdDto()
+            {
+                Id = dish.Id,
+                Ingredients = ingreddto
+            };
         }
     }
 }

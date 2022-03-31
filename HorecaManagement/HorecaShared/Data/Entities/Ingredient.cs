@@ -9,5 +9,7 @@
 
         public Unit Unit { get; set; }
         public int UnitId { get; set; }
+
+        public List<DishIngredient> Dishes { get; set; } = new();
     }
 }

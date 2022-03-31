@@ -46,14 +46,18 @@ namespace Horeca.Infrastructure.Data
                     Description = $"Description {i}",
                     Name = $"name {i}",
                     DishType = $"DishType {i}",
-                    Ingredients = new List<Ingredient>
-                     {
-                         ingredient
-                     }
+                    DishIngredients = new List<DishIngredient>
+                    {
+                    }
                 };
 
                 context.Dishes.Add(dish);
-
+                var dishingred = new DishIngredient()
+                {
+                    Ingredient = ingredient,
+                    Dish = dish
+                };
+                dish.DishIngredients.Add(dishingred);
                 Menu menu = new()
                 {
                     Name = $"name {i}",
