@@ -5,13 +5,8 @@ using Horeca.Shared.Data.Entities.Account;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Horeca.Core.Handlers.Commands.Accounts
+namespace Horeca.Core.Handlers.Commands.Restaurants
 {
     public class AddEmployeeCommand : IRequest<int>
     {

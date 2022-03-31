@@ -1,5 +1,4 @@
-﻿using Horeca.Core.Handlers.Commands.Accounts;
-using Horeca.Core.Handlers.Commands.Restaurants;
+﻿using Horeca.Core.Handlers.Commands.Restaurants;
 using Horeca.Core.Handlers.Queries.Restaurants;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
