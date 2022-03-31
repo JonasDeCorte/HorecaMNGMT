@@ -120,5 +120,23 @@ namespace Horeca.API.Controllers
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddEmployeeCommand(employeeId, restaurantId)));
         }
+
+        /// <summary>
+        ///  Delete an existing Restaurant employee
+        /// </summary>
+        /// <param name="employeeId">employee id </param>
+        /// <param name="restaurantId">restaurant id </param>
+        /// <returns></returns>
+        /// <response code="204">Success delete an existing employee from Restaurant</response>
+        /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
+        [HttpDelete]
+        [Route("{restaurantId}/Employee/{employeeId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> RemoveEmployeeFromRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new RemoveEmployeeFromRestaurantCommand(restaurantId, employeeId)));
+        }
     }
 }
