@@ -30,10 +30,12 @@ namespace HorecaAPI.Controllers
         ///  /// <response code="201">Success creating new Order</response>
         /// <response code="400">Bad request</response
         [HttpPost]
+        [Route("Table/{TableId}/Order/")]
         [ProducesResponseType(typeof(MutateOrderDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateOrderDto model)
+        public async Task<IActionResult> Post([FromRoute] int TableId, [FromBody] MutateOrderDto model)
         {
+            model.TableId = TableId;
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddOrderCommand(model)));
         }
 
