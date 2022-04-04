@@ -11,7 +11,7 @@ namespace Horeca.MVC.Models.Mappers
         {
             IngredientViewModel model = new IngredientViewModel
             {
-                Id = ingredient.Id,
+                IngredientId = ingredient.Id,
                 Name = ingredient.Name,
                 IngredientType = ingredient.IngredientType,
                 BaseAmount = ingredient.BaseAmount,
@@ -64,7 +64,7 @@ namespace Horeca.MVC.Models.Mappers
         {
             MutateIngredientDto result = new MutateIngredientDto
             {
-                Id = ingredientModel.Id,
+                Id = ingredientModel.IngredientId,
                 Name = ingredientModel.Name,
                 BaseAmount = ingredientModel.BaseAmount,
                 IngredientType = ingredientModel.IngredientType,

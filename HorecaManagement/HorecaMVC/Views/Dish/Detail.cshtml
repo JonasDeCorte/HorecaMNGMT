@@ -54,10 +54,10 @@
                                         <td>@item.Unit.Name</td>
                                         <td>
                                             <a asp-action="EditIngredient" asp-route-dishId="@Model.Id"
-                                           asp-route-ingredientId="@item.Id"
+                                           asp-route-ingredientId="@item.IngredientId"
                                            class="btn btn-primary">Edit</a>
                                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IngredientId">
                                                 Delete
                                             </button>
                                         </td>

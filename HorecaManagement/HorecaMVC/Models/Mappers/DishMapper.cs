@@ -23,6 +23,24 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
+        public static DishIngredientViewModel MapDishIngredientModel(MutateIngredientByDishDto dishIngredientDto)
+        {
+            DishIngredientViewModel model = new DishIngredientViewModel
+            {
+                DishId = dishIngredientDto.Id,
+                IngredientId = dishIngredientDto.Ingredient.Id,
+                Name = dishIngredientDto.Ingredient.Name,
+                IngredientType = dishIngredientDto.Ingredient.IngredientType,
+                BaseAmount = dishIngredientDto.Ingredient.BaseAmount,
+                Unit = new UnitViewModel
+                {
+                    Id = dishIngredientDto.Ingredient.Unit.Id,
+                    Name = dishIngredientDto.Ingredient.Unit.Name
+                }
+            };
+            return model;
+        }
+
         public static DishDetailViewModel MapDetailModel(Dish dish)
         {
             DishDetailViewModel model = new DishDetailViewModel
@@ -33,10 +51,10 @@ namespace Horeca.MVC.Models.Mappers
                 DishType = dish.DishType,
                 Description = dish.Description
             };
-            foreach (var ingredient in dish.Ingredients)
+            foreach (var ingredient in dish.DishIngredients)
             {
-                IngredientDto ingredientDto = IngredientMapper.MapIngredientDto(ingredient);
-                IngredientViewModel ingredientModel = IngredientMapper.MapModel(ingredientDto);
+                MutateIngredientByDishDto mutateIngredientDto = MapDishIngredientDto(ingredient);
+                DishIngredientViewModel ingredientModel = MapDishIngredientModel(mutateIngredientDto);
                 model.Ingredients.Add(ingredientModel);
             }
 
@@ -52,7 +70,7 @@ namespace Horeca.MVC.Models.Mappers
                 Name = ingredient.Name,
                 IngredientType = ingredient.IngredientType,
                 BaseAmount = ingredient.BaseAmount,
-                Unit = new UnitDto
+                Unit = new UnitViewModel
                 {
                     Id = ingredient.Unit.Id,
                     Name = ingredient.Unit.Name
@@ -75,13 +93,41 @@ namespace Horeca.MVC.Models.Mappers
             return dish;
         }
 
+        public static DishIngredient MapDishIngredient(IngredientDto ingredientDto, DishDto dishDto)
+        {
+            DishIngredient dishIngredient = new DishIngredient
+            {
+                DishId = dishDto.Id,
+                Dish = new Dish
+                {
+                    Name = dishDto.Name,
+                    Description = dishDto.Description,
+                    Category = dishDto.Category,
+                    DishType = dishDto.DishType
+                },
+                IngredientId = ingredientDto.Id,
+                Ingredient = new Ingredient
+                {
+                    Name = ingredientDto.Name,
+                    IngredientType = ingredientDto.IngredientType,
+                    BaseAmount = ingredientDto.BaseAmount,
+                    Unit = new Unit
+                    {
+                        Id = ingredientDto.Unit.Id,
+                        Name = ingredientDto.Unit.Name
+                    }
+                }
+            };
+            return dishIngredient;
+        }
+
         public static Dish MapDishDetail(DishDto dishDto, DishIngredientsByIdDto ingredientList)
         {
             Dish dish = MapDish(dishDto);
             foreach(var ingredientDto in ingredientList.Ingredients)
             {
-                Ingredient ingredient = IngredientMapper.MapIngredient(ingredientDto);
-                dish.Ingredients.Add(ingredient);
+                DishIngredient ingredient = MapDishIngredient(ingredientDto, dishDto);
+                dish.DishIngredients.Add(ingredient);
             }
             return dish;
         }
@@ -97,6 +143,27 @@ namespace Horeca.MVC.Models.Mappers
                 DishType = dish.DishType
             };
             return dishDto;
+        }
+        public static MutateIngredientByDishDto MapDishIngredientDto(DishIngredient dishIngredient)
+        {
+            MutateIngredientByDishDto mutateIngredientDto = new MutateIngredientByDishDto
+            {
+                Id = dishIngredient.DishId,
+                Ingredient = new MutateIngredientDto
+                {
+                    Id = dishIngredient.IngredientId,
+                    Name = dishIngredient.Ingredient.Name,
+                    IngredientType = dishIngredient.Ingredient.IngredientType,
+                    BaseAmount = dishIngredient.Ingredient.BaseAmount,
+                    Unit = new UnitDto
+                    {
+                        Id = dishIngredient.Ingredient.Unit.Id,
+                        Name = dishIngredient.Ingredient.Unit.Name
+                    }
+                }
+            };
+
+            return mutateIngredientDto;
         }
 
         public static MutateDishDto MapMutateDish(DishViewModel dishModel, DishDto dish)
@@ -120,7 +187,7 @@ namespace Horeca.MVC.Models.Mappers
                 Id = id,
                 Ingredient = new MutateIngredientDto
                 {
-                    Id = ingredient.Id,
+                    Id = ingredient.IngredientId,
                     Name = ingredient.Name,
                     BaseAmount = ingredient.BaseAmount,
                     IngredientType = ingredient.IngredientType,
@@ -143,10 +210,13 @@ namespace Horeca.MVC.Models.Mappers
                     Name = ingredient.Name,
                     BaseAmount = ingredient.BaseAmount,
                     IngredientType = ingredient.IngredientType,
-                    Unit = ingredient.Unit
+                    Unit = new UnitDto
+                    {
+                        Id = ingredient.Unit.Id,
+                        Name = ingredient.Unit.Name
+                    }
                 }
             };
-
             return result;
         }
     }

@@ -9,6 +9,6 @@ namespace Horeca.MVC.Models.Dishes
         public string Category { get; set; }
         public string DishType { get; set; }
         public string Description { get; set; }
-        public List<IngredientViewModel> Ingredients { get; set; } = new List<IngredientViewModel>();
+        public List<DishIngredientViewModel> Ingredients { get; set; } = new List<DishIngredientViewModel>();
     }
 }

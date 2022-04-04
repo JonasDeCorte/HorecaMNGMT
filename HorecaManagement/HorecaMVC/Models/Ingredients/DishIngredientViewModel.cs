@@ -20,6 +20,6 @@ namespace Horeca.MVC.Models.Ingredients
         public int BaseAmount { get; set; }
         [Display(Name = "Unit name")]
         [Required(ErrorMessage = "Unit name is required.")]
-        public UnitDto Unit { get; set; }
+        public UnitViewModel Unit { get; set; }
     }
 }
