@@ -97,5 +97,7 @@ namespace Horeca.Infrastructure.Data
         public DbSet<Table> Tables { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
         public DbSet<RestaurantUser> RestaurantUsers { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
     }
 }

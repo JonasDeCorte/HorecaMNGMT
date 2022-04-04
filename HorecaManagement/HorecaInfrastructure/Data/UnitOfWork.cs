@@ -37,6 +37,8 @@ namespace Horeca.Infrastructure.Data
 
         public ITableRepository Tables => new TableRepository(context);
 
+        public IOrderRepository Orders => new OrderRepository(context);
+
         public async Task CommitAsync()
         {
             await context.SaveChangesAsync();

@@ -42,6 +42,7 @@ namespace Horeca.Infrastructure.Data
 
                 Dish dish = new()
                 {
+                    Price = decimal.One * i * Random.Shared.Next(i, 20),
                     Category = $"Category {i}",
                     Description = $"Description {i}",
                     Name = $"name {i}",
@@ -70,7 +71,10 @@ namespace Horeca.Infrastructure.Data
                 };
 
                 context.Menus.Add(menu);
-
+                foreach (var ds in menu.Dishes)
+                {
+                    menu.Price += ds.Price;
+                }
                 MenuCard card = new()
                 {
                     Name = $"name {i}",
