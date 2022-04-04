@@ -2,6 +2,8 @@
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Tokens;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Principal;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -22,6 +24,8 @@ namespace Horeca.MVC.Services
         public void SetAccessToken(string accessToken)
         {
             httpContextAccessor.HttpContext.Response.Cookies.Append("JWToken", accessToken);
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(accessToken);
         }
 
         public string GetRefreshToken()

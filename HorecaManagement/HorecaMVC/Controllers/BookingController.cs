@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Horeca.MVC.Controllers.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
 {
-    public class ReservationController : Controller
+    [TypeFilter(typeof(TokenFilter))]
+    public class BookingController : Controller
     {
         public IActionResult Index()
         {

@@ -1,12 +1,10 @@
-﻿using Horeca.MVC.Services.Interfaces;
-
-namespace HorecaMVC.Services.Handlers
+﻿namespace Horeca.MVC.Services.Handlers
 {
-    public class HttpHandler : DelegatingHandler
+    public class HttpTokenHandler : DelegatingHandler
     {
         IHttpContextAccessor httpContextAccessor;
 
-        public HttpHandler(IHttpContextAccessor httpContextAccessor)
+        public HttpTokenHandler(IHttpContextAccessor httpContextAccessor)
         {
             this.httpContextAccessor = httpContextAccessor;
         }

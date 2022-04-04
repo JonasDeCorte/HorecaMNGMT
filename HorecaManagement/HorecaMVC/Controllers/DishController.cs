@@ -29,6 +29,8 @@ namespace Horeca.MVC.Controllers
         {
             IEnumerable<DishDto> dishes = await dishService.GetDishes();
 
+            var user = User.Claims;
+
             if (dishes == null)
             {
                 return View("NotFound");
@@ -37,7 +39,6 @@ namespace Horeca.MVC.Controllers
             foreach (var item in dishes)
             {
                 DishViewModel model = DishMapper.MapModel(item);
-
                 listModel.Dishes.Add(model);
             }
 
@@ -170,6 +171,10 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             DishDto dish = await dishService.GetDishById(id);
+            if (dish == null)
+            {
+                return View("NotFound");
+            }
             DishViewModel model = DishMapper.MapModel(dish);
 
             return View(model);
@@ -199,6 +204,10 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> EditIngredient(int dishId, int ingredientId)
         {
             IngredientDto ingredient = await ingredientService.GetIngredientById(ingredientId);
+            if (ingredient == null)
+            {
+                return View("NotFound");
+            }
             DishIngredientViewModel model = DishMapper.MapUpdateIngredientModel(dishId, ingredient);
 
             return View(model);
