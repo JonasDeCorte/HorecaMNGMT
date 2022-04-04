@@ -32,7 +32,7 @@ namespace Horeca.Infrastructure.Data.Repositories
                             Price = receiptLine.Total,
                         });
                     }
-                    table.Order = order;
+                    table.Orders.Add(order);
                     context.Orders.Add(order);
                     context.Tables.Update(table);
                 }

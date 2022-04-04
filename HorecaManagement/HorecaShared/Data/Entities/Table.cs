@@ -10,9 +10,7 @@
 
         public BookingDetail? BookingDetail { get; set; }
 
-        public Order? Order { get; set; }
-
-        public int? OrderId { get; set; }
+        public List<Order> Orders { get; set; } = new();
 
         public int Pax { get; set; }
     }

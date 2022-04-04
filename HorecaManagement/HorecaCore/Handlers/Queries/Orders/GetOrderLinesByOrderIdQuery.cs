@@ -10,7 +10,7 @@ using NLog;
 
 namespace HorecaCore.Handlers.Queries.Orders
 {
-    public class GetOrderLinesByOrderIdQuery : IRequest<OrderLinesByOrderIdDto>
+    public class GetOrderLinesByOrderIdQuery : IRequest<List<OrderLinesByOrderIdDto>>
     {
         public int Id { get; } // table Id
 
@@ -19,7 +19,7 @@ namespace HorecaCore.Handlers.Queries.Orders
             Id = id;
         }
 
-        public class GetOrderLinesByOrderIdQueryHandler : IRequestHandler<GetOrderLinesByOrderIdQuery, OrderLinesByOrderIdDto>
+        public class GetOrderLinesByOrderIdQueryHandler : IRequestHandler<GetOrderLinesByOrderIdQuery, List<OrderLinesByOrderIdDto>>
         {
             private readonly IMapper mapper;
             private readonly IApplicationDbContext context;
@@ -31,7 +31,7 @@ namespace HorecaCore.Handlers.Queries.Orders
                 this.context = context;
             }
 
-            public async Task<OrderLinesByOrderIdDto> Handle(GetOrderLinesByOrderIdQuery request, CancellationToken cancellationToken)
+            public async Task<List<OrderLinesByOrderIdDto>> Handle(GetOrderLinesByOrderIdQuery request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to return {object} with request: {@req}", nameof(OrderDto), request);
 
@@ -47,10 +47,11 @@ namespace HorecaCore.Handlers.Queries.Orders
                     throw new EntityNotFoundException();
                 }
 
-                Order? order = await context.Orders
+                List<Order>? order = await context.Orders
                                                .Include(x => x.OrderLines)
                                                .ThenInclude(x => x.Dish)
-                                               .SingleOrDefaultAsync(x => x.Id.Equals(table.OrderId));
+                                               .Where(x => x.TableId.Equals(table.Id))
+                                               .ToListAsync();
 
                 logger.Info("getting order with table Id: {id}", table.Id);
 
@@ -63,9 +64,11 @@ namespace HorecaCore.Handlers.Queries.Orders
 
                 logger.Info("returning {@object} with id: {id}", order, request.Id);
 
-                var mapped = mapper.Map<OrderLinesByOrderIdDto>(order);
-                mapped.TableId = table.Id;
-
+                var mapped = mapper.Map<List<OrderLinesByOrderIdDto>>(order);
+                foreach (var item in mapped)
+                {
+                    item.TableId = table.Id;
+                }
                 return mapped;
             }
         }
