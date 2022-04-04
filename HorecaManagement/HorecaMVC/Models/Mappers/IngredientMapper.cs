@@ -15,7 +15,7 @@ namespace Horeca.MVC.Models.Mappers
                 Name = ingredient.Name,
                 IngredientType = ingredient.IngredientType,
                 BaseAmount = ingredient.BaseAmount,
-                Unit = new UnitDto
+                Unit = new UnitViewModel
                 {
                     Id = ingredient.Unit.Id,
                     Name = ingredient.Unit.Name

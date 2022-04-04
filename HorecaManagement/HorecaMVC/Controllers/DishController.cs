@@ -7,6 +7,7 @@ using Horeca.Shared.Dtos.Dishes;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.MVC.Controllers.Filters;
+using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.MVC.Controllers
 {
@@ -122,7 +123,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapCreateIngredient(id, model);
+                MutateIngredientByDishDto result = DishMapper.MapAddIngredientDto(id, model);
                 var response = await dishService.AddDishIngredient(id, result);
                 if (response == null)
                 {
@@ -135,6 +136,35 @@ namespace Horeca.MVC.Controllers
             {
                 return View(model);
             }
+        }
+
+        public async Task<IActionResult> AddExistingIngredient(int id)
+        {
+            DishIngredientsByIdDto dishIngredientDto = await dishService.GetIngredientsByDishId(id);
+            IEnumerable<IngredientDto> ingredients = await ingredientService.GetIngredients();
+            if (ingredients == null || dishIngredientDto == null)
+            {
+                return View("NotFound");
+            }
+
+            ExistingIngredientsViewModel model = new ExistingIngredientsViewModel { DishId = id };
+            model.Ingredients = DishMapper.MapRemainingIngredientsList(dishIngredientDto, ingredients);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExistingIngredient(int id, ExistingIngredientsViewModel model)
+        {
+            IngredientViewModel ingredientModel = IngredientMapper.MapModel(await ingredientService.GetIngredientById(model.IngredientId));
+            MutateIngredientByDishDto result = DishMapper.MapAddIngredientDto(id, ingredientModel);
+            var response = await dishService.AddDishIngredient(id, result);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+
+            return RedirectToAction("Detail", new { id = id });
         }
 
         public async Task<IActionResult> Edit(int id)

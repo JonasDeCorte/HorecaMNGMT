@@ -15,10 +15,10 @@ namespace Horeca.MVC.Models.Ingredients
         public string IngredientType { get; set; }
         [Display(Name = "Base amount")]
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "{0} may not be a negative value or 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = "{0} must be higher than 0.")]
         public int BaseAmount { get; set; }
         [Display(Name = "Unit name")]
         [Required(ErrorMessage = "Unit name is required.")]
-        public UnitDto Unit { get; set; }
+        public UnitViewModel Unit { get; set; }
     }
 }
