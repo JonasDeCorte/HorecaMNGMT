@@ -104,7 +104,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuCardDto result = MenuCardMapper.MapCreateDish(id, dish);
+                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, dish);
 
                 var response = await menuCardService.AddMenuCardDish(id, result);
                 if (response == null)
@@ -134,7 +134,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateMenuMenuCardDto result = MenuCardMapper.MapCreateMenu(id, menu);
+                MutateMenuMenuCardDto result = MenuCardMapper.MapMutateMenuCardMenu(id, menu);
 
                 var response = await menuCardService.AddMenuCardMenu(id, result);
                 if (response == null)
@@ -191,11 +191,11 @@ namespace Horeca.MVC.Controllers
 
         [Route("/MenuCard/EditDish/{MenuCardId}/{DishId}")]
         [HttpPost]
-        public async Task<IActionResult> EditDish(MenuCardDishViewModel dish)
+        public async Task<IActionResult> EditDish(MenuCardDishViewModel model)
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuCardDto result = MenuCardMapper.MapUpdateDish(dish);
+                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(model.MenuCardId, model);
 
                 var response = await menuCardService.UpdateMenuCardDish(result);
                 if (response == null)
@@ -203,11 +203,11 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = dish.MenuCardId });
+                return RedirectToAction("Detail", new { id = model.MenuCardId });
             }
             else
             {
-                return View(dish);
+                return View(model);
             }
         }
 
@@ -226,7 +226,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateMenuMenuCardDto result = MenuCardMapper.MapUpdateMenu(model);
+                MutateMenuMenuCardDto result = MenuCardMapper.MapMutateMenuCardMenu(model.MenuCardId, model);
 
                 var response = await menuCardService.UpdateMenuCardMenu(result);
                 if (response == null)

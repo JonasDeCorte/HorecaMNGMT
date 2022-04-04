@@ -12,12 +12,11 @@ namespace Horeca.MVC.Models.Mappers
         {
             MenuViewModel model = new MenuViewModel
             {
-                Id = menu.Id,
+                MenuId = menu.Id,
                 Name = menu.Name,
                 Description = menu.Description,
                 Category = menu.Category
             };
-
             return model;
         }
 
@@ -25,7 +24,7 @@ namespace Horeca.MVC.Models.Mappers
         {
             MenuDetailViewModel model = new MenuDetailViewModel
             {
-                Id = menu.Id,
+                MenuId = menu.Id,
                 Name = menu.Name,
                 Description = menu.Description,
                 Category = menu.Category,
@@ -36,7 +35,6 @@ namespace Horeca.MVC.Models.Mappers
                 DishViewModel dishModel = DishMapper.MapModel(dishDto);
                 model.Dishes.Add(dishModel);
             }
-
             return model;
         }
 
@@ -98,11 +96,10 @@ namespace Horeca.MVC.Models.Mappers
                 Description = menuModel.Description,
                 Category = menuModel.Category,
             };
-
             return result;
         }
 
-        public static MutateDishMenuDto MapCreateDish(int id, DishViewModel model)
+        public static MutateDishMenuDto MapMutateMenuDish(int id, DishViewModel model)
         {
             MutateDishMenuDto result = new MutateDishMenuDto
             {
@@ -116,25 +113,6 @@ namespace Horeca.MVC.Models.Mappers
                     Description = model.Description
                 }
             };
-
-            return result;
-        }
-
-        public static MutateDishMenuDto MapUpdateDish(MenuDishViewModel model)
-        {
-            MutateDishMenuDto result = new MutateDishMenuDto
-            {
-                Id = model.MenuId,
-                Dish = new MutateDishDto
-                {
-                    Id = model.DishId,
-                    Name = model.Name,
-                    DishType = model.DishType,
-                    Category = model.Category,
-                    Description = model.Description
-                }
-            };
-
             return result;
         }
     }

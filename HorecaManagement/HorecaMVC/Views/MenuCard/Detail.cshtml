@@ -66,11 +66,11 @@
                                             <td>@item.Category</td>
                                             <td>
                                                 <a asp-action="EditMenu" asp-route-menuCardId="@Model.Id"
-                                                    asp-route-menuId="@item.Id" class="btn btn-primary">
+                                                    asp-route-menuId="@item.MenuId" class="btn btn-primary">
                                                     Edit
                                                 </a>
                                                 <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.MenuId">
                                                     Delete
                                                 </button>
                                             </td>
