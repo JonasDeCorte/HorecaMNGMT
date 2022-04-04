@@ -109,7 +109,7 @@ namespace Horeca.MVC.Models.Mappers
                 Id = id,
                 Dish = new MutateDishDto
                 {
-                    Id = model.Id,
+                    Id = model.DishId,
                     Name = model.Name,
                     DishType = model.DishType,
                     Category = model.Category,

@@ -47,10 +47,10 @@
                             </table>
                         </div>
                         <div>
-                            <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Detail" asp-route-id="@item.DishId" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.DishId" class="btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@item.Id">
+                                data-bs-target="#deleteModal" data-id="@item.DishId">
                                 Delete
                             </button>
                         </div>
@@ -79,10 +79,10 @@
                         <td>@Model.Dishes[i].DishType</td>
                         <td>@Model.Dishes[i].Category</td>
                         <td>
-                            <a asp-action="Detail" asp-route-id="@Model.Dishes[i].Id" class="btn btn-primary">Details</a>
-                            <a asp-action="Edit" asp-route-id="@Model.Dishes[i].Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Detail" asp-route-id="@Model.Dishes[i].DishId" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@Model.Dishes[i].DishId" class="btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@Model.Dishes[i].Id">
+                                data-bs-target="#deleteModal" data-id="@Model.Dishes[i].DishId">
                                 Delete
                             </button>
                         </td>

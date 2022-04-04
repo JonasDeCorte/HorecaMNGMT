@@ -184,7 +184,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuDto result = MenuMapper.MapUpdateDish(dish);
+                MutateDishMenuDto result = MenuMapper.MapCreateDish(dish.MenuId, dish);
 
                 var response = await menuService.UpdateMenuDish(result);
                 if (response == null)

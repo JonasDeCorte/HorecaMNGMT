@@ -123,7 +123,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapAddIngredientDto(id, model);
+                MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(id, model);
                 var response = await dishService.AddDishIngredient(id, result);
                 if (response == null)
                 {
@@ -157,7 +157,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> AddExistingIngredient(int id, ExistingIngredientsViewModel model)
         {
             IngredientViewModel ingredientModel = IngredientMapper.MapModel(await ingredientService.GetIngredientById(model.IngredientId));
-            MutateIngredientByDishDto result = DishMapper.MapAddIngredientDto(id, ingredientModel);
+            MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(id, ingredientModel);
             var response = await dishService.AddDishIngredient(id, result);
             if (response == null)
             {
@@ -176,18 +176,18 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(DishViewModel dish)
+        public async Task<IActionResult> Edit(int id, DishViewModel dish)
         {
             if (ModelState.IsValid)
             {
-                MutateDishDto result = DishMapper.MapMutateDish(dish, await dishService.GetDishById(dish.Id));
+                MutateDishDto result = DishMapper.MapMutateDish(dish, await dishService.GetDishById(id));
                 var response = await dishService.UpdateDish(result);
                 if (response == null)
                 {
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction(nameof(Detail), new { id = dish.Id });
+                return RedirectToAction(nameof(Detail), new { id = id });
             }
             else
             {
@@ -210,7 +210,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapUpdateIngredient(ingredient);
+                MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(ingredient.DishId, ingredient);
                 var response = await dishService.UpdateDishIngredient(result);
                 if (response == null)
                 {

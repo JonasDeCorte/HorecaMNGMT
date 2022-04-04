@@ -94,12 +94,11 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(IngredientViewModel ingredient)
+        public async Task<IActionResult> Edit(int id, IngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientDto result = IngredientMapper.MapUpdateIngredientDto(ingredient, 
-                    await ingredientService.GetIngredientById(ingredient.IngredientId));
+                MutateIngredientDto result = IngredientMapper.MapUpdateIngredientDto(ingredient, await ingredientService.GetIngredientById(id));
 
                 var response = await ingredientService.UpdateIngredient(result);
                 if (response == null)

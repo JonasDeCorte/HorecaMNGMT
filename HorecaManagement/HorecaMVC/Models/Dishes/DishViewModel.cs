@@ -4,7 +4,7 @@ namespace Horeca.MVC.Models.Dishes
 {
     public class DishViewModel
     {
-        public int Id { get; set; }
+        public int DishId { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]
         public string Name { get; set; }

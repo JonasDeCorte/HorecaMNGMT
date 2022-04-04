@@ -13,7 +13,7 @@ namespace Horeca.MVC.Models.Mappers
         {
             DishViewModel model = new DishViewModel
             {
-                Id = dish.Id,
+                DishId = dish.Id,
                 Name = dish.Name,
                 Category = dish.Category,
                 DishType = dish.DishType,
@@ -45,7 +45,7 @@ namespace Horeca.MVC.Models.Mappers
         {
             DishDetailViewModel model = new DishDetailViewModel
             {
-                Id = dish.Id,
+                DishId = dish.Id,
                 Name = dish.Name,
                 Category = dish.Category,
                 DishType = dish.DishType,
@@ -195,32 +195,11 @@ namespace Horeca.MVC.Models.Mappers
             return mutateIngredientDto;
         }
 
-        public static MutateIngredientByDishDto MapAddIngredientDto(int id, IngredientViewModel ingredient)
+        public static MutateIngredientByDishDto MapMutateDishIngredientDto(int id, IngredientViewModel ingredient)
         {
             MutateIngredientByDishDto result = new MutateIngredientByDishDto
             {
                 Id = id,
-                Ingredient = new MutateIngredientDto
-                {
-                    Id = ingredient.IngredientId,
-                    Name = ingredient.Name,
-                    BaseAmount = ingredient.BaseAmount,
-                    IngredientType = ingredient.IngredientType,
-                    Unit = new UnitDto
-                    {
-                        Id = ingredient.Unit.Id,
-                        Name = ingredient.Unit.Name
-                    }
-                }
-            };
-            return result;
-        }
-
-        public static MutateIngredientByDishDto MapUpdateIngredient(DishIngredientViewModel ingredient)
-        {
-            MutateIngredientByDishDto result = new MutateIngredientByDishDto
-            {
-                Id = ingredient.DishId,
                 Ingredient = new MutateIngredientDto
                 {
                     Id = ingredient.IngredientId,
