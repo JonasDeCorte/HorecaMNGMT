@@ -7,7 +7,7 @@
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
-        <form asp-action="Edit" class="w-75 mx-auto">
+        <form asp-action="Edit" asp-route-id="@Model.MenuId" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-2">
                 <label asp-for="Name" class="control-label"></label>
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+                <a asp-action="Detail" asp-route-id="@Model.MenuId" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

@@ -5,8 +5,25 @@
 }
 
 <div class="text-center">
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="m-2">
+                <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
+                    Add Permissions
+                </a>
+            </div>
+            <div class="m-2">
+                <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
+                    Remove Permissions
+                </a>
+            </div>
+            <div class="m-2">
+                <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+            </div>
+        </div>
+    </div>
     <h1 class="display-4">@Model.Username</h1>
-    <div class="d-flex">
+    <div class="container">
         <table class="table table-responsive">
             <thead>
                 <tr>
@@ -21,19 +38,6 @@
                     </tr>
                 }
             </tbody>
-            <tfoot>
-                <tr>
-                    <td scope="row" colspan="2">
-                        <a asp-action="Index" class="btn btn-secondary">Go Back</a>
-                        <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
-                            Add Permissions
-                        </a>
-                        <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
-                            Remove Permissions
-                        </a>
-                    </td>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>

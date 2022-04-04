@@ -28,9 +28,6 @@ namespace Horeca.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(pt => pt.PermissionId);
 
-            builder.Entity<DishIngredient>()
-                .HasKey(x => new { x.DishId, x.IngredientId });
-
             builder.Entity<DishIngredient>().HasOne(p => p.Dish)
            .WithMany(p => p.DishIngredients)
            .HasForeignKey(pt => pt.DishId);

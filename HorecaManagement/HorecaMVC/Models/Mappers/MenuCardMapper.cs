@@ -96,20 +96,19 @@ namespace Horeca.MVC.Models.Mappers
                 Id = menuCard.Id,
                 Name = menuCardModel.Name
             };
-
             result.Name = menuCardModel.Name;
 
             return result;
         }
 
-        public static MutateDishMenuCardDto MapCreateDish(int id, DishViewModel dish)
+        public static MutateDishMenuCardDto MapMutateMenuCardDish(int id, DishViewModel dish)
         {
             MutateDishMenuCardDto result = new MutateDishMenuCardDto
             {
                 MenuCardId = id,
                 Dish = new MutateDishDto
                 {
-                    Id = dish.Id,
+                    Id = dish.DishId,
                     Name = dish.Name,
                     DishType = dish.DishType,
                     Category = dish.Category,
@@ -120,55 +119,20 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
-        public static MutateMenuMenuCardDto MapCreateMenu(int id, MenuViewModel menu)
+        public static MutateMenuMenuCardDto MapMutateMenuCardMenu(int id, MenuViewModel menu)
         {
             MutateMenuMenuCardDto result = new MutateMenuMenuCardDto
             {
                 MenuCardId = id,
                 Menu = new MutateMenuDto
                 {
-                    Id = menu.Id,
+                    Id = menu.MenuId,
                     Name = menu.Name,
                     Category = menu.Category,
                     Description = menu.Description
                 }
             };
 
-            return result;
-        }
-
-        public static MutateDishMenuCardDto MapUpdateDish(MenuCardDishViewModel model)
-        {
-
-            MutateDishMenuCardDto result = new MutateDishMenuCardDto
-            {
-                MenuCardId = model.MenuCardId,
-                Dish = new MutateDishDto
-                {
-                    Id = model.DishId,
-                    Name = model.Name,
-                    DishType = model.DishType,
-                    Category = model.Category,
-                    Description = model.Description
-                }
-            };
-
-            return result;
-        }
-
-        public static MutateMenuMenuCardDto MapUpdateMenu(MenuCardMenuViewModel model)
-        {
-            MutateMenuMenuCardDto result = new MutateMenuMenuCardDto
-            {
-                MenuCardId = model.MenuCardId,
-                Menu = new MutateMenuDto
-                {
-                    Id = model.MenuId,
-                    Name = model.Name,
-                    Description = model.Description,
-                    Category = model.Category
-                }
-            };
             return result;
         }
     }

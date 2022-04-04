@@ -1,5 +1,4 @@
 ﻿using Horeca.MVC.Models.Ingredients;
-using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.Units;
 
@@ -15,7 +14,7 @@ namespace Horeca.MVC.Models.Mappers
                 Name = ingredient.Name,
                 IngredientType = ingredient.IngredientType,
                 BaseAmount = ingredient.BaseAmount,
-                Unit = new UnitDto
+                Unit = new UnitViewModel
                 {
                     Id = ingredient.Unit.Id,
                     Name = ingredient.Unit.Name
@@ -23,41 +22,6 @@ namespace Horeca.MVC.Models.Mappers
             };
 
             return model;
-        }
-
-        public static Ingredient MapIngredient(IngredientDto ingredientDto)
-        {
-            Ingredient ingredient = new Ingredient
-            {
-                Id = ingredientDto.Id,
-                Name = ingredientDto.Name,
-                IngredientType = ingredientDto.IngredientType,
-                BaseAmount = ingredientDto.BaseAmount,
-                Unit = new Unit
-                {
-                    Name = ingredientDto.Unit.Name,
-                    Id = ingredientDto.Unit.Id
-                }
-            };
-            return ingredient;
-        }
-
-        public static IngredientDto MapIngredientDto(Ingredient ingredient)
-        {
-            IngredientDto ingredientDto = new IngredientDto
-            {
-                Id = ingredient.Id,
-                Name = ingredient.Name,
-                IngredientType = ingredient.IngredientType,
-                BaseAmount = ingredient.BaseAmount,
-                Unit = new UnitDto
-                {
-                    Id = ingredient.Unit.Id,
-                    Name = ingredient.Unit.Name,
-                },
-            };
-
-            return ingredientDto;
         }
 
         public static MutateIngredientDto MapCreateIngredientDto(IngredientViewModel ingredientModel)

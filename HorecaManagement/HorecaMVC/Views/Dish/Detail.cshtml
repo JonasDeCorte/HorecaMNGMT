@@ -6,10 +6,10 @@
 
 <div class="d-flex flex-column text-center align-items-center">
     <h1 class="display-4">@Model.Name</h1>
-    <div style="max-width: 500px;">
+    @*<div style="max-width: 500px;">
         <img src="https://www.solo.be/uploadedimages/recepten/afbeeldingen/168331-biefstuk-friet.jpg" alt="@Model.Name"
              class="img-thumbnail" style="max-width: 100%; height: auto;" />
-    </div>
+    </div>*@
     <table class="table" style="table-layout: fixed">
         <thead>
             <tr>
@@ -53,9 +53,9 @@
                                         <td>@item.BaseAmount</td>
                                         <td>@item.Unit.Name</td>
                                         <td>
-                                            <a asp-action="EditIngredient" asp-route-dishId="@Model.Id"
-                                           asp-route-ingredientId="@item.IngredientId"
-                                           class="btn btn-primary">Edit</a>
+                                            <a asp-action="EditIngredient" asp-route-dishId="@Model.DishId"
+                                                asp-route-ingredientId="@item.IngredientId"
+                                                class="btn btn-primary">Edit</a>
                                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
                                                 data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IngredientId">
                                                 Delete
@@ -63,6 +63,13 @@
                                         </td>
                                     </tr>
                                 }
+                                <tr>
+                                    <td colspan="4">
+                                        <a asp-action="AddExistingIngredient" asp-route-id="@Model.DishId" type="button" class="btn btn-primary">
+                                            Add Existing Ingredient
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -72,8 +79,8 @@
         <tfoot>
             <tr>
                 <td scope="row">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-                    <a asp-action="CreateIngredient" asp-route-id="@Model.Id" class="btn btn-primary">Add Ingredient</a>
+                    <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
+                    <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
                     <a asp-action="Index" class="btn btn-secondary">Go Back</a>
                 </td>
             </tr>
@@ -106,7 +113,7 @@
     });
 
     function OpenModalDelete(){
-       var dishId = @Model.Id;
+       var dishId = @Model.DishId;
        var itemId = $(this).data("id");
        $('#deleteButton').attr('href', "/Dish/DeleteIngredient/" + dishId + "/" + itemId)
        $("#deleteModal").modal();

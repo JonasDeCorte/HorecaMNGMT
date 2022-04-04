@@ -42,10 +42,10 @@
                             </tbody>
                         </table>
                         <div>
-                            <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Detail" asp-route-id="@item.MenuId" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.MenuId" class="btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@item.Id">
+                                data-bs-target="#deleteModal" data-id="@item.MenuId">
                                 Delete
                             </button>
                         </div>
@@ -74,10 +74,10 @@
                         <td>@Model.Menus[i].Category</td>
                         <td>@Model.Menus[i].Description</td>
                         <td>
-                            <a asp-action="Detail" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Details</a>
-                            <a asp-action="Edit" asp-route-id="@Model.Menus[i].Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Detail" asp-route-id="@Model.Menus[i].MenuId" class="btn btn-primary">Details</a>
+                            <a asp-action="Edit" asp-route-id="@Model.Menus[i].MenuId" class="btn btn-primary">Edit</a>
                             <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@Model.Menus[i].Id">
+                                data-bs-target="#deleteModal" data-id="@Model.Menus[i].MenuId">
                                 Delete
                             </button>
                         </td>
