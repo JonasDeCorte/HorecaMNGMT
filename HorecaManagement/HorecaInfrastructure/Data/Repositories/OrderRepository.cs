@@ -32,10 +32,11 @@ namespace Horeca.Infrastructure.Data.Repositories
                             Price = receiptLine.Total,
                         });
                     }
-                    order.TableId = tableId;
+                    table.Order = order;
                     context.Orders.Add(order);
+                    context.Tables.Update(table);
                 }
-                // ato dodd to kitchen
+                // to do add to kitchen
                 await context.SaveChangesAsync();
 
                 await transaction.CommitAsync();

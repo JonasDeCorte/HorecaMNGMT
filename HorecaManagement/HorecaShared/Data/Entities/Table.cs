@@ -10,6 +10,10 @@
 
         public BookingDetail? BookingDetail { get; set; }
 
+        public Order? Order { get; set; }
+
+        public int? OrderId { get; set; }
+
         public int Pax { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Horeca.Core.Exceptions;
-using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Dishes;
@@ -13,7 +12,7 @@ namespace HorecaCore.Handlers.Queries.Orders
 {
     public class GetOrderLinesByOrderIdQuery : IRequest<OrderLinesByOrderIdDto>
     {
-        public int Id { get; }
+        public int Id { get; } // table Id
 
         public GetOrderLinesByOrderIdQuery(int id)
         {
@@ -34,12 +33,26 @@ namespace HorecaCore.Handlers.Queries.Orders
 
             public async Task<OrderLinesByOrderIdDto> Handle(GetOrderLinesByOrderIdQuery request, CancellationToken cancellationToken)
             {
-                logger.Info("trying to return {object} with id: {id}", nameof(OrderDto), request.Id);
+                logger.Info("trying to return {object} with request: {@req}", nameof(OrderDto), request);
 
-                Order? order = await context.Orders.Include(x => x.Table)
+                var table = await context.Tables
+                                             .SingleOrDefaultAsync(x => x.Id == request.Id);
+
+                logger.Info("checking if table exists (object} with id: {id}", nameof(Table), request.Id);
+
+                if (table is null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+
+                    throw new EntityNotFoundException();
+                }
+
+                Order? order = await context.Orders
                                                .Include(x => x.OrderLines)
                                                .ThenInclude(x => x.Dish)
-                                               .SingleOrDefaultAsync(x => x.Id.Equals(request.Id));
+                                               .SingleOrDefaultAsync(x => x.Id.Equals(table.OrderId));
+
+                logger.Info("getting order with table Id: {id}", table.Id);
 
                 if (order is null)
                 {
@@ -47,30 +60,13 @@ namespace HorecaCore.Handlers.Queries.Orders
 
                     throw new EntityNotFoundException();
                 }
-                OrderLinesByOrderIdDto orderlinesDto = new();
-                foreach (var line in order.OrderLines)
-                {
-                    orderlinesDto.Lines.Add(new OrderLineDto()
-                    {
-                        Dish = new DishDto()
-                        {
-                            Price = line.Dish.Price,
-                            Id = line.Dish.Id,
-                            Category = line.Dish.Category,
-                            Description = line.Dish.Description,
-                            DishType = line.Dish.DishType,
-                            Name = line.Dish.Name
-                        },
-                        Id = line.Id,
-                        Price = line.Price,
-                        Quantity = line.Quantity
-                    });
-                }
-                orderlinesDto.TableId = order.Table.Id;
-                orderlinesDto.Id = order.Id;
 
                 logger.Info("returning {@object} with id: {id}", order, request.Id);
-                return mapper.Map<OrderLinesByOrderIdDto>(order);
+
+                var mapped = mapper.Map<OrderLinesByOrderIdDto>(order);
+                mapped.TableId = table.Id;
+
+                return mapped;
             }
         }
     }

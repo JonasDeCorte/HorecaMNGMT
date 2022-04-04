@@ -38,21 +38,21 @@ namespace HorecaAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieve order lines list
+        /// Retrieve order lines list from the selected table
         /// </summary>
-        /// <param name="orderId">order id</param>
+        /// <param name="TableId">Table Id</param>
         /// <returns>
-        /// Relevant order lines will be returned
+        /// Relevant order lines will be returned based on the table id
         /// </returns>
         /// <response code="200">Success retrieving order lines list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Details/{orderId}")]
+        [Route("Table/{TableId}/Details")]
         [ProducesResponseType(typeof(IEnumerable<OrderLinesByOrderIdDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetByBookingNo([FromRoute] int orderId)
+        public async Task<IActionResult> GetByBookingNo([FromRoute] int TableId)
         {
-            return Ok(await mediator.Send(new GetOrderLinesByOrderIdQuery(orderId)));
+            return Ok(await mediator.Send(new GetOrderLinesByOrderIdQuery(TableId)));
         }
     }
 }
