@@ -11,7 +11,8 @@
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Add("Authorization", "Bearer " + httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
+            string accessToken = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
+            request.Headers.Add("Authorization", "Bearer " + accessToken);
             return await base.SendAsync(request, cancellationToken);
         }
     }

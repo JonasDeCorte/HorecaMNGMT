@@ -9,11 +9,13 @@ namespace Horeca.MVC.Services
     {
         private HttpClient httpClient;
         private IConfiguration configuration;
+        private readonly IAccountService accountService;
 
-        public PermissionService(HttpClient httpClient, IConfiguration configuration)
+        public PermissionService(HttpClient httpClient, IConfiguration configuration, IAccountService accountService)
         {
             this.httpClient = httpClient;
             this.configuration = configuration;
+            this.accountService = accountService;
         }
 
         public async Task<List<PermissionDto>> GetPermissions()

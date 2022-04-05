@@ -2,7 +2,7 @@
 
 namespace Horeca.MVC.Services
 {
-    public class ReservationService : IReservationService
+    public class BookingService : IBookingService
     {
 
     }

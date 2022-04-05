@@ -29,8 +29,6 @@ namespace Horeca.MVC.Controllers
         {
             IEnumerable<DishDto> dishes = await dishService.GetDishes();
 
-            var user = User.Claims;
-
             if (dishes == null)
             {
                 return View("NotFound");
