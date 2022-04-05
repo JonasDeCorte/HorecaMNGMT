@@ -76,7 +76,7 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// logs in call
+        /// authenticate the user and return access token + refresh token
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
