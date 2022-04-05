@@ -54,9 +54,17 @@
                         </div>
                         <div>
                             <a asp-action="Detail" class="btn btn-primary" asp-route-id="@item.IngredientId">Details</a>
-                            <a asp-action="Edit" asp-route-id="@item.IngredientId" class="modalbutton btn btn-primary">Edit</a>
-                            <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal" 
-                                data-bs-target="#deleteModal" data-id="@item.IngredientId">Delete</button>
+                            @if (accountService.Authorize(currentUser, "Ingredient_Update"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.IngredientId" class="modalbutton btn btn-primary">Edit</a>
+                            }
+                            @if (accountService.Authorize(currentUser, "Ingredient_Delete"))
+                            {
+                                <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal" data-id="@item.IngredientId">
+                                    Delete
+                                </button>
+                            }
                         </div>
                     </div>
                 </div>

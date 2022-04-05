@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Menu Card Detail";
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
 }
 
 <div class="text-center">
@@ -30,14 +31,20 @@
                                             <td>@item.Description</td>
                                             <td>@item.Category</td>
                                             <td>
-                                                <a asp-action="EditDish" asp-route-menuCardId="@Model.Id"
-                                                    asp-route-dishId="@item.DishId" class="btn btn-primary">
-                                                    Edit
-                                                </a>
-                                                <button id="toDeleteDishModal" type="button" class="modalbutton btn btn-danger"
+                                                @if (accountService.Authorize(currentUser, "Dish_Update"))
+                                                {
+                                                    <a asp-action="EditDish" asp-route-menuCardId="@Model.Id"
+                                                        asp-route-dishId="@item.DishId" class="btn btn-primary">
+                                                        Edit
+                                                    </a>
+                                                }
+                                                @if (accountService.Authorize(currentUser, "Dish_Delete"))
+                                                {
+                                                    <button id="toDeleteDishModal" type="button" class="modalbutton btn btn-danger"
                                                     data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.DishId">
-                                                    Delete
-                                                </button>
+                                                        Delete
+                                                    </button>
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -65,14 +72,20 @@
                                             <td>@item.Description</td>
                                             <td>@item.Category</td>
                                             <td>
-                                                <a asp-action="EditMenu" asp-route-menuCardId="@Model.Id"
-                                                    asp-route-menuId="@item.MenuId" class="btn btn-primary">
-                                                    Edit
-                                                </a>
-                                                <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
+                                                @if (accountService.Authorize(currentUser, "Menu_Update"))
+                                                {
+                                                    <a asp-action="EditMenu" asp-route-menuCardId="@Model.Id"
+                                                        asp-route-menuId="@item.MenuId" class="btn btn-primary">
+                                                        Edit
+                                                    </a>
+                                                }
+                                                @if (accountService.Authorize(currentUser, "Menu_Delete"))
+                                                {
+                                                    <button id="toDeleteMenuModal" type="button" class="modalbutton btn btn-danger"
                                                     data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.MenuId">
-                                                    Delete
-                                                </button>
+                                                        Delete
+                                                    </button>
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -84,9 +97,18 @@
                 <tfoot>
                     <tr>
                         <td scope="row" colspan="2">
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-                            <a asp-action="CreateDish" asp-route-id="@Model.Id" class="btn btn-primary">Add Dish</a>
-                            <a asp-action="CreateMenu" asp-route-id="@Model.Id" class="btn btn-primary">Add Menu</a>
+                            @if (accountService.Authorize(currentUser, "MenuCard_Update"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                            }
+                            @if (accountService.Authorize(currentUser, "Dish_Create"))
+                            {
+                                <a asp-action="CreateDish" asp-route-id="@Model.Id" class="btn btn-primary">Add Dish</a>
+                            }
+                            @if (accountService.Authorize(currentUser, "Menu_Create"))
+                            {
+                                <a asp-action="CreateMenu" asp-route-id="@Model.Id" class="btn btn-primary">Add Menu</a>
+                            }
                             <a asp-action="Index" class="btn btn-secondary">Go Back</a>
                         </td>
                     </tr>

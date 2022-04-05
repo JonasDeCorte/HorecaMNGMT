@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Booking Detail";
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
 }
 
 <div class="text-center">
@@ -26,7 +27,10 @@
                 <tfoot>
                     <tr>
                         <td scope="row" colspan="4">
-                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            @if (accountService.Authorize(currentUser, "Booking_Update"))
+                            {
+                                <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                            }
                             <a asp-action="Index" class="btn btn-secondary">Go Back</a>
                         </td>
                     </tr>

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Dish Detail";
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
 }
 
 <div class="d-flex flex-column text-center align-items-center">
@@ -53,23 +54,33 @@
                                         <td>@item.BaseAmount</td>
                                         <td>@item.Unit.Name</td>
                                         <td>
-                                            <a asp-action="EditIngredient" asp-route-dishId="@Model.DishId"
-                                                asp-route-ingredientId="@item.IngredientId"
-                                                class="btn btn-primary">Edit</a>
-                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
+                                            @if (accountService.Authorize(currentUser, "Ingredient_Update"))
+                                            {
+                                                <a asp-action="EditIngredient" asp-route-dishId="@Model.DishId" asp-route-ingredientId="@item.IngredientId" 
+                                                    class="btn btn-primary">
+                                                    Edit
+                                                </a>
+                                            }
+                                            @if (accountService.Authorize(currentUser, "Ingredient_Delete"))
+                                            {
+                                                <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
                                                 data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IngredientId">
-                                                Delete
-                                            </button>
+                                                    Delete
+                                                </button>
+                                            }
                                         </td>
                                     </tr>
                                 }
-                                <tr>
-                                    <td colspan="4">
-                                        <a asp-action="AddExistingIngredient" asp-route-id="@Model.DishId" type="button" class="btn btn-primary">
-                                            Add Existing Ingredient
-                                        </a>
-                                    </td>
-                                </tr>
+                                @if (accountService.Authorize(currentUser, "Ingredient_Create"))
+                                {
+                                    <tr>
+                                        <td colspan="4">
+                                            <a asp-action="AddExistingIngredient" asp-route-id="@Model.DishId" type="button" class="btn btn-primary">
+                                                Add Existing Ingredient
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -79,8 +90,14 @@
         <tfoot>
             <tr>
                 <td scope="row">
-                    <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
-                    <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
+                    @if (accountService.Authorize(currentUser, "Dish_Update"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
+                    }
+                    @if (accountService.Authorize(currentUser, "Ingredient_Create"))
+                    {
+                        <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
+                    }
                     <a asp-action="Index" class="btn btn-secondary">Go Back</a>
                 </td>
             </tr>
