@@ -198,7 +198,7 @@ namespace Horeca.Infrastructure.Data
 
             #endregion ApplicationUser restaurantBeheerder
 
-            #region Add Restaurants, Bookings, Tables
+            #region Add Restaurants, Bookings, Tables, Orders
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -273,8 +273,33 @@ namespace Horeca.Infrastructure.Data
                 };
                 context.Tables.Add(table);
             }
+            await context.SaveChangesAsync();
+            List<Table> list = context.Tables.ToList();
 
-            #endregion Add Restaurants, Bookings, Tables
+            for (int i = 0; i < list.Count; i++)
+            {
+                Table? item = list[i];
+                var dish = context.Dishes.ToArray()[i];
+
+                Order order = new()
+                {
+                    TableId = item.Id,
+                    OrderState = i % 2 == 0 ? Constants.OrderState.Waiting : Constants.OrderState.Confirmed,
+                    OrderLines = new List<OrderLine>()
+                    {
+                        new OrderLine()
+                        {
+                        DishId = dish.Id,
+                        Price = dish.Price,
+                        Quantity = i,
+                        DishState = i % 2 == 0 ? Constants.DishState.Waiting : Constants.DishState.Preparing,
+                        },
+                     }
+                };
+                context.Orders.Add(order);
+            }
+
+            #endregion Add Restaurants, Bookings, Tables, Orders
 
             await context.SaveChangesAsync();
         }

@@ -1,6 +1,9 @@
 ﻿using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
+using static Horeca.Shared.Utils.Constants;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
@@ -18,24 +21,23 @@ namespace Horeca.Infrastructure.Data.Repositories
             using var transaction = context.Database.BeginTransaction();
             try
             {
-                Table table = await context.Tables.FindAsync(tableId);
+                Table table = await context.Tables.SingleOrDefaultAsync(x => x.Id.Equals(tableId));
+
                 Order order = null;
+
                 if (table != null)
                 {
                     order = new();
-                    foreach (var receiptLine in receipt.Lines)
-                    {
-                        order.OrderLines.Add(new OrderLine()
-                        {
-                            DishId = receiptLine.Dish.Id,
-                            Quantity = receiptLine.Quantity,
-                            Price = receiptLine.Total,
-                        });
-                    }
+
+                    AddOrderLines(receipt, order);
+
+                    order.OrderState = OrderState.Confirmed;
                     table.Orders.Add(order);
+
                     context.Orders.Add(order);
                     context.Tables.Update(table);
                 }
+
                 // to do add to kitchen
                 await context.SaveChangesAsync();
 
@@ -51,6 +53,17 @@ namespace Horeca.Infrastructure.Data.Repositories
                 await transaction.DisposeAsync();
             }
             return null;
+        }
+
+        private static void AddOrderLines(Receipt receipt, Order order)
+        {
+            order.OrderLines.AddRange(receipt.Lines.Select(receiptLine => new OrderLine()
+            {
+                DishId = receiptLine.Dish.Id,
+                Quantity = receiptLine.Quantity,
+                Price = receiptLine.Total,
+                DishState = DishState.Waiting
+            }));
         }
     }
 }

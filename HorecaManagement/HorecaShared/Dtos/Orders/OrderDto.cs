@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.Dtos.Dishes;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Shared.Dtos.Orders
 {
@@ -15,6 +16,8 @@ namespace Horeca.Shared.Dtos.Orders
 
     public class OrderLinesByOrderIdDto : OrderDto
     {
+        public OrderState State { get; set; }
+
         public List<OrderLineDto> Lines { get; set; } = new();
     }
 
@@ -24,5 +27,7 @@ namespace Horeca.Shared.Dtos.Orders
         public DishDto Dish { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+
+        public DishState DishState { get; set; }
     }
 }

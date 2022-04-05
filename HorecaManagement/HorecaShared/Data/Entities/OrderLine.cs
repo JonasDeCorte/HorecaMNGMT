@@ -1,4 +1,7 @@
-﻿namespace Horeca.Shared.Data.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using static Horeca.Shared.Utils.Constants;
+
+namespace Horeca.Shared.Data.Entities
 {
     public class OrderLine : BaseEntity
     {
@@ -9,5 +12,7 @@
         public int Quantity { get; set; }
 
         public decimal Price { get; set; }
+
+        public DishState DishState { get; set; }
     }
 }
