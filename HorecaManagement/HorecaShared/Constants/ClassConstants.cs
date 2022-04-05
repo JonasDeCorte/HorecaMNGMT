@@ -14,8 +14,15 @@
         public const string MenuCard = "MenuCard";
         public const string MenuCards = "menuCards";
 
+        public const string Booking = "Booking";
+        public const string BookingNo = "BookingNo";
+        public const string Details = "Details";
+        public const string Member = "Member";
+        public const string ListCount = "ListCount";
+
         public const string Account = "Account";
         public const string User = "User";
+        public const string Admin = "Admin";
         public const string Login = "login";
         public const string Register = "register";
         public const string RegisterAdmin = "register-admin";
