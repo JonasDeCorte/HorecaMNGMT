@@ -21,6 +21,7 @@ builder.Services.AddHttpClient<IMenuService, MenuService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IMenuCardService, MenuCardService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IAccountService, AccountService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IPermissionService, PermissionService>("HttpMessageHandler");
+builder.Services.AddHttpClient<IBookingService, BookingService>("HttpMessageHandler");
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<TokenFilter>();

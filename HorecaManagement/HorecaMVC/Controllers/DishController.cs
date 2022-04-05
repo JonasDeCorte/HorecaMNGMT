@@ -7,7 +7,6 @@ using Horeca.Shared.Dtos.Dishes;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.MVC.Controllers.Filters;
-using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.MVC.Controllers
 {

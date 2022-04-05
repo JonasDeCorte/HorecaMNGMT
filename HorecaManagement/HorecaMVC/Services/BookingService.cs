@@ -70,7 +70,7 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<IEnumerable<BookingDto>> GetBookingsByUserId(string userId, string status)
+        public async Task<IEnumerable<BookingHistoryDto>> GetBookingsByUserId(string userId, string status)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{userId}/{status}");
@@ -78,7 +78,7 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<IEnumerable<BookingDto>>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<IEnumerable<BookingHistoryDto>>(response.Content.ReadAsStringAsync().Result);
                 return result;
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
