@@ -291,7 +291,7 @@ namespace Horeca.Infrastructure.Data
                         {
                         DishId = dish.Id,
                         Price = dish.Price,
-                        Quantity = i,
+                        Quantity = i+1,
                         DishState = i % 2 == 0 ? Constants.DishState.Waiting : Constants.DishState.Preparing,
                         },
                      }
