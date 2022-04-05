@@ -138,23 +138,21 @@ namespace Horeca.MVC.Services
             return result;
         }
 
-        public string GetCurrentUser()
+        public bool Authorize(UserDto user, string permission)
         {
-            return httpContextAccessor.HttpContext?.Request.Cookies["Username"];
-        }
-
-        public async Task<bool> AuthorizeElement(string permission)
-        {
-            var user = await GetUserByName(GetCurrentUser());
             if (user == null)
             {
                 return false;
-            }
-            if (!user.Permissions.Any(item => item.PermissionName == permission))
+            } else if (!user.Permissions.Any(item => item.PermissionName == permission))
             {
                 return false;
             }
             return true;
+        }
+
+        public string GetCurrentUser()
+        {
+            return httpContextAccessor.HttpContext?.Request.Cookies["Username"];
         }
 
         public bool IsLoggedIn()

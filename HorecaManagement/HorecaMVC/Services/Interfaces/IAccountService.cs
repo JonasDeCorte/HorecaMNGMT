@@ -13,7 +13,7 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<IEnumerable<BaseUserDto>> GetUsers();
         public Task<UserDto> GetUserByName(string username);
         public string GetCurrentUser();
-        public Task<bool> AuthorizeElement(string permission);
+        public bool Authorize(UserDto user, string permission);
         public bool IsLoggedIn();
     }
 }

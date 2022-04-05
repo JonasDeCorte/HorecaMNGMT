@@ -2,21 +2,28 @@
 
 @{
     ViewData["Title"] = "User Detail";
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
 }
 
 <div class="text-center">
     <div class="container">
         <div class="d-flex justify-content-center">
-            <div class="m-2">
-                <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
-                    Add Permissions
-                </a>
-            </div>
-            <div class="m-2">
-                <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
-                    Remove Permissions
-                </a>
-            </div>
+            @if (accountService.Authorize(currentUser, "Permission_Create"))
+            {
+                <div class="m-2">
+                    <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
+                        Add Permissions
+                    </a>
+                </div>
+            }
+            @if (accountService.Authorize(currentUser, "Permission_Delete"))
+            {
+                <div class="m-2">
+                    <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
+                        Remove Permissions
+                    </a>
+                </div>
+            }
             <div class="m-2">
                 <a asp-action="Index" class="btn btn-secondary">Go Back</a>
             </div>

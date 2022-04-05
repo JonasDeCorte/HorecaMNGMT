@@ -1,4 +1,7 @@
 ﻿@using Horeca.MVC.Services.Interfaces
+@{
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,43 +25,43 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (await accountService.AuthorizeElement("Ingredient_Read"))
+                        @if (accountService.Authorize(currentUser, "Ingredient_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Ingredient" asp-action="Index">Ingredients</a>
                             </li>
                         }
-                        @if (await accountService.AuthorizeElement("Dish_Read"))
+                        @if (accountService.Authorize(currentUser, "Dish_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dish" asp-action="Index">Dishes</a>
                             </li>
                         }
-                        @if (await accountService.AuthorizeElement("Menu_Read"))
+                        @if (accountService.Authorize(currentUser, "Menu_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Menu" asp-action="Index">Menus</a>
                             </li>
                         }
-                        @if (await accountService.AuthorizeElement("MenuCard_Read"))
+                        @if (accountService.Authorize(currentUser, "MenuCard_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="MenuCard" asp-action="Index">Menu Cards</a>
                             </li>
                         }
-                        @if (await accountService.AuthorizeElement("Order_Read"))
+                        @if (accountService.Authorize(currentUser, "Order_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
                             </li>
                         }
-                        @if (await accountService.AuthorizeElement("Booking_Read"))
+                        @if (accountService.Authorize(currentUser, "Booking_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">Bookings</a>
                             </li>
                         }
-                        @if (await accountService.AuthorizeElement("ApplicationUser_Read"))
+                        @if (accountService.Authorize(currentUser, "ApplicationUser_Read"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
