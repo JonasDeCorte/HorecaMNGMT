@@ -31,7 +31,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success retrieving total number of pending reservations list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Admin/ListCount")]
+        [Route("ListCount")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -50,7 +50,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success retrieving Booking list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Admin/{status}")]
+        [Route("{status}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

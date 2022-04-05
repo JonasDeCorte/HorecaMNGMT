@@ -35,7 +35,7 @@ namespace Horeca.Infrastructure.Data.Repositories
             return await context.Bookings.Include(b => b.User).FirstOrDefaultAsync(b => b.BookingNo == bookingNo);
         }
 
-        public async Task<IEnumerable<Booking>> GetByUserID(string userID, string status)
+        public async Task<IEnumerable<Booking>> GetByUserID(string userID, string status = "all")
         {
             if (status.Equals("all"))
             {
