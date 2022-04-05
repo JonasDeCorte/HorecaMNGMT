@@ -10,28 +10,28 @@ using NLog;
 
 namespace HorecaCore.Handlers.Queries.Orders
 {
-    public class GetOrderLinesByOrderIdQuery : IRequest<List<OrderLinesByOrderIdDto>>
+    public class GetOrderLinesByTableIdQuery : IRequest<List<GetOrderLinesByTableIdDto>>
     {
         public int Id { get; } // table Id
 
-        public GetOrderLinesByOrderIdQuery(int id)
+        public GetOrderLinesByTableIdQuery(int id)
         {
             Id = id;
         }
 
-        public class GetOrderLinesByOrderIdQueryHandler : IRequestHandler<GetOrderLinesByOrderIdQuery, List<OrderLinesByOrderIdDto>>
+        public class GetOrderLinesByTableIdQueryHandler : IRequestHandler<GetOrderLinesByTableIdQuery, List<GetOrderLinesByTableIdDto>>
         {
             private readonly IMapper mapper;
             private readonly IApplicationDbContext context;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public GetOrderLinesByOrderIdQueryHandler(IMapper mapper, IApplicationDbContext context)
+            public GetOrderLinesByTableIdQueryHandler(IMapper mapper, IApplicationDbContext context)
             {
                 this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<List<OrderLinesByOrderIdDto>> Handle(GetOrderLinesByOrderIdQuery request, CancellationToken cancellationToken)
+            public async Task<List<GetOrderLinesByTableIdDto>> Handle(GetOrderLinesByTableIdQuery request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to return {object} with request: {@req}", nameof(OrderDto), request);
 
@@ -64,7 +64,7 @@ namespace HorecaCore.Handlers.Queries.Orders
 
                 logger.Info("returning {@object} with id: {id}", order, request.Id);
 
-                var mapped = mapper.Map<List<OrderLinesByOrderIdDto>>(order);
+                var mapped = mapper.Map<List<GetOrderLinesByTableIdDto>>(order);
                 foreach (var item in mapped)
                 {
                     item.TableId = table.Id;

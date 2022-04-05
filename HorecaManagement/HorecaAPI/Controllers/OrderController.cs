@@ -3,7 +3,6 @@ using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Orders;
 using HorecaCore.Handlers.Queries.Orders;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -50,11 +49,11 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response>
         [HttpGet]
         [Route("Table/{TableId}/Details")]
-        [ProducesResponseType(typeof(IEnumerable<OrderLinesByOrderIdDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<GetOrderLinesByTableIdDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetByBookingNo([FromRoute] int TableId)
+        public async Task<IActionResult> GetByTableId([FromRoute] int TableId)
         {
-            return Ok(await mediator.Send(new GetOrderLinesByOrderIdQuery(TableId)));
+            return Ok(await mediator.Send(new GetOrderLinesByTableIdQuery(TableId)));
         }
     }
 }

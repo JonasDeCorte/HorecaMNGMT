@@ -14,7 +14,7 @@ namespace Horeca.Shared.Dtos.Orders
         public List<OrderDishDto> Dishes { get; set; } = new();
     }
 
-    public class OrderLinesByOrderIdDto : OrderDto
+    public class GetOrderLinesByTableIdDto : OrderDto
     {
         public OrderState State { get; set; }
 
