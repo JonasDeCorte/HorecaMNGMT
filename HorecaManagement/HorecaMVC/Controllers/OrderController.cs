@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Horeca.MVC.Controllers.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
 {
+    [TypeFilter(typeof(TokenFilter))]
     public class OrderController : Controller
     {
         public OrderController()

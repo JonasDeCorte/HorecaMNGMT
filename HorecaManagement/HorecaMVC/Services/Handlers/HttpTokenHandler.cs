@@ -1,19 +1,18 @@
-﻿using Horeca.MVC.Services.Interfaces;
-
-namespace HorecaMVC.Services.Handlers
+﻿namespace Horeca.MVC.Services.Handlers
 {
-    public class HttpHandler : DelegatingHandler
+    public class HttpTokenHandler : DelegatingHandler
     {
         IHttpContextAccessor httpContextAccessor;
 
-        public HttpHandler(IHttpContextAccessor httpContextAccessor)
+        public HttpTokenHandler(IHttpContextAccessor httpContextAccessor)
         {
             this.httpContextAccessor = httpContextAccessor;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Add("Authorization", "Bearer " + httpContextAccessor.HttpContext.Request.Cookies["JWToken"]);
+            string accessToken = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
+            request.Headers.Add("Authorization", "Bearer " + accessToken);
             return await base.SendAsync(request, cancellationToken);
         }
     }

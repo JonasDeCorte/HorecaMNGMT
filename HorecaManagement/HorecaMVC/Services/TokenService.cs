@@ -53,7 +53,6 @@ namespace Horeca.MVC.Services
             TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             SetAccessToken(result.AccessToken);
             SetRefreshToken(result.RefreshToken);
-
             return response;
         }
     }

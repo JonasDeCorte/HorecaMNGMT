@@ -20,7 +20,6 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Permission}");
-
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
@@ -35,7 +34,6 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Permission}/{id}");
-
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {

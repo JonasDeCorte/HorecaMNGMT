@@ -1,21 +1,21 @@
 ﻿@{
-    ViewData["Title"] = "Create Reservation";
+    ViewData["Title"] = "Edit Booking";
 }
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
-        <form class="w-75 mx-auto">
+        <form asp-action="Edit" class="w-75 mx-auto">
             <div class="mt-2">
                 <label for="Seats" class="form-label">Seats</label>
                 <input for="Seats" class="form-control" id="seats" placeholder="Seats">
             </div>
             <div class="mt-2">
-                <label for="Contact" class="form-label">Contact</label>
-                <input for="Contact" class="form-control" id="contact" placeholder="Contact">
+                <label for="Contact" class="form-label">Contact Email</label>
+                <input for="Contact" class="form-control" id="contact" placeholder="Contact Emai">
             </div>
             <div class="mt-2">
-                <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>

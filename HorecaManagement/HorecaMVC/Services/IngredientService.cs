@@ -10,13 +10,11 @@ namespace Horeca.MVC.Services
     {
         private readonly HttpClient httpClient;
         private IConfiguration configuration;
-        private readonly ITokenService tokenService;
 
-        public IngredientService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService)
+        public IngredientService(HttpClient httpClient, IConfiguration configuration)
         {
             this.httpClient = httpClient;
             this.configuration = configuration;
-            this.tokenService = tokenService;
         }
 
         public async Task<IEnumerable<IngredientDto>> GetIngredients()
