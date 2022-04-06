@@ -19,6 +19,7 @@ builder.Services.AddHttpClient<IDishService, DishService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IIngredientService, IngredientService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IMenuService, MenuService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IMenuCardService, MenuCardService>("HttpMessageHandler");
+builder.Services.AddHttpClient<IRestaurantService, RestaurantService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IAccountService, AccountService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IPermissionService, PermissionService>("HttpMessageHandler");
 

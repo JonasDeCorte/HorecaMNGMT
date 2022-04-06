@@ -14,6 +14,9 @@
         public const string MenuCard = "MenuCard";
         public const string MenuCards = "menuCards";
 
+        public const string Restaurant = "Restaurant";
+        public const string Employee = "Employee";
+
         public const string Account = "Account";
         public const string User = "User";
         public const string Login = "login";
