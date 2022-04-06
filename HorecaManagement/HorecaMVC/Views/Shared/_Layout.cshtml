@@ -28,7 +28,10 @@
                         @if (accountService.Authorize(currentUser, "Restaurant_Read"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index">Restaurants</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index" 
+                                    asp-route-id="@currentUser.Id">
+                                    Restaurants
+                                </a>
                             </li>
                         }
                         <li class="nav-item dropdown">

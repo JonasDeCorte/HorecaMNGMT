@@ -13,7 +13,13 @@
         {
             string accessToken = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
             request.Headers.Add("Authorization", "Bearer " + accessToken);
-            return await base.SendAsync(request, cancellationToken);
+
+            var response = await base.SendAsync(request, cancellationToken);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                httpContextAccessor.HttpContext.Response.Cookies.Delete("Username");
+            }
+            return response;
         }
     }
 }
