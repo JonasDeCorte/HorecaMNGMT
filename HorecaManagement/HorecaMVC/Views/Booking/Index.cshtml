@@ -63,7 +63,7 @@
                             @if (accountService.Authorize(currentUser, "Booking_Delete"))
                             {
                                 <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="0">
+                                    data-bs-target="#deleteModal" data-id="@booking.Id">
                                     Delete
                                 </button>
                             }
@@ -101,7 +101,7 @@
 
     function OpenModalDelete(){
        var itemId = $(this).data("id");
-       $('#deleteButton').attr('href', "/Reservation/Delete/" + itemId)
+       $('#deleteButton').attr('href', "/Booking/Delete/" + itemId)
        $("#deleteModal").modal();
     }
 </script>

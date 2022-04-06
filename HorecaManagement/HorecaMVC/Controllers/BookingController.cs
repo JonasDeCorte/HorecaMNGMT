@@ -52,9 +52,14 @@ namespace Horeca.MVC.Controllers
             return View();
         }
 
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var response = await bookingService.DeleteBooking(id);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
