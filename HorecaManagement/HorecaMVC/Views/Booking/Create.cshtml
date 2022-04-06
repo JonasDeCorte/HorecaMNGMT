@@ -1,18 +1,44 @@
-﻿@{
+﻿@model Horeca.MVC.Models.Bookings.CreateBookingViewModel
+
+@{
     ViewData["Title"] = "Create Booking";
 }
+
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <div>
         <form class="w-75 mx-auto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mt-2">
-                <label for="Seats" class="form-label">Seats</label>
-                <input for="Seats" class="form-control" id="seats" placeholder="Seats">
+                <label asp-for="Booking.FullName" class="control-label">Contact Name</label>
+                <input asp-for="Booking.FullName" class="form-control" />
+                <span asp-validation-for="Booking.FullName" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label for="Contact" class="form-label">Contact</label>
-                <input for="Contact" class="form-control" id="contact" placeholder="Contact">
+                <label asp-for="Booking.PhoneNo" class="control-label">Phone Number</label>
+                <input asp-for="Booking.PhoneNo" class="form-control" />
+                <span asp-validation-for="Booking.PhoneNo" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="Booking.BookingDate" class="control-label">Date</label>
+                <input asp-for="Booking.BookingDate" class="form-control" />
+                <span asp-validation-for="Booking.BookingDate" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="Booking.CheckIn" class="control-label">Check-in Time</label>
+                <input asp-for="Booking.CheckIn" class="form-control"/>
+                <span asp-validation-for="Booking.CheckIn" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="Booking.CheckOut" class="control-label">Check-out Time</label>
+                <input asp-for="Booking.CheckOut" class="form-control"/>
+                <span asp-validation-for="Booking.CheckOut" class="text-danger"></span>
+            </div>
+            <div class="mt-2">
+                <label asp-for="Pax" class="control-label">Number Of People</label>
+                <input asp-for="Pax" class="form-control"/>
+                <span asp-validation-for="Pax" class="text-danger"></span>
             </div>
             <div class="mt-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
