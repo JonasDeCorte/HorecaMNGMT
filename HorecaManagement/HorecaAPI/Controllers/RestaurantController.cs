@@ -38,6 +38,22 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
+        ///  Get list of Restaurants based on userId
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Success retrieving restaurants list based on user id </response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Read)]
+        [HttpGet]
+        [Route("User/{userId}")]
+        [ProducesResponseType(typeof(IEnumerable<RestaurantDto>), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> GetRestaurantByUserId([FromRoute] string userId)
+        {
+            return Ok(await mediator.Send(new GetRestaurantByUserIdQuery(userId)));
+        }
+
+        /// <summary>
         /// Retrieve restaurant by Id
         /// </summary>
         /// <param name="id"></param>
