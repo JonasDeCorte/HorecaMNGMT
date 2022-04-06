@@ -54,7 +54,7 @@ namespace Horeca.MVC.Models.Mappers
             return permissionList;
         }
 
-        internal static object? MapRemovePermissionsList(UserPermissionsViewModel userModel)
+        public static List<PermissionViewModel> MapRemovePermissionsList(UserPermissionsViewModel userModel)
         {
             List<PermissionViewModel> permissionList = new List<PermissionViewModel>();
             foreach (var permissionModel in userModel.Permissions)
@@ -62,6 +62,16 @@ namespace Horeca.MVC.Models.Mappers
                 permissionList.Add(permissionModel);
             }
             return permissionList;
+        }
+
+        public static List<UserViewModel> MapUserModelList(List<BaseUserDto> employees)
+        {
+            List<UserViewModel> userList = new List<UserViewModel>();
+            foreach (BaseUserDto employee in employees)
+            {
+                userList.Add(MapUserModel(employee));
+            }
+            return userList;
         }
 
         public static LoginUserDto MapLoginUser(LoginUserViewModel userModel)

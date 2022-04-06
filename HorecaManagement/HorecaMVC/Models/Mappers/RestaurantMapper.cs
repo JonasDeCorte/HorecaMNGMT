@@ -25,5 +25,18 @@ namespace Horeca.MVC.Models.Mappers
             }
             return model;
         }
+
+        public static RestaurantDetailViewModel MapRestaurantDetailModel(DetailRestaurantDto restaurantDto)
+        {
+            RestaurantDetailViewModel restaurantDetailModel = new RestaurantDetailViewModel
+            {
+                Id = restaurantDto.Id,
+                Name = restaurantDto.Name,
+            };
+            restaurantDetailModel.RestaurantSchedules = ScheduleMapper.MapRestaurantScheduleList(restaurantDto.RestaurantSchedules);
+            restaurantDetailModel.Employees = AccountMapper.MapUserModelList(restaurantDto.Employees);
+            restaurantDetailModel.MenuCards = MenuCardMapper.MapMenuCardModelList(restaurantDto.MenuCards);
+            return restaurantDetailModel;
+        }
     }
 }

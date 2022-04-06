@@ -10,7 +10,7 @@ namespace Horeca.MVC.Models.Mappers
 {
     public static class MenuCardMapper
     {
-        public static MenuCardViewModel MapModel(MenuCardDto menuCard)
+        public static MenuCardViewModel MapMenuCardModel(MenuCardDto menuCard)
         {
             MenuCardViewModel model = new MenuCardViewModel
             {
@@ -20,28 +20,19 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
-        public static MenuCardDetailViewModel MapDetailModel(MenuCard menuCard)
+        public static MenuCardDetailViewModel MapMenuCardDetailModel(MenuCard menuCard)
         {
             MenuCardDetailViewModel model = new MenuCardDetailViewModel
             {
                 Id = menuCard.Id,
                 Name = menuCard.Name
             };
-            foreach (var dish in menuCard.Dishes)
-            {
-                DishDto dishDto = DishMapper.MapDishDto(dish);
-                DishViewModel dishModel = DishMapper.MapModel(dishDto);
-                model.Dishes.Add(dishModel);
-            }
-            foreach (var menu in menuCard.Menus)
-            {
-                MenuDto menuDto = MenuMapper.MapMenuDto(menu);
-                MenuViewModel menuModel = MenuMapper.MapModel(menuDto);
-                model.Menus.Add(menuModel);
-            }
+            model.Dishes = DishMapper.MapDishModelList(menuCard.Dishes);
+            model.Menus = MenuMapper.MapMenuModelList(menuCard.Menus);
 
             return model;
         }
+
         public static MenuCardDishViewModel MapMutateMenuCardDishModel(int menuCardId, DishDto dish)
         {
             MenuCardDishViewModel result = new MenuCardDishViewModel
@@ -85,6 +76,16 @@ namespace Horeca.MVC.Models.Mappers
             {
                 Menu menuResult = MenuMapper.MapMenu(menuDto);
                 result.Menus.Add(menuResult);
+            }
+            return result;
+        }
+
+        internal static List<MenuCardViewModel> MapMenuCardModelList(List<MenuCardDto> menuCards)
+        {
+            List<MenuCardViewModel> result = new List<MenuCardViewModel>();
+            foreach (var menuCard in menuCards)
+            {
+                result.Add(MapMenuCardModel(menuCard));
             }
             return result;
         }

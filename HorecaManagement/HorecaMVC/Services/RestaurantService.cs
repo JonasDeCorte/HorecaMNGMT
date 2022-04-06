@@ -33,9 +33,22 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public Task<DetailRestaurantDto> GetRestaurantById(int id)
+        public async Task<DetailRestaurantDto> GetRestaurantById(int id)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Get, 
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/id");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var result = JsonConvert.DeserializeObject<DetailRestaurantDto>(response.Content.ReadAsStringAsync().Result);
+                return result;
+            }
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return null;
+            }
+            return null;
         }
 
         public Task<List<RestaurantDto>> GetRestaurantsByUser(int userId)

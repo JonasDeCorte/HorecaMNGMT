@@ -43,8 +43,9 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
+            RestaurantDetailViewModel model = RestaurantMapper.MapRestaurantDetailModel(restaurant);
 
-            return View();
+            return View(model);
         }
 
         public IActionResult Create()

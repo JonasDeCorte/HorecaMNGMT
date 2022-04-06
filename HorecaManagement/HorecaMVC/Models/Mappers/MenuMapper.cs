@@ -29,12 +29,7 @@ namespace Horeca.MVC.Models.Mappers
                 Description = menu.Description,
                 Category = menu.Category,
             };
-            foreach (var dish in menu.Dishes)
-            {
-                DishDto dishDto = DishMapper.MapDishDto(dish);
-                DishViewModel dishModel = DishMapper.MapModel(dishDto);
-                model.Dishes.Add(dishModel);
-            }
+            model.Dishes = DishMapper.MapDishModelList(menu.Dishes);
             return model;
         }
 
@@ -49,6 +44,18 @@ namespace Horeca.MVC.Models.Mappers
                 Category = dish.Category,
                 Description = dish.Description
             };
+            return result;
+        }
+
+        public static List<MenuViewModel> MapMenuModelList(List<Menu> menus)
+        {
+            List<MenuViewModel> result = new List<MenuViewModel>();
+            foreach (var menu in menus)
+            {
+                MenuDto menuDto = MapMenuDto(menu);
+                MenuViewModel menuModel = MapModel(menuDto);
+                result.Add(menuModel);
+            }
             return result;
         }
 

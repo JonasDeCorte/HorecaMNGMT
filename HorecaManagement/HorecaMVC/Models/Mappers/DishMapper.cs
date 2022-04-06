@@ -23,6 +23,17 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
+        public static DishListViewModel MapDishListModel(IEnumerable<DishDto> dishes)
+        {
+            DishListViewModel model = new DishListViewModel();
+            foreach (var item in dishes)
+            {
+                DishViewModel dishModel = MapModel(item);
+                model.Dishes.Add(dishModel);
+            }
+            return model;
+        }
+
         public static DishIngredientViewModel MapDishIngredientModel(MutateIngredientByDishDto dishIngredientDto)
         {
             DishIngredientViewModel model = new DishIngredientViewModel
@@ -78,6 +89,18 @@ namespace Horeca.MVC.Models.Mappers
             };
 
             return result;
+        }
+
+        public static List<DishViewModel> MapDishModelList(List<Dish> dishes)
+        {
+            List<DishViewModel> list = new List<DishViewModel>();
+            foreach (var dish in dishes)
+            {
+                DishDto dishDto = MapDishDto(dish);
+                DishViewModel dishModel = MapModel(dishDto);
+                list.Add(dishModel);
+            }
+            return list;
         }
 
         public static Dish MapDish(DishDto dishDto)

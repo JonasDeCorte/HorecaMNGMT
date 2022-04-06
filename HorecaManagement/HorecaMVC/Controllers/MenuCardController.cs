@@ -40,7 +40,7 @@ namespace Horeca.MVC.Controllers
 
             foreach (var item in menuCards)
             {
-                MenuCardViewModel model = MenuCardMapper.MapModel(item);
+                MenuCardViewModel model = MenuCardMapper.MapMenuCardModel(item);
 
                 listModel.MenuCards.Add(model);
             }
@@ -57,7 +57,7 @@ namespace Horeca.MVC.Controllers
                 return View("NotFound");
             }
 
-            MenuCardDetailViewModel model = MenuCardMapper.MapDetailModel(menuCard);
+            MenuCardDetailViewModel model = MenuCardMapper.MapMenuCardDetailModel(menuCard);
 
             return View(model);
         }
@@ -153,7 +153,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             MenuCardDto menuCard = await menuCardService.GetMenuCardById(id);
-            MenuCardViewModel model = MenuCardMapper.MapModel(menuCard);
+            MenuCardViewModel model = MenuCardMapper.MapMenuCardModel(menuCard);
 
             return View(model);
         }
