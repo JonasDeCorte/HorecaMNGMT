@@ -36,7 +36,7 @@ namespace HorecaCore.Handlers.Queries.Orders
                 logger.Info("trying to return {object} with request: {@req}", nameof(OrderDto), request);
 
                 var table = await context.Tables
-                                             .SingleOrDefaultAsync(x => x.Id == request.Id);
+                                             .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
                 logger.Info("checking if table exists (object} with id: {id}", nameof(Table), request.Id);
 
@@ -51,7 +51,7 @@ namespace HorecaCore.Handlers.Queries.Orders
                                                .Include(x => x.OrderLines)
                                                .ThenInclude(x => x.Dish)
                                                .Where(x => x.TableId.Equals(table.Id))
-                                               .ToListAsync();
+                                               .ToListAsync(cancellationToken: cancellationToken);
 
                 logger.Info("getting order with table Id: {id}", table.Id);
 

@@ -4,6 +4,7 @@ using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
@@ -11,8 +12,8 @@ namespace Horeca.Infrastructure.Data
 {
     public static class DataSeeder
     {
-        public const int AmountOfEachType = 15;
-        private static List<IEnumerable<Permission>>? listListPerms = new List<IEnumerable<Permission>>();
+        public const int AmountOfEachType = 10;
+        private static readonly List<IEnumerable<Permission>>? listListPerms = new();
 
         public static async void Seed(IApplicationBuilder app)
         {
@@ -198,7 +199,7 @@ namespace Horeca.Infrastructure.Data
 
             #endregion ApplicationUser restaurantBeheerder
 
-            #region Add Restaurants, Bookings, Tables, Orders
+            #region Add Restaurants, Bookings, Tables, Kitchen ,Orders
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -225,6 +226,8 @@ namespace Horeca.Infrastructure.Data
                 context.Restaurants.Add(restaurant);
 
                 await context.SaveChangesAsync();
+
+                context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
 
                 DateTime newSchedule = DateTime.Today.AddDays(1);
                 RestaurantSchedule restaurantSchedule = new()
@@ -262,6 +265,8 @@ namespace Horeca.Infrastructure.Data
                 };
                 context.BookingDetails.Add(bookingDetail);
             }
+            await context.SaveChangesAsync();
+
             var bookingDetails = context.BookingDetails.ToList();
             foreach (var bookingDetail in bookingDetails)
             {
@@ -274,32 +279,40 @@ namespace Horeca.Infrastructure.Data
                 context.Tables.Add(table);
             }
             await context.SaveChangesAsync();
-            List<Table> list = context.Tables.ToList();
 
-            for (int i = 0; i < list.Count; i++)
+            List<Table> list = context.Tables.AsNoTracking().ToList();
+            foreach (var table in list)
             {
-                Table? item = list[i];
-                var dish = context.Dishes.ToArray()[i];
-
+                var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
                 Order order = new()
                 {
-                    TableId = item.Id,
-                    OrderState = i % 2 == 0 ? Constants.OrderState.Waiting : Constants.OrderState.Confirmed,
+                    TableId = table.Id,
+                    OrderState = table.Id % 2 == 0 ? Constants.OrderState.Waiting : Constants.OrderState.Confirmed,
                     OrderLines = new List<OrderLine>()
                     {
                         new OrderLine()
                         {
                         DishId = dish.Id,
                         Price = dish.Price,
-                        Quantity = i+1,
-                        DishState = i % 2 == 0 ? Constants.DishState.Waiting : Constants.DishState.Preparing,
+                        Quantity = table.Id+1,
+                        DishState = table.Id % 2 == 0 ? Constants.DishState.Waiting : Constants.DishState.Preparing,
                         },
                      }
                 };
-                context.Orders.Add(order);
+                Kitchen kitchen = new();
+                kitchen.Orders.Add(order);
+                context.Kitchens.Add(kitchen);
+                await context.SaveChangesAsync();
+            }
+            var kitchens = await context.Kitchens.AsNoTracking().ToListAsync();
+            foreach (var kitchen in kitchens)
+            {
+                var restaurant = await context.Restaurants.AsNoTracking().FirstOrDefaultAsync(x => x.Id == kitchen.Id);
+                restaurant.KitchenId = kitchen.Id;
+                context.Restaurants.Update(restaurant);
             }
 
-            #endregion Add Restaurants, Bookings, Tables, Orders
+            #endregion Add Restaurants, Bookings, Tables, Kitchen ,Orders
 
             await context.SaveChangesAsync();
         }
