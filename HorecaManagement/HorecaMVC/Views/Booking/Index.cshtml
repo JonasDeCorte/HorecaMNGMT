@@ -16,11 +16,16 @@
                 </div>
             </div>
             <div class="col d-flex justify-content-center">
-                <select class="form-select" aria-label="Status" style="width: 50%;" onchange="location = this.value">
-                    <option value="@BookingStatus.PENDING">Pending</option>
-                    <option value="@BookingStatus.EXPIRED">Expired</option>
-                    <option value="@BookingStatus.COMPLETE">Complete</option>
-                </select>
+                <button class="btn btn-primary dropdown-toggle" type="button"
+                        id="selectStatusButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select status
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="selectStatusButton">
+                    <li><a asp-action="Index" asp-route-status="All" class="dropdown-item">All</a></li>
+                    <li><a asp-action="Index" asp-route-status="@BookingStatus.PENDING" class="dropdown-item">Pending</a></li>
+                    <li><a asp-action="Index" asp-route-status="@BookingStatus.EXPIRED" class="dropdown-item">Expired</a></li>
+                    <li><a asp-action="Index" asp-route-status="@BookingStatus.COMPLETE" class="dropdown-item">Complete</a></li>
+                </ul>
             </div>
             <div class="col">
                 @if (accountService.Authorize(currentUser, "Booking_Create"))
@@ -75,11 +80,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Ingredient</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Delete Booking</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="dvData">
-                Are you sure you want to delete this reservation?
+                Are you sure you want to delete this booking?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
