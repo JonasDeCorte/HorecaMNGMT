@@ -21,7 +21,14 @@ namespace Horeca.Infrastructure.Data.Repositories
             using var transaction = context.Database.BeginTransaction();
             try
             {
-                Table table = await context.Tables.SingleOrDefaultAsync(x => x.Id.Equals(tableId));
+                //  fout in design?
+                Table table = await context.Tables
+                    .Include(x => x.BookingDetail)
+                    .ThenInclude(x => x.RestaurantSchedule)
+                    .ThenInclude(x => x.Restaurant)
+                    .ThenInclude(x => x.Kitchen)
+                    .ThenInclude(x => x.Orders)
+                    .SingleOrDefaultAsync(x => x.Id.Equals(tableId));
 
                 Order order = null;
 
@@ -38,7 +45,11 @@ namespace Horeca.Infrastructure.Data.Repositories
                     context.Tables.Update(table);
                 }
 
-                // to do add to kitchen
+                // add to kitchen => an order has been placed
+                var kitchen = table.RestaurantSchedule.Restaurant.Kitchen;
+                kitchen.Orders.Add(order);
+                context.Kitchens.Update(kitchen);
+
                 await context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
