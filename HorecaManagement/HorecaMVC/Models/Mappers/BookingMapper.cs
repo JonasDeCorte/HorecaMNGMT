@@ -12,12 +12,9 @@ namespace Horeca.MVC.Models.Mappers
                 Id = bookingDto.Id,
                 UserID = bookingDto.UserID,
                 BookingDate = bookingDto.BookingDate,
-                CheckIn = bookingDto.CheckIn,
-                CheckOut = bookingDto.CheckOut,
                 BookingNo = bookingDto.BookingNo,
                 BookingStatus = bookingDto.BookingStatus,
                 FullName = bookingDto.FullName,
-                PhoneNo = bookingDto.PhoneNo,
             };
             return bookingModel;
         }
@@ -30,6 +27,22 @@ namespace Horeca.MVC.Models.Mappers
                 bookingListViewModel.Bookings.Add(MapBookingModel(bookingDto));
             }
             return bookingListViewModel;
+        }
+
+        public static BookingDetailViewModel MapBookingDetailModel(BookingDto bookingDto)
+        {
+            BookingDetailViewModel bookingDetailViewModel = new BookingDetailViewModel
+            {
+                Id = bookingDto.Id,
+                UserID = bookingDto.UserID,
+                BookingDate = bookingDto.BookingDate,
+                BookingNo = bookingDto.BookingNo,
+                BookingStatus = bookingDto.BookingStatus,
+                FullName = bookingDto.FullName,
+                CheckIn = bookingDto.CheckIn,
+                CheckOut = bookingDto.CheckOut,
+            };
+            return bookingDetailViewModel;
         }
     }
 }

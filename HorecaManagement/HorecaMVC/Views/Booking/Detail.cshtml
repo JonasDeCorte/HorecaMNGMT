@@ -1,41 +1,43 @@
-﻿@{
+﻿@model Horeca.MVC.Models.Bookings.BookingDetailViewModel
+
+@{
     ViewData["Title"] = "Booking Detail";
     var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
 }
 
 <div class="text-center">
     <div class="d-flex flex-column">
-        <h1 class="display-4">Booking 1</h1>
-        <div class="table-responsive">
-            <table class="table mt-2">
-                <thead>
-                    <tr>
-                        <th scope="col">Number</th>
-                        <th scope="col">Seats</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Contact</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td scope="row">1</td>
-                        <td>4</td>
-                        <td>5:00 21st of march</td>
-                        <td>johanscheisser@gmail.com</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td scope="row" colspan="4">
-                            @if (accountService.Authorize(currentUser, "Booking_Update"))
-                            {
-                                <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                            }
-                            <a asp-action="Index" class="btn btn-secondary">Go Back</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+        <h1 class="display-4">Booking @Model.Id</h1>
+        <table class="table table-responsive mt-2">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-2">Contact Name</th>
+                    <th scope="col" class="col-2">Date</th>
+                    <th scope="col" class="col-2">Check In</th>
+                    <th scope="col" class="col-2">Check Out</th>
+                    <th scope="col" class="col-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">@Model.FullName</td>
+                    <td>@Model.BookingDate</td>
+                    <td>@Model.CheckIn</td>
+                    <td>@Model.CheckOut</td>
+                    <td>@Model.BookingStatus</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td scope="row" colspan="5">
+                        @if (accountService.Authorize(currentUser, "Booking_Update"))
+                        {
+                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                        }
+                        <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div>

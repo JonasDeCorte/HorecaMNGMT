@@ -18,7 +18,7 @@ namespace Horeca.MVC.Controllers
             this.bookingService = bookingService;
         }
 
-        public async Task<IActionResult> Index(string status = BookingStatus.PENDING)
+        public async Task<IActionResult> Index(string status = "All")
         {
             IEnumerable<BookingDto> bookings = await bookingService.GetBookingsByStatus(status);
             if (bookings == null)
@@ -30,9 +30,16 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public IActionResult Detail()
+        public async Task<IActionResult> Detail(string bookingNo)
         {
-            return View();
+            BookingDto booking = await bookingService.GetBookingByNumber(bookingNo);
+            if (booking == null)
+            {
+                return View("NotFound");
+            }
+            BookingDetailViewModel model = BookingMapper.MapBookingDetailModel(booking);
+
+            return View(model);
         }
 
         public IActionResult Create()

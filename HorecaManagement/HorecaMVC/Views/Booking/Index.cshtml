@@ -40,7 +40,7 @@
             <thead>
                 <tr>
                     <th scope="col" class="col-2">Id</th>
-                    <th scope="col" class="col-2">Name</th>
+                    <th scope="col" class="col-2">Contact Name</th>
                     <th scope="col" class="col-3">Date</th>
                     <th scope="col" class="col-2">Status</th>
                     <th scope="col" class="col-3">Options</th>
@@ -55,7 +55,7 @@
                         <td>@booking.BookingDate</td>
                         <td>@booking.BookingStatus</td>
                         <td>
-                            <a asp-action="Detail" class="btn btn-primary">Details</a>
+                            <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
                             @if (accountService.Authorize(currentUser, "Booking_Update"))
                             {
                                 <a asp-action="Edit" class="btn btn-primary">Edit</a>

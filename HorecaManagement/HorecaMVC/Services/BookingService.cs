@@ -53,10 +53,11 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<BookingDto> GetBookingByNumber(int bookingNo)
+        public async Task<BookingDto> GetBookingByNumber(string bookingNo)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Details}/{ClassConstants.BookingNo}/{bookingNo}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Details}" +
+                $"/{ClassConstants.BookingNo}/{bookingNo}");
 
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
