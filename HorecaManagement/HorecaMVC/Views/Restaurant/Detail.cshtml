@@ -13,7 +13,7 @@
             {
                 <div class="table-responsive flex-grow-1 m-2">
                     <h2 class="display-6">Menu Cards</h2>
-                    <table class="table table-hover mt-2" style="display: visible;">
+                    <table class="table table-hover table-bordered mt-2" style="display: visible;">
                         <thead>
                             <tr>
                                 <th scope="col" class="col-9">Name</th>
@@ -26,7 +26,7 @@
                                 <tr>
                                     <td>@menuCard.Name</td>
                                     <td>
-                                        <a asp-action="Detail" asp-route-id="@menuCard.Id" class="btn btn-primary">Details</a>
+                                        <a asp-controller="MenuCard" asp-action="Detail" asp-route-id="@menuCard.Id" class="btn btn-primary">Details</a>
                                     </td>
                                 </tr>
                             }
@@ -38,7 +38,7 @@
             {
                 <div class="table-responsive flex-grow-1 m-2">
                     <h2 class="display-6">Employees</h2>
-                    <table class="table table-hover mt-2" style="display: visible;">
+                    <table class="table table-hover table-bordered mt-2" style="display: visible;">
                         <thead>
                             <tr>
                                 <th scope="col" class="col-9">Username</th>
@@ -51,7 +51,9 @@
                                 <tr>
                                     <td>@employee.Username</td>
                                     <td>
-                                        <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">Details</a>
+                                        <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">
+                                            Details
+                                        </a>
                                     </td>
                                 </tr>
                             }
@@ -64,12 +66,13 @@
         {
             <div class="table-responsive m-2">
                 <h2 class="display-6">Schedules</h2>
-                <table class="table table-hover mt-2" style="display: visible;">
+                <table class="table table-hover table-bordered mt-2" style="display: visible;">
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Start Time</th>
                             <th scope="col">End Time</th>
+                            <th scope="col">Options</th>
                         </tr>
                     </thead>
                     <tbody>

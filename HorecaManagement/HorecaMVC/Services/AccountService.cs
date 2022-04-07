@@ -126,6 +126,10 @@ namespace Horeca.MVC.Services
 
         public async Task<UserDto> GetUserByName(string username)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
 
@@ -133,10 +137,12 @@ namespace Horeca.MVC.Services
             if (!response.IsSuccessStatusCode)
             {
                 return null;
+            } 
+            else
+            {
+                var result = JsonConvert.DeserializeObject<UserDto>(response.Content.ReadAsStringAsync().Result);
+                return result;
             }
-
-            var result = JsonConvert.DeserializeObject<UserDto>(response.Content.ReadAsStringAsync().Result);
-            return result;
         }
 
         public bool Authorize(UserDto user, string permission)

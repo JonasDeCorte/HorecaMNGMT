@@ -50,7 +50,28 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            CreateRestaurantViewModel model = new CreateRestaurantViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateRestaurantViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                MutateRestaurantDto restaurantDto = RestaurantMapper.MapRestaurantDto(model);
+                    
+                var response = await restaurantService.AddRestaurant(restaurantDto);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
+                return RedirectToAction(nameof(Index));
+            } 
+            else
+            {
+                return View(model);
+            }
         }
 
         public IActionResult Update()

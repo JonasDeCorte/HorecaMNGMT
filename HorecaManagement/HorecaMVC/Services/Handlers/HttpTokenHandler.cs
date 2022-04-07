@@ -19,7 +19,7 @@
             {
                 httpContextAccessor.HttpContext.Response.Cookies.Delete("Username");
             }
-            return response;
+            return response; ;
         }
     }
 }
