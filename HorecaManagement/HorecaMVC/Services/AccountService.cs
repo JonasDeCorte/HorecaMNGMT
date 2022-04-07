@@ -23,6 +23,7 @@ namespace Horeca.MVC.Services
             this.httpContextAccessor = httpContextAccessor;
             this.configuration = configuration;
         }
+        public UserDto CurrentUser { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public async Task<HttpResponseMessage> LoginUser(LoginUserDto user)
         {
@@ -150,14 +151,26 @@ namespace Horeca.MVC.Services
             return true;
         }
 
-        public string GetCurrentUser()
+        public string GetCurrentUserName()
         {
             return httpContextAccessor.HttpContext?.Request.Cookies["Username"];
         }
 
+        public async Task<UserDto> GetCurrentUser()
+        {
+            var response = await GetUserByName(GetCurrentUserName());
+            if (response == null)
+            {
+                return null;
+            } else
+            {
+                return response;
+            }
+        }
+
         public bool IsLoggedIn()
         {
-            if (GetCurrentUser() == null)
+            if (GetCurrentUserName() == null)
             {
                 return false;
             }

@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "User Detail";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUserName());
 }
 
 <div class="text-center">

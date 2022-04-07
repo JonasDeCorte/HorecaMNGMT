@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Order Overview";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
+    var currentUser = await accountService.GetCurrentUser();
 }
 
 <div class="text-center">

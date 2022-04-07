@@ -1,0 +1,92 @@
+﻿@model Horeca.MVC.Models.Restaurants.RestaurantDetailViewModel
+
+@{
+    ViewData["Title"] = "Restaurant Detail";
+    var currentUser = await accountService.GetCurrentUser();
+}
+
+<div class="text-center">
+    <div class="d-flex flex-column">
+        <h1 class="display-4">@Model.Name</h1>
+        <div class="d-flex ">
+            @if (accountService.Authorize(currentUser, "MenuCard_Read"))
+            {
+                <div class="table-responsive flex-grow-1 m-2">
+                    <h2 class="display-6">Menu Cards</h2>
+                    <table class="table table-hover mt-2" style="display: visible;">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-9">Name</th>
+                                <th scope="col" class="col-3">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var menuCard in @Model.MenuCards)
+                            {
+                                <tr>
+                                    <td>@menuCard.Name</td>
+                                    <td>
+                                        <a asp-action="Detail" asp-route-id="@menuCard.Id" class="btn btn-primary">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            @if (accountService.Authorize(currentUser, "ApplicationUser_Read"))
+            {
+                <div class="table-responsive flex-grow-1 m-2">
+                    <h2 class="display-6">Employees</h2>
+                    <table class="table table-hover mt-2" style="display: visible;">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-9">Username</th>
+                                <th scope="col" class="col-3">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var employee in @Model.Employees)
+                            {
+                                <tr>
+                                    <td>@employee.Username</td>
+                                    <td>
+                                        <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+        @if (accountService.Authorize(currentUser, "RestaurantSchedule_Read"))
+        {
+            <div class="table-responsive m-2">
+                <h2 class="display-6">Schedules</h2>
+                <table class="table table-hover mt-2" style="display: visible;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in @Model.RestaurantSchedules)
+                        {
+                            <tr>
+                                <td>@schedule.Id</td>
+                                <td>@schedule.StartTime</td>
+                                <td>@schedule.EndTime</td>
+                                <td>
+                                    <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

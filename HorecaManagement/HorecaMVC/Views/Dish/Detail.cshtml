@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Dish Detail";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
+    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUserName());
 }
 
 <div class="d-flex flex-column text-center align-items-center">
