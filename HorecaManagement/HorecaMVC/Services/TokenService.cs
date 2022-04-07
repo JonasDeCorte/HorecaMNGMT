@@ -34,7 +34,7 @@ namespace Horeca.MVC.Services
             httpContextAccessor.HttpContext.Response.Cookies.Append("RefreshToken", refreshToken);
         }
 
-        public async Task<HttpResponseMessage> RefreshTokens()
+        public async Task<string> RefreshTokens()
         {
             RefreshTokenDto refreshTokenDto = new RefreshTokenDto()
             {
@@ -53,7 +53,7 @@ namespace Horeca.MVC.Services
             TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             SetAccessToken(result.AccessToken);
             SetRefreshToken(result.RefreshToken);
-            return response;
+            return result.AccessToken;
         }
     }
 }

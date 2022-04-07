@@ -16,7 +16,7 @@ namespace Horeca.MVC.Controllers.Filters
         {
             try
             {
-                await tokenService.RefreshTokens();
+                //await tokenService.RefreshTokens();
             }
             finally
             {

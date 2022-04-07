@@ -1,23 +1,45 @@
-﻿namespace Horeca.MVC.Services.Handlers
+﻿using Horeca.MVC.Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+
+namespace Horeca.MVC.Services.Handlers
 {
     public class HttpTokenHandler : DelegatingHandler
     {
         IHttpContextAccessor httpContextAccessor;
+        private readonly ITokenService tokenService;
 
-        public HttpTokenHandler(IHttpContextAccessor httpContextAccessor)
+        public HttpTokenHandler(IHttpContextAccessor httpContextAccessor, ITokenService tokenService)
         {
             this.httpContextAccessor = httpContextAccessor;
+            this.tokenService = tokenService;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string accessToken = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
+            Console.WriteLine("Andere accesstoken in tokenhandler: " + accessToken);
             request.Headers.Add("Authorization", "Bearer " + accessToken);
 
             var response = await base.SendAsync(request, cancellationToken);
+
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                httpContextAccessor.HttpContext.Response.Cookies.Delete("Username");
+                var newAccessToken = await tokenService.RefreshTokens();
+
+                request.Headers.Remove("Authorization");
+                request.Headers.Add("Authorization", "Bearer " + newAccessToken);
+                var newResponse = await base.SendAsync(request, cancellationToken);
+
+                if (newResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    httpContextAccessor.HttpContext.Response.Cookies.Delete("Username");
+                }
+                if (!string.IsNullOrEmpty(newAccessToken))
+                {
+                    var username = new JwtSecurityTokenHandler().ReadJwtToken(newAccessToken).Claims.Skip(2).First().Value;
+                    httpContextAccessor.HttpContext.Response.Cookies.Append("Username", username);
+                }
+                return newResponse;
             }
             return response; ;
         }

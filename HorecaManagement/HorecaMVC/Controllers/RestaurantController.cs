@@ -59,7 +59,7 @@ namespace Horeca.MVC.Controllers
         {
             if(ModelState.IsValid)
             {
-                MutateRestaurantDto restaurantDto = RestaurantMapper.MapRestaurantDto(model);
+                MutateRestaurantDto restaurantDto = RestaurantMapper.MapCreateRestaurantDto(model);
                     
                 var response = await restaurantService.AddRestaurant(restaurantDto);
                 if (response == null)
@@ -76,12 +76,37 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Update()
         {
-            return View();
+            CreateRestaurantViewModel model = new CreateRestaurantViewModel();
+            return View(model);
         }
 
-        public IActionResult Delete()
+        [HttpPost]
+        public async Task<IActionResult> Update(RestaurantViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                EditRestaurantDto restaurantDto = RestaurantMapper.MapEditRestaurantDto(model);
+                var response = await restaurantService.UpdateRestaurant(restaurantDto);
+                if (response == null)
+                {
+                    return View("OperationFailed");
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await restaurantService.DeleteRestaurant(id);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

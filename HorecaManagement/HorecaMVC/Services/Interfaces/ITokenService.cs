@@ -7,6 +7,6 @@ namespace Horeca.MVC.Services.Interfaces
         public void SetAccessToken(string accessToken);
         public string GetRefreshToken();
         public void SetRefreshToken(string refreshToken);
-        public Task<HttpResponseMessage> RefreshTokens();
+        public Task<string> RefreshTokens();
     }
 }
