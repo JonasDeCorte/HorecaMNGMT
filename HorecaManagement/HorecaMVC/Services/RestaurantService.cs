@@ -2,6 +2,7 @@
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Restaurants;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Horeca.MVC.Services
 {
@@ -36,7 +37,7 @@ namespace Horeca.MVC.Services
         public async Task<DetailRestaurantDto> GetRestaurantById(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/id");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -51,34 +52,89 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public Task<List<RestaurantDto>> GetRestaurantsByUser(int userId)
+        public async Task<List<RestaurantDto>> GetRestaurantsByUser(string userId)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.User}/{userId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(response.Content.ReadAsStringAsync().Result);
+                return result;
+            }
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return null;
+            }
+            return null;
         }
 
-        public Task<HttpResponseMessage> AddRestaurant(MutateRestaurantDto restaurantDto)
+        public async Task<HttpResponseMessage> AddRestaurant(MutateRestaurantDto restaurantDto)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public Task<HttpResponseMessage> UpdateRestaurant(int id)
+        public async Task<HttpResponseMessage> UpdateRestaurant(EditRestaurantDto restaurantDto)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}");
+            request.Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public Task<HttpResponseMessage> DeleteRestaurant(int id)
+        public async Task<HttpResponseMessage> DeleteRestaurant(int id)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Delete, 
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public Task<HttpResponseMessage> AddRestaurantEmployee(int userId, int restaurantId)
+        public async Task<HttpResponseMessage> AddRestaurantEmployee(int userId, int restaurantId)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
 
-        public Task<HttpResponseMessage> RemoveRestaurantEmployee(int userId, int restaurantId)
+        public async Task<HttpResponseMessage> RemoveRestaurantEmployee(int userId, int restaurantId)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
         }
     }
 }

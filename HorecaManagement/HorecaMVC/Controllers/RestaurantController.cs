@@ -17,10 +17,10 @@ namespace Horeca.MVC.Controllers
             this.accountService = accountService;
         }
 
-        public async Task<IActionResult> Index(int id = 0)
+        public async Task<IActionResult> Index(string id = "")
         {
             IEnumerable<RestaurantDto> restaurants;
-            if (id != 0)
+            if (id != "")
             {
                 restaurants = await restaurantService.GetRestaurantsByUser(id);
             } else
