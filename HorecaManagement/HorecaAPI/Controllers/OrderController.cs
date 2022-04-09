@@ -1,4 +1,5 @@
-﻿using Horeca.Core.Handlers.Commands.Orders;
+﻿using Horeca.Core.Handlers.Commands.Kitchens;
+using Horeca.Core.Handlers.Commands.Orders;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Orders;
 using HorecaCore.Handlers.Queries.Orders;
@@ -54,6 +55,15 @@ namespace HorecaAPI.Controllers
         public async Task<IActionResult> GetByTableId([FromRoute] int TableId)
         {
             return Ok(await mediator.Send(new GetOrderLinesByTableIdQuery(TableId)));
+        }
+
+        [HttpPut]
+        [Route("Kitchen/{kitchenId}/Order/{orderId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> ProcessOrder([FromRoute] int kitchenId, [FromRoute] int orderId)
+        {
+            return Ok(await mediator.Send(new ProcessOrderCommand(orderId, kitchenId)));
         }
     }
 }
