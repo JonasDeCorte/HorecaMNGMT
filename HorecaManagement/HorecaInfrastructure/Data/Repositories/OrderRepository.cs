@@ -4,6 +4,7 @@ using Horeca.Shared.Data.Repositories;
 using static Horeca.Shared.Utils.Constants;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Horeca.Core.Exceptions;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
@@ -30,29 +31,35 @@ namespace Horeca.Infrastructure.Data.Repositories
                     .ThenInclude(x => x.Orders)
                     .SingleOrDefaultAsync(x => x.Id.Equals(tableId));
 
-                Order order = null;
-
-                if (table != null)
+                if (table == null)
                 {
-                    order = new();
-
-                    AddOrderLines(receipt, order);
-
-                    order.OrderState = OrderState.Confirmed;
-                    table.Orders.Add(order);
-
-                    context.Orders.Add(order);
-                    context.Tables.Update(table);
+                    throw new EntityNotFoundException();
                 }
+
+                Order order = new();
+
+                AddOrderLines(receipt, order);
+
+                order.OrderState = OrderState.Confirmed;
+                table.Orders.Add(order);
+
+                context.Orders.Add(order);
+                context.Tables.Update(table);
 
                 // add to kitchen => an order has been placed
                 var kitchen = table.RestaurantSchedule.Restaurant.Kitchen;
+
+                if (kitchen == null)
+                {
+                    throw new EntityNotFoundException();
+                }
+
                 kitchen.Orders.Add(order);
                 context.Kitchens.Update(kitchen);
 
                 await context.SaveChangesAsync();
-
                 await transaction.CommitAsync();
+
                 return order;
             }
             catch (Exception)
