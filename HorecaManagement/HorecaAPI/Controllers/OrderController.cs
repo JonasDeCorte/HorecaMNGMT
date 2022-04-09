@@ -57,6 +57,16 @@ namespace HorecaAPI.Controllers
             return Ok(await mediator.Send(new GetOrderLinesByTableIdQuery(TableId)));
         }
 
+        /// <summary>
+        /// kitchen uses this to notify an order has been completed
+        /// </summary>
+        /// <param name="kitchenId">kitchen Id</param>
+        /// <param name="orderId">order id </param>
+        /// <returns>
+        /// returns the orderId from the order that has been completed
+        /// </returns>
+        /// <response code="200">Success returning the orderId </response>
+        /// <response code="400">Bad request</response>
         [HttpPut]
         [Route("Kitchen/{kitchenId}/Order/{orderId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
