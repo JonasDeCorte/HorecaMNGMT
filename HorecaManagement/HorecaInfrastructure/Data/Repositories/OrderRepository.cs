@@ -1,10 +1,9 @@
-﻿using Horeca.Infrastructure.Data.Repositories.Generic;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
-using static Horeca.Shared.Utils.Constants;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Horeca.Core.Exceptions;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
