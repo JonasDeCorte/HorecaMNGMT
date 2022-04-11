@@ -6,6 +6,8 @@
         public string Description { get; set; }
         public string Category { get; set; }
         public string DishType { get; set; }
+
+        public decimal Price { get; set; }
         public List<DishIngredient> DishIngredients { get; set; } = new();
     }
 }

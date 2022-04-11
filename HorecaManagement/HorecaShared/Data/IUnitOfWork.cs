@@ -21,6 +21,8 @@ namespace Horeca.Shared.Data
 
         ITableRepository Tables { get; }
 
+        IOrderRepository Orders { get; }
+
         Task CommitAsync();
     }
 }

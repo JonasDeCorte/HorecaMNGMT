@@ -13,6 +13,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace Horeca.API.Controllers
 {
@@ -76,7 +77,7 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// logs in call
+        /// authenticate the user and return access token + refresh token
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -111,6 +112,8 @@ namespace Horeca.API.Controllers
         [HttpPost]
         [Route("register-admin")]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Create)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto model)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new RegisterAdminCommand(model)));
@@ -137,6 +140,8 @@ namespace Horeca.API.Controllers
         [HttpGet]
         [Route("User/{username}")]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetUserByUsername(string username)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetUserByUsernameQuery(username)));
@@ -149,6 +154,8 @@ namespace Horeca.API.Controllers
         [HttpGet]
         [Route("User")]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetAll()
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new GetAllUsersQuery()));

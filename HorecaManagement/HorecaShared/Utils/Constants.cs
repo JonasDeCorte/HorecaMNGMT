@@ -34,5 +34,26 @@ namespace Horeca.Shared.Utils
             Expired = 3,
             Unavailable = 4,
         }
+
+        /// <summary>
+        /// State an order can be in
+        /// </summary>
+        public enum OrderState
+        {
+            Begin = 0,
+            Prepare = 1,
+            Done = 2,
+        }
+
+        /// <summary>
+        /// state a dish can be in
+        /// </summary>
+        public enum DishState
+        {
+            Waiting = 0,
+            Preparing = 1,
+            Ready = 2,
+            Delivered = 3,
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
 
             logger.Info("trying to get {object} with id: {id}", nameof(Restaurants), request.RestaurantId);
 
-            var restaurant = repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
+            var restaurant = await repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
             if (restaurant == null)
             {
                 logger.Error(EntityNotFoundException.Instance);
