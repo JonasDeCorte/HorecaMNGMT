@@ -87,12 +87,31 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success returning the orderLineId </response>
         /// <response code="400">Bad request</response>
         [HttpPut]
-        [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}")]
+        [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}/Prepare")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> PrepareOrderLine([FromRoute] int orderLineId, [FromRoute] int kitchenId, [FromRoute] int orderId)
         {
             return Ok(await mediator.Send(new PrepareOrderLineCommand(orderLineId, orderId, kitchenId)));
+        }
+
+        /// <summary>
+        /// kitchen uses this to notify an orderline is ready
+        /// </summary>
+        /// <param name="kitchenId">kitchen Id</param>
+        /// <param name="orderId">order id </param>
+        /// <returns>
+        /// returns the orderline Id from the orderline which is ready
+        /// </returns>
+        /// <response code="200">Success returning the orderLineId </response>
+        /// <response code="400">Bad request</response>
+        [HttpPut]
+        [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}/Ready")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> ReadyOrderLine([FromRoute] int orderLineId, [FromRoute] int kitchenId, [FromRoute] int orderId)
+        {
+            return Ok(await mediator.Send(new ReadyOrderLineCommand(orderLineId, orderId, kitchenId)));
         }
     }
 }
