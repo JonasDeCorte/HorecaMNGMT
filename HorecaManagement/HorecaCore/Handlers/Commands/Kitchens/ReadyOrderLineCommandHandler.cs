@@ -39,7 +39,7 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
         {
             logger.Info("trying to process order {object} with request ids: {@Id}", nameof(Order), request);
 
-            var kitchen = await context.Kitchens.Include(x => x.Orders).ThenInclude(x => x.OrderLines).SingleOrDefaultAsync(x => x.Id.Equals(request.KitchenId), cancellationToken: cancellationToken);
+            var kitchen = await repository.Kitchens.GetKitchenWithDependenciesByID(request.KitchenId);
             if (kitchen == null)
             {
                 logger.Error(EntityNotFoundException.Instance);
