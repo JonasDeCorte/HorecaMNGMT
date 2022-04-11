@@ -16,7 +16,7 @@ namespace Horeca.Shared.Dtos.Orders
 
     public class GetOrderLinesByTableIdDto : OrderDto
     {
-        public OrderState State { get; set; }
+        public OrderState OrderState { get; set; }
 
         public List<OrderLineDto> Lines { get; set; } = new();
     }
