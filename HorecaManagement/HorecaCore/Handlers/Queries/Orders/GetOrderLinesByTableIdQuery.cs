@@ -29,7 +29,6 @@ namespace HorecaCore.Handlers.Queries.Orders
             public GetOrderLinesByTableIdQueryHandler(IMapper mapper, IUnitOfWork repository)
             {
                 this.mapper = mapper;
-                this.context = context;
                 this.repository = repository;
             }
 
