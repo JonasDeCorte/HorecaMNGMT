@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Dishes;
@@ -22,21 +23,21 @@ namespace HorecaCore.Handlers.Queries.Orders
         public class GetOrderLinesByTableIdQueryHandler : IRequestHandler<GetOrderLinesByTableIdQuery, List<GetOrderLinesByTableIdDto>>
         {
             private readonly IMapper mapper;
-            private readonly IApplicationDbContext context;
+            private readonly IUnitOfWork repository;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public GetOrderLinesByTableIdQueryHandler(IMapper mapper, IApplicationDbContext context)
+            public GetOrderLinesByTableIdQueryHandler(IMapper mapper, IUnitOfWork repository)
             {
                 this.mapper = mapper;
                 this.context = context;
+                this.repository = repository;
             }
 
             public async Task<List<GetOrderLinesByTableIdDto>> Handle(GetOrderLinesByTableIdQuery request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to return {object} with request: {@req}", nameof(OrderDto), request);
 
-                var table = await context.Tables
-                                             .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+                var table = repository.Tables.Get(request.Id);
 
                 logger.Info("checking if table exists (object} with id: {id}", nameof(Table), request.Id);
 
@@ -47,11 +48,7 @@ namespace HorecaCore.Handlers.Queries.Orders
                     throw new EntityNotFoundException();
                 }
 
-                List<Order>? order = await context.Orders
-                                               .Include(x => x.OrderLines)
-                                               .ThenInclude(x => x.Dish)
-                                               .Where(x => x.TableId.Equals(table.Id))
-                                               .ToListAsync(cancellationToken: cancellationToken);
+                List<Order>? order = await repository.Orders.GetOrdersByTable(table.Id);
 
                 logger.Info("getting order with table Id: {id}", table.Id);
 

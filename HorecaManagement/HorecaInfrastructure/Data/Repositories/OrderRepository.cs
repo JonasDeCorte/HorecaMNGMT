@@ -3,6 +3,7 @@ using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Infrastructure.Data.Repositories
@@ -81,6 +82,14 @@ namespace Horeca.Infrastructure.Data.Repositories
                 Price = receiptLine.Total,
                 DishState = DishState.Waiting
             }));
+        }
+
+        public async Task<List<Order>> GetOrdersByTable(int tableId)
+        {
+            return await context.Orders.Include(x => x.OrderLines)
+                                       .ThenInclude(x => x.Dish)
+                                       .Where(x => x.TableId.Equals(tableId))
+                                       .ToListAsync();
         }
     }
 }
