@@ -71,9 +71,9 @@ namespace HorecaAPI.Controllers
         [Route("Kitchen/{kitchenId}/Order/{orderId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> ProcessOrder([FromRoute] int kitchenId, [FromRoute] int orderId)
+        public async Task<IActionResult> DeliverOrderCommand([FromRoute] int kitchenId, [FromRoute] int orderId)
         {
-            return Ok(await mediator.Send(new ProcessOrderCommand(orderId, kitchenId)));
+            return Ok(await mediator.Send(new DeliverOrderCommand(orderId, kitchenId)));
         }
 
         /// <summary>

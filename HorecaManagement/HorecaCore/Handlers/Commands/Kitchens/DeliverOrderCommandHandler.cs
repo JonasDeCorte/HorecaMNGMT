@@ -9,9 +9,9 @@ using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Core.Handlers.Commands.Kitchens
 {
-    public class ProcessOrderCommand : IRequest<int>
+    public class DeliverOrderCommand : IRequest<int>
     {
-        public ProcessOrderCommand(int orderId, int kitchenId)
+        public DeliverOrderCommand(int orderId, int kitchenId)
         {
             OrderId = orderId;
             KitchenId = kitchenId;
@@ -21,23 +21,23 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
         public int KitchenId { get; }
     }
 
-    public class ProcessOrderCommandHandler : IRequestHandler<ProcessOrderCommand, int>
+    public class DeliverOrderCommandHandler : IRequestHandler<DeliverOrderCommand, int>
     {
         private readonly IUnitOfWork repository;
         private readonly IApplicationDbContext context;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public ProcessOrderCommandHandler(IUnitOfWork repository, IApplicationDbContext context)
+        public DeliverOrderCommandHandler(IUnitOfWork repository, IApplicationDbContext context)
         {
             this.repository = repository;
             this.context = context;
         }
 
-        public async Task<int> Handle(ProcessOrderCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeliverOrderCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to process order {object} with request ids: {@Id}", nameof(Order), request);
 
-            var kitchen = await context.Kitchens.Include(x => x.Orders).SingleOrDefaultAsync(x => x.Id.Equals(request.KitchenId), cancellationToken: cancellationToken);
+            var kitchen = await context.Kitchens.Include(x => x.Orders).ThenInclude(x => x.OrderLines).SingleOrDefaultAsync(x => x.Id.Equals(request.KitchenId), cancellationToken: cancellationToken);
             if (kitchen == null)
             {
                 logger.Error(EntityNotFoundException.Instance);
@@ -52,6 +52,8 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
 
                 throw new EntityNotFoundException();
             }
+            CheckIfOrderLinesAreReady(order, context);
+
             logger.Info("order {object} with state: {state}", order, order.OrderState);
 
             order.OrderState = OrderState.Delivered;
@@ -64,6 +66,23 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
             await repository.CommitAsync();
 
             return order.Id;
+        }
+
+        private static void CheckIfOrderLinesAreReady(Order? order, IApplicationDbContext context)
+        {
+            foreach (var orderline in order.OrderLines)
+            {
+                logger.Info("orderline {object} with state: {state}", orderline, orderline.DishState);
+
+                if (orderline.DishState != DishState.Ready)
+                {
+                    logger.Error("orderline needs to be in state: {state} in order to be delivered", DishState.Ready);
+                    throw new ArgumentException("Invalid DishState - should be Ready");
+                }
+                orderline.DishState = DishState.Delivered;
+                logger.Info("orderline {object} with state: {state} will be updated to delivered", orderline, orderline.DishState);
+                context.OrderLines.Update(orderline);
+            }
         }
     }
 }
