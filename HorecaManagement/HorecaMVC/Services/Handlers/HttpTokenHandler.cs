@@ -16,8 +16,7 @@ namespace Horeca.MVC.Services.Handlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            string accessToken = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
-            Console.WriteLine("Andere accesstoken in tokenhandler: " + accessToken);
+            string accessToken = httpContextAccessor.HttpContext.Session.GetString("JWToken");
             request.Headers.Add("Authorization", "Bearer " + accessToken);
 
             var response = await base.SendAsync(request, cancellationToken);
@@ -32,12 +31,12 @@ namespace Horeca.MVC.Services.Handlers
 
                 if (newResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    httpContextAccessor.HttpContext.Response.Cookies.Delete("Username");
+                    httpContextAccessor.HttpContext.Session.Remove("Username");
                 }
                 if (!string.IsNullOrEmpty(newAccessToken))
                 {
                     var username = new JwtSecurityTokenHandler().ReadJwtToken(newAccessToken).Claims.Skip(2).First().Value;
-                    httpContextAccessor.HttpContext.Response.Cookies.Append("Username", username);
+                    httpContextAccessor.HttpContext.Session.SetString("Username", username);
                 }
                 return newResponse;
             }

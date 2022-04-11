@@ -9,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+});
 
 builder.Services.AddTransient<HttpTokenHandler>();
 builder.Services.AddHttpClient();
@@ -20,8 +24,8 @@ builder.Services.AddHttpClient<IIngredientService, IngredientService>("HttpMessa
 builder.Services.AddHttpClient<IMenuService, MenuService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IMenuCardService, MenuCardService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IRestaurantService, RestaurantService>("HttpMessageHandler");
-builder.Services.AddHttpClient<IAccountService, AccountService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IPermissionService, PermissionService>("HttpMessageHandler");
+builder.Services.AddHttpClient<IAccountService, AccountService>("HttpMessageHandler");
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<TokenFilter>();
@@ -40,6 +44,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

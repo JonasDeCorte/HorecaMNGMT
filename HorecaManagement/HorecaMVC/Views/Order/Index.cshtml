@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Order Overview";
-    var currentUser = await accountService.GetCurrentUser();
 }
 
 <div class="text-center">
@@ -13,7 +12,7 @@
                 </div>
             </div>
             <div class="col">
-                @if (accountService.Authorize(currentUser, "Order_Create"))
+                @if (accountService.Authorize("Order_Create"))
                 {
                     <a asp-action="Create" class="btn btn-primary float-end">New Order</a>
                 }
@@ -37,11 +36,11 @@
                         <td>Table @i</td>
                         <td>
                             <a asp-action="Detail" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize(currentUser, "Order_Update"))
+                            @if (accountService.Authorize("Order_Update"))
                             {
                                 <a asp-action="Edit" class="btn btn-primary">Edit</a>
                             }
-                            @if (accountService.Authorize(currentUser, "Order_Delete"))
+                            @if (accountService.Authorize("Order_Delete"))
                             {
                                 <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="0">

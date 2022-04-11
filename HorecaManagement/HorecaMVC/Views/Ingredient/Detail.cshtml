@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Ingredient Detail";
-    var currentUser = await accountService.GetCurrentUser();
 }
 
 <div class="text-center">
@@ -28,7 +27,7 @@
             <tfoot>
                 <tr>
                     <td scope="row" colspan="2">
-                        @if (accountService.Authorize(currentUser, "Ingredient_Update"))
+                        @if (accountService.Authorize("Ingredient_Update"))
                         {
                             <a asp-action="Edit" asp-route-id="@Model.IngredientId" class="btn btn-primary">Edit</a>
                         }

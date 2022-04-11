@@ -1,0 +1,94 @@
+﻿<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        @if (accountService.Authorize("Restaurant_Read"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+        }
+        @if (accountService.Authorize("Ingredient_Read") || accountService.Authorize("Dish_Read") ||
+        accountService.Authorize("Menu_Read") || accountService.Authorize("MenuCard_Read"))
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link text-dark dropdown-toggle" href="#" id="kitchenDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                    Kitchen
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="kitchenDropdown">
+                    @if (accountService.Authorize("Ingredient_Read"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ingredient" asp-action="Index">
+                                Ingredients
+                            </a>
+                        </li>
+                    }
+                    @if (accountService.Authorize("Dish_Read"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Dish" asp-action="Index">
+                                Dishes
+                            </a>
+                        </li>
+                    }
+                    @if (accountService.Authorize("Menu_Read"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Menu" asp-action="Index">
+                                Menus
+                            </a>
+                        </li>
+                    }
+                    @if (accountService.Authorize("MenuCard_Read"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="MenuCard" asp-action="Index">
+                                Menu Cards
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (accountService.Authorize("Order_Read"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
+            </li>
+        }
+        @if (accountService.Authorize("Booking_Read"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">Bookings</a>
+            </li>
+        }
+        @if (accountService.Authorize("ApplicationUser_Read"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
+            </li>
+        }
+    </ul>
+    <ul class="navbar-nav flex-grow-1 flex-row-reverse">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+        @if (accountService.IsLoggedIn())
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Log out</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark">Welcome, @accountService.GetCurrentUser().Username!</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+            </li>
+        }
+    </ul>
+</div>

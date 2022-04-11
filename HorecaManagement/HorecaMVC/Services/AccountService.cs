@@ -4,7 +4,6 @@ using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Tokens;
 using Horeca.Shared.Dtos.UserPermissions;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace Horeca.MVC.Services
@@ -16,6 +15,7 @@ namespace Horeca.MVC.Services
         private ITokenService tokenService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
+
         public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
@@ -23,7 +23,8 @@ namespace Horeca.MVC.Services
             this.httpContextAccessor = httpContextAccessor;
             this.configuration = configuration;
         }
-        public UserDto CurrentUser { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public  UserDto CurrentUser { get; set; }
 
         public async Task<HttpResponseMessage> LoginUser(LoginUserDto user)
         {
@@ -41,8 +42,43 @@ namespace Horeca.MVC.Services
             TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             tokenService.SetAccessToken(result.AccessToken);
             tokenService.SetRefreshToken(result.RefreshToken);
-            var username = new JwtSecurityTokenHandler().ReadJwtToken(result.AccessToken).Claims.Skip(2).First().Value;
-            httpContextAccessor.HttpContext.Response.Cookies.Append("Username", username);
+
+            //var test = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
+            //var test2 = httpContextAccessor.HttpContext.Request.Cookies["RefreshToken"];
+            var test = httpContextAccessor.HttpContext.Session.GetString("JWToken");
+            var test2 = httpContextAccessor.HttpContext.Session.GetString("RefreshToken");
+
+            UserDto currentUser = await GetUserByName(user.Username);
+            if (currentUser != null)
+            {
+                //httpContextAccessor.HttpContext.Response.Cookies.Delete("CurrentUser");
+                httpContextAccessor.HttpContext.Session.Remove("CurrentUser");
+            }
+            //httpContextAccessor.HttpContext.Response.Cookies.Append("CurrentUser", JsonConvert.SerializeObject(currentUser));
+            httpContextAccessor.HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(currentUser));
+
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> LogoutUser()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
+                $"{ClassConstants.RefreshToken}/revoke");
+
+            var refreshToken = tokenService.GetRefreshToken();
+            request.Content = new StringContent(JsonConvert.SerializeObject(refreshToken), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            foreach(string key in httpContextAccessor.HttpContext.Session.Keys)
+            {
+                httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
+                httpContextAccessor.HttpContext.Session.Remove(key);
+            }
 
             return response;
         }
@@ -145,38 +181,42 @@ namespace Horeca.MVC.Services
             }
         }
 
-        public bool Authorize(UserDto user, string permission)
+        public UserDto GetCurrentUser()
         {
-            if (user == null)
+            //var userCookie = httpContextAccessor.HttpContext.Request.Cookies["CurrentUser"];
+            var userCookie = httpContextAccessor.HttpContext.Session.GetString("CurrentUser");
+            if (string.IsNullOrEmpty(userCookie))
+            {
+                return null;
+            }
+            var currentUser = JsonConvert.DeserializeObject<UserDto>(userCookie);
+            if (currentUser == null)
+            {
+                return null;
+            }
+            else
+            {
+                return currentUser;
+            }
+        }
+
+        public bool Authorize(string permission)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser == null || currentUser.Permissions == null)
             {
                 return false;
-            } else if (!user.Permissions.Any(item => item.PermissionName == permission))
+            } 
+            else if (!currentUser.Permissions.Any(item => item.PermissionName == permission))
             {
                 return false;
             }
             return true;
         }
 
-        public string GetCurrentUserName()
-        {
-            return httpContextAccessor.HttpContext?.Request.Cookies["Username"];
-        }
-
-        public async Task<UserDto> GetCurrentUser()
-        {
-            var response = await GetUserByName(GetCurrentUserName());
-            if (response == null)
-            {
-                return null;
-            } else
-            {
-                return response;
-            }
-        }
-
         public bool IsLoggedIn()
         {
-            if (GetCurrentUserName() == null)
+            if (GetCurrentUser() == null)
             {
                 return false;
             }

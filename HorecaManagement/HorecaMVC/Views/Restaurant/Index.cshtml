@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Restaurant Overview";
-    var currentUser = await accountService.GetCurrentUser();
 }
 
 <div class="text-center">
@@ -15,7 +14,7 @@
                 </div>
             </div>
             <div class="col">
-                @if (accountService.Authorize(currentUser, "Restaurant_Create"))
+                @if (accountService.Authorize("Restaurant_Create"))
                 {
                     <a asp-action="Create" class="btn btn-primary float-end">New Restaurant</a>
                 }
@@ -23,7 +22,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="table table-hover table-bordered mt-2">
+        <table class="table table-hover mt-2">
             <thead>
                 <tr>
                     <th scope="col" class="col-9">Name</th>
@@ -37,12 +36,12 @@
                         <td>@restaurant.Name</td>
                         <td>
                             <a asp-action="Detail" asp-route-id="@restaurant.Id" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize(currentUser, "Restaurant_Update"))
+                            @if (accountService.Authorize("Restaurant_Update"))
                             {
                                 <a asp-action="Edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit</a>
                             }
 
-                            @if (accountService.Authorize(currentUser, "Restaurant_Delete"))
+                            @if (accountService.Authorize("Restaurant_Delete"))
                             {
                                 <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="@restaurant.Id">

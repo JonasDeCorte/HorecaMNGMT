@@ -19,7 +19,6 @@ namespace Horeca.MVC.Controllers
             this.permissionService = permissionService;
         }
 
-        [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Index()
         {
             IEnumerable<BaseUserDto> users = await accountService.GetUsers();
@@ -37,7 +36,6 @@ namespace Horeca.MVC.Controllers
             return View(listModel);
         }
 
-        [TypeFilter(typeof(TokenFilter))]
         public async Task<IActionResult> Detail(string username)
         {
             UserDto user = await accountService.GetUserByName(username);
@@ -74,6 +72,16 @@ namespace Horeca.MVC.Controllers
             {
                 return View(model);
             }
+        }
+        public async Task<IActionResult> Logout()
+        {
+            var response = await accountService.LogoutUser();
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Register()

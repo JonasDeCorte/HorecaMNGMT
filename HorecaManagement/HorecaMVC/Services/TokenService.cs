@@ -21,17 +21,19 @@ namespace Horeca.MVC.Services
 
         public void SetAccessToken(string accessToken)
         {
-            httpContextAccessor.HttpContext.Response.Cookies.Append("JWToken", accessToken);
-        }
-
-        public string GetRefreshToken()
-        {
-            return httpContextAccessor.HttpContext.Request.Cookies["RefreshToken"];
+            httpContextAccessor.HttpContext.Session.SetString("JWToken", accessToken);
+            var test = httpContextAccessor.HttpContext.Session.Get("JWToken");
         }
 
         public void SetRefreshToken(string refreshToken)
         {
-            httpContextAccessor.HttpContext.Response.Cookies.Append("RefreshToken", refreshToken);
+            httpContextAccessor.HttpContext.Session.SetString("RefreshToken", refreshToken);
+            var test = httpContextAccessor.HttpContext.Session.Get("RefreshToken");
+        }
+
+        public string GetRefreshToken()
+        {
+            return httpContextAccessor.HttpContext.Session.GetString("RefreshToken");
         }
 
         public async Task<string> RefreshTokens()

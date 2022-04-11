@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Dish Detail";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUserName());
 }
 
 <div class="d-flex flex-column text-center align-items-center">
@@ -54,14 +53,14 @@
                                         <td>@item.BaseAmount</td>
                                         <td>@item.Unit.Name</td>
                                         <td>
-                                            @if (accountService.Authorize(currentUser, "Ingredient_Update"))
+                                            @if (accountService.Authorize("Ingredient_Update"))
                                             {
                                                 <a asp-action="EditIngredient" asp-route-dishId="@Model.DishId" asp-route-ingredientId="@item.IngredientId" 
                                                     class="btn btn-primary">
                                                     Edit
                                                 </a>
                                             }
-                                            @if (accountService.Authorize(currentUser, "Ingredient_Delete"))
+                                            @if (accountService.Authorize("Ingredient_Delete"))
                                             {
                                                 <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
                                                 data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IngredientId">
@@ -71,7 +70,7 @@
                                         </td>
                                     </tr>
                                 }
-                                @if (accountService.Authorize(currentUser, "Ingredient_Create"))
+                                @if (accountService.Authorize("Ingredient_Create"))
                                 {
                                     <tr>
                                         <td colspan="4">
@@ -90,11 +89,11 @@
         <tfoot>
             <tr>
                 <td scope="row">
-                    @if (accountService.Authorize(currentUser, "Dish_Update"))
+                    @if (accountService.Authorize("Dish_Update"))
                     {
                         <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
                     }
-                    @if (accountService.Authorize(currentUser, "Ingredient_Create"))
+                    @if (accountService.Authorize("Ingredient_Create"))
                     {
                         <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
                     }

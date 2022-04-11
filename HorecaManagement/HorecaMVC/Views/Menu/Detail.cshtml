@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Menu Detail";
-    var currentUser = await accountService.GetCurrentUser();
 }
 
 <div class="d-flex flex-column text-center align-items-center">
@@ -43,14 +42,14 @@
                                         <td>@item.DishType</td>
                                         <td>@item.Category</td>
                                             <td>
-                                                @if (accountService.Authorize(currentUser, "Dish_Update"))
+                                                @if (accountService.Authorize("Dish_Update"))
                                                 {
                                                     <a asp-action="EditDish" asp-route-menuId="@Model.MenuId"
                                                         asp-route-dishId="@item.DishId" class="btn btn-primary">
                                                         Edit
                                                     </a>
                                                 }
-                                                @if (accountService.Authorize(currentUser, "Dish_Delete"))
+                                                @if (accountService.Authorize("Dish_Delete"))
                                                 {
                                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                                         data-bs-target="#deleteModal" data-id="@item.DishId">
@@ -69,11 +68,11 @@
         <tfoot>
             <tr>
                     <td scope="row" colspan="2">
-                        @if (accountService.Authorize(currentUser, "Menu_Update"))
+                        @if (accountService.Authorize("Menu_Update"))
                         {
                             <a asp-action="Edit" asp-route-id="@Model.MenuId" class="btn btn-primary">Edit</a>
                         }
-                        @if (accountService.Authorize(currentUser, "Dish_Create"))
+                        @if (accountService.Authorize("Dish_Create"))
                         {
                             <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Dish</a>
                         }
