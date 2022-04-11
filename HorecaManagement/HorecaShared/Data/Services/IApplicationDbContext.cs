@@ -26,7 +26,6 @@ namespace Horeca.Shared.Data.Services
         public DbSet<RestaurantUser> RestaurantUsers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLine> OrderLines { get; set; }
-        public DbSet<Kitchen> Kitchens { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

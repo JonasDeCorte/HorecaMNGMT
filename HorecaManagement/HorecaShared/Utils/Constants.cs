@@ -40,9 +40,9 @@ namespace Horeca.Shared.Utils
         /// </summary>
         public enum OrderState
         {
-            Waiting = 0,
-            Confirmed = 1,
-            Delivered = 2,
+            Begin = 0,
+            Prepare = 1,
+            Done = 2,
         }
 
         /// <summary>

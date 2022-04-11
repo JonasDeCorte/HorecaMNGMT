@@ -8,7 +8,6 @@
 
         public List<MenuCard> MenuCards { get; set; } = new();
 
-        public Kitchen? Kitchen { get; set; }
-        public int? KitchenId { get; set; }
+        public List<Order> Orders { get; set; } = new();
     }
 }

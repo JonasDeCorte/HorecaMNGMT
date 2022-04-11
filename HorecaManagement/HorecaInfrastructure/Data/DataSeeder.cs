@@ -107,7 +107,7 @@ namespace Horeca.Infrastructure.Data
             var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
             var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
             var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
-            var KitchenPerms = listPermissions.Where(x => x.Name.StartsWith("Kitchen_"));
+            var appUserRead = listPermissions.Where(x => x.Name.Equals("ApplicationUser_Read"));
 
             #endregion permissions
 
@@ -151,7 +151,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(menuCardPerms);
             listListPerms.Add(tablePerms);
             listListPerms.Add(OrderPerms);
-            listListPerms.Add(KitchenPerms);
+            listListPerms.Add(appUserRead);
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -177,6 +177,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(bookingDetailPerms);
             listListPerms.Add(restaurantSchedulePerms);
             listListPerms.Add(OrderPerms);
+            listListPerms.Add(appUserRead);
 
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
@@ -200,12 +201,13 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(restaurantSchedulePerms);
             listListPerms.Add(permissionPerms);
             listListPerms.Add(ApplicationUserPerms);
+
             AddApplicationUserPermissions(context, restaurantBeheerder, listListPerms);
             listListPerms.Clear();
 
             #endregion ApplicationUser restaurantBeheerder
 
-            #region Add Restaurants, Bookings, Tables, Kitchen ,Orders
+            #region Add Restaurants, Bookings, Tables ,Orders
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -293,7 +295,7 @@ namespace Horeca.Infrastructure.Data
                 Order order = new()
                 {
                     TableId = table.Id,
-                    OrderState = table.Id % 2 == 0 ? Constants.OrderState.Waiting : Constants.OrderState.Confirmed,
+                    OrderState = table.Id % 2 == 0 ? Constants.OrderState.Begin : Constants.OrderState.Prepare,
                     OrderLines = new List<OrderLine>()
                     {
                         new OrderLine()
@@ -305,20 +307,13 @@ namespace Horeca.Infrastructure.Data
                         },
                      }
                 };
-                Kitchen kitchen = new();
-                kitchen.Orders.Add(order);
-                context.Kitchens.Add(kitchen);
+                var resto = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == table.Id);
+                resto.Orders.Add(order);
+                context.Restaurants.Update(resto);
                 await context.SaveChangesAsync();
             }
-            var kitchens = await context.Kitchens.AsNoTracking().ToListAsync();
-            foreach (var kitchen in kitchens)
-            {
-                var restaurant = await context.Restaurants.AsNoTracking().FirstOrDefaultAsync(x => x.Id == kitchen.Id);
-                restaurant.KitchenId = kitchen.Id;
-                context.Restaurants.Update(restaurant);
-            }
 
-            #endregion Add Restaurants, Bookings, Tables, Kitchen ,Orders
+            #endregion Add Restaurants, Bookings, Tables ,Orders
 
             await context.SaveChangesAsync();
         }
@@ -519,22 +514,6 @@ namespace Horeca.Infrastructure.Data
                 new Permission()
                 {
                     Name = $"{nameof(Order)}_{Permissions.Delete}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Kitchen)}_{Permissions.Read}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Kitchen)}_{Permissions.Create}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Kitchen)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Kitchen)}_{Permissions.Delete}"
                 },
                 new Permission()
                 {

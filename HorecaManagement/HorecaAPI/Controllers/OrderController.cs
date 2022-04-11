@@ -1,14 +1,15 @@
 ﻿using Horeca.Core.Handlers.Commands.Kitchens;
 using Horeca.Core.Handlers.Commands.Orders;
+using Horeca.Core.Handlers.Queries.Orders;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Orders;
-using HorecaCore.Handlers.Queries.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using static Horeca.Shared.Utils.Constants;
 
 namespace HorecaAPI.Controllers
 {
@@ -64,6 +65,25 @@ namespace HorecaAPI.Controllers
         }
 
         /// <summary>
+        /// Retrieve orders list
+        /// </summary>
+        /// <param name="TableId">Table Id</param>
+        /// <returns>
+        /// Relevant order lines will be returned based on the table id
+        /// </returns>
+        /// <response code="200">Success retrieving order lines list</response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Order), Permissions.Read)]
+        [HttpGet]
+        [Route("Restaurant/{restaurantId}/Orders/{orderState}")]
+        [ProducesResponseType(typeof(IEnumerable<OrderDtoDetail>), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> GetOrdersByOrderStateQuery([FromRoute] int restaurantId, [FromRoute] OrderState orderState)
+        {
+            return Ok(await mediator.Send(new GetOrdersByOrderStateQuery(restaurantId, orderState)));
+        }
+
+        /// <summary>
         /// kitchen uses this to notify an order has been completed and is ready to be delivered
         /// </summary>
         /// <param name="kitchenId">kitchen Id</param>
@@ -74,14 +94,14 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success returning the orderId </response>
         /// <response code="400">Bad request</response>
         ///
-        [PermissionAuthorize(nameof(Kitchen), Permissions.Update)]
+        [PermissionAuthorize(nameof(Order), Permissions.Update)]
         [HttpPut]
-        [Route("Kitchen/{kitchenId}/Order/{orderId}")]
+        [Route("Restaurant/{restaurantId}/Order/{orderId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> DeliverOrderCommand([FromRoute] int kitchenId, [FromRoute] int orderId)
+        public async Task<IActionResult> DeliverOrderCommand([FromRoute] int restaurantId, [FromRoute] int orderId)
         {
-            return Ok(await mediator.Send(new DeliverOrderCommand(orderId, kitchenId)));
+            return Ok(await mediator.Send(new DeliverOrderCommand(orderId, restaurantId)));
         }
 
         /// <summary>
@@ -94,14 +114,14 @@ namespace HorecaAPI.Controllers
         /// </returns>
         /// <response code="200">Success returning the orderLineId </response>
         /// <response code="400">Bad request</response>
-        [PermissionAuthorize(nameof(Kitchen), Permissions.Update)]
+        [PermissionAuthorize(nameof(Order), Permissions.Update)]
         [HttpPut]
-        [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}/Prepare")]
+        [Route("Restaurant/{restaurantId}/Order/{orderId}/OrderLine/{orderLineId}/Prepare")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> PrepareOrderLine([FromRoute] int orderLineId, [FromRoute] int kitchenId, [FromRoute] int orderId)
+        public async Task<IActionResult> PrepareOrderLine([FromRoute] int orderLineId, [FromRoute] int restaurantId, [FromRoute] int orderId)
         {
-            return Ok(await mediator.Send(new PrepareOrderLineCommand(orderLineId, orderId, kitchenId)));
+            return Ok(await mediator.Send(new PrepareOrderLineCommand(orderLineId, orderId, restaurantId)));
         }
 
         /// <summary>
@@ -115,14 +135,14 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success returning the orderLineId </response>
         /// <response code="400">Bad request</response>
         ///
-        [PermissionAuthorize(nameof(Kitchen), Permissions.Update)]
+        [PermissionAuthorize(nameof(Order), Permissions.Update)]
         [HttpPut]
-        [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}/Ready")]
+        [Route("Restaurant/{restaurantId}/Order/{orderId}/OrderLine/{orderLineId}/Ready")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> ReadyOrderLine([FromRoute] int orderLineId, [FromRoute] int kitchenId, [FromRoute] int orderId)
+        public async Task<IActionResult> ReadyOrderLine([FromRoute] int orderLineId, [FromRoute] int restaurantId, [FromRoute] int orderId)
         {
-            return Ok(await mediator.Send(new ReadyOrderLineCommand(orderLineId, orderId, kitchenId)));
+            return Ok(await mediator.Send(new ReadyOrderLineCommand(orderLineId, orderId, restaurantId)));
         }
     }
 }

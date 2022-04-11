@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using static Horeca.Shared.Utils.Constants;
+﻿using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Shared.Data.Entities
 {
@@ -8,6 +7,6 @@ namespace Horeca.Shared.Data.Entities
         public int TableId { get; set; }
         public List<OrderLine> OrderLines { get; set; } = new();
 
-        public OrderState OrderState { get; set; } = OrderState.Waiting;
+        public OrderState OrderState { get; set; } = OrderState.Begin;
     }
 }

@@ -23,8 +23,6 @@ namespace Horeca.Shared.Data
 
         IOrderRepository Orders { get; }
 
-        IKitchenRepository Kitchens { get; }
-
         Task CommitAsync();
     }
 }

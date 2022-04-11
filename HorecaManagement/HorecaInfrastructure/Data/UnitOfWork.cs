@@ -39,8 +39,6 @@ namespace Horeca.Infrastructure.Data
 
         public IOrderRepository Orders => new OrderRepository(context);
 
-        public IKitchenRepository Kitchens => new KitchenRepository(context);
-
         public async Task CommitAsync()
         {
             await context.SaveChangesAsync();

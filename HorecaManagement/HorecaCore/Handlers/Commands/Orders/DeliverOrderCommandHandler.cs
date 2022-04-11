@@ -10,14 +10,14 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
 {
     public class DeliverOrderCommand : IRequest<int>
     {
-        public DeliverOrderCommand(int orderId, int kitchenId)
+        public DeliverOrderCommand(int orderId, int restaurantId)
         {
             OrderId = orderId;
-            KitchenId = kitchenId;
+            RestaurantId = restaurantId;
         }
 
         public int OrderId { get; }
-        public int KitchenId { get; }
+        public int RestaurantId { get; }
     }
 
     public class DeliverOrderCommandHandler : IRequestHandler<DeliverOrderCommand, int>
@@ -36,15 +36,15 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
         {
             logger.Info("trying to process order {object} with request ids: {@Id}", nameof(Order), request);
 
-            var kitchen = await repository.Kitchens.GetKitchenWithDependenciesByID(request.KitchenId);
+            var restaurant = await repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
 
-            if (kitchen == null)
+            if (restaurant == null)
             {
                 logger.Error(EntityNotFoundException.Instance);
 
                 throw new EntityNotFoundException();
             }
-            var order = kitchen.Orders.Find(x => x.Id.Equals(request.OrderId));
+            var order = restaurant.Orders.Find(x => x.Id.Equals(request.OrderId));
 
             if (order == null)
             {
@@ -56,7 +56,7 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
 
             logger.Info("order {object} with state: {state}", order, order.OrderState);
 
-            order.OrderState = OrderState.Delivered;
+            order.OrderState = OrderState.Done;
             logger.Info("changing order {object} to  state: {state}", order, order.OrderState);
 
             repository.Orders.Update(order);

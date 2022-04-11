@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.Data.Entities;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Shared.Data.Repositories
 {

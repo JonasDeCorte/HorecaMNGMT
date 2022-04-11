@@ -37,6 +37,9 @@ namespace Horeca.Core.Mapper
             CreateMap<Table, TableDto>();
             CreateMap<Order, GetOrderLinesByTableIdDto>()
                 .ForMember(dest => dest.Lines, act => act.MapFrom(src => src.OrderLines));
+            CreateMap<Order, OrderDtoDetail>()
+              .ForMember(dest => dest.Lines, act => act.MapFrom(src => src.OrderLines));
+
             CreateMap<Order, OrderDto>();
 
             CreateMap<OrderLine, OrderLineDto>()

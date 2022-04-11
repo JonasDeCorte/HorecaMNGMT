@@ -2,14 +2,11 @@
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Data.Services;
-using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Orders;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 
-namespace HorecaCore.Handlers.Queries.Orders
+namespace Horeca.Core.Handlers.Queries.Orders
 {
     public class GetOrderLinesByTableIdQuery : IRequest<List<GetOrderLinesByTableIdDto>>
     {

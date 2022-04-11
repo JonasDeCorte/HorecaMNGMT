@@ -9,6 +9,10 @@ namespace Horeca.Shared.Dtos.Orders
         public int TableId { get; set; }
     }
 
+    public class OrderDtoDetail : GetOrderLinesByTableIdDto
+    {
+    }
+
     public class MutateOrderDto : OrderDto
     {
         public List<OrderDishDto> Dishes { get; set; } = new();

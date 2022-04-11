@@ -40,7 +40,7 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
             logger.Info("trying to remove {object} with id: {id} from {resto} with id: {restId}", nameof(ApplicationUser), request.UserId, nameof(Restaurant), request.RestaurantId);
             logger.Info("trying to get {object} with id: {id}", nameof(Restaurants), request.RestaurantId);
 
-            var restaurant = repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
+            var restaurant = await repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
             if (restaurant == null)
             {
                 logger.Error(EntityNotFoundException.Instance);

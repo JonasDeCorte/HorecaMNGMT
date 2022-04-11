@@ -22,40 +22,36 @@ namespace Horeca.Infrastructure.Data.Repositories
             using var transaction = context.Database.BeginTransaction();
             try
             {
-                //  fout in design?
-                Table table = await context.Tables
-                    .Include(x => x.BookingDetail)
-                    .ThenInclude(x => x.RestaurantSchedule)
-                    .ThenInclude(x => x.Restaurant)
-                    .ThenInclude(x => x.Kitchen)
-                    .ThenInclude(x => x.Orders)
-                    .SingleOrDefaultAsync(x => x.Id.Equals(tableId));
+                Table table = await context.Tables.SingleOrDefaultAsync(x => x.Id.Equals(tableId));
 
                 if (table == null)
                 {
                     throw new EntityNotFoundException();
                 }
+                var restaurantSchedule = await context.RestaurantSchedules.SingleOrDefaultAsync(x => x.Id == table.RestaurantScheduleId);
 
+                if (restaurantSchedule == null)
+                {
+                    throw new EntityNotFoundException();
+                }
+                var restaurant = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == restaurantSchedule.RestaurantId);
+
+                if (restaurant == null)
+                {
+                    throw new EntityNotFoundException();
+                }
                 Order order = new();
 
                 AddOrderLines(receipt, order);
 
-                order.OrderState = OrderState.Confirmed;
+                order.OrderState = OrderState.Begin;
                 table.Orders.Add(order);
+                restaurant.Orders.Add(order);
 
                 context.Orders.Add(order);
+
                 context.Tables.Update(table);
-
-                // add to kitchen => an order has been placed
-                var kitchen = table.RestaurantSchedule.Restaurant.Kitchen;
-
-                if (kitchen == null)
-                {
-                    throw new EntityNotFoundException();
-                }
-
-                kitchen.Orders.Add(order);
-                context.Kitchens.Update(kitchen);
+                context.Restaurants.Update(restaurant);
 
                 await context.SaveChangesAsync();
                 await transaction.CommitAsync();
