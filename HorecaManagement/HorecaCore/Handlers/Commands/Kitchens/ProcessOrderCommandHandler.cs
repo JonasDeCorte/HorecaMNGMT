@@ -5,11 +5,6 @@ using Horeca.Shared.Data.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Core.Handlers.Commands.Kitchens
@@ -66,7 +61,7 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
 
             logger.Info("updating order {object}", order);
 
-            repository.CommitAsync();
+            await repository.CommitAsync();
 
             return order.Id;
         }
