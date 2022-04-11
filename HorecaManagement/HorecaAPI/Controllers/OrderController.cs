@@ -75,5 +75,24 @@ namespace HorecaAPI.Controllers
         {
             return Ok(await mediator.Send(new ProcessOrderCommand(orderId, kitchenId)));
         }
+
+        /// <summary>
+        /// kitchen uses this to notify an orderline is being prepared
+        /// </summary>
+        /// <param name="kitchenId">kitchen Id</param>
+        /// <param name="orderId">order id </param>
+        /// <returns>
+        /// returns the orderline Id from the orderline which is being prepared
+        /// </returns>
+        /// <response code="200">Success returning the orderLineId </response>
+        /// <response code="400">Bad request</response>
+        [HttpPut]
+        [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> PrepareOrderLine([FromRoute] int orderLineId, [FromRoute] int kitchenId, [FromRoute] int orderId)
+        {
+            return Ok(await mediator.Send(new PrepareOrderLineCommand(orderLineId, orderId, kitchenId)));
+        }
     }
 }
