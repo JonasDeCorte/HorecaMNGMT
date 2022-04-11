@@ -96,7 +96,7 @@ namespace HorecaAPI.Controllers
         public async Task<IActionResult> GetAllBookingsByUserID([FromRoute] string userID, [FromRoute] string status = "all")
         {
             return Ok(await mediator.Send(new GetAllBookingsByUserIDQuery(userID, status)));
-        } // AddBookingCommand
+        }
 
         /// <summary>
         /// Add a new member booking to the database. This checks for number of seat avaiable for each session also.

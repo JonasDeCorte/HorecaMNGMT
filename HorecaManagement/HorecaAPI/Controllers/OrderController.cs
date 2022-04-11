@@ -64,7 +64,7 @@ namespace HorecaAPI.Controllers
         }
 
         /// <summary>
-        /// kitchen uses this to notify an order has been completed
+        /// kitchen uses this to notify an order has been completed and is ready to be delivered
         /// </summary>
         /// <param name="kitchenId">kitchen Id</param>
         /// <param name="orderId">order id </param>
