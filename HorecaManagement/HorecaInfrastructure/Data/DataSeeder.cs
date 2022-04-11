@@ -106,6 +106,8 @@ namespace Horeca.Infrastructure.Data
             var tablePerms = listPermissions.Where(x => x.Name.StartsWith("Table_"));
             var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
             var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
+            var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
+            var KitchenPerms = listPermissions.Where(x => x.Name.StartsWith("Kitchen_"));
 
             #endregion permissions
 
@@ -148,6 +150,8 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(menuPerms);
             listListPerms.Add(menuCardPerms);
             listListPerms.Add(tablePerms);
+            listListPerms.Add(OrderPerms);
+            listListPerms.Add(KitchenPerms);
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -172,6 +176,8 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(bookingPerms);
             listListPerms.Add(bookingDetailPerms);
             listListPerms.Add(restaurantSchedulePerms);
+            listListPerms.Add(OrderPerms);
+
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
 
@@ -498,7 +504,38 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(Table)}_{Permissions.Delete}"
                 },
-
+                new Permission()
+                {
+                    Name = $"{nameof(Order)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Order)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Order)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Order)}_{Permissions.Delete}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Kitchen)}_{Permissions.Read}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Kitchen)}_{Permissions.Create}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Kitchen)}_{Permissions.Update}"
+                },
+                new Permission()
+                {
+                    Name = $"{nameof(Kitchen)}_{Permissions.Delete}"
+                },
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Read}"

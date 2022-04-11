@@ -1,5 +1,8 @@
 ﻿using Horeca.Core.Handlers.Commands.Kitchens;
 using Horeca.Core.Handlers.Commands.Orders;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Orders;
 using HorecaCore.Handlers.Queries.Orders;
@@ -29,6 +32,8 @@ namespace HorecaAPI.Controllers
         /// /// </returns>
         ///  /// <response code="201">Success creating new Order</response>
         /// <response code="400">Bad request</response
+        ///
+        [PermissionAuthorize(nameof(Order), Permissions.Create)]
         [HttpPost]
         [Route("Table/{TableId}/Order/")]
         [ProducesResponseType(typeof(MutateOrderDto), (int)HttpStatusCode.Created)]
@@ -48,6 +53,7 @@ namespace HorecaAPI.Controllers
         /// </returns>
         /// <response code="200">Success retrieving order lines list</response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Order), Permissions.Read)]
         [HttpGet]
         [Route("Table/{TableId}/Details")]
         [ProducesResponseType(typeof(IEnumerable<GetOrderLinesByTableIdDto>), (int)HttpStatusCode.OK)]
@@ -67,6 +73,8 @@ namespace HorecaAPI.Controllers
         /// </returns>
         /// <response code="200">Success returning the orderId </response>
         /// <response code="400">Bad request</response>
+        ///
+        [PermissionAuthorize(nameof(Kitchen), Permissions.Update)]
         [HttpPut]
         [Route("Kitchen/{kitchenId}/Order/{orderId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -86,6 +94,7 @@ namespace HorecaAPI.Controllers
         /// </returns>
         /// <response code="200">Success returning the orderLineId </response>
         /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Kitchen), Permissions.Update)]
         [HttpPut]
         [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}/Prepare")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -105,6 +114,8 @@ namespace HorecaAPI.Controllers
         /// </returns>
         /// <response code="200">Success returning the orderLineId </response>
         /// <response code="400">Bad request</response>
+        ///
+        [PermissionAuthorize(nameof(Kitchen), Permissions.Update)]
         [HttpPut]
         [Route("Kitchen/{kitchenId}/Order/{orderId}/OrderLine/{orderLineId}/Ready")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
