@@ -1,4 +1,6 @@
-﻿namespace Horeca.Shared.Data.Entities
+﻿using static Horeca.Shared.Utils.Constants;
+
+namespace Horeca.Shared.Data.Entities
 {
     public class RestaurantSchedule : BaseEntity
     {
@@ -14,6 +16,6 @@
         public int Capacity { get; set; }
 
         public int AvailableSeat { get; set; }
-        public int Status { get; set; }
+        public ScheduleStatus Status { get; set; }
     }
 }
