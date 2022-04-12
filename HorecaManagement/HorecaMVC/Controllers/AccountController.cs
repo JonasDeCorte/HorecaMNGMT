@@ -10,11 +10,12 @@ namespace Horeca.MVC.Controllers
 {
     public class AccountController : Controller
     {
-        private IAccountService accountService;
-        private IPermissionService permissionService;
+        private readonly IAccountService accountService;
+        private readonly IPermissionService permissionService;
 
         public AccountController(IAccountService accountService, IPermissionService permissionService)
         {
+            ;
             this.accountService = accountService;
             this.permissionService = permissionService;
         }
@@ -26,7 +27,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserListViewModel listModel = new UserListViewModel();
+            UserListViewModel listModel = new();
             foreach (var user in users)
             {
                 UserViewModel model = AccountMapper.MapUserModel(user);
@@ -125,7 +126,7 @@ namespace Horeca.MVC.Controllers
             var permissions = await permissionService.GetPermissions();
             ViewData["Permissions"] = AccountMapper.MapAddPermissionsList(userModel, permissions);
 
-            MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
+            MutatePermissionsViewModel editModel = new()
             {
                 Username = userModel.Username
             };
@@ -164,7 +165,7 @@ namespace Horeca.MVC.Controllers
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
 
             ViewData["Permissions"] = AccountMapper.MapRemovePermissionsList(userModel);
-            MutatePermissionsViewModel editModel = new MutatePermissionsViewModel
+            MutatePermissionsViewModel editModel = new()
             {
                 Username = userModel.Username
             };

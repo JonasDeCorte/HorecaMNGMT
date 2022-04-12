@@ -13,8 +13,8 @@ namespace Horeca.MVC.Controllers
     [TypeFilter(typeof(TokenFilter))]
     public class MenuController : Controller
     {
-        private IMenuService menuService;
-        private IDishService dishService;
+        private readonly IMenuService menuService;
+        private readonly IDishService dishService;
 
         public MenuController(IMenuService menuService, IDishService dishService)
         {
@@ -31,7 +31,7 @@ namespace Horeca.MVC.Controllers
                 return View(nameof(NotFound));
             }
 
-            MenuListViewModel listModel = new MenuListViewModel();
+            MenuListViewModel listModel = new();
 
             foreach (var item in menus)
             {
@@ -70,7 +70,7 @@ namespace Horeca.MVC.Controllers
         [Route("/Menu/DeleteDish/{menuId}/{id}")]
         public async Task<IActionResult> DeleteDish(int menuId, int id)
         {
-            DeleteDishMenuDto dish = new DeleteDishMenuDto();
+            DeleteDishMenuDto dish = new();
             dish.MenuId = menuId;
             dish.DishId = id;
 
@@ -133,7 +133,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction(nameof(Detail), new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -162,7 +162,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction(nameof(Detail), new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {

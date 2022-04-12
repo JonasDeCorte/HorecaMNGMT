@@ -8,8 +8,8 @@ namespace Horeca.MVC.Controllers
 {
     public class RestaurantController : Controller
     {
-        public IRestaurantService restaurantService { get; }
-        public IAccountService accountService { get; }
+        private readonly IRestaurantService restaurantService;
+        private readonly IAccountService accountService;
 
         public RestaurantController(IRestaurantService restaurantService, IAccountService accountService)
         {
@@ -51,7 +51,7 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Create()
         {
-            MutateRestaurantViewModel model = new MutateRestaurantViewModel();
+            MutateRestaurantViewModel model = new();
             return View(model);
         }
 

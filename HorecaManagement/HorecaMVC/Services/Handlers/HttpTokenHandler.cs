@@ -5,7 +5,7 @@ namespace Horeca.MVC.Services.Handlers
 {
     public class HttpTokenHandler : DelegatingHandler
     {
-        IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ITokenService tokenService;
 
         public HttpTokenHandler(IHttpContextAccessor httpContextAccessor, ITokenService tokenService)
@@ -40,7 +40,7 @@ namespace Horeca.MVC.Services.Handlers
                 }
                 return newResponse;
             }
-            return response; ;
+            return response;
         }
     }
 }

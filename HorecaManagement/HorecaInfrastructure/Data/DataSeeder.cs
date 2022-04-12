@@ -12,7 +12,7 @@ namespace Horeca.Infrastructure.Data
     public static class DataSeeder
     {
         public const int AmountOfEachType = 15;
-        private static List<IEnumerable<Permission>>? listListPerms = new List<IEnumerable<Permission>>();
+        private static readonly List<IEnumerable<Permission>>? listListPerms = new();
 
         public static async void Seed(IApplicationBuilder app)
         {

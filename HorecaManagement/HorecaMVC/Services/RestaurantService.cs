@@ -8,8 +8,8 @@ namespace Horeca.MVC.Services
 {
     public class RestaurantService : IRestaurantService
     {
-        public HttpClient httpClient { get; }
-        public IConfiguration configuration { get; }
+        private readonly HttpClient httpClient;
+        private readonly IConfiguration configuration;
 
         public RestaurantService(HttpClient httpClient, IConfiguration configuration)
         {
@@ -36,7 +36,7 @@ namespace Horeca.MVC.Services
 
         public async Task<DetailRestaurantDto> GetRestaurantById(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, 
+            var request = new HttpRequestMessage(HttpMethod.Get,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
 
             var response = await httpClient.SendAsync(request);
@@ -100,7 +100,7 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> DeleteRestaurant(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, 
+            var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
 
             var response = await httpClient.SendAsync(request);

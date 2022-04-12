@@ -9,7 +9,7 @@ namespace Horeca.MVC.Services
     public class IngredientService : IIngredientService
     {
         private readonly HttpClient httpClient;
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
         public IngredientService(HttpClient httpClient, IConfiguration configuration)
         {

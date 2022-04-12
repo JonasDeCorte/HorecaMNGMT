@@ -10,11 +10,10 @@ namespace Horeca.MVC.Services
 {
     public class AccountService : IAccountService
     {
-        private HttpClient httpClient;
-        private IConfiguration configuration;
-        private ITokenService tokenService;
+        private readonly HttpClient httpClient;
+        private readonly IConfiguration configuration;
+        private readonly ITokenService tokenService;
         private readonly IHttpContextAccessor httpContextAccessor;
-
 
         public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
@@ -24,15 +23,16 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public  UserDto CurrentUser { get; set; }
+        public UserDto CurrentUser { get; set; }
 
         public async Task<HttpResponseMessage> LoginUser(LoginUserDto user)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.Login}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
-
+                $"{ClassConstants.Login}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")
+            };
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
@@ -42,11 +42,6 @@ namespace Horeca.MVC.Services
             TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             tokenService.SetAccessToken(result.AccessToken);
             tokenService.SetRefreshToken(result.RefreshToken);
-
-            //var test = httpContextAccessor.HttpContext.Request.Cookies["JWToken"];
-            //var test2 = httpContextAccessor.HttpContext.Request.Cookies["RefreshToken"];
-            var test = httpContextAccessor.HttpContext.Session.GetString("JWToken");
-            var test2 = httpContextAccessor.HttpContext.Session.GetString("RefreshToken");
 
             UserDto currentUser = await GetUserByName(user.Username);
             if (currentUser != null)
@@ -74,7 +69,7 @@ namespace Horeca.MVC.Services
             {
                 return null;
             }
-            foreach(string key in httpContextAccessor.HttpContext.Session.Keys)
+            foreach (string key in httpContextAccessor.HttpContext.Session.Keys)
             {
                 httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
                 httpContextAccessor.HttpContext.Session.Remove(key);
@@ -87,8 +82,10 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.Register}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                $"{ClassConstants.Register}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -102,8 +99,10 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.RegisterAdmin}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                $"{ClassConstants.RegisterAdmin}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -117,8 +116,10 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.UserPermissions}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                $"{ClassConstants.UserPermissions}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -126,15 +127,16 @@ namespace Horeca.MVC.Services
                 return null;
             }
             return response;
-
         }
 
         public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.UserPermissions}/{model.UserName}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                $"{ClassConstants.UserPermissions}/{model.UserName}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -142,7 +144,6 @@ namespace Horeca.MVC.Services
                 return null;
             }
             return response;
-
         }
 
         public async Task<IEnumerable<BaseUserDto>> GetUsers()
@@ -173,7 +174,7 @@ namespace Horeca.MVC.Services
             if (!response.IsSuccessStatusCode)
             {
                 return null;
-            } 
+            }
             else
             {
                 var result = JsonConvert.DeserializeObject<UserDto>(response.Content.ReadAsStringAsync().Result);
@@ -206,7 +207,7 @@ namespace Horeca.MVC.Services
             if (currentUser == null || currentUser.Permissions == null)
             {
                 return false;
-            } 
+            }
             else if (!currentUser.Permissions.Any(item => item.PermissionName == permission))
             {
                 return false;

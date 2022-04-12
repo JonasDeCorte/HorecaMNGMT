@@ -10,7 +10,7 @@ namespace Horeca.MVC.Controllers
     [TypeFilter(typeof(TokenFilter))]
     public class IngredientController : Controller
     {
-        private IIngredientService ingredientService;
+        private readonly IIngredientService ingredientService;
 
         public IngredientController(IIngredientService ingredientService)
         {
@@ -24,7 +24,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            IngredientListViewModel listModel = new IngredientListViewModel();
+            IngredientListViewModel listModel = new();
             foreach (var item in ingredients)
             {
                 IngredientViewModel model = IngredientMapper.MapModel(item);
