@@ -1,23 +1,15 @@
 ﻿@model Horeca.MVC.Models.Ingredients.IngredientListViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Ingredients</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col input-group">
-                <div class="form-outline">
-                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
-                </div>
-            </div>
-            <div class="col">
-                @if (accountService.Authorize("Ingredient_Update"))
-                {
-                    <a asp-action="Create" class="btn btn-primary float-end">New Ingredient</a>
-                }
-            </div>
-        </div>
-    </div>
     <div class="card mt-3" id="tableView">
+        <h1 class="display-4">Ingredients</h1>
+        <div class="card-header">
+            <input type="search" id="form1" class="form-control" placeholder="Search..." style="width: 30%;" />
+            @if (accountService.Authorize("Ingredient_Update"))
+            {
+                <a asp-action="Create" class="btn btn-primary float-end">New Ingredient</a>
+            }
+        </div>
         <div class="table-responsive">
             <table class="table table-hover table-nowrap" style="display: visible;">
                 <thead class="table-light">
