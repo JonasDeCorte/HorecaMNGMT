@@ -52,6 +52,16 @@
                                     </td>
                                 </tr>
                             }
+                                @if (accountService.Authorize("Restaurant_Update"))
+                                {
+                                    <tr>
+                                        <td colspan="2">
+                                            <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                                Add Employee
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
                         </tbody>
                     </table>
                 </div>

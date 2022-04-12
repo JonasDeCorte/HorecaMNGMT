@@ -111,7 +111,7 @@ namespace Horeca.MVC.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> AddRestaurantEmployee(int userId, int restaurantId)
+        public async Task<HttpResponseMessage> AddRestaurantEmployee(string userId, int restaurantId)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
@@ -124,7 +124,7 @@ namespace Horeca.MVC.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> RemoveRestaurantEmployee(int userId, int restaurantId)
+        public async Task<HttpResponseMessage> RemoveRestaurantEmployee(string userId, int restaurantId)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");

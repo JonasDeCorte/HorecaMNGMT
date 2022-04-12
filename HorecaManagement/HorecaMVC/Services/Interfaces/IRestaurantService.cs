@@ -10,7 +10,7 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<HttpResponseMessage> AddRestaurant(MutateRestaurantDto restaurantDto);
         public Task<HttpResponseMessage> UpdateRestaurant(EditRestaurantDto restaurantDto);
         public Task<HttpResponseMessage> DeleteRestaurant(int id);
-        public Task<HttpResponseMessage> AddRestaurantEmployee(int userId, int restaurantId);
-        public Task<HttpResponseMessage> RemoveRestaurantEmployee(int userId, int restaurantId);
+        public Task<HttpResponseMessage> AddRestaurantEmployee(string userId, int restaurantId);
+        public Task<HttpResponseMessage> RemoveRestaurantEmployee(string userId, int restaurantId);
     }
 }

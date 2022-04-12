@@ -111,5 +111,25 @@ namespace Horeca.MVC.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> AddEmployee(int restaurantId)
+        {
+            var employees = await accountService.GetUsers();
+            AddEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees);
+            model.RestaurantId = restaurantId;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee(AddEmployeeViewModel model)
+        {
+            var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
+        }
     }
 }
