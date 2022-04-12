@@ -39,7 +39,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
+            TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(await response.Content.ReadAsStringAsync());
             tokenService.SetAccessToken(result.AccessToken);
             tokenService.SetRefreshToken(result.RefreshToken);
 
@@ -157,7 +157,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(await response.Content.ReadAsStringAsync());
             return result;
         }
 
@@ -177,7 +177,7 @@ namespace Horeca.MVC.Services
             }
             else
             {
-                var result = JsonConvert.DeserializeObject<UserDto>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
                 return result;
             }
         }

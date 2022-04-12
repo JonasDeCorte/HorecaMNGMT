@@ -17,6 +17,9 @@
         public const string Restaurant = "Restaurant";
         public const string Employee = "Employee";
 
+        public const string Schedule = "Schedule";
+        public const string All = "All";
+
         public const string Account = "Account";
         public const string User = "User";
         public const string Login = "login";

@@ -88,7 +88,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var schedule in @Model.RestaurantSchedules)
+                        @foreach (var schedule in @Model.RestaurantScheduleListViewModel.RestaurantSchedules)
                         {
                             <tr>
                                 <td>@schedule.Id</td>

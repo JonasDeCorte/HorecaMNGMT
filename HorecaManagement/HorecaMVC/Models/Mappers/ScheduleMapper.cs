@@ -7,7 +7,7 @@ namespace Horeca.MVC.Models.Mappers
     {
         private static RestaurantScheduleViewModel MapRestaurantScheduleModel(RestaurantScheduleDto restaurantScheduleDto)
         {
-            RestaurantScheduleViewModel restaurantScheduleViewModel = new RestaurantScheduleViewModel
+            RestaurantScheduleViewModel restaurantScheduleViewModel = new()
             {
                 Id = restaurantScheduleDto.Id,
                 RestaurantId = restaurantScheduleDto.Id,
@@ -21,16 +21,61 @@ namespace Horeca.MVC.Models.Mappers
             return restaurantScheduleViewModel;
         }
 
-        public static List<RestaurantScheduleViewModel> MapRestaurantScheduleList(List<RestaurantScheduleDto> restaurantSchedules)
+        public static RestaurantScheduleListViewModel MapRestaurantScheduleList(IEnumerable<RestaurantScheduleDto> restaurantSchedules)
         {
-            List<RestaurantScheduleViewModel> list = new List<RestaurantScheduleViewModel>();
+            RestaurantScheduleListViewModel list = new();
             foreach (var restaurantScheduleDto in restaurantSchedules)
             {
                 RestaurantScheduleViewModel model = MapRestaurantScheduleModel(restaurantScheduleDto);
-                list.Add(model);
+                list.RestaurantSchedules.Add(model);
             }
             return list;
         }
 
+        public static RestaurantScheduleDetailViewModel MapRestaurantScheduleDetailModel(RestaurantScheduleByIdDto restaurantScheduleByIdDto)
+        {
+            return new RestaurantScheduleDetailViewModel()
+            {
+                Id = restaurantScheduleByIdDto.Id,
+                AvailableSeat = restaurantScheduleByIdDto.AvailableSeat,
+                Capacity = restaurantScheduleByIdDto.Capacity,
+                EndTime = restaurantScheduleByIdDto.EndTime,
+                StartTime = restaurantScheduleByIdDto.StartTime,
+                ScheduleDate = restaurantScheduleByIdDto.ScheduleDate,
+                RestaurantId = restaurantScheduleByIdDto.RestaurantId,
+                RestaurantName = restaurantScheduleByIdDto.RestaurantName,
+                Status = restaurantScheduleByIdDto.Status,
+            };
+        }
+
+        public static MutateRestaurantScheduleDto MapMutateRestaurantScheduleDto(MutateRestaurantScheduleViewModel model)
+        {
+            return new MutateRestaurantScheduleDto()
+            {
+                Id = model.Id,
+                AvailableSeat = model.AvailableSeat,
+                Capacity = model.Capacity,
+                EndTime = model.EndTime,
+                RestaurantId = model.RestaurantId,
+                ScheduleDate = model.ScheduleDate,
+                StartTime = model.StartTime,
+                Status = model.Status
+            };
+        }
+
+        public static MutateRestaurantScheduleViewModel MapMutateRestaurantScheduleModel(RestaurantScheduleByIdDto model)
+        {
+            return new MutateRestaurantScheduleViewModel()
+            {
+                Id = model.Id,
+                AvailableSeat = model.AvailableSeat,
+                Capacity = model.Capacity,
+                EndTime = model.EndTime,
+                RestaurantId = model.RestaurantId,
+                ScheduleDate = model.ScheduleDate,
+                StartTime = model.StartTime,
+                Status = model.Status
+            };
+        }
     }
 }

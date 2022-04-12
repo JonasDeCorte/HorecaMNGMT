@@ -22,13 +22,11 @@ namespace Horeca.MVC.Services
         public void SetAccessToken(string accessToken)
         {
             httpContextAccessor.HttpContext.Session.SetString("JWToken", accessToken);
-            var test = httpContextAccessor.HttpContext.Session.Get("JWToken");
         }
 
         public void SetRefreshToken(string refreshToken)
         {
             httpContextAccessor.HttpContext.Session.SetString("RefreshToken", refreshToken);
-            var test = httpContextAccessor.HttpContext.Session.Get("RefreshToken");
         }
 
         public string GetRefreshToken()
@@ -38,13 +36,15 @@ namespace Horeca.MVC.Services
 
         public async Task<string> RefreshTokens()
         {
-            RefreshTokenDto refreshTokenDto = new RefreshTokenDto()
+            RefreshTokenDto refreshTokenDto = new()
             {
                 RefreshToken = GetRefreshToken()
             };
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.RefreshToken}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.RefreshToken}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

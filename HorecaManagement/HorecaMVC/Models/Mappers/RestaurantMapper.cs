@@ -8,17 +8,16 @@ namespace Horeca.MVC.Models.Mappers
     {
         public static RestaurantViewModel MapRestaurantModel(RestaurantDto restaurantDto)
         {
-            RestaurantViewModel restaurantModel = new RestaurantViewModel
+            return new RestaurantViewModel()
             {
                 Id = restaurantDto.Id,
                 Name = restaurantDto.Name,
             };
-            return restaurantModel;
         }
 
         public static RestaurantListViewModel MapRestaurantListModel(IEnumerable<RestaurantDto> restaurantDtos)
         {
-            RestaurantListViewModel model = new RestaurantListViewModel();
+            RestaurantListViewModel model = new();
             foreach (var restaurantDto in restaurantDtos)
             {
                 RestaurantViewModel restaurantModel = MapRestaurantModel(restaurantDto);
@@ -29,12 +28,12 @@ namespace Horeca.MVC.Models.Mappers
 
         public static RestaurantDetailViewModel MapRestaurantDetailModel(DetailRestaurantDto restaurantDto)
         {
-            RestaurantDetailViewModel restaurantDetailModel = new RestaurantDetailViewModel
+            RestaurantDetailViewModel restaurantDetailModel = new()
             {
                 Id = restaurantDto.Id,
                 Name = restaurantDto.Name,
             };
-            restaurantDetailModel.RestaurantSchedules = ScheduleMapper.MapRestaurantScheduleList(restaurantDto.RestaurantSchedules);
+            restaurantDetailModel.RestaurantScheduleListViewModel = ScheduleMapper.MapRestaurantScheduleList(restaurantDto.RestaurantSchedules);
             restaurantDetailModel.Employees = AccountMapper.MapUserModelList(restaurantDto.Employees);
             restaurantDetailModel.MenuCards = MenuCardMapper.MapMenuCardModelList(restaurantDto.MenuCards);
             return restaurantDetailModel;
@@ -42,12 +41,11 @@ namespace Horeca.MVC.Models.Mappers
 
         public static MutateRestaurantViewModel MapMutateRestaurantModel(DetailRestaurantDto dto)
         {
-            MutateRestaurantViewModel model = new MutateRestaurantViewModel()
+            return new MutateRestaurantViewModel()
             {
                 Id = dto.Id,
                 Name = dto.Name
             };
-            return model;
         }
 
         public static MutateEmployeeViewModel MapAddEmployeeModel(IEnumerable<BaseUserDto> employees, DetailRestaurantDto restaurant)
@@ -66,23 +64,21 @@ namespace Horeca.MVC.Models.Mappers
 
         public static MutateRestaurantDto MapCreateRestaurantDto(MutateRestaurantViewModel model)
         {
-            MutateRestaurantDto dto = new MutateRestaurantDto
+            return new MutateRestaurantDto()
             {
                 Id = model.Id,
                 Name = model.Name,
                 OwnerName = model.OwnerName,
             };
-            return dto;
         }
 
         public static EditRestaurantDto MapEditRestaurantDto(RestaurantViewModel model)
         {
-            EditRestaurantDto dto = new EditRestaurantDto()
+            return new EditRestaurantDto()
             {
                 Id = model.Id,
                 Name = model.Name,
             };
-            return dto;
         }
     }
 }

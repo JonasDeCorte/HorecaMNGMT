@@ -24,7 +24,7 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<IEnumerable<RestaurantDto>>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<IEnumerable<RestaurantDto>>(await response.Content.ReadAsStringAsync());
                 return result;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -42,7 +42,7 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<DetailRestaurantDto>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<DetailRestaurantDto>(await response.Content.ReadAsStringAsync());
                 return result;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -60,7 +60,7 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(await response.Content.ReadAsStringAsync());
                 return result;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -73,8 +73,10 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddRestaurant(MutateRestaurantDto restaurantDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -87,8 +89,10 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateRestaurant(EditRestaurantDto restaurantDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

@@ -26,7 +26,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<List<PermissionDto>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<List<PermissionDto>>(await response.Content.ReadAsStringAsync());
             return result;
         }
 
@@ -40,7 +40,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            var result = JsonConvert.DeserializeObject<PermissionDto>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<PermissionDto>(await response.Content.ReadAsStringAsync());
             return result;
         }
     }
