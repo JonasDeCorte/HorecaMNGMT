@@ -172,5 +172,23 @@ namespace Horeca.API.Controllers
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddMenuCardToRestaurantCommand(restaurantId, menuCardId)));
         }
+
+        /// <summary>
+        ///  Delete a menucard from a restaurant
+        /// </summary>
+        /// <param name="employeeId">employee id </param>
+        /// <param name="restaurantId">restaurant id </param>
+        /// <returns></returns>
+        /// <response code="204">Success  Delete a menucard from a restaurant</response>
+        /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
+        [HttpDelete]
+        [Route("{restaurantId}/MenuCard/{menuCardId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> DeleteMenuCardFromRestaurant([FromRoute] int restaurantId, [FromRoute] int menuCardId)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteMenuCardFromRestaurantCommand(restaurantId, menuCardId)));
+        }
     }
 }
