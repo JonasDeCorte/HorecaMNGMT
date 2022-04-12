@@ -1,0 +1,28 @@
+﻿@model Horeca.MVC.Models.Schedules.RestaurantScheduleDetailViewModel
+
+<div class="text-center">
+    <div class="card">
+        <div class="card-header">
+            <p class="display-6">@Model.RestaurantName - @Model.ScheduleDate.ToShortDateString()</p>
+        </div>
+        <div class="card-body d-flex flex-nowrap justify-content-center">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Period</li>
+                <li class="list-group-item">Schedule status</li>
+                <li class="list-group-item">Available seats:</li>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">@Model.StartTime.ToShortTimeString() - @Model.EndTime.ToShortTimeString()</li>
+                <li class="list-group-item">@Model.Status</li>
+                <li class="list-group-item">@Model.AvailableSeat / @Model.Capacity</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            @if (accountService.Authorize("RestaurantSchedule_Update"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            }
+            <a asp-controller="Restaurant" asp-action="Detail" asp-route-id="@Model.RestaurantId" class="btn btn-secondary">Go Back</a>
+        </div>
+    </div>
+</div>

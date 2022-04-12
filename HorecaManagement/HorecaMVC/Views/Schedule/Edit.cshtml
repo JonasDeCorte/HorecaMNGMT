@@ -1,35 +1,32 @@
 ﻿@model Horeca.MVC.Models.Schedules.MutateRestaurantScheduleViewModel
 
-
-
-<h4>MutateRestaurantScheduleViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="text-center">
+    <h1 class="display-4">Edit schedule of @Model.ScheduleDate.ToShortDateString()</h1>
+    <div>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" style="display: none">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
+                <input asp-for="Id" class="form-control" readonly="readonly"/>
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none">
                 <label asp-for="RestaurantId" class="control-label"></label>
-                <input asp-for="RestaurantId" class="form-control" />
+                <input asp-for="RestaurantId" class="form-control" readonly="readonly"/>
                 <span asp-validation-for="RestaurantId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ScheduleDate" class="control-label"></label>
+                <label asp-for="ScheduleDate" class="control-label">Schedule Date</label>
                 <input asp-for="ScheduleDate" class="form-control" />
                 <span asp-validation-for="ScheduleDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
+                <label asp-for="StartTime" class="control-label">Start Time</label>
                 <input asp-for="StartTime" class="form-control" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
+                <label asp-for="EndTime" class="control-label">End Time</label>
                 <input asp-for="EndTime" class="form-control" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
@@ -39,7 +36,7 @@
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AvailableSeat" class="control-label"></label>
+                <label asp-for="AvailableSeat" class="control-label">Available Seats</label>
                 <input asp-for="AvailableSeat" class="form-control" />
                 <span asp-validation-for="AvailableSeat" class="text-danger"></span>
             </div>
@@ -50,16 +47,9 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-secondary">Go Back</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 
