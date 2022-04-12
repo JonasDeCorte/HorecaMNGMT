@@ -10,41 +10,31 @@ namespace Horeca.MVC.Models.Mappers
 {
     public static class MenuCardMapper
     {
-        public static MenuCardViewModel MapModel(MenuCardDto menuCard)
+        public static MenuCardViewModel MapMenuCardModel(MenuCardDto menuCard)
         {
-            MenuCardViewModel model = new MenuCardViewModel
+            return new MenuCardViewModel
             {
                 Id = menuCard.Id,
                 Name = menuCard.Name
             };
-            return model;
         }
 
-        public static MenuCardDetailViewModel MapDetailModel(MenuCard menuCard)
+        public static MenuCardDetailViewModel MapMenuCardDetailModel(MenuCard menuCard)
         {
-            MenuCardDetailViewModel model = new MenuCardDetailViewModel
+            MenuCardDetailViewModel model = new()
             {
                 Id = menuCard.Id,
                 Name = menuCard.Name
             };
-            foreach (var dish in menuCard.Dishes)
-            {
-                DishDto dishDto = DishMapper.MapDishDto(dish);
-                DishViewModel dishModel = DishMapper.MapModel(dishDto);
-                model.Dishes.Add(dishModel);
-            }
-            foreach (var menu in menuCard.Menus)
-            {
-                MenuDto menuDto = MenuMapper.MapMenuDto(menu);
-                MenuViewModel menuModel = MenuMapper.MapModel(menuDto);
-                model.Menus.Add(menuModel);
-            }
+            model.Dishes = DishMapper.MapDishModelList(menuCard.Dishes);
+            model.Menus = MenuMapper.MapMenuModelList(menuCard.Menus);
 
             return model;
         }
+
         public static MenuCardDishViewModel MapMutateMenuCardDishModel(int menuCardId, DishDto dish)
         {
-            MenuCardDishViewModel result = new MenuCardDishViewModel
+            return new MenuCardDishViewModel
             {
                 MenuCardId = menuCardId,
                 DishId = dish.Id,
@@ -53,12 +43,11 @@ namespace Horeca.MVC.Models.Mappers
                 Category = dish.Category,
                 Description = dish.Description
             };
-            return result;
         }
 
         public static MenuCardMenuViewModel MapMutateMenuCardMenuModel(int menuCardId, MenuDto menu)
         {
-            MenuCardMenuViewModel result = new MenuCardMenuViewModel
+            return new MenuCardMenuViewModel
             {
                 MenuCardId = menuCardId,
                 MenuId = menu.Id,
@@ -66,12 +55,11 @@ namespace Horeca.MVC.Models.Mappers
                 Description = menu.Description,
                 Category = menu.Category
             };
-            return result;
         }
 
         public static MenuCard MapMenuCardDetail(MenuCardDto menuCard, MenuCardsByIdDto menuCardLists)
         {
-            MenuCard result = new MenuCard
+            MenuCard result = new()
             {
                 Id = menuCard.Id,
                 Name = menuCard.Name
@@ -89,21 +77,28 @@ namespace Horeca.MVC.Models.Mappers
             return result;
         }
 
+        internal static List<MenuCardViewModel> MapMenuCardModelList(List<MenuCardDto> menuCards)
+        {
+            List<MenuCardViewModel> result = new();
+            foreach (var menuCard in menuCards)
+            {
+                result.Add(MapMenuCardModel(menuCard));
+            }
+            return result;
+        }
+
         public static MutateMenuCardDto MapMutateMenuCard(MenuCardViewModel menuCardModel, MenuCardDto menuCard)
         {
-            MutateMenuCardDto result = new MutateMenuCardDto
+            return new MutateMenuCardDto
             {
                 Id = menuCard.Id,
                 Name = menuCardModel.Name
             };
-            result.Name = menuCardModel.Name;
-
-            return result;
         }
 
         public static MutateDishMenuCardDto MapMutateMenuCardDish(int id, DishViewModel dish)
         {
-            MutateDishMenuCardDto result = new MutateDishMenuCardDto
+            return new MutateDishMenuCardDto
             {
                 MenuCardId = id,
                 Dish = new MutateDishDto
@@ -115,13 +110,11 @@ namespace Horeca.MVC.Models.Mappers
                     Description = dish.Description
                 }
             };
-
-            return result;
         }
 
         public static MutateMenuMenuCardDto MapMutateMenuCardMenu(int id, MenuViewModel menu)
         {
-            MutateMenuMenuCardDto result = new MutateMenuMenuCardDto
+            return new MutateMenuMenuCardDto
             {
                 MenuCardId = id,
                 Menu = new MutateMenuDto
@@ -132,8 +125,6 @@ namespace Horeca.MVC.Models.Mappers
                     Description = menu.Description
                 }
             };
-
-            return result;
         }
     }
 }

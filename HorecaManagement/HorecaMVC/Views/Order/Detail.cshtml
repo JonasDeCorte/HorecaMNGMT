@@ -1,9 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Order Detail";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
-}
-
-<div class="text-center">
+﻿<div class="text-center">
     <div class="d-flex flex-column">
         <h1 class="display-4">Order 1 - Table 0</h1>
         <div class="table-responsive">
@@ -37,7 +32,7 @@
                 <tfoot>
                     <tr>
                         <td scope="row" colspan="2">
-                            @if (accountService.Authorize(currentUser, "Order_Update"))
+                            @if (accountService.Authorize("Order_Update"))
                             {
                                 <a asp-action="Edit" class="btn btn-primary">Edit</a>
                             }

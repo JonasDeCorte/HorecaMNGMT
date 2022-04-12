@@ -1,10 +1,5 @@
 ﻿@model Horeca.MVC.Models.Menus.MenuListViewModel
 
-@{
-    ViewData["Title"] = "Menu Overview";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
-}
-
 <div class="text-center">
     <h1 class="display-4">Menus</h1>
     <div class="container mb-3">
@@ -18,7 +13,7 @@
                 <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
             </div>
             <div class="col">
-                @if (accountService.Authorize(currentUser, "Menu_Create"))
+                @if (accountService.Authorize("Menu_Create"))
                 {
                     <a asp-action="Create" class="btn btn-primary float-end">New Menu</a>
                 }
@@ -47,11 +42,11 @@
                         </table>
                         <div>
                             <a asp-action="Detail" asp-route-id="@item.MenuId" class="btn btn-primary">Details</a>
-                        @if (accountService.Authorize(currentUser, "Menu_Update"))
+                        @if (accountService.Authorize("Menu_Update"))
                         {
                             <a asp-action="Edit" asp-route-id="@item.MenuId" class="btn btn-primary">Edit</a>
                         }
-                        @if (accountService.Authorize(currentUser, "Menu_Delete"))
+                        @if (accountService.Authorize("Menu_Delete"))
                         {
                             <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="@item.MenuId">
@@ -85,11 +80,11 @@
                         <td>@Model.Menus[i].Description</td>
                         <td>
                             <a asp-action="Detail" asp-route-id="@Model.Menus[i].MenuId" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize(currentUser, "Menu_Update"))
+                            @if (accountService.Authorize("Menu_Update"))
                             {
                                 <a asp-action="Edit" asp-route-id="@Model.Menus[i].MenuId" class="btn btn-primary">Edit</a>
                             }
-                            @if (accountService.Authorize(currentUser, "Menu_Delete"))
+                            @if (accountService.Authorize("Menu_Delete"))
                             {
                                 <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="@Model.Menus[i].MenuId">

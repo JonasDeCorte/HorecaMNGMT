@@ -21,28 +21,30 @@ namespace Horeca.MVC.Services
 
         public void SetAccessToken(string accessToken)
         {
-            httpContextAccessor.HttpContext.Response.Cookies.Append("JWToken", accessToken);
-        }
-
-        public string GetRefreshToken()
-        {
-            return httpContextAccessor.HttpContext.Request.Cookies["RefreshToken"];
+            httpContextAccessor.HttpContext.Session.SetString("JWToken", accessToken);
         }
 
         public void SetRefreshToken(string refreshToken)
         {
-            httpContextAccessor.HttpContext.Response.Cookies.Append("RefreshToken", refreshToken);
+            httpContextAccessor.HttpContext.Session.SetString("RefreshToken", refreshToken);
         }
 
-        public async Task<HttpResponseMessage> RefreshTokens()
+        public string GetRefreshToken()
         {
-            RefreshTokenDto refreshTokenDto = new RefreshTokenDto()
+            return httpContextAccessor.HttpContext.Session.GetString("RefreshToken");
+        }
+
+        public async Task<string> RefreshTokens()
+        {
+            RefreshTokenDto refreshTokenDto = new()
             {
                 RefreshToken = GetRefreshToken()
             };
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.RefreshToken}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.RefreshToken}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(refreshTokenDto), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -53,7 +55,7 @@ namespace Horeca.MVC.Services
             TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
             SetAccessToken(result.AccessToken);
             SetRefreshToken(result.RefreshToken);
-            return response;
+            return result.AccessToken;
         }
     }
 }

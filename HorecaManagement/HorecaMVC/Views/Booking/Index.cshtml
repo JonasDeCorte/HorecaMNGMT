@@ -1,9 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Booking Overview";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
-}
-
-<div class="text-center">
+﻿<div class="text-center">
     <h1 class="display-4">Bookings</h1>
     <div class="container">
         <div class="row">
@@ -13,7 +8,7 @@
                 </div>
             </div>
             <div class="col">
-                @if (accountService.Authorize(currentUser, "Booking_Create"))
+                @if (accountService.Authorize("Booking_Create"))
                 {
                     <a asp-action="Create" class="btn btn-primary float-end">New Booking</a>
                 }
@@ -39,11 +34,11 @@
                         <td>johanscheisser@gmail.com</td>
                         <td>
                             <a asp-action="Detail" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize(currentUser, "Booking_Update"))
+                            @if (accountService.Authorize("Booking_Update"))
                             {
                                 <a asp-action="Edit" class="btn btn-primary">Edit</a>
                             }
-                            @if (accountService.Authorize(currentUser, "Booking_Delete"))
+                            @if (accountService.Authorize("Booking_Delete"))
                             {
                                 <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" data-id="0">

@@ -8,7 +8,6 @@ namespace Horeca.MVC.Controllers
     {
         public OrderController()
         {
-
         }
 
         public IActionResult Index()
@@ -23,7 +22,7 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Create()
         {
-            return RedirectToAction("Detail", new { id = 0 });
+            return RedirectToAction(nameof(Detail), new { id = 0 });
         }
 
         public IActionResult Edit()
