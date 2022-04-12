@@ -18,7 +18,7 @@ namespace Horeca.Shared.Utils
         /// <summary>
         /// Working Days for Operating Hour
         /// </summary>
-        public enum WorkingDays : int
+        public enum WorkingDays
         {
             Daily = 1,
             Weekend = 2,
@@ -27,7 +27,7 @@ namespace Horeca.Shared.Utils
         /// <summary>
         /// Schedule Status
         /// </summary>
-        public enum ScheduleStatus : int
+        public enum ScheduleStatus
         {
             Available = 1,
             Full = 2,

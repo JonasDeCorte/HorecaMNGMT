@@ -1,4 +1,6 @@
-﻿namespace Horeca.Shared.Dtos.RestaurantSchedules
+﻿using static Horeca.Shared.Utils.Constants;
+
+namespace Horeca.Shared.Dtos.RestaurantSchedules
 {
     public class RestaurantScheduleDto
     {
@@ -13,7 +15,7 @@
         public int Capacity { get; set; }
 
         public int AvailableSeat { get; set; }
-        public int Status { get; set; }
+        public ScheduleStatus Status { get; set; }
     }
 
     public class RestaurantScheduleByIdDto : RestaurantScheduleDto
