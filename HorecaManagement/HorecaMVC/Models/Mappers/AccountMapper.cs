@@ -9,7 +9,7 @@ namespace Horeca.MVC.Models.Mappers
     {
         public static UserViewModel MapUserModel(BaseUserDto userDto)
         {
-            UserViewModel userViewModel = new UserViewModel
+            UserViewModel userViewModel = new()
             {
                 Id = userDto.Id,
                 Username = userDto.Username
@@ -19,7 +19,7 @@ namespace Horeca.MVC.Models.Mappers
 
         public static UserPermissionsViewModel MapUserPermissionsModel(UserDto userDto)
         {
-            UserPermissionsViewModel userPermissionsModel = new UserPermissionsViewModel
+            UserPermissionsViewModel userPermissionsModel = new()
             {
                 Username = userDto.Username
             };

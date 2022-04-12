@@ -19,7 +19,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index(string id = "")
         {
-            IEnumerable<RestaurantDto> restaurants;
+            IEnumerable<RestaurantDto> restaurants = null;
             if (id != "")
             {
                 restaurants = await restaurantService.GetRestaurantsByUser(id);

@@ -48,9 +48,24 @@ namespace Horeca.MVC.Models.Mappers
             };
         }
 
-        public static MutateRestaurantScheduleDto MapCreateRestaurantScheduleDto(MutateRestaurantScheduleViewModel model)
+        public static MutateRestaurantScheduleDto MapMutateRestaurantScheduleDto(MutateRestaurantScheduleViewModel model)
         {
             return new MutateRestaurantScheduleDto()
+            {
+                Id = model.Id,
+                AvailableSeat = model.AvailableSeat,
+                Capacity = model.Capacity,
+                EndTime = model.EndTime,
+                RestaurantId = model.RestaurantId,
+                ScheduleDate = model.ScheduleDate,
+                StartTime = model.StartTime,
+                Status = model.Status
+            };
+        }
+
+        public static MutateRestaurantScheduleViewModel MapMutateRestaurantScheduleModel(RestaurantScheduleByIdDto model)
+        {
+            return new MutateRestaurantScheduleViewModel()
             {
                 Id = model.Id,
                 AvailableSeat = model.AvailableSeat,

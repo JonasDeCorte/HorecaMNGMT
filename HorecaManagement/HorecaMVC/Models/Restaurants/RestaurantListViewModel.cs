@@ -2,6 +2,6 @@
 {
     public class RestaurantListViewModel
     {
-        public List<RestaurantViewModel> Restaurants { get; set; } = new List<RestaurantViewModel>();
+        public List<RestaurantViewModel> Restaurants { get; set; } = new();
     }
 }
