@@ -4,7 +4,6 @@ using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
@@ -12,7 +11,7 @@ namespace Horeca.Infrastructure.Data
 {
     public static class DataSeeder
     {
-        public const int AmountOfEachType = 10;
+        public const int AmountOfEachType = 15;
         private static readonly List<IEnumerable<Permission>>? listListPerms = new();
 
         public static async void Seed(IApplicationBuilder app)
@@ -43,7 +42,6 @@ namespace Horeca.Infrastructure.Data
 
                 Dish dish = new()
                 {
-                    Price = decimal.One * i * Random.Shared.Next(i, 20),
                     Category = $"Category {i}",
                     Description = $"Description {i}",
                     Name = $"name {i}",
@@ -72,10 +70,7 @@ namespace Horeca.Infrastructure.Data
                 };
 
                 context.Menus.Add(menu);
-                foreach (var ds in menu.Dishes)
-                {
-                    menu.Price += ds.Price;
-                }
+
                 MenuCard card = new()
                 {
                     Name = $"name {i}",
@@ -106,8 +101,6 @@ namespace Horeca.Infrastructure.Data
             var tablePerms = listPermissions.Where(x => x.Name.StartsWith("Table_"));
             var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
             var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
-            var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
-            var appUserRead = listPermissions.Where(x => x.Name.Equals("ApplicationUser_Read"));
 
             #endregion permissions
 
@@ -150,8 +143,6 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(menuPerms);
             listListPerms.Add(menuCardPerms);
             listListPerms.Add(tablePerms);
-            listListPerms.Add(OrderPerms);
-            listListPerms.Add(appUserRead);
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -176,9 +167,6 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(bookingPerms);
             listListPerms.Add(bookingDetailPerms);
             listListPerms.Add(restaurantSchedulePerms);
-            listListPerms.Add(OrderPerms);
-            listListPerms.Add(appUserRead);
-
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
 
@@ -201,13 +189,12 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(restaurantSchedulePerms);
             listListPerms.Add(permissionPerms);
             listListPerms.Add(ApplicationUserPerms);
-
             AddApplicationUserPermissions(context, restaurantBeheerder, listListPerms);
             listListPerms.Clear();
 
             #endregion ApplicationUser restaurantBeheerder
 
-            #region Add Restaurants, Bookings, Tables ,Orders
+            #region Add Restaurants, Bookings, Tables
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -235,8 +222,6 @@ namespace Horeca.Infrastructure.Data
 
                 await context.SaveChangesAsync();
 
-                context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
-
                 DateTime newSchedule = DateTime.Today.AddDays(1);
                 RestaurantSchedule restaurantSchedule = new()
                 {
@@ -246,7 +231,7 @@ namespace Horeca.Infrastructure.Data
                     EndTime = newSchedule.AddHours(2),
                     Capacity = 20,
                     AvailableSeat = 20,
-                    Status = i % 2 == 0 ? (int)Constants.ScheduleStatus.Available : (int)Constants.ScheduleStatus.Expired,
+                    Status = i % 2 == 0 ? Constants.ScheduleStatus.Available : Constants.ScheduleStatus.Expired,
                 };
                 context.RestaurantSchedules.Add(restaurantSchedule);
 
@@ -273,8 +258,6 @@ namespace Horeca.Infrastructure.Data
                 };
                 context.BookingDetails.Add(bookingDetail);
             }
-            await context.SaveChangesAsync();
-
             var bookingDetails = context.BookingDetails.ToList();
             foreach (var bookingDetail in bookingDetails)
             {
@@ -286,34 +269,8 @@ namespace Horeca.Infrastructure.Data
                 };
                 context.Tables.Add(table);
             }
-            await context.SaveChangesAsync();
 
-            List<Table> list = context.Tables.AsNoTracking().ToList();
-            foreach (var table in list)
-            {
-                var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
-                Order order = new()
-                {
-                    TableId = table.Id,
-                    OrderState = table.Id % 2 == 0 ? Constants.OrderState.Begin : Constants.OrderState.Prepare,
-                    OrderLines = new List<OrderLine>()
-                    {
-                        new OrderLine()
-                        {
-                        DishId = dish.Id,
-                        Price = dish.Price,
-                        Quantity = table.Id+1,
-                        DishState = table.Id % 2 == 0 ? Constants.DishState.Waiting : Constants.DishState.Preparing,
-                        },
-                     }
-                };
-                var resto = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == table.Id);
-                resto.Orders.Add(order);
-                context.Restaurants.Update(resto);
-                await context.SaveChangesAsync();
-            }
-
-            #endregion Add Restaurants, Bookings, Tables ,Orders
+            #endregion Add Restaurants, Bookings, Tables
 
             await context.SaveChangesAsync();
         }
@@ -499,22 +456,7 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = $"{nameof(Table)}_{Permissions.Delete}"
                 },
-                new Permission()
-                {
-                    Name = $"{nameof(Order)}_{Permissions.Read}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Order)}_{Permissions.Create}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Order)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Order)}_{Permissions.Delete}"
-                },
+
                 new Permission()
                 {
                     Name = $"{nameof(Permission)}_{Permissions.Read}"
