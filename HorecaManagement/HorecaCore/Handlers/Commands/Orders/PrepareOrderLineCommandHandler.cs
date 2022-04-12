@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using static Horeca.Shared.Utils.Constants;
 
-namespace Horeca.Core.Handlers.Commands.Kitchens
+namespace Horeca.Core.Handlers.Commands.Orders
+
 {
     public class PrepareOrderLineCommand : IRequest<int>
     {
