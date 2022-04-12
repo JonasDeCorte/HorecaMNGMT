@@ -39,7 +39,17 @@ namespace Horeca.MVC.Models.Mappers
             return restaurantDetailModel;
         }
 
-        public static MutateRestaurantDto MapCreateRestaurantDto(CreateRestaurantViewModel model)
+        public static MutateRestaurantViewModel MapMutateRestaurantModel(DetailRestaurantDto dto)
+        {
+            MutateRestaurantViewModel model = new MutateRestaurantViewModel()
+            {
+                Id = dto.Id,
+                Name = dto.Name
+            };
+            return model;
+        }
+
+        public static MutateRestaurantDto MapCreateRestaurantDto(MutateRestaurantViewModel model)
         {
             MutateRestaurantDto dto = new MutateRestaurantDto
             {

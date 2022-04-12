@@ -1,6 +1,6 @@
 ﻿namespace Horeca.MVC.Models.Restaurants
 {
-    public class CreateRestaurantViewModel : RestaurantViewModel
+    public class MutateRestaurantViewModel : RestaurantViewModel
     {
         public string OwnerName { get; set; }
     }

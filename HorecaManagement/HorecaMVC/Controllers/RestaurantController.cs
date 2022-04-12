@@ -51,12 +51,12 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult Create()
         {
-            CreateRestaurantViewModel model = new CreateRestaurantViewModel();
+            MutateRestaurantViewModel model = new MutateRestaurantViewModel();
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateRestaurantViewModel model)
+        public async Task<IActionResult> Create(MutateRestaurantViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -75,14 +75,16 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Update()
+        public async Task<IActionResult> Edit(int id)
         {
-            CreateRestaurantViewModel model = new CreateRestaurantViewModel();
+            var restaurant = await restaurantService.GetRestaurantById(id);
+            MutateRestaurantViewModel model = RestaurantMapper.MapMutateRestaurantModel(restaurant);
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(RestaurantViewModel model)
+        public async Task<IActionResult> Edit(RestaurantViewModel model)
         {
             if (ModelState.IsValid)
             {
