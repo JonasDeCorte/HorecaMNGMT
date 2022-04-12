@@ -36,8 +36,8 @@
                     <table class="table table-hover mt-2" style="display: visible;">
                         <thead>
                             <tr>
-                                <th scope="col" class="col-9">Username</th>
-                                <th scope="col" class="col-3">Options</th>
+                                <th scope="col" class="col-7">Username</th>
+                                <th scope="col" class="col-5">Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,19 +49,26 @@
                                         <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">
                                             Details
                                         </a>
+                                        @if (accountService.Authorize("Restaurant_Update"))
+                                        {
+                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@employee.Id">
+                                                Remove
+                                            </button>
+                                        }
                                     </td>
                                 </tr>
                             }
-                                @if (accountService.Authorize("Restaurant_Update"))
-                                {
-                                    <tr>
-                                        <td colspan="2">
-                                            <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                                                Add Employee
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
+                            @if (accountService.Authorize("Restaurant_Update"))
+                            {
+                                <tr>
+                                    <td colspan="2">
+                                        <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                            Add Employee
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -98,3 +105,35 @@
         }
     </div>
 </div>
+
+<div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Remove Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this employee from this restaurant?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteButton" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteModal",OpenModalDelete);
+    });
+
+    function OpenModalDelete(){
+       var restaurantId = @Model.Id;
+       var itemId = $(this).data("id");
+       $('#deleteButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveEmployee/" + itemId);
+       $("#deleteModal").modal();
+    }
+</script>

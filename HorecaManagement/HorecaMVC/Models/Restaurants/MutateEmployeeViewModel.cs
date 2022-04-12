@@ -2,7 +2,7 @@
 
 namespace Horeca.MVC.Models.Restaurants
 {
-    public class AddEmployeeViewModel
+    public class MutateEmployeeViewModel
     {
         public int RestaurantId { get; set; }
         public string EmployeeId { get; set; }

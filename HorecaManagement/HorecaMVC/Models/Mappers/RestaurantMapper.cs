@@ -50,9 +50,9 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
-        public static AddEmployeeViewModel MapAddEmployeeModel(IEnumerable<BaseUserDto> employees, DetailRestaurantDto restaurant)
+        public static MutateEmployeeViewModel MapAddEmployeeModel(IEnumerable<BaseUserDto> employees, DetailRestaurantDto restaurant)
         {
-            AddEmployeeViewModel model = new AddEmployeeViewModel();
+            MutateEmployeeViewModel model = new MutateEmployeeViewModel();
             foreach (var employee in employees)
             {
                 if (!restaurant.Employees.Any(x => x.Id == employee.Id))

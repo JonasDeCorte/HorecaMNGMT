@@ -1,6 +1,7 @@
 ﻿using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Models.Restaurants;
 using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Restaurants;
 using Microsoft.AspNetCore.Mvc;
 
@@ -116,13 +117,13 @@ namespace Horeca.MVC.Controllers
         {
             var employees = await accountService.GetUsers();
             var restaurant = await restaurantService.GetRestaurantById(restaurantId);
-            AddEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees, restaurant);
+            MutateEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees, restaurant);
             model.RestaurantId = restaurantId;
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(AddEmployeeViewModel model)
+        public async Task<IActionResult> AddEmployee(MutateEmployeeViewModel model)
         {
             var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
             if (response == null)
@@ -131,6 +132,18 @@ namespace Horeca.MVC.Controllers
             }
 
             return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
+        }
+
+        [Route("/Restaurant/{restaurantId}/RemoveEmployee/{employeeId}")]
+        public async Task<IActionResult> RemoveEmployee(int restaurantId, string employeeId)
+        {
+            var response = await restaurantService.RemoveRestaurantEmployee(employeeId, restaurantId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = restaurantId });
         }
     }
 }
