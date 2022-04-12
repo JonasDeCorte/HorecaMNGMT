@@ -8,7 +8,7 @@ namespace Horeca.MVC.Models.Mappers
     {
         public static IngredientViewModel MapModel(IngredientDto ingredient)
         {
-            IngredientViewModel model = new IngredientViewModel
+            return new IngredientViewModel
             {
                 IngredientId = ingredient.Id,
                 Name = ingredient.Name,
@@ -20,13 +20,11 @@ namespace Horeca.MVC.Models.Mappers
                     Name = ingredient.Unit.Name
                 }
             };
-
-            return model;
         }
 
         public static MutateIngredientDto MapCreateIngredientDto(IngredientViewModel ingredientModel)
         {
-            MutateIngredientDto result = new MutateIngredientDto
+            return new MutateIngredientDto
             {
                 Id = ingredientModel.IngredientId,
                 Name = ingredientModel.Name,
@@ -38,13 +36,11 @@ namespace Horeca.MVC.Models.Mappers
                     Name = ingredientModel.Unit.Name,
                 },
             };
-
-            return result;
         }
 
         public static MutateIngredientDto MapUpdateIngredientDto(IngredientViewModel ingredientModel, IngredientDto ingredient)
         {
-            MutateIngredientDto result = new MutateIngredientDto
+            return new MutateIngredientDto
             {
                 Id = ingredient.Id,
                 Name = ingredientModel.Name,
@@ -56,8 +52,6 @@ namespace Horeca.MVC.Models.Mappers
                     Name = ingredientModel.Unit.Name,
                 }
             };
-
-            return result;
         }
     }
 }
