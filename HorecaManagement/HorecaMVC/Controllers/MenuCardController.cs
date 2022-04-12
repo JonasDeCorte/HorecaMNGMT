@@ -12,7 +12,6 @@ using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
-
     [TypeFilter(typeof(TokenFilter))]
     public class MenuCardController : Controller
     {
@@ -33,7 +32,7 @@ namespace Horeca.MVC.Controllers
 
             if (menuCards == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
             MenuCardListViewModel listModel = new MenuCardListViewModel();
@@ -54,7 +53,7 @@ namespace Horeca.MVC.Controllers
 
             if (menuCard == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
             MenuCardDetailViewModel model = MenuCardMapper.MapMenuCardDetailModel(menuCard);
@@ -142,7 +141,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction(nameof(Detail), new { id = id });
             }
             else
             {
@@ -163,7 +162,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateMenuCardDto result = MenuCardMapper.MapMutateMenuCard(menuCard, 
+                MutateMenuCardDto result = MenuCardMapper.MapMutateMenuCard(menuCard,
                     await menuCardService.GetMenuCardById(menuCard.Id));
 
                 var response = await menuCardService.UpdateMenuCard(result);
@@ -203,7 +202,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = model.MenuCardId });
+                return RedirectToAction(nameof(Detail), new { id = model.MenuCardId });
             }
             else
             {
@@ -234,7 +233,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = model.MenuCardId });
+                return RedirectToAction(nameof(Detail), new { id = model.MenuCardId });
             }
             else
             {
@@ -266,7 +265,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = menuCardId });
+            return RedirectToAction(nameof(Detail), new { id = menuCardId });
         }
 
         [Route("/MenuCard/DeleteMenu/{menuCardId}/{id}")]
@@ -282,7 +281,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = menuCardId });
+            return RedirectToAction(nameof(Detail), new { id = menuCardId });
         }
     }
 }

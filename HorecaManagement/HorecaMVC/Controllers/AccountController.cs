@@ -24,10 +24,10 @@ namespace Horeca.MVC.Controllers
             IEnumerable<BaseUserDto> users = await accountService.GetUsers();
             if (users == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             UserListViewModel listModel = new UserListViewModel();
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 UserViewModel model = AccountMapper.MapUserModel(user);
                 listModel.Users.Add(model);
@@ -41,7 +41,7 @@ namespace Horeca.MVC.Controllers
             UserDto user = await accountService.GetUserByName(username);
             if (user == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             UserPermissionsViewModel model = AccountMapper.MapUserPermissionsModel(user);
 
@@ -65,14 +65,16 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.LoginUser(user);
                 if (response == null)
                 {
-                    return View("Login");
+                    return View(nameof(Login));
                 }
-                return RedirectToAction("Index", "Home");
-            } else
+                return RedirectToAction(nameof(Index), "Home");
+            }
+            else
             {
                 return View(model);
             }
         }
+
         public async Task<IActionResult> Logout()
         {
             var response = await accountService.LogoutUser();
@@ -81,7 +83,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         public IActionResult Register()
@@ -101,10 +103,10 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.RegisterUser(user);
                 if (response == null)
                 {
-                    return View("Register");
+                    return View(nameof(Register));
                 }
 
-                return RedirectToAction("Index", new { area = "Home" } );
+                return RedirectToAction(nameof(Index), new { area = "Home" });
             }
             else
             {
@@ -117,7 +119,7 @@ namespace Horeca.MVC.Controllers
             UserDto user = await accountService.GetUserByName(username);
             if (user == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
             var permissions = await permissionService.GetPermissions();
@@ -144,8 +146,9 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { username = model.Username });
-            } else
+                return RedirectToAction(nameof(Detail), new { username = model.Username });
+            }
+            else
             {
                 return View(model);
             }
@@ -156,7 +159,7 @@ namespace Horeca.MVC.Controllers
             UserDto user = await accountService.GetUserByName(username);
             if (user == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
 
@@ -182,13 +185,12 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { username = model.Username });
-            } 
+                return RedirectToAction(nameof(Detail), new { username = model.Username });
+            }
             else
             {
                 return View(model);
             }
-
         }
     }
 }

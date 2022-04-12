@@ -23,13 +23,14 @@ namespace Horeca.MVC.Controllers
             if (id != "")
             {
                 restaurants = await restaurantService.GetRestaurantsByUser(id);
-            } else
+            }
+            else
             {
                 restaurants = await restaurantService.GetRestaurants();
             }
-            if(restaurants == null)
+            if (restaurants == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             RestaurantListViewModel model = RestaurantMapper.MapRestaurantListModel(restaurants);
 
@@ -41,7 +42,7 @@ namespace Horeca.MVC.Controllers
             var restaurant = await restaurantService.GetRestaurantById(id);
             if (restaurant == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             RestaurantDetailViewModel model = RestaurantMapper.MapRestaurantDetailModel(restaurant);
 
@@ -57,17 +58,17 @@ namespace Horeca.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateRestaurantViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 MutateRestaurantDto restaurantDto = RestaurantMapper.MapCreateRestaurantDto(model);
-                    
+
                 var response = await restaurantService.AddRestaurant(restaurantDto);
                 if (response == null)
                 {
                     return View("OperationFailed");
                 }
                 return RedirectToAction(nameof(Index));
-            } 
+            }
             else
             {
                 return View(model);

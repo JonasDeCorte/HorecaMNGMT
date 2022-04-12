@@ -28,7 +28,7 @@ namespace Horeca.MVC.Controllers
 
             if (menus == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
             MenuListViewModel listModel = new MenuListViewModel();
@@ -48,7 +48,7 @@ namespace Horeca.MVC.Controllers
             Menu menu = await menuService.GetMenuDetailById(id);
             if (menu == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
             MenuDetailViewModel model = MenuMapper.MapDetailModel(menu);
@@ -80,7 +80,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = menuId });
+            return RedirectToAction(nameof(Detail), new { id = menuId });
         }
 
         public IActionResult Create()
@@ -110,6 +110,7 @@ namespace Horeca.MVC.Controllers
                 return View(menu);
             }
         }
+
         public IActionResult CreateDish(int id)
         {
             var model = new DishViewModel();
@@ -132,7 +133,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction(nameof(Detail), new { id = id });
             }
             else
             {
@@ -192,7 +193,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = dish.MenuId });
+                return RedirectToAction(nameof(Detail), new { id = dish.MenuId });
             }
             else
             {

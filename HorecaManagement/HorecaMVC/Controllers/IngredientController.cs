@@ -22,7 +22,7 @@ namespace Horeca.MVC.Controllers
             IEnumerable<IngredientDto> ingredients = await ingredientService.GetIngredients();
             if (ingredients == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             IngredientListViewModel listModel = new IngredientListViewModel();
             foreach (var item in ingredients)
@@ -39,7 +39,7 @@ namespace Horeca.MVC.Controllers
             IngredientDto ingredient = await ingredientService.GetIngredientById(id);
             if (ingredient == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             IngredientViewModel model = IngredientMapper.MapModel(ingredient);
 
@@ -77,7 +77,8 @@ namespace Horeca.MVC.Controllers
                 }
 
                 return RedirectToAction(nameof(Index));
-            } else
+            }
+            else
             {
                 return View(ingredient);
             }
@@ -88,7 +89,7 @@ namespace Horeca.MVC.Controllers
             IngredientDto ingredient = await ingredientService.GetIngredientById(id);
             if (ingredient == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             IngredientViewModel model = IngredientMapper.MapModel(ingredient);
 
@@ -108,7 +109,8 @@ namespace Horeca.MVC.Controllers
                 }
 
                 return RedirectToAction(nameof(Index));
-            } else
+            }
+            else
             {
                 return View(ingredient);
             }
