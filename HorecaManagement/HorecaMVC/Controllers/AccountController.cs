@@ -124,11 +124,11 @@ namespace Horeca.MVC.Controllers
             }
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
             var permissions = await permissionService.GetPermissions();
-            ViewData["Permissions"] = AccountMapper.MapAddPermissionsList(userModel, permissions);
 
             MutatePermissionsViewModel editModel = new()
             {
-                Username = userModel.Username
+                Username = userModel.Username,
+                Permissions = AccountMapper.MapAddPermissionsList(userModel, permissions)
             };
 
             return View(editModel);
@@ -164,11 +164,11 @@ namespace Horeca.MVC.Controllers
             }
             UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
 
-            ViewData["Permissions"] = AccountMapper.MapRemovePermissionsList(userModel);
             MutatePermissionsViewModel editModel = new()
             {
-                Username = userModel.Username
-            };
+                Username = userModel.Username,
+                Permissions = AccountMapper.MapRemovePermissionsList(userModel)
+        };
 
             return View(editModel);
         }

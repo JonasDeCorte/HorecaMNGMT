@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Models.Restaurants;
+using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Restaurants;
 
 namespace Horeca.MVC.Models.Mappers
@@ -45,6 +46,20 @@ namespace Horeca.MVC.Models.Mappers
                 Id = dto.Id,
                 Name = dto.Name
             };
+        }
+
+        public static MutateEmployeeViewModel MapAddEmployeeModel(IEnumerable<BaseUserDto> employees, DetailRestaurantDto restaurant)
+        {
+            MutateEmployeeViewModel model = new MutateEmployeeViewModel();
+            foreach (var employee in employees)
+            {
+                if (!restaurant.Employees.Any(x => x.Id == employee.Id))
+                {
+                    var employeeModel = AccountMapper.MapUserModel(employee);
+                    model.Employees.Add(employeeModel);
+                }
+            }
+            return model;
         }
 
         public static MutateRestaurantDto MapCreateRestaurantDto(MutateRestaurantViewModel model)
