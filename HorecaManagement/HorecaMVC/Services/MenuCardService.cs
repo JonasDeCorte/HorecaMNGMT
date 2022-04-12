@@ -10,8 +10,8 @@ namespace Horeca.MVC.Services
 {
     public class MenuCardService : IMenuCardService
     {
-        private HttpClient httpClient;
-        private IConfiguration configuration;
+        private readonly HttpClient httpClient;
+        private readonly IConfiguration configuration;
 
         public MenuCardService(HttpClient httpClient, IConfiguration iConfig)
         {
@@ -53,7 +53,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
             var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(response.Content.ReadAsStringAsync().Result);
-            
+
             return result;
         }
 

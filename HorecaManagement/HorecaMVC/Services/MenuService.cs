@@ -10,8 +10,8 @@ namespace Horeca.MVC.Services
 {
     public class MenuService : IMenuService
     {
-        private HttpClient httpClient;
-        private IConfiguration configuration;
+        private readonly HttpClient httpClient;
+        private readonly IConfiguration configuration;
 
         public MenuService(HttpClient httpClient, IConfiguration IConfig)
         {
@@ -106,6 +106,7 @@ namespace Horeca.MVC.Services
             }
             return response;
         }
+
         public async Task<HttpResponseMessage> DeleteMenuDish(DeleteDishMenuDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
