@@ -115,7 +115,8 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> AddEmployee(int restaurantId)
         {
             var employees = await accountService.GetUsers();
-            AddEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees);
+            var restaurant = await restaurantService.GetRestaurantById(restaurantId);
+            AddEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees, restaurant);
             model.RestaurantId = restaurantId;
             return View(model);
         }
