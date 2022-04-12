@@ -49,7 +49,7 @@
                                         <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">
                                             Details
                                         </a>
-                                        @if (accountService.Authorize("Restaurant_Update"))
+                                        @if (accountService.Authorize("Restaurant_Delete"))
                                         {
                                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
                                                 data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@employee.Id">
