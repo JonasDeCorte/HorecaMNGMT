@@ -34,11 +34,9 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
 
         public async Task<int> Handle(AddEmployeeCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to add {object} with id: {id} to {resto} with id: {restId}", nameof(ApplicationUser), request.UserId, nameof(Restaurant), request.RestaurantId);
-
             logger.Info("trying to get {object} with id: {id}", nameof(Restaurants), request.RestaurantId);
 
-            var restaurant = repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
+            var restaurant = await repository.Restaurants.GetRestaurantIncludingDependenciesById(request.RestaurantId);
             if (restaurant == null)
             {
                 logger.Error(EntityNotFoundException.Instance);
@@ -54,6 +52,8 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
                 throw new UserNotFoundException();
             }
             logger.Info("adding employee with id: {id}", request.UserId);
+
+            logger.Info("trying to add {object} with id: {id} to {resto} with id: {restId}", nameof(ApplicationUser), request.UserId, nameof(Restaurant), request.RestaurantId);
 
             restaurant.Employees.Add(new RestaurantUser
             {
