@@ -28,26 +28,27 @@ namespace Horeca.Infrastructure.Data.Repositories
                 {
                     throw new EntityNotFoundException();
                 }
-                var restaurantSchedule = await context.RestaurantSchedules.SingleOrDefaultAsync(x => x.Id == table.RestaurantScheduleId);
+                var restaurantSchedule = await context.RestaurantSchedules.SingleOrDefaultAsync(x => x.Id.Equals(table.RestaurantScheduleId));
 
                 if (restaurantSchedule == null)
                 {
                     throw new EntityNotFoundException();
                 }
-                var restaurant = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == restaurantSchedule.RestaurantId);
+                var restaurant = await context.Restaurants.SingleOrDefaultAsync(x => x.Id.Equals(restaurantSchedule.RestaurantId));
 
                 if (restaurant == null)
                 {
                     throw new EntityNotFoundException();
                 }
+
                 Order order = new();
 
                 AddOrderLines(receipt, order);
 
                 order.OrderState = OrderState.Begin;
+
                 table.Orders.Add(order);
                 restaurant.Orders.Add(order);
-
                 context.Orders.Add(order);
 
                 context.Tables.Update(table);

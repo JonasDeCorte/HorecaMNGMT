@@ -65,13 +65,20 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
             }
             logger.Info("order {object} with state: {state}", orderline, orderline.DishState);
 
-            order.OrderState = OrderState.Prepare;
-
-            context.Orders.Update(order);
-
-            logger.Info("preparing order {object} with state: {state}", orderline, orderline.DishState);
+            if (order.OrderState != OrderState.Prepare)
+            {
+                order.OrderState = OrderState.Prepare;
+                context.Orders.Update(order);
+                logger.Info("preparing order {object} with state: {state}", orderline, orderline.DishState);
+            }
 
             logger.Info("orderLine {object} with state: {state}", orderline, orderline.DishState);
+
+            if (orderline.DishState != DishState.Waiting)
+            {
+                logger.Info("orderLine {object} with state: {state}, has to be in state {waiting}", orderline, orderline.DishState, DishState.Waiting);
+                throw new ArgumentException("Invalid DishState - should be waiting");
+            }
 
             orderline.DishState = DishState.Preparing;
 
