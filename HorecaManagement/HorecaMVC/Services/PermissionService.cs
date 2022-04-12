@@ -7,8 +7,8 @@ namespace Horeca.MVC.Services
 {
     public class PermissionService : IPermissionService
     {
-        private HttpClient httpClient;
-        private IConfiguration configuration;
+        private readonly HttpClient httpClient;
+        private readonly IConfiguration configuration;
 
         public PermissionService(HttpClient httpClient, IConfiguration configuration)
         {

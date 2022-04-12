@@ -15,9 +15,9 @@ namespace Horeca.MVC.Controllers
     [TypeFilter(typeof(TokenFilter))]
     public class MenuCardController : Controller
     {
-        private IMenuCardService menuCardService;
-        private IMenuService menuService;
-        private IDishService dishService;
+        private readonly IMenuCardService menuCardService;
+        private readonly IMenuService menuService;
+        private readonly IDishService dishService;
 
         public MenuCardController(IMenuCardService menuCardService, IMenuService menuService, IDishService dishService)
         {
@@ -35,7 +35,7 @@ namespace Horeca.MVC.Controllers
                 return View(nameof(NotFound));
             }
 
-            MenuCardListViewModel listModel = new MenuCardListViewModel();
+            MenuCardListViewModel listModel = new();
 
             foreach (var item in menuCards)
             {
@@ -111,7 +111,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -141,7 +141,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction(nameof(Detail), new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -255,7 +255,7 @@ namespace Horeca.MVC.Controllers
         [Route("/MenuCard/DeleteDish/{menuCardId}/{id}")]
         public async Task<IActionResult> DeleteDish(int menuCardId, int id)
         {
-            DeleteDishMenuCardDto dish = new DeleteDishMenuCardDto();
+            DeleteDishMenuCardDto dish = new();
             dish.MenuCardId = menuCardId;
             dish.DishId = id;
 
@@ -271,7 +271,7 @@ namespace Horeca.MVC.Controllers
         [Route("/MenuCard/DeleteMenu/{menuCardId}/{id}")]
         public async Task<IActionResult> DeleteMenu(int menuCardId, int id)
         {
-            DeleteMenuMenuCardDto menu = new DeleteMenuMenuCardDto();
+            DeleteMenuMenuCardDto menu = new();
             menu.MenuCardId = menuCardId;
             menu.MenuId = id;
 
