@@ -1,84 +1,46 @@
 ﻿@model Horeca.MVC.Models.MenuCards.MenuCardListViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Menu Cards</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col input-group">
-                <div class="form-outline">
-                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
-                </div>
-            </div>
-            <div class="col">
-                <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
-            </div>
-            <div class="col">
-                @if (accountService.Authorize("MenuCard_Create"))
-                {
-                    <a asp-action="Create" class="btn btn-primary float-end">New Menu Card</a>
-                }
-            </div>
-        </div>
-    </div>
-    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: none;">
-        @foreach(var item in @Model.MenuCards)
-        {
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <div>
-                            <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary" asp-route-id="1">Details</a>
-                            @if (accountService.Authorize("MenuCard_Update"))
-                            {
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="modalbutton btn btn-primary">Edit</a>
-                            }
-                            @if (accountService.Authorize("MenuCard_Delete"))
-                            {
-                                <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@item.Id">
-                                    Delete
-                                </button>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-    <div class="table-responsive">
-    <table id="tableView" class="table table-hover mt-2" style="display: visible;" >
-        <thead>
-            <tr>
-                <th scope="col" class="col-1">#</th>
-                <th scope="col" class="col-8">Name</th>
-                <th scope="col" class="col-3">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < @Model.MenuCards.Count; i++)
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1>Menu Cards</h1>
+            @if (accountService.Authorize("MenuCard_Create"))
             {
-                <tr>
-                    <th scope="row">@i</th>
-                    <td>@Model.MenuCards[i].Name</td>
-                    <td>
-                            <a asp-action="Detail" asp-route-id="@Model.MenuCards[i].Id" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize("MenuCard_Update"))
-                            {
-                                <a asp-action="Edit" asp-route-id="@Model.MenuCards[i].Id" class="btn btn-primary">Edit</a>
-                            }
-                            @if (accountService.Authorize("MenuCard_Delete"))
-                            {
-                                <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@Model.MenuCards[i].Id">
-                                    Delete
-                                </button>
-                            }
-                    </td>
-                </tr>
+                <a asp-action="Create" class="btn btn-primary">New Menu Card</a>
             }
-        </tbody>
-    </table>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="card-header">
+                    <tr>
+                        <th scope="col" class="col-9">Name</th>
+                        <th scope="col" class="col-3">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var menuCard in Model.MenuCards)
+                    {
+                        <tr>
+                            <td>@menuCard.Name</td>
+                            <td>
+                                <a asp-action="Detail" asp-route-id="@menuCard.Id" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize("MenuCard_Update"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@menuCard.Id" class="btn btn-primary">Edit</a>
+                                }
+                                @if (accountService.Authorize("MenuCard_Delete"))
+                                {
+                                    <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-id="@menuCard.Id">
+                                        Delete
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

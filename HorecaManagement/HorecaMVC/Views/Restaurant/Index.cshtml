@@ -1,54 +1,47 @@
 ﻿@model Horeca.MVC.Models.Restaurants.RestaurantListViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Restaurants</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col input-group">
-                <div class="form-outline">
-                    <input type="search" class="form-control" placeholder="Search..." />
-                </div>
-            </div>
-            <div class="col">
-                @if (accountService.Authorize("Restaurant_Create"))
-                {
-                    <a asp-action="Create" class="btn btn-primary float-end">New Restaurant</a>
-                }
-            </div>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1>Restaurants</h1>
+            @if (accountService.Authorize("Restaurant_Create"))
+            {
+                <a asp-action="Create" class="btn btn-primary">New Restaurant</a>
+            }
         </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-hover mt-2">
-            <thead>
-                <tr>
-                    <th scope="col" class="col-9">Name</th>
-                    <th scope="col" class="col-3">Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var restaurant in Model.Restaurants)
-                {
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="card-header">
                     <tr>
-                        <td>@restaurant.Name</td>
-                        <td>
-                            <a asp-action="Detail" asp-route-id="@restaurant.Id" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize("Restaurant_Update"))
-                            {
-                                <a asp-action="Edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit</a>
-                            }
-
-                            @if (accountService.Authorize("Restaurant_Delete"))
-                            {
-                                <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@restaurant.Id">
-                                    Delete
-                                </button>
-                            }
-                        </td>
+                        <th scope="col" class="col-9">Name</th>
+                        <th scope="col" class="col-3">Options</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var restaurant in Model.Restaurants)
+                    {
+                        <tr>
+                            <td>@restaurant.Name</td>
+                            <td>
+                                <a asp-action="Detail" asp-route-id="@restaurant.Id" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize("Restaurant_Update"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit</a>
+                                }
+
+                                @if (accountService.Authorize("Restaurant_Delete"))
+                                {
+                                    <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal" data-id="@restaurant.Id">
+                                        Delete
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

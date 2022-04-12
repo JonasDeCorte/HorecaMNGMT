@@ -5,62 +5,66 @@
         <h1 class="display-4">@Model.Name</h1>
         @if (accountService.Authorize("RestaurantSchedule_Read"))
         {
-            <div class="table-responsive m-2">
-                <h2 class="display-6">Schedules</h2>
-                <table class="table table-hover mt-2" style="display: visible;">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Schedule Date</th>
-                            <th scope="col">Start Time</th>
-                            <th scope="col">End Time</th>
-                            <th scope="col">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var schedule in @Model.RestaurantScheduleListViewModel.RestaurantSchedules)
-                        {
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h2>Schedules</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
                             <tr>
-                                <td>@schedule.Id</td>
-                                <td>@schedule.ScheduleDate.ToShortDateString()</td>
-                                <td>@schedule.StartTime.ToShortTimeString()</td>
-                                <td>@schedule.EndTime.ToShortTimeString()</td>
-                                <td>
-                                    <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
-                                    @if (accountService.Authorize("RestaurantSchedule_Update"))
-                                    {
-                                        <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
-                                    }
-                                    @if (accountService.Authorize("RestaurantSchedule_Delete"))
-                                    {
-                                        <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
-                                            Delete
-                                        </button>
-                                    }
-                                </td>
+                                <th scope="col">Id</th>
+                                <th scope="col">Schedule Date</th>
+                                <th scope="col">Start Time</th>
+                                <th scope="col">End Time</th>
+                                <th scope="col">Options</th>
                             </tr>
-                        }
-                        @if (accountService.Authorize("Restaurant_Update"))
-                        {
-                            <tr>
-                                <td colspan="5">
-                                    <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                                        Add Schedule
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var schedule in @Model.RestaurantScheduleListViewModel.RestaurantSchedules)
+                            {
+                                <tr>
+                                    <td>@schedule.Id</td>
+                                    <td>@schedule.ScheduleDate.ToShortDateString()</td>
+                                    <td>@schedule.StartTime.ToShortTimeString()</td>
+                                    <td>@schedule.EndTime.ToShortTimeString()</td>
+                                    <td>
+                                        <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                        @if (accountService.Authorize("RestaurantSchedule_Update"))
+                                        {
+                                            <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
+                                        }
+                                        @if (accountService.Authorize("RestaurantSchedule_Delete"))
+                                        {
+                                            <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
+                                                Delete
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @if (accountService.Authorize("Restaurant_Update"))
+                            {
+                                <tr>
+                                    <td colspan="5">
+                                        <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                            Add Schedule
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         }
-        <div class="d-flex ">
+        <div class="d-flex">
             @if (accountService.Authorize("MenuCard_Read"))
             {
                 <div class="table-responsive flex-grow-1 m-2">
                     <h2 class="display-6">Menu Cards</h2>
-                    <table class="table table-hover mt-2" style="display: visible;">
+                    <table class="table table-hover mt-2">
                         <thead>
                             <tr>
                                 <th scope="col" class="col-9">Name</th>
