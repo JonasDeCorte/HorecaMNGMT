@@ -2,6 +2,7 @@
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
@@ -28,6 +29,15 @@ namespace Horeca.Infrastructure.Data.Repositories
             return await context.Restaurants
                 .Include(x => x.MenuCards)
                 .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
+        }
+
+        public async Task<Restaurant> GetRestaurantByIdWithOrdersWithOrderState(int restaurantId, OrderState orderState)
+        {
+            return await context.Restaurants
+               .Include(x => x.Orders.Where(x => x.OrderState.Equals(orderState)))
+               .ThenInclude(x => x.OrderLines)
+               .ThenInclude(x => x.Dish)
+               .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
         }
     }
 }
