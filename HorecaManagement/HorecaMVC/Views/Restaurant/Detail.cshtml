@@ -3,6 +3,58 @@
 <div class="text-center">
     <div class="d-flex flex-column">
         <h1 class="display-4">@Model.Name</h1>
+        @if (accountService.Authorize("RestaurantSchedule_Read"))
+        {
+            <div class="table-responsive m-2">
+                <h2 class="display-6">Schedules</h2>
+                <table class="table table-hover mt-2" style="display: visible;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Schedule Date</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in @Model.RestaurantScheduleListViewModel.RestaurantSchedules)
+                        {
+                            <tr>
+                                <td>@schedule.Id</td>
+                                <td>@schedule.ScheduleDate.ToShortDateString()</td>
+                                <td>@schedule.StartTime.ToShortTimeString()</td>
+                                <td>@schedule.EndTime.ToShortTimeString()</td>
+                                <td>
+                                    <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                    @if (accountService.Authorize("RestaurantSchedule_Update"))
+                                    {
+                                        <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
+                                    }
+                                    @if (accountService.Authorize("RestaurantSchedule_Delete"))
+                                    {
+                                        <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
+                                            Delete
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (accountService.Authorize("Restaurant_Update"))
+                        {
+                            <tr>
+                                <td colspan="5">
+                                    <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                        Add Schedule
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
         <div class="d-flex ">
             @if (accountService.Authorize("MenuCard_Read"))
             {
@@ -51,8 +103,8 @@
                                         </a>
                                         @if (accountService.Authorize("Restaurant_Delete"))
                                         {
-                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@employee.Id">
+                                            <button id="toDeleteEmployeeModal" type="button" class="modalbutton btn btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal" data-id="@employee.Id">
                                                 Remove
                                             </button>
                                         }
@@ -74,39 +126,10 @@
                 </div>
             }
         </div>
-        @if (accountService.Authorize("RestaurantSchedule_Read"))
-        {
-            <div class="table-responsive m-2">
-                <h2 class="display-6">Schedules</h2>
-                <table class="table table-hover mt-2" style="display: visible;">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Start Time</th>
-                            <th scope="col">End Time</th>
-                            <th scope="col">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var schedule in @Model.RestaurantScheduleListViewModel.RestaurantSchedules)
-                        {
-                            <tr>
-                                <td>@schedule.Id</td>
-                                <td>@schedule.StartTime</td>
-                                <td>@schedule.EndTime</td>
-                                <td>
-                                    <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
     </div>
 </div>
 
-<div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="deleteEmployeeModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -119,7 +142,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                <a id="deleteButton" class="btn btn-danger">Yes</a>
+                <a id="deleteEmployeeButton" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteScheduleModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this schedule?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteScheduleButton" class="btn btn-danger">Yes</a>
             </div>
         </div>
     </div>
@@ -127,13 +169,21 @@
 
 <script>
     $(document).ready(function(){
-       $(document).on("click","#toDeleteModal",OpenModalDelete);
+       $(document).on("click","#toDeleteEmployeeModal",OpenModalDeleteEmployee);
+       $(document).on("click","#toDeleteScheduleModal",OpenModalDeleteSchedule);
     });
 
-    function OpenModalDelete(){
+    function OpenModalDeleteEmployee(){
        var restaurantId = @Model.Id;
        var itemId = $(this).data("id");
-       $('#deleteButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveEmployee/" + itemId);
-       $("#deleteModal").modal();
+       $('#deleteEmployeeButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveEmployee/" + itemId);
+       $("#deleteEmployeeModal").modal();
+    }
+
+    function OpenModalDeleteSchedule(){
+       var restaurantId = @Model.Id;
+       var itemId = $(this).data("id");
+       $('#deleteScheduleButton').attr('href', "/Schedule/Delete/" + restaurantId + "/" + itemId);
+       $("#deleteScheduleModal").modal();
     }
 </script>

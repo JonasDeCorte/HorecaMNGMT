@@ -33,11 +33,6 @@
                             </a>
                         </li>
                     }
-                     <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="RestaurantSchedule" asp-action="Index">
-                                Schedules
-                            </a>
-                        </li>
                     @if (accountService.Authorize("Menu_Read"))
                     {
                         <li class="nav-item">

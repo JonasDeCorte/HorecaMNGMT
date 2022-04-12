@@ -1,7 +1,6 @@
 ﻿using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Models.Restaurants;
 using Horeca.MVC.Services.Interfaces;
-using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Restaurants;
 using Microsoft.AspNetCore.Mvc;
 

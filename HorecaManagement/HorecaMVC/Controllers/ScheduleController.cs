@@ -2,17 +2,16 @@
 using Horeca.MVC.Models.Schedules;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.RestaurantSchedules;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HorecaMVC.Controllers
+namespace Horeca.MVC.Controllers
 {
-    public class RestaurantScheduleController : Controller
+    public class ScheduleController : Controller
     {
         private readonly IScheduleService scheduleService;
         private readonly IAccountService accountService;
 
-        public RestaurantScheduleController(IScheduleService scheduleService, IAccountService accountService)
+        public ScheduleController(IScheduleService scheduleService, IAccountService accountService)
         {
             this.scheduleService = scheduleService;
             this.accountService = accountService;
@@ -46,14 +45,17 @@ namespace HorecaMVC.Controllers
             return View(model);
         }
 
-        public ActionResult Create()
+        public IActionResult Create(int restaurantId)
         {
-            MutateRestaurantScheduleViewModel model = new();
+            MutateRestaurantScheduleViewModel model = new()
+            {
+                RestaurantId = restaurantId
+            };
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(MutateRestaurantScheduleViewModel model)
+        public async Task<IActionResult> Create(MutateRestaurantScheduleViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +66,7 @@ namespace HorecaMVC.Controllers
                 {
                     return View("OperationFailed");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Detail), "Restaurant", new { id = model.RestaurantId });
             }
             else
             {
@@ -91,7 +93,7 @@ namespace HorecaMVC.Controllers
                 {
                     return View("OperationFailed");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Detail), "Restaurant", new { id = model.RestaurantId });
             }
             else
             {
@@ -99,14 +101,15 @@ namespace HorecaMVC.Controllers
             }
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [Route("/Schedule/Delete/{restaurantId}/{scheduleId}")]
+        public async Task<IActionResult> Delete(int restaurantId, int scheduleId)
         {
-            var response = await scheduleService.DeleteRestaurantSchedule(id);
+            var response = await scheduleService.DeleteRestaurantSchedule(scheduleId);
             if (response == null)
             {
                 return View("OperationFailed");
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Detail), "Restaurant", new { id = restaurantId });
         }
     }
 }
