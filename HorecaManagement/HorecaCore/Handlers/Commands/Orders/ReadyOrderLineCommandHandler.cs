@@ -66,7 +66,7 @@ namespace Horeca.Core.Handlers.Commands.Kitchens
 
             if (orderline.DishState != DishState.Preparing)
             {
-                logger.Error("orderline needs to be in state: {state} first", DishState.Preparing);
+                logger.Error("orderline needs to be in state: {state}, to start preparing.", DishState.Preparing);
                 throw new ArgumentException("Invalid DishState - should be preparing");
             }
             logger.Info("orderLine {object} with state: {state}", orderline, orderline.DishState);
