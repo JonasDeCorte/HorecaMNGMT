@@ -1,4 +1,6 @@
-﻿namespace Horeca.MVC.Models.Schedules
+﻿using static Horeca.Shared.Utils.Constants;
+
+namespace Horeca.MVC.Models.Schedules
 {
     public class RestaurantScheduleViewModel
     {
@@ -13,6 +15,6 @@
         public int Capacity { get; set; }
 
         public int AvailableSeat { get; set; }
-        public int Status { get; set; }
+        public ScheduleStatus Status { get; set; }
     }
 }
