@@ -70,7 +70,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
                         PhoneNo = bookingDetail.Booking.PhoneNo,
                         UserID = bookingDetail.Booking.UserId
                     },
-                    BookingID = bookingDetail.BookingId,
+                    BookingId = bookingDetail.BookingId,
                     Pax = bookingDetail.Pax,
                     RestaurantSchedule = new RestaurantScheduleDto
                     {

@@ -41,6 +41,24 @@ namespace HorecaAPI.Controllers
         }
 
         /// <summary>
+        /// Retrive the bookings by schedule id .
+        /// </summary>
+        /// <returns>
+        ///Retrive the bookings by schedule id .
+        /// </returns>
+        /// <response code="200">Success retrieving  the bookings by schedule id .list</response>
+        /// <response code="400">Bad request</response>
+        [HttpGet]
+        [Route("RestaurantSchedule/{scheduleId}")]
+        [PermissionAuthorize(nameof(Booking), Permissions.Read)]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> GetAllBookingsByScheduleIdQuery([FromRoute] int scheduleId)
+        {
+            return Ok(await mediator.Send(new GetAllBookingsByScheduleIdQuery(scheduleId)));
+        }
+
+        /// <summary>
         /// Get all members' bookings of a specific status.
         /// </summary>
         /// <param name="status">Booking status, e.g. Pending, Expired, Complete</param>

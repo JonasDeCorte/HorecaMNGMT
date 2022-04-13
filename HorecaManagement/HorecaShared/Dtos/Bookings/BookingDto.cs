@@ -37,13 +37,22 @@ namespace Horeca.Shared.Dtos.Bookings
 
     public class BookingDetailDto
     {
-        public int BookingID { get; set; }
+        public int BookingId { get; set; }
 
         public BookingDto Booking { get; set; }
 
         public int ScheduleID { get; set; }
 
         public RestaurantScheduleDto RestaurantSchedule { get; set; }
+
+        public int Pax { get; set; }
+    }
+
+    public class BookingDetailOnlyBookingsDto
+    {
+        public int BookingId { get; set; }
+
+        public BookingDto Booking { get; set; }
 
         public int Pax { get; set; }
     }
