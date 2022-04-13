@@ -21,6 +21,8 @@ namespace Horeca.Infrastructure.Data.Repositories
                 .Include(x => x.MenuCards)
                 .Include(x => x.Employees)
                 .ThenInclude(x => x.User)
+                .Include(x => x.Orders)
+                .ThenInclude(x => x.OrderLines)
                 .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
         }
 

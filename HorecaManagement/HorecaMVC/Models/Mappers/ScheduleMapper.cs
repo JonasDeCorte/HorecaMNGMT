@@ -6,7 +6,7 @@ namespace Horeca.MVC.Models.Mappers
 {
     public class ScheduleMapper
     {
-        private static RestaurantScheduleViewModel MapRestaurantScheduleModel(RestaurantScheduleDto restaurantScheduleDto)
+        private static RestaurantScheduleViewModel MapRestaurantScheduleModel(ScheduleDto restaurantScheduleDto)
         {
             RestaurantScheduleViewModel restaurantScheduleViewModel = new()
             {
@@ -22,7 +22,7 @@ namespace Horeca.MVC.Models.Mappers
             return restaurantScheduleViewModel;
         }
 
-        public static RestaurantScheduleListViewModel MapRestaurantScheduleList(IEnumerable<RestaurantScheduleDto> restaurantSchedules)
+        public static RestaurantScheduleListViewModel MapRestaurantScheduleList(IEnumerable<ScheduleDto> restaurantSchedules)
         {
             RestaurantScheduleListViewModel list = new();
             foreach (var restaurantScheduleDto in restaurantSchedules)

@@ -27,13 +27,13 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
 
         public async Task<int> Handle(DeleteRestaurantScheduleCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to delete {object} with Id: {id}", nameof(RestaurantSchedule), request.Id);
+            logger.Info("trying to delete {object} with Id: {id}", nameof(Schedule), request.Id);
 
             repository.RestaurantSchedules.Delete(request.Id);
 
             await repository.CommitAsync();
 
-            logger.Info("deleted {object} with Id: {id}", nameof(RestaurantSchedule), request.Id);
+            logger.Info("deleted {object} with Id: {id}", nameof(Schedule), request.Id);
 
             return request.Id;
         }

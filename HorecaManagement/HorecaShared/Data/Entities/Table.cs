@@ -2,9 +2,9 @@
 {
     public class Table : BaseEntity
     {
-        public int RestaurantScheduleId { get; set; }
+        public int ScheduleId { get; set; }
 
-        public RestaurantSchedule RestaurantSchedule { get; set; }
+        public Schedule Schedule { get; set; }
 
         public int? BookingDetailId { get; set; }
 

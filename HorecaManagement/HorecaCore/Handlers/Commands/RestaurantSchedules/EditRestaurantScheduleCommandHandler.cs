@@ -1,7 +1,7 @@
 ﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 using MediatR;
 using NLog;
 
@@ -9,9 +9,9 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
 {
     public class EditRestaurantScheduleCommand : IRequest<int>
     {
-        public MutateRestaurantScheduleDto Model { get; }
+        public MutateScheduleDto Model { get; }
 
-        public EditRestaurantScheduleCommand(MutateRestaurantScheduleDto model)
+        public EditRestaurantScheduleCommand(MutateScheduleDto model)
         {
             Model = model;
         }
@@ -42,7 +42,7 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
             var checkStartTime = await repository.RestaurantSchedules.CheckExistingStartTime(restaurantSchedule.Id, request.Model.ScheduleDate, request.Model.StartTime, request.Model.RestaurantId, "update");
             if (checkStartTime)
             {
-                logger.Error($"Attempt to add the schedule {nameof(RestaurantSchedule)} failed due to duplicate start time {nameof(request.Model.StartTime)}");
+                logger.Error($"Attempt to add the schedule {nameof(Schedule)} failed due to duplicate start time {nameof(request.Model.StartTime)}");
                 throw new ArgumentException("duplicate start time");
             }
             restaurantSchedule = UpdateEntity(request, restaurantSchedule);
@@ -55,7 +55,7 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
             return restaurantSchedule.Id;
         }
 
-        private static RestaurantSchedule UpdateEntity(EditRestaurantScheduleCommand request, RestaurantSchedule? restaurantSchedule)
+        private static Schedule UpdateEntity(EditRestaurantScheduleCommand request, Schedule? restaurantSchedule)
         {
             if (restaurantSchedule.StartTime != request.Model.StartTime)
             {

@@ -1,8 +1,8 @@
 ﻿using static Horeca.Shared.Utils.Constants;
 
-namespace Horeca.Shared.Dtos.RestaurantSchedules
+namespace Horeca.Shared.Dtos.Schedules
 {
-    public class RestaurantScheduleDto
+    public class ScheduleDto
     {
         public int Id { get; set; }
         public int RestaurantId { get; set; }
@@ -18,12 +18,12 @@ namespace Horeca.Shared.Dtos.RestaurantSchedules
         public ScheduleStatus Status { get; set; }
     }
 
-    public class RestaurantScheduleByIdDto : RestaurantScheduleDto
+    public class ScheduleByIdDto : ScheduleDto
     {
         public string RestaurantName { get; set; }
     }
 
-    public class MutateRestaurantScheduleDto : RestaurantScheduleDto
+    public class MutateScheduleDto : ScheduleDto
     {
     }
 }

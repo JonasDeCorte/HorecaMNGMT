@@ -34,14 +34,14 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<IEnumerable<RestaurantScheduleDto>> GetRestaurantSchedules(int restaurantId)
+        public async Task<IEnumerable<ScheduleDto>> GetRestaurantSchedules(int restaurantId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.All}/{restaurantId}");
             var response = await httpClient.SendAsync(request);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<IEnumerable<RestaurantScheduleDto>>(await response.Content.ReadAsStringAsync());
+                var result = JsonConvert.DeserializeObject<IEnumerable<ScheduleDto>>(await response.Content.ReadAsStringAsync());
                 return result;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)

@@ -237,7 +237,7 @@ namespace Horeca.Infrastructure.Data
                 await context.SaveChangesAsync();
                 context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
                 DateTime newSchedule = DateTime.Today.AddDays(1);
-                RestaurantSchedule restaurantSchedule = new()
+                Schedule restaurantSchedule = new()
                 {
                     RestaurantId = restaurant.Id,
                     ScheduleDate = newSchedule,
@@ -247,7 +247,7 @@ namespace Horeca.Infrastructure.Data
                     AvailableSeat = 20,
                     Status = i % 2 == 0 ? Constants.ScheduleStatus.Available : Constants.ScheduleStatus.Expired,
                 };
-                context.RestaurantSchedules.Add(restaurantSchedule);
+                context.Schedules.Add(restaurantSchedule);
 
                 Booking booking = new()
                 {
@@ -281,7 +281,7 @@ namespace Horeca.Infrastructure.Data
                 {
                     Pax = bookingDetail.Pax,
                     BookingDetailId = bookingDetail.Id,
-                    RestaurantScheduleId = bookingDetail.RestaurantScheduleId,
+                    ScheduleId = bookingDetail.RestaurantScheduleId,
                 };
                 context.Tables.Add(table);
             }
@@ -310,7 +310,8 @@ namespace Horeca.Infrastructure.Data
                 context.Restaurants.Update(resto);
                 await context.SaveChangesAsync();
             }
-            #endregion Add Restaurants, Bookings, Tables
+
+            #endregion Add Restaurants, Bookings, Tables, Orders
 
             await context.SaveChangesAsync();
         }
@@ -434,19 +435,19 @@ namespace Horeca.Infrastructure.Data
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Read}"
+                    Name = $"{nameof(Schedule)}_{Permissions.Read}"
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Create}"
+                    Name = $"{nameof(Schedule)}_{Permissions.Create}"
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Update}"
+                    Name = $"{nameof(Schedule)}_{Permissions.Update}"
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Delete}"
+                    Name = $"{nameof(Schedule)}_{Permissions.Delete}"
                 },
                 new Permission()
                 {

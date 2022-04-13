@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
-    public class RestaurantScheduleRepository : Repository<RestaurantSchedule>, IRestaurantScheduleRepository
+    public class ScheduleRepository : Repository<Schedule>, IScheduleRepository
     {
         private readonly DatabaseContext context;
 
-        public RestaurantScheduleRepository(DatabaseContext context) : base(context)
+        public ScheduleRepository(DatabaseContext context) : base(context)
         {
             this.context = context;
         }
 
         public async Task<bool> CheckExistingStartTime(int scheduleId, DateTime scheduleDate, DateTime startTime, long restaurantId, string action)
         {
-            var schedules = await context.RestaurantSchedules.Where(rs => rs.RestaurantId == restaurantId).ToListAsync();
+            var schedules = await context.Schedules.Where(rs => rs.RestaurantId == restaurantId).ToListAsync();
 
             foreach (var schedule in schedules)
             {
@@ -38,16 +38,16 @@ namespace Horeca.Infrastructure.Data.Repositories
             return false;
         }
 
-        public async Task<List<RestaurantSchedule>> GetAvailableRestaurantSchedules(int restaurantId)
+        public async Task<List<Schedule>> GetAvailableRestaurantSchedules(int restaurantId)
         {
-            return await context.RestaurantSchedules
+            return await context.Schedules
                 .Where(rs => rs.RestaurantId == restaurantId && rs.Status == Constants.ScheduleStatus.Available)
                 .ToListAsync();
         }
 
-        public async Task<List<RestaurantSchedule>> GetRestaurantSchedules(int restaurantId)
+        public async Task<List<Schedule>> GetRestaurantSchedules(int restaurantId)
         {
-            return await context.RestaurantSchedules
+            return await context.Schedules
                 .Where(rs => rs.RestaurantId == restaurantId)
                 .ToListAsync();
         }

@@ -24,7 +24,7 @@ namespace HorecaAPI.Controllers
         /// <summary>
         /// Adds tables for all the bookings with the specified restaurant schedule Id
         /// </summary>
-        /// <param name="restaurantScheduleId">restaurantScheduleId</param>
+        /// <param name="ScheduleId">ScheduleId</param>
         /// <param name="model">mutateTableDto object</param>
         /// <returns>
         ///list of added tables for each booking for the specified restaurant schedule id
@@ -32,13 +32,13 @@ namespace HorecaAPI.Controllers
         ///  /// <response code="201">Success creating new table</response>
         /// <response code="400">Bad request</response
         [HttpPost]
-        [Route("{restaurantScheduleId}")]
+        [Route("{ScheduleId}")]
         [PermissionAuthorize(nameof(Table), Permissions.Create)]
         [ProducesResponseType(typeof(TableDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromRoute] int restaurantScheduleId, [FromBody] MutateTableDto model)
+        public async Task<IActionResult> Post([FromRoute] int ScheduleId, [FromBody] MutateTableDto model)
         {
-            model.RestaurantScheduleId = restaurantScheduleId;
+            model.ScheduleId = ScheduleId;
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddTableForRestaurantScheduleCommand(model)));
         }
     }
