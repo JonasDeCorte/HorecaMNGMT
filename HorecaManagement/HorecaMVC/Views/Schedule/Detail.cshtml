@@ -18,11 +18,11 @@
             </ul>
         </div>
         <div class="card-footer">
-            @if (accountService.Authorize("Booking_Create"))
+            @if (accountService.Authorize(PermissionConstants.Booking_Create))
             {
                 <a asp-controller="Booking" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">Book</a>
             }
-            @if (accountService.Authorize("Schedule_Update"))
+            @if (accountService.Authorize(PermissionConstants.Schedule_Update))
             {
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             }
@@ -56,11 +56,11 @@
                         <td>@booking.BookingStatus</td>
                         <td>
                             <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize("Booking_Update"))
+                            @if (accountService.Authorize(PermissionConstants.Booking_Update))
                             {
                             <a asp-action="Edit" class="btn btn-primary">Edit</a>
                             }
-                            @if (accountService.Authorize("Booking_Delete"))
+                            @if (accountService.Authorize(PermissionConstants.Booking_Delete))
                             {
                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="@booking.Id">

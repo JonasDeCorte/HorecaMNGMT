@@ -32,7 +32,7 @@
                 <tfoot>
                     <tr>
                         <td scope="row" colspan="2">
-                            @if (accountService.Authorize("Order_Update"))
+                            @if (accountService.Authorize(PermissionConstants.Order_Update))
                             {
                                 <a asp-action="Edit" class="btn btn-primary">Edit</a>
                             }

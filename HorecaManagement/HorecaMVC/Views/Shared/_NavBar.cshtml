@@ -1,6 +1,6 @@
 ﻿<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
     <ul class="navbar-nav flex-grow-1">
-        @if (accountService.Authorize("Restaurant_Read"))
+        @if (accountService.Authorize(PermissionConstants.Restaurant_Read))
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
@@ -8,8 +8,8 @@
                 </a>
             </li>
         }
-        @if (accountService.Authorize("Ingredient_Read") || accountService.Authorize("Dish_Read") ||
-        accountService.Authorize("Menu_Read") || accountService.Authorize("MenuCard_Read"))
+        @if (accountService.Authorize(PermissionConstants.Ingredient_Read) || accountService.Authorize(PermissionConstants.Dish_Read) ||
+        accountService.Authorize(PermissionConstants.Menu_Read) || accountService.Authorize(PermissionConstants.MenuCard_Read))
         {
             <li class="nav-item dropdown">
                 <a class="nav-link text-dark dropdown-toggle" href="#" id="kitchenDropdown" role="button"
@@ -17,7 +17,7 @@
                     Kitchen
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="kitchenDropdown">
-                    @if (accountService.Authorize("Ingredient_Read"))
+                    @if (accountService.Authorize(PermissionConstants.Ingredient_Read))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ingredient" asp-action="Index">
@@ -25,7 +25,7 @@
                             </a>
                         </li>
                     }
-                    @if (accountService.Authorize("Dish_Read"))
+                    @if (accountService.Authorize(PermissionConstants.Dish_Read))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Dish" asp-action="Index">
@@ -33,7 +33,7 @@
                             </a>
                         </li>
                     }
-                    @if (accountService.Authorize("Menu_Read"))
+                    @if (accountService.Authorize(PermissionConstants.Menu_Read))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Menu" asp-action="Index">
@@ -41,7 +41,7 @@
                             </a>
                         </li>
                     }
-                    @if (accountService.Authorize("MenuCard_Read"))
+                    @if (accountService.Authorize(PermissionConstants.MenuCard_Read))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="MenuCard" asp-action="Index">
@@ -52,7 +52,7 @@
                 </ul>
             </li>
         }
-        @if (accountService.Authorize("Booking_Read"))
+        @if (accountService.Authorize(PermissionConstants.Booking_Read))
         {
             <li class="nav-item dropdown">
                 <a class="nav-link text-dark dropdown-toggle" href="#" id="bookingDropdown" role="button"
@@ -69,13 +69,13 @@
                 </ul>
             </li>
         }
-        @if (accountService.Authorize("Order_Read"))
+        @if (accountService.Authorize(PermissionConstants.Order_Read))
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
             </li>
         }
-        @if (accountService.Authorize("ApplicationUser_Read"))
+        @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users</a>

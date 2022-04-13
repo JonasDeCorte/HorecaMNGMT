@@ -4,7 +4,7 @@
     <div class="card mt-3">
         <div class="card-header">
             <h1>Menus</h1>
-            @if (accountService.Authorize("Menu_Create"))
+            @if (accountService.Authorize(PermissionConstants.Menu_Create))
             {
                 <a asp-action="Create" class="btn btn-primary">New Menu</a>
             }
@@ -28,11 +28,11 @@
                             <td>@menu.Description</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@menu.MenuId" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize("Menu_Update"))
+                                @if (accountService.Authorize(PermissionConstants.Menu_Update))
                                 {
                                     <a asp-action="Edit" asp-route-id="@menu.MenuId" class="btn btn-primary">Edit</a>
                                 }
-                                @if (accountService.Authorize("Menu_Delete"))
+                                @if (accountService.Authorize(PermissionConstants.Menu_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="@menu.MenuId">

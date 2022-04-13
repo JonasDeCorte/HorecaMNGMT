@@ -1,96 +1,52 @@
-﻿@model Horeca.MVC.Models.Restaurants.RestaurantDetailViewModel
+﻿@using Horeca.Shared.Constants
+@model Horeca.MVC.Models.Restaurants.RestaurantDetailViewModel
 
 <div class="text-center">
     <div class="d-flex flex-column">
-        <h1 class="display-4">@Model.Name</h1>
-        @if (accountService.Authorize("Schedule_Read"))
-        {
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h2>Schedules</h2>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Schedule Date</th>
-                                <th scope="col">Period</th>
-                                <th scope="col">Capacity</th>
-                                <th scope="col">Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var schedule in @Model.ScheduleList.Schedules)
-                            {
-                                <tr>
-                                    <td>@schedule.Id</td>
-                                    <td>@schedule.ScheduleDate.ToShortDateString()</td>
-                                    <td>@schedule.StartTime.ToShortTimeString() - @schedule.EndTime.ToShortTimeString()</td>
-                                    <td>@schedule.AvailableSeat / @schedule.Capacity</td>
-                                    <td>
-                                        <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
-                                        @if (accountService.Authorize("Booking_Create"))
-                                        {
-                                            <a asp-controller="Booking" asp-action="Create" asp-route-id="@schedule.Id" class="btn btn-primary">Book</a>
-                                        }
-                                        @if (accountService.Authorize("Schedule_Update"))
-                                        {
-                                            <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
-                                        }
-                                        @if (accountService.Authorize("Schedule_Delete"))
-                                        {
-                                            <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
-                                                Delete
-                                            </button>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer">
-                    @if (accountService.Authorize("Restaurant_Update"))
-                    {
-                        <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                            Add Schedule
-                        </a>
-                    }
-                </div>
+        <div class="card mt-3">
+            <div class="card-header">
+                <h1>@Model.Name</h1>
             </div>
-        }
-        <div class="d-flex justify-content-between">
-            @if (accountService.Authorize("MenuCard_Read"))
+            @if (accountService.Authorize(PermissionConstants.Schedule_Read))
             {
-                <div class="card mt-3" style="width: 49%;">
+                <div class="card m-3">
                     <div class="card-header">
-                        <h2>Menu Cards</h2>
+                        <h2>Schedules</h2>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="col-7">Name</th>
-                                    <th scope="col" class="col-5">Options</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Schedule Date</th>
+                                    <th scope="col">Period</th>
+                                    <th scope="col">Capacity</th>
+                                    <th scope="col">Options</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var menuCard in @Model.MenuCards)
+                                @foreach (var schedule in @Model.ScheduleList.Schedules)
                                 {
                                     <tr>
-                                        <td>@menuCard.Name</td>
+                                        <td>@schedule.Id</td>
+                                        <td>@schedule.ScheduleDate.ToShortDateString()</td>
+                                        <td>@schedule.StartTime.ToShortTimeString() - @schedule.EndTime.ToShortTimeString()</td>
+                                        <td>@schedule.AvailableSeat / @schedule.Capacity</td>
                                         <td>
-                                            <a asp-controller="MenuCard" asp-action="Detail" asp-route-id="@menuCard.Id" 
-                                                class="btn btn-primary">
-                                                Details
-                                            </a>
-                                            @if (accountService.Authorize("Restaurant_Delete"))
+                                            <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                            @if (accountService.Authorize(PermissionConstants.Booking_Create))
                                             {
-                                                <button id="toDeleteMenuCardModal" type="button" class="modalbutton btn btn-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteMenuCardModal" data-id="@menuCard.Id">
-                                                    Remove
+                                                <a asp-controller="Booking" asp-action="Create" asp-route-id="@schedule.Id" class="btn btn-primary">Book</a>
+                                            }
+                                            @if (accountService.Authorize(PermissionConstants.Schedule_Update))
+                                            {
+                                                <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
+                                            }
+                                            @if (accountService.Authorize(PermissionConstants.Schedule_Delete))
+                                            {
+                                                <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
+                                                    Delete
                                                 </button>
                                             }
                                         </td>
@@ -100,61 +56,110 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        @if (accountService.Authorize("Restaurant_Update"))
+                        @if (accountService.Authorize(PermissionConstants.Restaurant_Update))
                         {
-                            <a asp-action="AddMenuCard" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                                Add Menu Card
+                            <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                Add Schedule
                             </a>
                         }
                     </div>
                 </div>
             }
-            @if (accountService.Authorize("ApplicationUser_Read"))
-            {
-                <div class="card mt-3" style="width: 49%;">
-                    <div class="card-header">
-                        <h2>Employees</h2>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="col-7">Username</th>
-                                    <th scope="col" class="col-5">Options</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var employee in @Model.Employees)
-                                {
+            <div class="d-flex justify-content-between align-items-start">
+                @if (accountService.Authorize(PermissionConstants.MenuCard_Read))
+                {
+                    <div class="card m-3" style="width: 49%;">
+                        <div class="card-header">
+                            <h2>Menu Cards</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@employee.Username</td>
-                                        <td>
-                                            <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">
-                                                Details
-                                            </a>
-                                            @if (accountService.Authorize("Restaurant_Delete"))
-                                            {
-                                                <button id="toDeleteEmployeeModal" type="button" class="modalbutton btn btn-danger"
-                                            data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal" data-id="@employee.Id">
-                                                    Remove
-                                                </button>
-                                            }
-                                        </td>
+                                        <th scope="col" class="col-7">Name</th>
+                                        <th scope="col" class="col-5">Options</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var menuCard in @Model.MenuCards)
+                                    {
+                                        <tr>
+                                            <td>@menuCard.Name</td>
+                                            <td>
+                                                <a asp-controller="MenuCard" asp-action="Detail" asp-route-id="@menuCard.Id"
+                                           class="btn btn-primary">
+                                                    Details
+                                                </a>
+                                                @if (accountService.Authorize(PermissionConstants.Restaurant_Delete))
+                                                {
+                                                    <button id="toDeleteMenuCardModal" type="button" class="modalbutton btn btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteMenuCardModal" data-id="@menuCard.Id">
+                                                        Remove
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            @if (accountService.Authorize(PermissionConstants.Restaurant_Update))
+                            {
+                                <a asp-action="AddMenuCard" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                    Add Menu Card
+                                </a>
+                            }
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        @if (accountService.Authorize("Restaurant_Update"))
-                        {
-                            <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                                Add Employee
-                            </a>
-                        }
+                }
+                @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
+                {
+                    <div class="card m-3" style="width: 49%;">
+                        <div class="card-header">
+                            <h2>Employees</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="col-7">Username</th>
+                                        <th scope="col" class="col-5">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var employee in @Model.Employees)
+                                    {
+                                        <tr>
+                                            <td>@employee.Username</td>
+                                            <td>
+                                                <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">
+                                                    Details
+                                                </a>
+                                                @if (accountService.Authorize(PermissionConstants.Restaurant_Delete))
+                                                {
+                                                    <button id="toDeleteEmployeeModal" type="button" class="modalbutton btn btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal" data-id="@employee.Id">
+                                                        Remove
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            @if (accountService.Authorize(PermissionConstants.Restaurant_Update))
+                            {
+                                <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                    Add Employee
+                                </a>
+                            }
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </div>
