@@ -20,7 +20,7 @@ namespace Horeca.MVC.Controllers
             this.scheduleService = scheduleService;
         }
 
-        public async Task<IActionResult> Index(string status = "All")
+        public async Task<IActionResult> Index(string status = "all")
         {
             IEnumerable<BookingDto> bookings = await bookingService.GetBookingsByStatus(status);
             if (bookings == null)
@@ -32,15 +32,15 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> BookingHistory(string status = "All")
+        public async Task<IActionResult> YourBookings(string status = "all")
         {
             var currentUser = accountService.GetCurrentUser();
-            IEnumerable<BookingHistoryDto> bookingHistory = await bookingService.GetBookingsByUserId(currentUser.Id, status);
+            BookingHistoryDto bookingHistory = await bookingService.GetBookingsByUserId(currentUser.Id, status);
             if (bookingHistory == null)
             {
                 return View("NotFound");
             }
-            BookingHistoryListViewModel model = BookingMapper.MapBookingHistoryListModel(bookingHistory);
+            BookingHistoryViewModel model = BookingMapper.MapBookingHistoryModel(bookingHistory);
 
             return View(model);
         }

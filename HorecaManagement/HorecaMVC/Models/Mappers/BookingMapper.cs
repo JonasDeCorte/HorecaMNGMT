@@ -72,30 +72,13 @@ namespace Horeca.MVC.Models.Mappers
         public static BookingHistoryViewModel MapBookingHistoryModel(BookingHistoryDto bookingHistoryDto)
         {
             BookingHistoryViewModel bookingHistoryViewModel = new BookingHistoryViewModel();
-            foreach (BookingDto bookingDto in bookingHistoryDto.Bookings)
+            foreach (BookingDetailOnlyBookingsDto bookingDto in bookingHistoryDto.BookingDetails)
             {
                 BookingViewModel bookingViewModel = MapBookingModel(bookingDto);
                 bookingHistoryViewModel.Bookings.Add(bookingViewModel);
             }
-            foreach (BookingDetailDto bookingDetailDto in bookingHistoryDto.BookingDetails)
-            {
-                BookingDetailViewModel bookingDetailViewModel = new BookingDetailViewModel();
-                bookingHistoryViewModel.Bookings.Add(bookingDetailViewModel);
-            }
             return bookingHistoryViewModel;
         }
-
-        public static BookingHistoryListViewModel MapBookingHistoryListModel(IEnumerable<BookingHistoryDto> bookingHistory)
-        {
-            BookingHistoryListViewModel bookingHistoryListModel = new BookingHistoryListViewModel();
-            foreach(BookingHistoryDto bookingHistoryDto in bookingHistory)
-            {
-                BookingHistoryViewModel historyModel = MapBookingHistoryModel(bookingHistoryDto);
-                bookingHistoryListModel.BookingHistories.Add(historyModel);
-            }
-            return bookingHistoryListModel;
-        }
-
 
         public static BookingListViewModel MapBookingListModel(IEnumerable<BookingDto> bookings)
         {

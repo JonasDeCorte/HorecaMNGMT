@@ -60,15 +60,15 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<IEnumerable<BookingHistoryDto>> GetBookingsByUserId(string userId, string status)
+        public async Task<BookingHistoryDto> GetBookingsByUserId(string userId, string status)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{userId}/{status}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{userId}/{ClassConstants.BookingStatus}/{status}");
 
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<IEnumerable<BookingHistoryDto>>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<BookingHistoryDto>(response.Content.ReadAsStringAsync().Result);
                 return result;
             }
             return null;

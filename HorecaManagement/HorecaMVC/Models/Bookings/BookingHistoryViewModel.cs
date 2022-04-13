@@ -2,7 +2,6 @@
 {
     public class BookingHistoryViewModel
     {
-        public List<BookingViewModel> Bookings { get; set; }
-        public List<BookingDetailViewModel> BookingDetails { get; set; }
+        public List<BookingViewModel> Bookings { get; set; } = new List<BookingViewModel>();
     }
 }

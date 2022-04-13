@@ -22,6 +22,7 @@
         public const string All = "All";
 
         public const string Booking = "Booking";
+        public const string BookingStatus = "BookingStatus";
         public const string BookingNo = "BookingNo";
         public const string Details = "Details";
         public const string Member = "Member";

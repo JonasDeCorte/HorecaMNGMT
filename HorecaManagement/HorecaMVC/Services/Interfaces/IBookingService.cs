@@ -7,7 +7,7 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<int> GetPendingBookings();
         public Task<BookingDto> GetBookingByNumber(string bookingNo);
         public Task<IEnumerable<BookingDto>> GetBookingsByStatus(string status);
-        public Task<IEnumerable<BookingHistoryDto>> GetBookingsByUserId(string userId, string status);
+        public Task<BookingHistoryDto> GetBookingsByUserId(string userId, string status);
         public Task<IEnumerable<BookingDetailOnlyBookingsDto>> GetBookingsBySchedule(int scheduleId);
         public Task<HttpResponseMessage> AddBooking(MakeBookingDto bookingDto);
         public Task<HttpResponseMessage> UpdateBooking(EditBookingDto bookingDto);

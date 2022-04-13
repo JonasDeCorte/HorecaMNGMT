@@ -1,23 +1,23 @@
 ﻿@using static Horeca.Shared.Utils.Constants
-@model Horeca.MVC.Models.Bookings.BookingListViewModel
+@model Horeca.MVC.Models.Bookings.BookingHistoryViewModel
 
 <div class="text-center">
     <div class="card mt-3">
         <div class="card-header">
-            <h1>Bookings</h1>
+            <h1>Your Bookings</h1>
                 <div class="col d-flex justify-content-center">
                     <button class="btn btn-primary dropdown-toggle" type="button"
                             id="selectStatusButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Select status
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="selectStatusButton">
-                        <li><a asp-action="Index" asp-route-status="all" class="dropdown-item">All</a></li>
-                        <li><a asp-action="Index" asp-route-status="@BookingStatus.PENDING" class="dropdown-item">Pending</a></li>
-                        <li><a asp-action="Index" asp-route-status="@BookingStatus.EXPIRED" class="dropdown-item">Expired</a></li>
-                        <li><a asp-action="Index" asp-route-status="@BookingStatus.COMPLETE" class="dropdown-item">Complete</a></li>
+                        <li><a asp-action="YourBookings" asp-route-status="all" class="dropdown-item">All</a></li>
+                        <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.PENDING" class="dropdown-item">Pending</a></li>
+                        <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.EXPIRED" class="dropdown-item">Expired</a></li>
+                        <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.COMPLETE" class="dropdown-item">Complete</a></li>
                     </ul>
-                    <a asp-action="YourBookings" class="btn btn-primary" style="margin-left: 5px">
-                        Your bookings
+                    <a asp-action="Index" class="btn btn-primary" style="margin-left: 5px">
+                        All bookings
                     </a>
                 </div>
         </div>
@@ -77,7 +77,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                <a id="deleteButton" asp-action="Delete" class="btn btn-danger">Yes</a>
+                <a id="deleteButton" asp-action="Delete" asp-route-personal="yes" class="btn btn-danger">Yes</a>
             </div>
         </div>
     </div>
