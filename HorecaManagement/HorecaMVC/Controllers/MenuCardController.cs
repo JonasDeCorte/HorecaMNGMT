@@ -12,7 +12,6 @@ using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class MenuCardController : Controller
     {
         private readonly IMenuCardService menuCardService;

@@ -7,8 +7,6 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Ingredients;
 using Microsoft.AspNetCore.Mvc;
-using Horeca.Shared.Dtos.Units;
-using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.MVC.Controllers
 {

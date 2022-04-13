@@ -7,7 +7,6 @@ using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class IngredientController : Controller
     {
         private readonly IIngredientService ingredientService;

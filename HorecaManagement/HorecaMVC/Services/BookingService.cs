@@ -28,10 +28,6 @@ namespace Horeca.MVC.Services
                 var result = JsonConvert.DeserializeObject<int>(response.Content.ReadAsStringAsync().Result);
                 return result;
             }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                return 0;
-            }
             return 0;
         }
 
@@ -45,10 +41,6 @@ namespace Horeca.MVC.Services
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<BookingDto>>(response.Content.ReadAsStringAsync().Result);
                 return result;
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                return null;
             }
             return null;
         }
@@ -64,9 +56,6 @@ namespace Horeca.MVC.Services
             {
                 var result = JsonConvert.DeserializeObject<BookingDto>(response.Content.ReadAsStringAsync().Result);
                 return result;
-            } else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                return null;
             }
             return null;
         }
@@ -82,9 +71,19 @@ namespace Horeca.MVC.Services
                 var result = JsonConvert.DeserializeObject<IEnumerable<BookingHistoryDto>>(response.Content.ReadAsStringAsync().Result);
                 return result;
             }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            return null;
+        }
+
+        public async Task<IEnumerable<BookingDetailOnlyBookingsDto>> GetBookingsBySchedule(int scheduleId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.RestaurantSchedule}/{scheduleId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<IEnumerable<BookingDetailOnlyBookingsDto>>(response.Content.ReadAsStringAsync().Result);
+                return result;
             }
             return null;
         }

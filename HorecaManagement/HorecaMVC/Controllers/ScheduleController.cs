@@ -10,20 +10,18 @@ namespace Horeca.MVC.Controllers
     {
         private readonly IScheduleService scheduleService;
         private readonly IAccountService accountService;
+        private readonly IBookingService bookingService;
 
-        public ScheduleController(IScheduleService scheduleService, IAccountService accountService)
+        public ScheduleController(IScheduleService scheduleService, IAccountService accountService, IBookingService bookingService)
         {
             this.scheduleService = scheduleService;
             this.accountService = accountService;
+            this.bookingService = bookingService;
         }
 
-        // note: returns the AVAILABLE schedules for this restaurant
         public async Task<IActionResult> Index(int restaurantId)
         {
-            IEnumerable<RestaurantScheduleDto> restaurantSchedules = null;
-
-            restaurantSchedules = await scheduleService.GetRestaurantSchedules(restaurantId);
-
+            IEnumerable<RestaurantScheduleDto> restaurantSchedules = await scheduleService.GetRestaurantSchedules(restaurantId);
             if (restaurantSchedules == null)
             {
                 return View(nameof(NotFound));
@@ -36,11 +34,12 @@ namespace Horeca.MVC.Controllers
         public async Task<ActionResult> Detail(int id)
         {
             var schedule = await scheduleService.GetRestaurantScheduleById(id);
-            if (schedule == null)
+            var scheduleBookings = await bookingService.GetBookingsBySchedule(id);
+            if (schedule == null || scheduleBookings == null)
             {
                 return View(nameof(NotFound));
             }
-            RestaurantScheduleDetailViewModel model = ScheduleMapper.MapRestaurantScheduleDetailModel(schedule);
+            RestaurantScheduleDetailViewModel model = ScheduleMapper.MapRestaurantScheduleDetailModel(schedule, scheduleBookings);
 
             return View(model);
         }

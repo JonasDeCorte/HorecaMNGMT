@@ -18,6 +18,7 @@
         public const string Employee = "Employee";
 
         public const string Schedule = "Schedule";
+        public const string RestaurantSchedule = "RestaurantSchedule";
         public const string All = "All";
 
         public const string Booking = "Booking";

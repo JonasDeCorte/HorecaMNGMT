@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Models.Schedules;
+using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Dtos.RestaurantSchedules;
 
 namespace Horeca.MVC.Models.Mappers
@@ -32,9 +33,10 @@ namespace Horeca.MVC.Models.Mappers
             return list;
         }
 
-        public static RestaurantScheduleDetailViewModel MapRestaurantScheduleDetailModel(RestaurantScheduleByIdDto restaurantScheduleByIdDto)
+        public static RestaurantScheduleDetailViewModel MapRestaurantScheduleDetailModel(
+            RestaurantScheduleByIdDto restaurantScheduleByIdDto, IEnumerable<BookingDetailOnlyBookingsDto> scheduleBookings)
         {
-            return new RestaurantScheduleDetailViewModel()
+            RestaurantScheduleDetailViewModel model = new RestaurantScheduleDetailViewModel()
             {
                 Id = restaurantScheduleByIdDto.Id,
                 AvailableSeat = restaurantScheduleByIdDto.AvailableSeat,
@@ -46,6 +48,12 @@ namespace Horeca.MVC.Models.Mappers
                 RestaurantName = restaurantScheduleByIdDto.RestaurantName,
                 Status = restaurantScheduleByIdDto.Status,
             };
+            foreach (var scheduleBooking in scheduleBookings)
+            {
+                var booking = BookingMapper.MapBookingModel(scheduleBooking);
+                model.Bookings.Add(booking);
+            }
+            return model;
         }
 
         public static MutateRestaurantScheduleDto MapMutateRestaurantScheduleDto(MutateRestaurantScheduleViewModel model)

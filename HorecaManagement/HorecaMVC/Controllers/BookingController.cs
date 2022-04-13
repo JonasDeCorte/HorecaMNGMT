@@ -9,20 +9,20 @@ namespace Horeca.MVC.Controllers
 {
     public class BookingController : Controller
     {
-        public IBookingService BookingService { get; }
-        public IAccountService AccountService { get; }
-        public IScheduleService ScheduleService { get; }
+        public IBookingService bookingService { get; }
+        public IAccountService accountService { get; }
+        public IScheduleService scheduleService { get; }
 
         public BookingController(IBookingService bookingService, IAccountService accountService, IScheduleService scheduleService)
         {
-            BookingService = bookingService;
-            AccountService = accountService;
-            ScheduleService = scheduleService;
+            this.bookingService = bookingService;
+            this.accountService = accountService;
+            this.scheduleService = scheduleService;
         }
 
         public async Task<IActionResult> Index(string status = "All")
         {
-            IEnumerable<BookingDto> bookings = await BookingService.GetBookingsByStatus(status);
+            IEnumerable<BookingDto> bookings = await bookingService.GetBookingsByStatus(status);
             if (bookings == null)
             {
                 return View("NotFound");
@@ -32,9 +32,22 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> BookingHistory(string status = "All")
+        {
+            var currentUser = accountService.GetCurrentUser();
+            IEnumerable<BookingHistoryDto> bookingHistory = await bookingService.GetBookingsByUserId(currentUser.Id, status);
+            if (bookingHistory == null)
+            {
+                return View("NotFound");
+            }
+            BookingHistoryListViewModel model = BookingMapper.MapBookingHistoryListModel(bookingHistory);
+
+            return View(model);
+        }
+
         public async Task<IActionResult> Detail(string bookingNo)
         {
-            BookingDto booking = await BookingService.GetBookingByNumber(bookingNo);
+            BookingDto booking = await bookingService.GetBookingByNumber(bookingNo);
             if (booking == null)
             {
                 return View("NotFound");
@@ -46,8 +59,12 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Create(int id)
         {
-            var user = await AccountService.GetUserByName(AccountService.GetCurrentUser().Username);
-            var schedule = await ScheduleService.GetRestaurantScheduleById(id);
+            var user = await accountService.GetUserByName(accountService.GetCurrentUser().Username);
+            var schedule = await scheduleService.GetRestaurantScheduleById(id);
+            if (user == null || schedule == null)
+            {
+                return View("NotFound");
+            }
             CreateBookingViewModel model = BookingMapper.MapCreateBookingModel(user, schedule);
 
             return View(model);
@@ -59,7 +76,7 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MakeBookingDto bookingDto = BookingMapper.MapMakeBookingDto(model);
-                var response = await BookingService.AddBooking(bookingDto);
+                var response = await bookingService.AddBooking(bookingDto);
                 if (response == null)
                 {
                     return View("OperationFailed");
@@ -73,14 +90,22 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(string bookingNo)
+        {
+            var booking = await bookingService.GetBookingByNumber(bookingNo);
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CreateBookingViewModel model)
         {
             return View();
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await BookingService.DeleteBooking(id);
+            var response = await bookingService.DeleteBooking(id);
             if (response == null)
             {
                 return View("OperationFailed");
