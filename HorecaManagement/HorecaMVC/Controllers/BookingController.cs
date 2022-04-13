@@ -60,7 +60,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Create(int id)
         {
             var user = await accountService.GetUserByName(accountService.GetCurrentUser().Username);
-            var schedule = await scheduleService.GetRestaurantScheduleById(id);
+            var schedule = await scheduleService.GetScheduleById(id);
             if (user == null || schedule == null)
             {
                 return View("NotFound");

@@ -2,7 +2,7 @@
 
 namespace Horeca.MVC.Models.Schedules
 {
-    public class RestaurantScheduleViewModel
+    public class ScheduleViewModel
     {
         public int Id { get; set; }
         public int RestaurantId { get; set; }

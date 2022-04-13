@@ -1,52 +1,52 @@
 ﻿using Horeca.MVC.Models.Schedules;
 using Horeca.Shared.Dtos.Bookings;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 
 namespace Horeca.MVC.Models.Mappers
 {
     public class ScheduleMapper
     {
-        private static RestaurantScheduleViewModel MapRestaurantScheduleModel(ScheduleDto restaurantScheduleDto)
+        private static ScheduleViewModel MapScheduleModel(ScheduleDto scheduleDto)
         {
-            RestaurantScheduleViewModel restaurantScheduleViewModel = new()
+            ScheduleViewModel scheduleViewModel = new()
             {
-                Id = restaurantScheduleDto.Id,
-                RestaurantId = restaurantScheduleDto.Id,
-                ScheduleDate = restaurantScheduleDto.ScheduleDate,
-                StartTime = restaurantScheduleDto.StartTime,
-                EndTime = restaurantScheduleDto.EndTime,
-                Capacity = restaurantScheduleDto.Capacity,
-                AvailableSeat = restaurantScheduleDto.AvailableSeat,
-                Status = restaurantScheduleDto.Status
+                Id = scheduleDto.Id,
+                RestaurantId = scheduleDto.Id,
+                ScheduleDate = scheduleDto.ScheduleDate,
+                StartTime = scheduleDto.StartTime,
+                EndTime = scheduleDto.EndTime,
+                Capacity = scheduleDto.Capacity,
+                AvailableSeat = scheduleDto.AvailableSeat,
+                Status = scheduleDto.Status
             };
-            return restaurantScheduleViewModel;
+            return scheduleViewModel;
         }
 
-        public static RestaurantScheduleListViewModel MapRestaurantScheduleList(IEnumerable<ScheduleDto> restaurantSchedules)
+        public static ScheduleListViewModel MapScheduleList(IEnumerable<ScheduleDto> schedules)
         {
-            RestaurantScheduleListViewModel list = new();
-            foreach (var restaurantScheduleDto in restaurantSchedules)
+            ScheduleListViewModel list = new();
+            foreach (var scheduleDto in schedules)
             {
-                RestaurantScheduleViewModel model = MapRestaurantScheduleModel(restaurantScheduleDto);
-                list.RestaurantSchedules.Add(model);
+                ScheduleViewModel model = MapScheduleModel(scheduleDto);
+                list.Schedules.Add(model);
             }
             return list;
         }
 
-        public static RestaurantScheduleDetailViewModel MapRestaurantScheduleDetailModel(
-            RestaurantScheduleByIdDto restaurantScheduleByIdDto, IEnumerable<BookingDetailOnlyBookingsDto> scheduleBookings)
+        public static ScheduleDetailViewModel MapScheduleDetailModel(
+            ScheduleByIdDto scheduleByIdDto, IEnumerable<BookingDetailOnlyBookingsDto> scheduleBookings)
         {
-            RestaurantScheduleDetailViewModel model = new RestaurantScheduleDetailViewModel()
+            ScheduleDetailViewModel model = new ScheduleDetailViewModel()
             {
-                Id = restaurantScheduleByIdDto.Id,
-                AvailableSeat = restaurantScheduleByIdDto.AvailableSeat,
-                Capacity = restaurantScheduleByIdDto.Capacity,
-                EndTime = restaurantScheduleByIdDto.EndTime,
-                StartTime = restaurantScheduleByIdDto.StartTime,
-                ScheduleDate = restaurantScheduleByIdDto.ScheduleDate,
-                RestaurantId = restaurantScheduleByIdDto.RestaurantId,
-                RestaurantName = restaurantScheduleByIdDto.RestaurantName,
-                Status = restaurantScheduleByIdDto.Status,
+                Id = scheduleByIdDto.Id,
+                AvailableSeat = scheduleByIdDto.AvailableSeat,
+                Capacity = scheduleByIdDto.Capacity,
+                EndTime = scheduleByIdDto.EndTime,
+                StartTime = scheduleByIdDto.StartTime,
+                ScheduleDate = scheduleByIdDto.ScheduleDate,
+                RestaurantId = scheduleByIdDto.RestaurantId,
+                RestaurantName = scheduleByIdDto.RestaurantName,
+                Status = scheduleByIdDto.Status,
             };
             foreach (var scheduleBooking in scheduleBookings)
             {
@@ -56,9 +56,9 @@ namespace Horeca.MVC.Models.Mappers
             return model;
         }
 
-        public static MutateRestaurantScheduleDto MapMutateRestaurantScheduleDto(MutateRestaurantScheduleViewModel model)
+        public static MutateScheduleDto MapMutateScheduleDto(MutateScheduleViewModel model)
         {
-            return new MutateRestaurantScheduleDto()
+            return new MutateScheduleDto()
             {
                 Id = model.Id,
                 AvailableSeat = model.AvailableSeat,
@@ -71,9 +71,9 @@ namespace Horeca.MVC.Models.Mappers
             };
         }
 
-        public static MutateRestaurantScheduleViewModel MapMutateRestaurantScheduleModel(RestaurantScheduleByIdDto model)
+        public static MutateScheduleViewModel MapMutateScheduleModel(ScheduleByIdDto model)
         {
-            return new MutateRestaurantScheduleViewModel()
+            return new MutateScheduleViewModel()
             {
                 Id = model.Id,
                 AvailableSeat = model.AvailableSeat,

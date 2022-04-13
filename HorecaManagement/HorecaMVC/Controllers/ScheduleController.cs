@@ -1,7 +1,7 @@
 ﻿using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Models.Schedules;
 using Horeca.MVC.Services.Interfaces;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
@@ -21,32 +21,32 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index(int restaurantId)
         {
-            IEnumerable<ScheduleDto> restaurantSchedules = await scheduleService.GetRestaurantSchedules(restaurantId);
-            if (restaurantSchedules == null)
+            IEnumerable<ScheduleDto> schedules = await scheduleService.GetSchedules(restaurantId);
+            if (schedules == null)
             {
                 return View(nameof(NotFound));
             }
-            RestaurantScheduleListViewModel model = ScheduleMapper.MapRestaurantScheduleList(restaurantSchedules);
+            ScheduleListViewModel model = ScheduleMapper.MapScheduleList(schedules);
 
             return View(model);
         }
 
         public async Task<ActionResult> Detail(int id)
         {
-            var schedule = await scheduleService.GetRestaurantScheduleById(id);
+            var schedule = await scheduleService.GetScheduleById(id);
             var scheduleBookings = await bookingService.GetBookingsBySchedule(id);
             if (schedule == null || scheduleBookings == null)
             {
                 return View(nameof(NotFound));
             }
-            RestaurantScheduleDetailViewModel model = ScheduleMapper.MapRestaurantScheduleDetailModel(schedule, scheduleBookings);
+            ScheduleDetailViewModel model = ScheduleMapper.MapScheduleDetailModel(schedule, scheduleBookings);
 
             return View(model);
         }
 
         public IActionResult Create(int restaurantId)
         {
-            MutateRestaurantScheduleViewModel model = new()
+            MutateScheduleViewModel model = new()
             {
                 RestaurantId = restaurantId
             };
@@ -54,13 +54,13 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(MutateRestaurantScheduleViewModel model)
+        public async Task<IActionResult> Create(MutateScheduleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                MutateRestaurantScheduleDto restaurantDto = ScheduleMapper.MapMutateRestaurantScheduleDto(model);
+                MutateScheduleDto restaurantDto = ScheduleMapper.MapMutateScheduleDto(model);
 
-                var response = await scheduleService.AddRestaurantSchedule(restaurantDto);
+                var response = await scheduleService.AddSchedule(restaurantDto);
                 if (response == null)
                 {
                     return View("OperationFailed");
@@ -75,19 +75,19 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var restaurantSchedule = await scheduleService.GetRestaurantScheduleById(id);
-            MutateRestaurantScheduleViewModel model = ScheduleMapper.MapMutateRestaurantScheduleModel(restaurantSchedule);
+            var schedule = await scheduleService.GetScheduleById(id);
+            MutateScheduleViewModel model = ScheduleMapper.MapMutateScheduleModel(schedule);
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(MutateRestaurantScheduleViewModel model)
+        public async Task<IActionResult> Edit(MutateScheduleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                MutateRestaurantScheduleDto restaurantDto = ScheduleMapper.MapMutateRestaurantScheduleDto(model);
-                var response = await scheduleService.UpdateRestaurantSchedule(restaurantDto);
+                MutateScheduleDto restaurantDto = ScheduleMapper.MapMutateScheduleDto(model);
+                var response = await scheduleService.UpdateSchedule(restaurantDto);
                 if (response == null)
                 {
                     return View("OperationFailed");
@@ -103,7 +103,7 @@ namespace Horeca.MVC.Controllers
         [Route("/Schedule/Delete/{restaurantId}/{scheduleId}")]
         public async Task<IActionResult> Delete(int restaurantId, int scheduleId)
         {
-            var response = await scheduleService.DeleteRestaurantSchedule(scheduleId);
+            var response = await scheduleService.DeleteSchedule(scheduleId);
             if (response == null)
             {
                 return View("OperationFailed");
