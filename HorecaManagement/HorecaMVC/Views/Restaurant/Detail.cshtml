@@ -30,6 +30,10 @@
                                     <td>@schedule.EndTime.ToShortTimeString()</td>
                                     <td>
                                         <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                        @if (accountService.Authorize("Booking_Create"))
+                                        {
+                                            <a asp-controller="Booking" asp-action="Create" asp-route-id="@schedule.Id" class="btn btn-primary">Book</a>
+                                        }
                                         @if (accountService.Authorize("RestaurantSchedule_Update"))
                                         {
                                             <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
@@ -37,7 +41,7 @@
                                         @if (accountService.Authorize("RestaurantSchedule_Delete"))
                                         {
                                             <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
+                                                data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">
                                                 Delete
                                             </button>
                                         }

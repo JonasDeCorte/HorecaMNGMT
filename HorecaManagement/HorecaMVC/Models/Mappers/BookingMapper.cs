@@ -1,5 +1,7 @@
 ﻿using Horeca.MVC.Models.Bookings;
+using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Bookings;
+using Horeca.Shared.Dtos.RestaurantSchedules;
 
 namespace Horeca.MVC.Models.Mappers
 {
@@ -7,7 +9,7 @@ namespace Horeca.MVC.Models.Mappers
     {
         public static BookingViewModel MapBookingModel(BookingDto bookingDto)
         {
-            BookingViewModel bookingModel = new BookingViewModel
+            return new BookingViewModel
             {
                 Id = bookingDto.Id,
                 UserID = bookingDto.UserID,
@@ -16,7 +18,20 @@ namespace Horeca.MVC.Models.Mappers
                 BookingStatus = bookingDto.BookingStatus,
                 FullName = bookingDto.FullName,
             };
-            return bookingModel;
+        }
+
+        public static CreateBookingViewModel MapCreateBookingModel(UserDto userDto, RestaurantScheduleByIdDto scheduleDto)
+        {
+            return new CreateBookingViewModel
+            {
+                Booking = new BookingInfoViewModel
+                {
+                    UserID = userDto.Id,
+                    CheckIn = scheduleDto.StartTime,
+                    CheckOut = scheduleDto.EndTime
+                },
+                ScheduleId = scheduleDto.Id
+            };
         }
 
         public static BookingListViewModel MapBookingListModel(IEnumerable<BookingDto> bookings)
@@ -31,7 +46,7 @@ namespace Horeca.MVC.Models.Mappers
 
         public static BookingDetailViewModel MapBookingDetailModel(BookingDto bookingDto)
         {
-            BookingDetailViewModel bookingDetailViewModel = new BookingDetailViewModel
+            return new BookingDetailViewModel
             {
                 Id = bookingDto.Id,
                 UserID = bookingDto.UserID,
@@ -42,7 +57,29 @@ namespace Horeca.MVC.Models.Mappers
                 CheckIn = bookingDto.CheckIn,
                 CheckOut = bookingDto.CheckOut,
             };
-            return bookingDetailViewModel;
+        }
+
+        public static BookingDtoInfo MapBookingInfoDto(BookingInfoViewModel model)
+        {
+            return new BookingDtoInfo
+            {
+                UserID = model.UserID,
+                FullName = model.FullName,
+                PhoneNo = model.PhoneNo,
+                BookingDate = model.BookingDate,
+                CheckIn = model.CheckIn,
+                CheckOut = model.CheckOut,
+            };
+        }
+
+        internal static MakeBookingDto MapMakeBookingDto(CreateBookingViewModel model)
+        {
+            return new MakeBookingDto
+            {
+                Booking = MapBookingInfoDto(model.Booking),
+                Pax = model.Pax,
+                ScheduleID = model.ScheduleId
+            };
         }
     }
 }

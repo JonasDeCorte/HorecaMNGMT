@@ -7,21 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class BookingController : Controller
     {
-        public IBookingService bookingService { get; }
-        public IAccountService accountService { get; }
+        public IBookingService BookingService { get; }
+        public IAccountService AccountService { get; }
+        public IScheduleService ScheduleService { get; }
 
-        public BookingController(IBookingService bookingService, IAccountService accountService)
+        public BookingController(IBookingService bookingService, IAccountService accountService, IScheduleService scheduleService)
         {
-            this.bookingService = bookingService;
-            this.accountService = accountService;
+            BookingService = bookingService;
+            AccountService = accountService;
+            ScheduleService = scheduleService;
         }
 
         public async Task<IActionResult> Index(string status = "All")
         {
-            IEnumerable<BookingDto> bookings = await bookingService.GetBookingsByStatus(status);
+            IEnumerable<BookingDto> bookings = await BookingService.GetBookingsByStatus(status);
             if (bookings == null)
             {
                 return View("NotFound");
@@ -33,7 +34,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Detail(string bookingNo)
         {
-            BookingDto booking = await bookingService.GetBookingByNumber(bookingNo);
+            BookingDto booking = await BookingService.GetBookingByNumber(bookingNo);
             if (booking == null)
             {
                 return View("NotFound");
@@ -43,42 +44,28 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int id)
         {
-            var user = await accountService.GetUserByName(accountService.GetCurrentUser().Username);
-            CreateBookingViewModel model = new CreateBookingViewModel()
-            {
-                Booking = new BookingDetailViewModel
-                {
-                    UserID = user.Id
-                }
-            };
+            var user = await AccountService.GetUserByName(AccountService.GetCurrentUser().Username);
+            var schedule = await ScheduleService.GetRestaurantScheduleById(id);
+            CreateBookingViewModel model = BookingMapper.MapCreateBookingModel(user, schedule);
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(string userId, CreateBookingViewModel model)
+        public async Task<IActionResult> Create(CreateBookingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                MakeBookingDto bookingDto = new MakeBookingDto
+                MakeBookingDto bookingDto = BookingMapper.MapMakeBookingDto(model);
+                var response = await BookingService.AddBooking(bookingDto);
+                if (response == null)
                 {
-                    Booking = new BookingDtoInfo
-                    {
-                        UserID = userId,
-                        FullName = model.Booking.FullName,
-                        PhoneNo = model.Booking.PhoneNo,
-                        BookingDate = model.Booking.BookingDate,
-                        CheckIn = model.Booking.CheckIn,
-                        CheckOut = model.Booking.CheckOut,
-                    },
-                    Pax = model.Pax,
-                    ScheduleID = model.ScheduleId
-                };
-                bookingService.AddBooking(bookingDto);
+                    return View("OperationFailed");
+                }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });
             } 
             else
             {
@@ -93,7 +80,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await bookingService.DeleteBooking(id);
+            var response = await BookingService.DeleteBooking(id);
             if (response == null)
             {
                 return View("OperationFailed");

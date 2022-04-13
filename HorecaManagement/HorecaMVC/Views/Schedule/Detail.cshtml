@@ -18,6 +18,10 @@
             </ul>
         </div>
         <div class="card-footer">
+            @if (accountService.Authorize("Booking_Create"))
+            {
+                <a asp-controller="Booking" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">Book</a>
+            }
             @if (accountService.Authorize("RestaurantSchedule_Update"))
             {
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
