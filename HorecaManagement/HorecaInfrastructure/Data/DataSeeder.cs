@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.AuthUtils;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Utils;
@@ -237,7 +238,7 @@ namespace Horeca.Infrastructure.Data
                 await context.SaveChangesAsync();
                 context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
                 DateTime newSchedule = DateTime.Today.AddDays(1);
-                Schedule restaurantSchedule = new()
+                Schedule Schedule = new()
                 {
                     RestaurantId = restaurant.Id,
                     ScheduleDate = newSchedule,
@@ -247,7 +248,7 @@ namespace Horeca.Infrastructure.Data
                     AvailableSeat = 20,
                     Status = i % 2 == 0 ? Constants.ScheduleStatus.Available : Constants.ScheduleStatus.Expired,
                 };
-                context.Schedules.Add(restaurantSchedule);
+                context.Schedules.Add(Schedule);
 
                 Booking booking = new()
                 {
@@ -267,8 +268,8 @@ namespace Horeca.Infrastructure.Data
                     BookingId = booking.Id,
                     Booking = booking,
                     Pax = i,
-                    Schedule = restaurantSchedule,
-                    ScheduleId = restaurantSchedule.Id,
+                    Schedule = Schedule,
+                    ScheduleId = Schedule.Id,
                 };
                 context.BookingDetails.Add(bookingDetail);
             }
@@ -335,217 +336,217 @@ namespace Horeca.Infrastructure.Data
             {
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_NewUser"
+                    Name = PermissionConstants.NewUser
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Read}"
+                    Name = PermissionConstants.Unit_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Create}"
+                    Name = PermissionConstants.Unit_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Update}"
+                    Name = PermissionConstants.Unit_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Unit_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Read}"
+                    Name = PermissionConstants.Ingredient_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Create}"
+                    Name = PermissionConstants.Ingredient_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Update}"
+                    Name = PermissionConstants.Ingredient_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Ingredient_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Read}"
+                    Name = PermissionConstants.Dish_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Create}"
+                    Name = PermissionConstants.Dish_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Update}"
+                    Name = PermissionConstants.Dish_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Dish_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Read}"
+                    Name = PermissionConstants.Menu_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Create}"
+                    Name = PermissionConstants.Menu_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Update}"
+                    Name = PermissionConstants.Menu_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Menu_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Read}"
+                    Name = PermissionConstants.MenuCard_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Create}"
+                    Name = PermissionConstants.MenuCard_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Update}"
+                    Name = PermissionConstants.MenuCard_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
+                    Name = PermissionConstants.MenuCard_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Read}"
+                    Name = PermissionConstants.Restaurant_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Create}"
+                    Name = PermissionConstants.Restaurant_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Update}"
+                    Name = PermissionConstants.Restaurant_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Restaurant_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Schedule)}_{Permissions.Read}"
+                    Name = PermissionConstants.Schedule_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Schedule)}_{Permissions.Create}"
+                    Name = PermissionConstants.Schedule_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Schedule)}_{Permissions.Update}"
+                    Name = PermissionConstants.Schedule_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Schedule)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Schedule_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Read}"
+                    Name = PermissionConstants.Booking_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Create}"
+                    Name = PermissionConstants.Booking_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Update}"
+                    Name = PermissionConstants.Booking_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Booking_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Read}"
+                    Name = PermissionConstants.BookingDetail_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Create}"
+                    Name = PermissionConstants.BookingDetail_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Update}"
+                    Name = PermissionConstants.BookingDetail_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Delete}"
+                    Name = PermissionConstants.BookingDetail_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Read}"
+                    Name = PermissionConstants.Table_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Create}"
+                    Name = PermissionConstants.Table_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Update}"
+                    Name = PermissionConstants.Table_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Table_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Order)}_{Permissions.Read}"
+                    Name = PermissionConstants.Order_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Order)}_{Permissions.Create}"
+                    Name = PermissionConstants.Order_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Order)}_{Permissions.Update}"
+                    Name = PermissionConstants.Order_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Order)}_{Permissions.Delete}"
-                },
-
-                new Permission()
-                {
-                    Name = $"{nameof(Permission)}_{Permissions.Read}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Permission)}_{Permissions.Create}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Permission)}_{Permissions.Update}"
-                },
-                new Permission()
-                {
-                    Name = $"{nameof(Permission)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Order_Delete
                 },
 
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Read}"
+                    Name = PermissionConstants.Permission_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Create}"
+                    Name = PermissionConstants.Permission_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Update}"
+                    Name = PermissionConstants.Permission_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Permission_Delete
+                },
+
+                new Permission()
+                {
+                    Name = PermissionConstants.ApplicationUser_Read
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.ApplicationUser_Create
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.ApplicationUser_Update
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.ApplicationUser_Delete
                 }
             };
 
