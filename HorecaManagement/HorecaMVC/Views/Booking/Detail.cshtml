@@ -1,11 +1,4 @@
-﻿@model Horeca.MVC.Models.Bookings.BookingDetailViewModel
-
-@{
-    ViewData["Title"] = "Booking Detail";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
-}
-
-<div class="text-center">
+﻿<div class="text-center">
     <div class="d-flex flex-column">
         <h1 class="display-4">Booking @Model.Id</h1>
         <table class="table table-responsive mt-2">
@@ -30,7 +23,7 @@
             <tfoot>
                 <tr>
                     <td scope="row" colspan="5">
-                        @if (accountService.Authorize(currentUser, "Booking_Update"))
+                        @if (accountService.Authorize("Booking_Update"))
                         {
                             <a asp-action="Edit" class="btn btn-primary">Edit</a>
                         }

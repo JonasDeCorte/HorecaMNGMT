@@ -1,14 +1,9 @@
 ﻿@model Horeca.MVC.Models.Accounts.UserPermissionsViewModel
 
-@{
-    ViewData["Title"] = "User Detail";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
-}
-
 <div class="text-center">
     <div class="container">
         <div class="d-flex justify-content-center">
-            @if (accountService.Authorize(currentUser, "Permission_Create"))
+            @if (accountService.Authorize("Permission_Create"))
             {
                 <div class="m-2">
                     <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
@@ -16,7 +11,7 @@
                     </a>
                 </div>
             }
-            @if (accountService.Authorize(currentUser, "Permission_Delete"))
+            @if (accountService.Authorize("Permission_Delete"))
             {
                 <div class="m-2">
                     <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">

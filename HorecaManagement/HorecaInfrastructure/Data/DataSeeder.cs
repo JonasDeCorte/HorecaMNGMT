@@ -12,7 +12,7 @@ namespace Horeca.Infrastructure.Data
     public static class DataSeeder
     {
         public const int AmountOfEachType = 15;
-        private static List<IEnumerable<Permission>>? listListPerms = new List<IEnumerable<Permission>>();
+        private static readonly List<IEnumerable<Permission>>? listListPerms = new();
 
         public static async void Seed(IApplicationBuilder app)
         {
@@ -231,7 +231,7 @@ namespace Horeca.Infrastructure.Data
                     EndTime = newSchedule.AddHours(2),
                     Capacity = 20,
                     AvailableSeat = 20,
-                    Status = i % 2 == 0 ? (int)Constants.ScheduleStatus.Available : (int)Constants.ScheduleStatus.Expired,
+                    Status = i % 2 == 0 ? Constants.ScheduleStatus.Available : Constants.ScheduleStatus.Expired,
                 };
                 context.RestaurantSchedules.Add(restaurantSchedule);
 

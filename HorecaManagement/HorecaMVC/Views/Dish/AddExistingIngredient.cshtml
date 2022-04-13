@@ -1,11 +1,7 @@
 ﻿@model Horeca.MVC.Models.Ingredients.ExistingIngredientsViewModel
 
-@{
-    ViewData["Title"] = "Add Existing Ingredient";
-}
-
 <div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
+    <h1 class="display-4">Add Existing Ingredient</h1>
     <div>
         <form asp-action="AddExistingIngredient" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

@@ -45,7 +45,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var user = await accountService.GetUserByName(accountService.GetCurrentUser());
+            var user = await accountService.GetUserByName(accountService.GetCurrentUser().Username);
             CreateBookingViewModel model = new CreateBookingViewModel()
             {
                 Booking = new BookingDetailViewModel

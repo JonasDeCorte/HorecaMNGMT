@@ -9,7 +9,7 @@ namespace Horeca.MVC.Services
     public class IngredientService : IIngredientService
     {
         private readonly HttpClient httpClient;
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
         public IngredientService(HttpClient httpClient, IConfiguration configuration)
         {
@@ -28,7 +28,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(response.Content.ReadAsStringAsync().Result);
+            return JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<IngredientDto> GetIngredientById(int id)
@@ -41,14 +41,16 @@ namespace Horeca.MVC.Services
             {
                 return null;
             }
-            return JsonConvert.DeserializeObject<IngredientDto>(response.Content.ReadAsStringAsync().Result);
+            return JsonConvert.DeserializeObject<IngredientDto>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<HttpResponseMessage> AddIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -74,8 +76,10 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

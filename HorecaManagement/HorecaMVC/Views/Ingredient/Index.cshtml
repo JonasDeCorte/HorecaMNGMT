@@ -1,115 +1,52 @@
 ﻿@model Horeca.MVC.Models.Ingredients.IngredientListViewModel
 
-@{
-    ViewData["Title"] = "Ingredient Overview";
-    var currentUser = await accountService.GetUserByName(accountService.GetCurrentUser());
-}
-
 <div class="text-center">
-    <h1 class="display-4">Ingredients</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col input-group">
-                <div class="form-outline">
-                    <input type="search" id="form1" class="form-control" placeholder="Search..." />
-                </div>
-            </div>
-            <div class="col">
-                <button class="btn btn-primary" onclick="toggleView()">Toggle View</button>
-            </div>
-            <div class="col">
-                @if (accountService.Authorize(currentUser, "Ingredient_Update"))
-                {
-                    <a asp-action="Create" class="btn btn-primary float-end">New Ingredient</a>
-                }
-            </div>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1>Ingredients</h1>
+            @if (accountService.Authorize("Ingredient_Create"))
+            {
+                <a asp-action="Create" class="btn btn-primary">New Ingredient</a>
+            }
         </div>
-    </div>
-    <div id="cardsView" class="row row-cols-1 row-cols-md-3 g-4 mt-2" style="display: none;">
-        @foreach(var item in @Model.Ingredients)
-        {
-            <div class="col">
-                <div class="card">
-                    <img src="https://befreshcorp.net/wp-content/uploads/2017/06/product-packshot-Carrot-558x600.jpg"
-                     class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <div>
-                            <table class="table" style="table-layout: fixed">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Base Amount</th>
-                                        <th>Unit</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>@item.IngredientType</td>
-                                        <td>@item.BaseAmount</td>
-                                        <td>@item.Unit.Name</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div>
-                            <a asp-action="Detail" class="btn btn-primary" asp-route-id="@item.IngredientId">Details</a>
-                            @if (accountService.Authorize(currentUser, "Ingredient_Update"))
-                            {
-                                <a asp-action="Edit" asp-route-id="@item.IngredientId" class="modalbutton btn btn-primary">Edit</a>
-                            }
-                            @if (accountService.Authorize(currentUser, "Ingredient_Delete"))
-                            {
-                                <button id="toDeleteModal" type="button" class="btn btn-danger" data-bs-toggle="modal" 
-                                data-bs-target="#deleteModal" data-id="@item.IngredientId">
-                                    Delete
-                                </button>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-    <div class="table-responsive">
-        <table id="tableView" class="table table-hover mt-2" style="display: visible;">
-            <thead>
-                <tr>
-                    <th scope="col" class="col-1">#</th>
-                    <th scope="col" class="col-2">Name</th>
-                    <th scope="col" class="col-2">Type</th>
-                    <th scope="col" class="col-2">Base Amount</th>
-                    <th scope="col" class="col-2">Unit</th>
-                    <th scope="col" class="col-3">Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < @Model.Ingredients.Count; i++)
-                {
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap mb-0">
+                <thead class="table-light">
                     <tr>
-                        <td scope="row"></td>
-                        <td>@Model.Ingredients[i].Name</td>
-                        <td>@Model.Ingredients[i].IngredientType</td>
-                        <td>@Model.Ingredients[i].BaseAmount</td>
-                        <td>@Model.Ingredients[i].Unit.Name</td>
-                        <td>
-                            <a asp-action="Detail" asp-route-id="@Model.Ingredients[i].IngredientId" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize(currentUser, "Ingredient_Update"))
-                            {
-                                <a asp-action="Edit" asp-route-id="@Model.Ingredients[i].IngredientId" class="btn btn-primary">Edit</a>
-                            }
-                            @if (accountService.Authorize(currentUser, "Ingredient_Delete"))
-                            {
-                                <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-id="@Model.Ingredients[i].IngredientId">
-                                    Delete
-                                </button>
-                            }
-                        </td>
+                        <th scope="col" class="col-3">Name</th>
+                        <th scope="col" class="col-2">Type</th>
+                        <th scope="col" class="col-2">Base Amount</th>
+                        <th scope="col" class="col-2">Unit</th>
+                        <th scope="col" class="col-3">Options</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var ingredient in Model.Ingredients)
+                    {
+                        <tr>
+                            <td>@ingredient.Name</td>
+                            <td>@ingredient.IngredientType</td>
+                            <td>@ingredient.BaseAmount</td>
+                            <td>@ingredient.Unit.Name</td>
+                            <td>
+                                <a asp-action="Detail" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize("Ingredient_Update"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Edit</a>
+                                }
+                                @if (accountService.Authorize("Ingredient_Delete"))
+                                {
+                                    <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-id="@ingredient.IngredientId">
+                                        Delete
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

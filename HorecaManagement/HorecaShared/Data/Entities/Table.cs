@@ -10,6 +10,8 @@
 
         public BookingDetail? BookingDetail { get; set; }
 
+        public List<Order> Orders { get; set; } = new();
+
         public int Pax { get; set; }
     }
 }

@@ -12,13 +12,12 @@ using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
-
     [TypeFilter(typeof(TokenFilter))]
     public class MenuCardController : Controller
     {
-        private IMenuCardService menuCardService;
-        private IMenuService menuService;
-        private IDishService dishService;
+        private readonly IMenuCardService menuCardService;
+        private readonly IMenuService menuService;
+        private readonly IDishService dishService;
 
         public MenuCardController(IMenuCardService menuCardService, IMenuService menuService, IDishService dishService)
         {
@@ -33,14 +32,14 @@ namespace Horeca.MVC.Controllers
 
             if (menuCards == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
-            MenuCardListViewModel listModel = new MenuCardListViewModel();
+            MenuCardListViewModel listModel = new();
 
             foreach (var item in menuCards)
             {
-                MenuCardViewModel model = MenuCardMapper.MapModel(item);
+                MenuCardViewModel model = MenuCardMapper.MapMenuCardModel(item);
 
                 listModel.MenuCards.Add(model);
             }
@@ -54,10 +53,10 @@ namespace Horeca.MVC.Controllers
 
             if (menuCard == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
-            MenuCardDetailViewModel model = MenuCardMapper.MapDetailModel(menuCard);
+            MenuCardDetailViewModel model = MenuCardMapper.MapMenuCardDetailModel(menuCard);
 
             return View(model);
         }
@@ -112,7 +111,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -142,7 +141,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -153,7 +152,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             MenuCardDto menuCard = await menuCardService.GetMenuCardById(id);
-            MenuCardViewModel model = MenuCardMapper.MapModel(menuCard);
+            MenuCardViewModel model = MenuCardMapper.MapMenuCardModel(menuCard);
 
             return View(model);
         }
@@ -163,7 +162,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateMenuCardDto result = MenuCardMapper.MapMutateMenuCard(menuCard, 
+                MutateMenuCardDto result = MenuCardMapper.MapMutateMenuCard(menuCard,
                     await menuCardService.GetMenuCardById(menuCard.Id));
 
                 var response = await menuCardService.UpdateMenuCard(result);
@@ -203,7 +202,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = model.MenuCardId });
+                return RedirectToAction(nameof(Detail), new { id = model.MenuCardId });
             }
             else
             {
@@ -234,7 +233,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = model.MenuCardId });
+                return RedirectToAction(nameof(Detail), new { id = model.MenuCardId });
             }
             else
             {
@@ -256,7 +255,7 @@ namespace Horeca.MVC.Controllers
         [Route("/MenuCard/DeleteDish/{menuCardId}/{id}")]
         public async Task<IActionResult> DeleteDish(int menuCardId, int id)
         {
-            DeleteDishMenuCardDto dish = new DeleteDishMenuCardDto();
+            DeleteDishMenuCardDto dish = new();
             dish.MenuCardId = menuCardId;
             dish.DishId = id;
 
@@ -266,13 +265,13 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = menuCardId });
+            return RedirectToAction(nameof(Detail), new { id = menuCardId });
         }
 
         [Route("/MenuCard/DeleteMenu/{menuCardId}/{id}")]
         public async Task<IActionResult> DeleteMenu(int menuCardId, int id)
         {
-            DeleteMenuMenuCardDto menu = new DeleteMenuMenuCardDto();
+            DeleteMenuMenuCardDto menu = new();
             menu.MenuCardId = menuCardId;
             menu.MenuId = id;
 
@@ -282,7 +281,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = menuCardId });
+            return RedirectToAction(nameof(Detail), new { id = menuCardId });
         }
     }
 }

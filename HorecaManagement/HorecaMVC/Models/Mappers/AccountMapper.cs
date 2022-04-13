@@ -9,16 +9,17 @@ namespace Horeca.MVC.Models.Mappers
     {
         public static UserViewModel MapUserModel(BaseUserDto userDto)
         {
-            UserViewModel userViewModel = new UserViewModel
+            UserViewModel userViewModel = new()
             {
                 Id = userDto.Id,
                 Username = userDto.Username
             };
             return userViewModel;
         }
+
         public static UserPermissionsViewModel MapUserPermissionsModel(UserDto userDto)
         {
-            UserPermissionsViewModel userPermissionsModel = new UserPermissionsViewModel
+            UserPermissionsViewModel userPermissionsModel = new()
             {
                 Username = userDto.Username
             };
@@ -32,17 +33,16 @@ namespace Horeca.MVC.Models.Mappers
 
         public static PermissionViewModel MapPermissionModel(PermissionDto permission)
         {
-            PermissionViewModel permissionViewModel = new PermissionViewModel
+            return new PermissionViewModel
             {
                 Id = permission.Id,
                 PermissionName = permission.PermissionName
             };
-            return permissionViewModel;
         }
 
         public static List<PermissionViewModel> MapAddPermissionsList(UserPermissionsViewModel user, List<PermissionDto> permissions)
         {
-            List<PermissionViewModel> permissionList = new List<PermissionViewModel>();
+            List<PermissionViewModel> permissionList = new();
             foreach (var permission in permissions)
             {
                 PermissionViewModel model = MapPermissionModel(permission);
@@ -54,9 +54,9 @@ namespace Horeca.MVC.Models.Mappers
             return permissionList;
         }
 
-        internal static object? MapRemovePermissionsList(UserPermissionsViewModel userModel)
+        public static List<PermissionViewModel> MapRemovePermissionsList(UserPermissionsViewModel userModel)
         {
-            List<PermissionViewModel> permissionList = new List<PermissionViewModel>();
+            List<PermissionViewModel> permissionList = new();
             foreach (var permissionModel in userModel.Permissions)
             {
                 permissionList.Add(permissionModel);
@@ -64,35 +64,43 @@ namespace Horeca.MVC.Models.Mappers
             return permissionList;
         }
 
+        public static List<UserViewModel> MapUserModelList(List<BaseUserDto> employees)
+        {
+            List<UserViewModel> userList = new();
+            foreach (BaseUserDto employee in employees)
+            {
+                userList.Add(MapUserModel(employee));
+            }
+            return userList;
+        }
+
         public static LoginUserDto MapLoginUser(LoginUserViewModel userModel)
         {
-            LoginUserDto result = new LoginUserDto
+            return new LoginUserDto
             {
                 Username = userModel.Username,
                 Password = userModel.Password
             };
-            return result;
         }
 
         public static RegisterUserDto MapRegisterUser(RegisterUserViewModel userModel)
         {
-            RegisterUserDto result = new RegisterUserDto
+            return new RegisterUserDto
             {
                 Username = userModel.Username,
                 Email = userModel.Email,
                 Password = userModel.Password
             };
-            return result;
         }
 
         public static MutateUserPermissionsDto MapMutatePermissionsDto(MutatePermissionsViewModel model)
         {
-            MutateUserPermissionsDto result = new MutateUserPermissionsDto 
+            MutateUserPermissionsDto result = new()
             {
                 UserName = model.Username,
                 PermissionIds = new List<int>()
             };
-            foreach(var id in model.PermissionId)
+            foreach (var id in model.PermissionId)
             {
                 result.PermissionIds.Add(id);
             }

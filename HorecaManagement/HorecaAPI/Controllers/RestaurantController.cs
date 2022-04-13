@@ -38,6 +38,22 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
+        ///  Get list of Restaurants based on userId
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Success retrieving restaurants list based on user id </response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Read)]
+        [HttpGet]
+        [Route("User/{userId}")]
+        [ProducesResponseType(typeof(IEnumerable<RestaurantDto>), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> GetRestaurantByUserId([FromRoute] string userId)
+        {
+            return Ok(await mediator.Send(new GetRestaurantByUserIdQuery(userId)));
+        }
+
+        /// <summary>
         /// Retrieve restaurant by Id
         /// </summary>
         /// <param name="id"></param>
@@ -137,6 +153,42 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> RemoveEmployeeFromRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new RemoveEmployeeFromRestaurantCommand(restaurantId, employeeId)));
+        }
+
+        /// <summary>
+        /// Add a menuCard to a restaurant
+        /// </summary>
+        /// <param name="menuCardId">id from the menuCard</param>
+        /// <param name="restaurantId">Id of the restaurant</param>
+        /// <returns></returns>
+        /// <response code="200">Success adding a menucard  to the specified restaurant</response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Update)]
+        [HttpPost]
+        [Route("{restaurantId}/MenuCard/{menuCardId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> AddMenuCardToRestaurant([FromRoute] int restaurantId, [FromRoute] int menuCardId)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddMenuCardToRestaurantCommand(restaurantId, menuCardId)));
+        }
+
+        /// <summary>
+        ///  Delete a menucard from a restaurant
+        /// </summary>
+        /// <param name="employeeId">employee id </param>
+        /// <param name="restaurantId">restaurant id </param>
+        /// <returns></returns>
+        /// <response code="204">Success  Delete a menucard from a restaurant</response>
+        /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
+        [HttpDelete]
+        [Route("{restaurantId}/MenuCard/{menuCardId}")]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> DeleteMenuCardFromRestaurant([FromRoute] int restaurantId, [FromRoute] int menuCardId)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteMenuCardFromRestaurantCommand(restaurantId, menuCardId)));
         }
     }
 }

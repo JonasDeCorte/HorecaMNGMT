@@ -1,0 +1,77 @@
+﻿@model Horeca.MVC.Models.Restaurants.RestaurantListViewModel
+
+<div class="text-center">
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1>Restaurants</h1>
+            @if (accountService.Authorize("Restaurant_Create"))
+            {
+                <a asp-action="Create" class="btn btn-primary">New Restaurant</a>
+            }
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="card-header">
+                    <tr>
+                        <th scope="col" class="col-9">Name</th>
+                        <th scope="col" class="col-3">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var restaurant in Model.Restaurants)
+                    {
+                        <tr>
+                            <td>@restaurant.Name</td>
+                            <td>
+                                <a asp-action="Detail" asp-route-id="@restaurant.Id" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize("Restaurant_Update"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit</a>
+                                }
+
+                                @if (accountService.Authorize("Restaurant_Delete"))
+                                {
+                                    <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal" data-id="@restaurant.Id">
+                                        Delete
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Dish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this dish?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteButton" asp-action="Delete" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+       $(document).on("click","#toDeleteModal",OpenModalDelete);
+    });
+
+    function OpenModalDelete(){
+       var itemId = $(this).data("id");
+       $('#deleteButton').attr('href', "/Restaurant/Delete/" + itemId)
+       $("#deleteModal").modal();
+    }
+</script>

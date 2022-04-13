@@ -11,14 +11,14 @@ namespace Horeca.MVC.Services
     public class DishService : IDishService
     {
         private readonly HttpClient httpClient;
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
         public DishService(HttpClient httpClient, IConfiguration configuration)
         {
             this.httpClient = httpClient;
             this.configuration = configuration;
         }
-        
+
         public async Task<IEnumerable<DishDto>> GetDishes()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
@@ -26,7 +26,7 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<IEnumerable<DishDto>>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<IEnumerable<DishDto>>(await response.Content.ReadAsStringAsync());
                 return result;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -45,7 +45,7 @@ namespace Horeca.MVC.Services
             {
                 return null;
             }
-            var result = JsonConvert.DeserializeObject<DishDto>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<DishDto>(await response.Content.ReadAsStringAsync());
 
             return result;
         }
@@ -60,7 +60,7 @@ namespace Horeca.MVC.Services
             {
                 return null;
             }
-            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(response.Content.ReadAsStringAsync().Result);
+            var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(await response.Content.ReadAsStringAsync());
 
             return listResult;
         }
@@ -80,8 +80,10 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddDish(MutateDishDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -94,8 +96,10 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddDishIngredient(int id, MutateIngredientByDishDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{id}/{ClassConstants.Ingredients}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -121,17 +125,20 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.DishId}/" +
-                $"{ClassConstants.Ingredients}/{ingredient.IngredientId}");
-
-            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+                $"{ClassConstants.Ingredients}/{ingredient.IngredientId}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
+            };
             return await httpClient.SendAsync(request);
         }
 
         public async Task<HttpResponseMessage> UpdateDish(MutateDishDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
@@ -145,8 +152,10 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ingredient.Id}" +
-                $"/{ClassConstants.Ingredients}/{ingredient.Ingredient.Id}");
-            request.Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json");
+                $"/{ClassConstants.Ingredients}/{ingredient.Ingredient.Id}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
+            };
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

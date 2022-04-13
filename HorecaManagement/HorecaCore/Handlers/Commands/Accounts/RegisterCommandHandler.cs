@@ -49,21 +49,17 @@ namespace Horeca.Core.Handlers.Commands.Accounts
                 UserName = request.Model.Username,
                 ExternalId = Guid.NewGuid().ToString(),
                 IsEnabled = true,
+                IsOwner = request.Model.IsOwner,
             };
+
             var result = await userManager.CreateAsync(user, request.Model.Password);
             if (result.Succeeded)
             {
                 logger.Info("added new user {user}", user.NormalizedUserName);
 
-                var NewUserPerm = repository.PermissionRepository.Get(1);
+                UserPermission userPerm = AddNewUserPermission(user);
 
-                var userPerm = new UserPermission
-                {
-                    PermissionId = NewUserPerm.Id,
-                    UserId = user.Id
-                };
-
-                repository.UserPermissions.Add(userPerm);
+                IsOwnerPermissions(user);
 
                 await repository.CommitAsync();
 
@@ -77,6 +73,36 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             }
 
             return user.Id;
+        }
+
+        private UserPermission AddNewUserPermission(ApplicationUser user)
+        {
+            var NewUserPerm = repository.PermissionRepository.Get(1);
+
+            var userPerm = new UserPermission
+            {
+                PermissionId = NewUserPerm.Id,
+                UserId = user.Id
+            };
+
+            repository.UserPermissions.Add(userPerm);
+            return userPerm;
+        }
+
+        private void IsOwnerPermissions(ApplicationUser user)
+        {
+            if (user.IsOwner)
+            {
+                foreach (var perm in repository.PermissionRepository.GetAll().Skip(1))
+                {
+                    var Userpermission = new UserPermission
+                    {
+                        PermissionId = perm.Id,
+                        UserId = user.Id
+                    };
+                    repository.UserPermissions.Add(Userpermission);
+                }
+            }
         }
     }
 }

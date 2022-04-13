@@ -1,43 +1,37 @@
-﻿using Horeca.Shared.Data.Entities;
+﻿using Horeca.MVC.Controllers.Filters;
 using Horeca.MVC.Models.Dishes;
-using Microsoft.AspNetCore.Mvc;
-using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Models.Ingredients;
-using Horeca.Shared.Dtos.Dishes;
+using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Ingredients;
-using Horeca.MVC.Controllers.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Horeca.Shared.Dtos.Units;
+using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.MVC.Controllers
 {
     [TypeFilter(typeof(TokenFilter))]
     public class DishController : Controller
     {
-        private IDishService dishService;
-        private IIngredientService ingredientService;
-        private readonly ITokenService tokenService;
+        private readonly IDishService dishService;
+        private readonly IIngredientService ingredientService;
 
-        public DishController(IDishService dishService, IIngredientService ingredientService, ITokenService tokenService)
+        public DishController(IDishService dishService, IIngredientService ingredientService)
         {
             this.dishService = dishService;
             this.ingredientService = ingredientService;
-            this.tokenService = tokenService;
         }
 
         public async Task<IActionResult> Index()
         {
             IEnumerable<DishDto> dishes = await dishService.GetDishes();
-
             if (dishes == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
-            DishListViewModel listModel = new DishListViewModel();
-            foreach (var item in dishes)
-            {
-                DishViewModel model = DishMapper.MapModel(item);
-                listModel.Dishes.Add(model);
-            }
+            DishListViewModel listModel = DishMapper.MapDishListModel(dishes);
 
             return View(listModel);
         }
@@ -47,7 +41,7 @@ namespace Horeca.MVC.Controllers
             Dish dish = await dishService.GetDishDetailById(id);
             if (dish == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             DishDetailViewModel model = DishMapper.MapDetailModel(dish);
 
@@ -68,7 +62,7 @@ namespace Horeca.MVC.Controllers
         [Route("/Dish/DeleteIngredient/{dishId}/{id}")]
         public async Task<IActionResult> DeleteIngredient(int dishId, int id)
         {
-            DeleteIngredientDishDto ingredient = new DeleteIngredientDishDto();
+            DeleteIngredientDishDto ingredient = new();
             ingredient.DishId = dishId;
             ingredient.IngredientId = id;
 
@@ -78,7 +72,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = dishId });
+            return RedirectToAction(nameof(Detail), new { id = dishId });
         }
 
         public IActionResult Create()
@@ -101,7 +95,8 @@ namespace Horeca.MVC.Controllers
                 }
 
                 return RedirectToAction(nameof(Index));
-            } else
+            }
+            else
             {
                 return View(dish);
             }
@@ -109,7 +104,7 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult CreateIngredient(int id)
         {
-            IngredientViewModel model = new IngredientViewModel();
+            IngredientViewModel model = new();
 
             TempData["Id"] = id;
 
@@ -128,7 +123,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -142,10 +137,10 @@ namespace Horeca.MVC.Controllers
             IEnumerable<IngredientDto> ingredients = await ingredientService.GetIngredients();
             if (ingredients == null || dishIngredientDto == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
 
-            ExistingIngredientsViewModel model = new ExistingIngredientsViewModel { DishId = id };
+            ExistingIngredientsViewModel model = new() { DishId = id };
             model.Ingredients = DishMapper.MapRemainingIngredientsList(dishIngredientDto, ingredients);
 
             return View(model);
@@ -162,7 +157,7 @@ namespace Horeca.MVC.Controllers
                 return View("OperationFailed");
             }
 
-            return RedirectToAction("Detail", new { id = id });
+            return RedirectToAction(nameof(Detail), new { id });
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -170,7 +165,7 @@ namespace Horeca.MVC.Controllers
             DishDto dish = await dishService.GetDishById(id);
             if (dish == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             DishViewModel model = DishMapper.MapModel(dish);
 
@@ -189,7 +184,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction(nameof(Detail), new { id = id });
+                return RedirectToAction(nameof(Detail), new { id });
             }
             else
             {
@@ -203,7 +198,7 @@ namespace Horeca.MVC.Controllers
             IngredientDto ingredient = await ingredientService.GetIngredientById(ingredientId);
             if (ingredient == null)
             {
-                return View("NotFound");
+                return View(nameof(NotFound));
             }
             DishIngredientViewModel model = DishMapper.MapUpdateIngredientModel(dishId, ingredient);
 
@@ -223,7 +218,7 @@ namespace Horeca.MVC.Controllers
                     return View("OperationFailed");
                 }
 
-                return RedirectToAction("Detail", new { id = ingredient.DishId });
+                return RedirectToAction(nameof(Detail), new { id = ingredient.DishId });
             }
             else
             {

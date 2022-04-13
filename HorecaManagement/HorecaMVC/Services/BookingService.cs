@@ -38,7 +38,7 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<BookingDto>> GetBookingsByStatus(string status)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Admin}/{status}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{status}");
 
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)

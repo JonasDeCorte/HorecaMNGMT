@@ -28,8 +28,8 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success retrieving MenuCard list</response>
         /// <response code="400">Bad request</response>
-        [PermissionAuthorize(nameof(MenuCard), Permissions.Read)]
         ///
+        [PermissionAuthorize(nameof(MenuCard), Permissions.Read)]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MenuCardDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

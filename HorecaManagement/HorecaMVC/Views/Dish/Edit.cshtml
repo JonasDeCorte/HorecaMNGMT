@@ -1,11 +1,7 @@
 ﻿@model Horeca.MVC.Models.Dishes.DishViewModel
 
-@{
-    ViewData["Title"] = "Edit Dish";
-}
-
 <div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
+    <h1 class="display-4">Edit Dish @Model.Name</h1>
     <div>
         <form asp-action="Edit" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -36,8 +32,3 @@
         </form>
     </div>
 </div>
-
-@section scripts {
-<script asp-src-include="lib/jquery-validation/dist/jquery.validate.js"></script>
-<script asp-src-include="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-}

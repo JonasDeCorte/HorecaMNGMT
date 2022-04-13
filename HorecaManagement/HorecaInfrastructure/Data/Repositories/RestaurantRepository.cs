@@ -2,6 +2,7 @@
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
@@ -14,13 +15,29 @@ namespace Horeca.Infrastructure.Data.Repositories
             this.context = context;
         }
 
-        public Restaurant GetRestaurantIncludingDependenciesById(int restaurantId)
+        public async Task<Restaurant> GetRestaurantIncludingDependenciesById(int restaurantId)
         {
-            return context.Restaurants
+            return await context.Restaurants
                 .Include(x => x.MenuCards)
                 .Include(x => x.Employees)
                 .ThenInclude(x => x.User)
-                .Where(x => x.Id.Equals(restaurantId)).FirstOrDefault();
+                .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
+        }
+
+        public async Task<Restaurant> GetRestaurantIncludingMenuCardsById(int restaurantId)
+        {
+            return await context.Restaurants
+                .Include(x => x.MenuCards)
+                .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
+        }
+
+        public async Task<Restaurant> GetRestaurantByIdWithOrdersWithOrderState(int restaurantId, OrderState orderState)
+        {
+            return await context.Restaurants
+               .Include(x => x.Orders.Where(x => x.OrderState.Equals(orderState)))
+               .ThenInclude(x => x.OrderLines)
+               .ThenInclude(x => x.Dish)
+               .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
         }
     }
 }
