@@ -90,7 +90,8 @@
 
     function OpenModalDelete(){
        var itemId = $(this).data("id");
-       $('#deleteButton').attr('href', "/Booking/Delete/" + itemId)
+       var page = "BookingIndex"
+       $('#deleteButton').attr('href', "/Booking/Delete/" + itemId + "/" + page)
        $("#deleteModal").modal();
     }
 </script>
