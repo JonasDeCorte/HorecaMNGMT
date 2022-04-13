@@ -3,7 +3,7 @@
 <div class="text-center">
     <div class="d-flex flex-column">
         <h1 class="display-4">@Model.Name</h1>
-        @if (accountService.Authorize("RestaurantSchedule_Read"))
+        @if (accountService.Authorize("Schedule_Read"))
         {
             <div class="card mt-3">
                 <div class="card-header">
@@ -21,7 +21,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var schedule in @Model.RestaurantScheduleListViewModel.RestaurantSchedules)
+                            @foreach (var schedule in @Model.ScheduleList.Schedules)
                             {
                                 <tr>
                                     <td>@schedule.Id</td>
@@ -34,11 +34,11 @@
                                         {
                                             <a asp-controller="Booking" asp-action="Create" asp-route-id="@schedule.Id" class="btn btn-primary">Book</a>
                                         }
-                                        @if (accountService.Authorize("RestaurantSchedule_Update"))
+                                        @if (accountService.Authorize("Schedule_Update"))
                                         {
                                             <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
                                         }
-                                        @if (accountService.Authorize("RestaurantSchedule_Delete"))
+                                        @if (accountService.Authorize("Schedule_Delete"))
                                         {
                                             <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#deleteScheduleModal" data-id="@schedule.Id">

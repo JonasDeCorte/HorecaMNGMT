@@ -1,7 +1,7 @@
 ﻿using Horeca.MVC.Models.Bookings;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Bookings;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 
 namespace Horeca.MVC.Models.Mappers
 {
@@ -50,7 +50,7 @@ namespace Horeca.MVC.Models.Mappers
             };
         }
 
-        public static CreateBookingViewModel MapCreateBookingModel(UserDto userDto, RestaurantScheduleByIdDto scheduleDto)
+        public static CreateBookingViewModel MapCreateBookingModel(UserDto userDto, ScheduleByIdDto scheduleDto)
         {
             return new CreateBookingViewModel
             {
@@ -64,7 +64,7 @@ namespace Horeca.MVC.Models.Mappers
             };
         }
 
-        public static BookingInfoViewModel MapBookingInfoModel(UserDto userDto, RestaurantScheduleByIdDto scheduleDto)
+        public static BookingInfoViewModel MapBookingInfoModel(UserDto userDto, ScheduleByIdDto scheduleDto)
         {
             return new BookingInfoViewModel();
         }

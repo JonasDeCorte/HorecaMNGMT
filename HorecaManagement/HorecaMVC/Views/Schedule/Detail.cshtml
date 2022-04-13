@@ -1,4 +1,4 @@
-﻿@model Horeca.MVC.Models.Schedules.RestaurantScheduleDetailViewModel
+﻿@model Horeca.MVC.Models.Schedules.ScheduleDetailViewModel
 
 <div class="text-center">
     <div class="card mt-3">
@@ -22,7 +22,7 @@
             {
                 <a asp-controller="Booking" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">Book</a>
             }
-            @if (accountService.Authorize("RestaurantSchedule_Update"))
+            @if (accountService.Authorize("Schedule_Update"))
             {
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             }

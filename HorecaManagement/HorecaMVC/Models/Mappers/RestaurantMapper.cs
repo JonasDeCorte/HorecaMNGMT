@@ -33,7 +33,7 @@ namespace Horeca.MVC.Models.Mappers
                 Id = restaurantDto.Id,
                 Name = restaurantDto.Name,
             };
-            restaurantDetailModel.RestaurantScheduleListViewModel = ScheduleMapper.MapRestaurantScheduleList(restaurantDto.RestaurantSchedules);
+            restaurantDetailModel.ScheduleList = ScheduleMapper.MapScheduleList(restaurantDto.Schedules);
             restaurantDetailModel.Employees = AccountMapper.MapUserModelList(restaurantDto.Employees);
             restaurantDetailModel.MenuCards = MenuCardMapper.MapMenuCardModelList(restaurantDto.MenuCards);
             return restaurantDetailModel;
