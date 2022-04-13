@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using MediatR;
 using NLog;
@@ -28,7 +29,17 @@ namespace Horeca.Core.Handlers.Commands.Bookings
         public async Task<int> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to delete {object} with Id: {id}", nameof(Booking), request.Id);
+            var bookingsdetail = await repository.BookingDetails.GetDetailsByBookingId(request.Id);
+            if (bookingsdetail == null)
+            {
+                logger.Error(EntityNotFoundException.Instance);
 
+                throw new EntityNotFoundException();
+            }
+
+            bookingsdetail.Schedule.AvailableSeat += bookingsdetail.Pax;
+            repository.Schedules.Update(bookingsdetail.Schedule);
+            repository.BookingDetails.Delete(bookingsdetail.Id);
             repository.Bookings.Delete(request.Id);
 
             await repository.CommitAsync();
