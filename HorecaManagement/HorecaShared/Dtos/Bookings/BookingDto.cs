@@ -41,7 +41,7 @@ namespace Horeca.Shared.Dtos.Bookings
 
         public BookingDto Booking { get; set; }
 
-        public int ScheduleID { get; set; }
+        public int ScheduleId { get; set; }
 
         public RestaurantScheduleDto RestaurantSchedule { get; set; }
 
@@ -66,7 +66,7 @@ namespace Horeca.Shared.Dtos.Bookings
     public class MakeBookingDto
     {
         public BookingDtoInfo Booking { get; set; }
-        public int ScheduleID { get; set; }
+        public int ScheduleId { get; set; }
         public int Pax { get; set; }
     }
 
@@ -74,5 +74,7 @@ namespace Horeca.Shared.Dtos.Bookings
     {
         public BookingDtoInfo Booking { get; set; }
         public int BookingId { get; set; }
+
+        public int Pax { get; set; }
     }
 }

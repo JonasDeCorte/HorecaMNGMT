@@ -37,7 +37,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Booking), request);
 
-                var scheduleToBeFound = repository.RestaurantSchedules.Get(request.Model.ScheduleID);
+                var scheduleToBeFound = repository.RestaurantSchedules.Get(request.Model.ScheduleId);
                 int pax = scheduleToBeFound.AvailableSeat - request.Model.Pax;
 
                 if (pax < 0)
@@ -75,7 +75,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 BookingDetail bookingDetail = new()
                 {
                     BookingId = entity.Id,
-                    RestaurantScheduleId = request.Model.ScheduleID,
+                    RestaurantScheduleId = request.Model.ScheduleId,
                     Pax = request.Model.Pax
                 };
                 await repository.BookingDetails.CreateBookingDetail(bookingDetail);

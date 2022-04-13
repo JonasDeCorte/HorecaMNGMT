@@ -55,7 +55,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
             };
             foreach (var item in bookingList)
             {
-                var bookingDetail = await repository.BookingDetails.GetDetailsByID(item.Id);
+                var bookingDetail = await repository.BookingDetails.GetDetailsByBookingId(item.Id);
                 bookingDetailDto = new BookingDetailDto()
                 {
                     Booking = new BookingDto
@@ -83,7 +83,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
                         StartTime = bookingDetail.RestaurantSchedule.StartTime,
                         Status = bookingDetail.RestaurantSchedule.Status
                     },
-                    ScheduleID = bookingDetail.RestaurantScheduleId,
+                    ScheduleId = bookingDetail.RestaurantScheduleId,
                 };
                 bookingHistoryDto.BookingDetails.Add(bookingDetailDto);
             }
