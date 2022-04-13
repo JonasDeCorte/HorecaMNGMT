@@ -2,7 +2,7 @@
 {
     public class BookingDetail : BaseEntity
     {
-        private Schedule? _restaurantSchedule;
+        private Schedule? _schedule;
 
         private Booking? _booking;
 
@@ -15,13 +15,13 @@
 
         public int BookingId { get; set; }
 
-        public int RestaurantScheduleId { get; set; }
+        public int ScheduleId { get; set; }
 
-        public Schedule RestaurantSchedule
+        public Schedule Schedule
         {
-            set => _restaurantSchedule = value;
-            get => _restaurantSchedule
-                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(RestaurantSchedule));
+            set => _schedule = value;
+            get => _schedule
+                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Schedule));
         }
 
         public int Pax { get; set; }

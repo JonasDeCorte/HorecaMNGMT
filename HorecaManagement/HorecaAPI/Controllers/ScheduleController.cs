@@ -1,5 +1,5 @@
-﻿using Horeca.Core.Handlers.Commands.RestaurantSchedules;
-using Horeca.Core.Handlers.Queries.RestaurantSchedules;
+﻿using Horeca.Core.Handlers.Commands.Schedules;
+using Horeca.Core.Handlers.Queries.Schedules;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Data.Entities;
@@ -39,7 +39,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAll(int id)
         {
-            return Ok(await mediator.Send(new GetAvailableRestaurantSchedulesQuery(id)));
+            return Ok(await mediator.Send(new GetAvailableSchedulesQuery(id)));
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateScheduleDto model)
         {
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddRestaurantScheduleCommand(model)));
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddScheduleCommand(model)));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateScheduleDto model)
         {
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditRestaurantScheduleCommand(model)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditScheduleCommand(model)));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
         {
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteRestaurantScheduleCommand(id)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteScheduleCommand(id)));
         }
     }
 }

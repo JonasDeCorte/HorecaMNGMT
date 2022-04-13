@@ -3,33 +3,33 @@ using Horeca.Shared.Data.Entities;
 using MediatR;
 using NLog;
 
-namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
+namespace Horeca.Core.Handlers.Commands.Schedules
 {
-    public class DeleteRestaurantScheduleCommand : IRequest<int>
+    public class DeleteScheduleCommand : IRequest<int>
     {
         public int Id { get; set; }
 
-        public DeleteRestaurantScheduleCommand(int id)
+        public DeleteScheduleCommand(int id)
         {
             Id = id;
         }
     }
 
-    public class DeleteRestaurantScheduleCommandHandler : IRequestHandler<DeleteRestaurantScheduleCommand, int>
+    public class DeleteScheduleCommandHandler : IRequestHandler<DeleteScheduleCommand, int>
     {
         private readonly IUnitOfWork repository;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public DeleteRestaurantScheduleCommandHandler(IUnitOfWork repository)
+        public DeleteScheduleCommandHandler(IUnitOfWork repository)
         {
             this.repository = repository;
         }
 
-        public async Task<int> Handle(DeleteRestaurantScheduleCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteScheduleCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to delete {object} with Id: {id}", nameof(Schedule), request.Id);
 
-            repository.RestaurantSchedules.Delete(request.Id);
+            repository.Schedules.Delete(request.Id);
 
             await repository.CommitAsync();
 

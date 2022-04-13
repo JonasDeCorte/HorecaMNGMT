@@ -5,33 +5,33 @@ using Horeca.Shared.Dtos.Schedules;
 using MediatR;
 using NLog;
 
-namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
+namespace Horeca.Core.Handlers.Commands.Schedules
 {
-    public class EditRestaurantScheduleCommand : IRequest<int>
+    public class EditScheduleCommand : IRequest<int>
     {
         public MutateScheduleDto Model { get; }
 
-        public EditRestaurantScheduleCommand(MutateScheduleDto model)
+        public EditScheduleCommand(MutateScheduleDto model)
         {
             Model = model;
         }
     }
 
-    public class EditRestaurantScheduleCommandHandler : IRequestHandler<EditRestaurantScheduleCommand, int>
+    public class EditScheduleCommandHandler : IRequestHandler<EditScheduleCommand, int>
     {
         private readonly IUnitOfWork repository;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public EditRestaurantScheduleCommandHandler(IUnitOfWork repository)
+        public EditScheduleCommandHandler(IUnitOfWork repository)
         {
             this.repository = repository;
         }
 
-        public async Task<int> Handle(EditRestaurantScheduleCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(EditScheduleCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
 
-            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Model.Id);
+            var restaurantSchedule = repository.Schedules.Get(request.Model.Id);
 
             if (restaurantSchedule is null)
             {
@@ -39,7 +39,7 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
 
                 throw new EntityNotFoundException();
             }
-            var checkStartTime = await repository.RestaurantSchedules.CheckExistingStartTime(restaurantSchedule.Id, request.Model.ScheduleDate, request.Model.StartTime, request.Model.RestaurantId, "update");
+            var checkStartTime = await repository.Schedules.CheckExistingStartTime(restaurantSchedule.Id, request.Model.ScheduleDate, request.Model.StartTime, request.Model.RestaurantId, "update");
             if (checkStartTime)
             {
                 logger.Error($"Attempt to add the schedule {nameof(Schedule)} failed due to duplicate start time {nameof(request.Model.StartTime)}");
@@ -47,7 +47,7 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
             }
             restaurantSchedule = UpdateEntity(request, restaurantSchedule);
 
-            repository.RestaurantSchedules.Update(restaurantSchedule);
+            repository.Schedules.Update(restaurantSchedule);
 
             await repository.CommitAsync();
             logger.Info("updated {@object} with Id: {id}", restaurantSchedule, restaurantSchedule.Id);
@@ -55,7 +55,7 @@ namespace Horeca.Core.Handlers.Commands.RestaurantSchedules
             return restaurantSchedule.Id;
         }
 
-        private static Schedule UpdateEntity(EditRestaurantScheduleCommand request, Schedule? restaurantSchedule)
+        private static Schedule UpdateEntity(EditScheduleCommand request, Schedule? restaurantSchedule)
         {
             if (restaurantSchedule.StartTime != request.Model.StartTime)
             {

@@ -29,7 +29,7 @@ namespace Horeca.Infrastructure.Data
 
         public IRestaurantRepository Restaurants => new RestaurantRepository(context);
 
-        public IScheduleRepository RestaurantSchedules => new ScheduleRepository(context);
+        public IScheduleRepository Schedules => new ScheduleRepository(context);
 
         public IBookingDetailRepository BookingDetails => new BookingDetailRepository(context);
 
