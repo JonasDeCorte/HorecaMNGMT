@@ -6,6 +6,8 @@ namespace Horeca.Shared.Data.Repositories
     {
         public Task<BookingDetail> GetDetailsByBookingId(int bookingId);
 
+        public Task<IEnumerable<BookingDetail>> GetDetailsByUserId(string userId, string status);
+
         public Task<IEnumerable<BookingDetail>> GetDetailsForRestaurantSchedule(int scheduleId);
 
         public Task CreateBookingDetail(BookingDetail bookingDetail);

@@ -1,4 +1,6 @@
-﻿using Horeca.Shared.Data;
+﻿using AutoMapper;
+using Horeca.Shared.Data;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Dtos.RestaurantSchedules;
 using MediatR;
@@ -23,73 +25,49 @@ namespace Horeca.Core.Handlers.Queries.Bookings
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IUnitOfWork repository;
+        private readonly IMapper mapper;
 
-        public GetAllBookingsByUserIDQueryHandler(IUnitOfWork repository)
+        public GetAllBookingsByUserIDQueryHandler(IUnitOfWork repository, IMapper mapper)
         {
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         public async Task<BookingHistoryDto> Handle(GetAllBookingsByUserIDQuery request, CancellationToken cancellationToken)
         {
             logger.Info("requested to return bookinghistory with request: {@req}", request);
 
-            var bookingList = await repository.Bookings.GetByUserID(request.UserId, request.Status);
-            logger.Info("bookinglist found with: {req} items", bookingList.Count());
+            var bookingDetailList = await repository.BookingDetails.GetDetailsByUserId(request.UserId, request.Status);
+            logger.Info("bookinglist found with: {req} items", bookingDetailList.Count());
+            BookingHistoryDto dto = new();
 
-            BookingDetailDto bookingDetailDto = null;
-            BookingHistoryDto bookingHistoryDto = new()
+            MapToBookingHistoryDto(bookingDetailList, dto);
+
+            return dto;
+        }
+
+        private static void MapToBookingHistoryDto(IEnumerable<BookingDetail> bookingDetailList, BookingHistoryDto dto)
+        {
+            foreach (var bd in bookingDetailList)
             {
-                BookingDetails = new List<BookingDetailDto>(),
-                Bookings = bookingList.Select(x => new BookingDto
-                {
-                    BookingDate = x.BookingDate,
-                    Id = x.Id,
-                    BookingNo = x.BookingNo,
-                    BookingStatus = x.BookingStatus,
-                    CheckIn = x.CheckIn,
-                    CheckOut = x.CheckOut,
-                    FullName = x.FullName,
-                    PhoneNo = x.PhoneNo,
-                    UserID = x.UserId
-                }).ToList()
-            };
-            foreach (var item in bookingList)
-            {
-                var bookingDetail = await repository.BookingDetails.GetDetailsByBookingId(item.Id);
-                bookingDetailDto = new BookingDetailDto()
+                dto.BookingDetails.Add(new BookingDetailOnlyBookingsDto
                 {
                     Booking = new BookingDto
                     {
-                        BookingDate = bookingDetail.Booking.BookingDate,
-                        Id = bookingDetail.Booking.Id,
-                        BookingNo = bookingDetail.Booking.BookingNo,
-                        BookingStatus = bookingDetail.Booking.BookingStatus,
-                        CheckIn = bookingDetail.Booking.CheckIn,
-                        CheckOut = bookingDetail.Booking.CheckOut,
-                        FullName = bookingDetail.Booking.FullName,
-                        PhoneNo = bookingDetail.Booking.PhoneNo,
-                        UserID = bookingDetail.Booking.UserId
+                        BookingDate = bd.Booking.BookingDate,
+                        BookingNo = bd.Booking.BookingNo,
+                        BookingStatus = bd.Booking.BookingStatus,
+                        CheckIn = bd.Booking.CheckIn,
+                        CheckOut = bd.Booking.CheckOut,
+                        FullName = bd.Booking.FullName,
+                        Id = bd.Booking.Id,
+                        PhoneNo = bd.Booking.PhoneNo,
+                        UserID = bd.Booking.UserId
                     },
-                    BookingId = bookingDetail.BookingId,
-                    Pax = bookingDetail.Pax,
-                    RestaurantSchedule = new RestaurantScheduleDto
-                    {
-                        AvailableSeat = bookingDetail.RestaurantSchedule.AvailableSeat,
-                        Capacity = bookingDetail.RestaurantSchedule.Capacity,
-                        EndTime = bookingDetail.RestaurantSchedule.EndTime,
-                        RestaurantId = bookingDetail.RestaurantSchedule.RestaurantId,
-                        ScheduleDate = bookingDetail.RestaurantSchedule.ScheduleDate,
-                        Id = bookingDetail.RestaurantSchedule.Id,
-                        StartTime = bookingDetail.RestaurantSchedule.StartTime,
-                        Status = bookingDetail.RestaurantSchedule.Status
-                    },
-                    ScheduleId = bookingDetail.RestaurantScheduleId,
-                };
-                bookingHistoryDto.BookingDetails.Add(bookingDetailDto);
+                    BookingId = bd.BookingId,
+                    Pax = bd.Pax,
+                });
             }
-            logger.Info("bookinghistory created : {@req} ", bookingHistoryDto);
-
-            return bookingHistoryDto;
         }
     }
 }
