@@ -15,8 +15,8 @@
                             <tr>
                                 <th scope="col">Id</th>
                                 <th scope="col">Schedule Date</th>
-                                <th scope="col">Start Time</th>
-                                <th scope="col">End Time</th>
+                                <th scope="col">Period</th>
+                                <th scope="col">Capacity</th>
                                 <th scope="col">Options</th>
                             </tr>
                         </thead>
@@ -26,8 +26,8 @@
                                 <tr>
                                     <td>@schedule.Id</td>
                                     <td>@schedule.ScheduleDate.ToShortDateString()</td>
-                                    <td>@schedule.StartTime.ToShortTimeString()</td>
-                                    <td>@schedule.EndTime.ToShortTimeString()</td>
+                                    <td>@schedule.StartTime.ToShortTimeString() - @schedule.EndTime.ToShortTimeString()</td>
+                                    <td>@schedule.AvailableSeat / @schedule.Capacity</td>
                                     <td>
                                         <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
                                         @if (accountService.Authorize("Booking_Create"))
@@ -48,18 +48,16 @@
                                     </td>
                                 </tr>
                             }
-                            @if (accountService.Authorize("Restaurant_Update"))
-                            {
-                                <tr>
-                                    <td colspan="5">
-                                        <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                                            Add Schedule
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
                         </tbody>
                     </table>
+                </div>
+                <div class="card-footer">
+                    @if (accountService.Authorize("Restaurant_Update"))
+                    {
+                        <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                            Add Schedule
+                        </a>
+                    }
                 </div>
             </div>
         }
@@ -74,8 +72,8 @@
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="col-9">Name</th>
-                                    <th scope="col" class="col-3">Options</th>
+                                    <th scope="col" class="col-7">Name</th>
+                                    <th scope="col" class="col-5">Options</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,11 +86,26 @@
                                                 class="btn btn-primary">
                                                 Details
                                             </a>
+                                            @if (accountService.Authorize("Restaurant_Delete"))
+                                            {
+                                                <button id="toDeleteMenuCardModal" type="button" class="modalbutton btn btn-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteMenuCardModal" data-id="@menuCard.Id">
+                                                    Remove
+                                                </button>
+                                            }
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
+                    </div>
+                    <div class="card-footer">
+                        @if (accountService.Authorize("Restaurant_Update"))
+                        {
+                            <a asp-action="AddMenuCard" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                Add Menu Card
+                            </a>
+                        }
                     </div>
                 </div>
             }
@@ -129,18 +142,16 @@
                                         </td>
                                     </tr>
                                 }
-                                @if (accountService.Authorize("Restaurant_Update"))
-                                {
-                                    <tr>
-                                        <td colspan="2">
-                                            <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
-                                                Add Employee
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
                             </tbody>
                         </table>
+                    </div>
+                    <div class="card-footer">
+                        @if (accountService.Authorize("Restaurant_Update"))
+                        {
+                            <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
+                                Add Employee
+                            </a>
+                        }
                     </div>
                 </div>
             }
@@ -167,6 +178,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteMenuCardModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Menu Card</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this menu card from this restaurant?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a id="deleteMenuCardButton" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="deleteScheduleModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -188,21 +218,29 @@
 
 <script>
     $(document).ready(function(){
-       $(document).on("click","#toDeleteEmployeeModal",OpenModalDeleteEmployee);
        $(document).on("click","#toDeleteScheduleModal",OpenModalDeleteSchedule);
+       $(document).on("click","#toDeleteMenuCardModal",OpenModalDeleteMenuCard);
+       $(document).on("click","#toDeleteEmployeeModal",OpenModalDeleteEmployee);
     });
-
-    function OpenModalDeleteEmployee(){
-       var restaurantId = @Model.Id;
-       var itemId = $(this).data("id");
-       $('#deleteEmployeeButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveEmployee/" + itemId);
-       $("#deleteEmployeeModal").modal();
-    }
 
     function OpenModalDeleteSchedule(){
        var restaurantId = @Model.Id;
        var itemId = $(this).data("id");
        $('#deleteScheduleButton').attr('href', "/Schedule/Delete/" + restaurantId + "/" + itemId);
        $("#deleteScheduleModal").modal();
+    }
+
+    function OpenModalDeleteMenuCard(){
+       var restaurantId = @Model.Id;
+       var itemId = $(this).data("id");
+       $('#deleteMenuCardButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveMenuCard/" + itemId);
+       $("#deleteMenuCardModal").modal();
+    }
+
+    function OpenModalDeleteEmployee(){
+       var restaurantId = @Model.Id;
+       var itemId = $(this).data("id");
+       $('#deleteEmployeeButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveEmployee/" + itemId);
+       $("#deleteEmployeeModal").modal();
     }
 </script>

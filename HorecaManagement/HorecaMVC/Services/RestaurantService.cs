@@ -140,5 +140,33 @@ namespace Horeca.MVC.Services
             }
             return response;
         }
+
+        public async Task<HttpResponseMessage> AddRestaurantMenuCard(int restaurantId, int menuCardId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/" +
+                $"{ClassConstants.MenuCard}/{menuCardId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> RemoveRestaurantMenuCard(int restaurantId, int menuCardId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/" +
+                $"{ClassConstants.MenuCard}/{menuCardId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return response;
+        }
     }
 }
