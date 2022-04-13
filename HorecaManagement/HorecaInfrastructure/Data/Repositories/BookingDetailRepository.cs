@@ -17,7 +17,7 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task CreateBookingDetail(BookingDetail bookingDetail)
         {
-            var schedule = context.Schedules.Find(bookingDetail.RestaurantScheduleId);
+            var schedule = context.Schedules.Find(bookingDetail.ScheduleId);
 
             using var transaction = context.Database.BeginTransaction();
             try
@@ -50,7 +50,7 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task<BookingDetail> GetDetailsByBookingId(int bookingId)
         {
-            return await context.BookingDetails.Include(b => b.RestaurantSchedule)
+            return await context.BookingDetails.Include(b => b.Schedule)
                                            .ThenInclude(b => b.Restaurant)
                                            .Include(x => x.Booking)
                                            .FirstOrDefaultAsync(b => b.BookingId.Equals(bookingId));
@@ -69,7 +69,7 @@ namespace Horeca.Infrastructure.Data.Repositories
             else
             {
                 return await context.BookingDetails
-                                               .Include(b => b.RestaurantSchedule)
+                                               .Include(b => b.Schedule)
                                                .Include(x => x.Booking)
                                                .ThenInclude(x => x.User)
                                                .Where(b => b.Booking.User.Id == userId && b.Booking.BookingStatus.Equals(status))
@@ -80,9 +80,9 @@ namespace Horeca.Infrastructure.Data.Repositories
         public async Task<IEnumerable<BookingDetail>> GetDetailsForRestaurantSchedule(int scheduleId)
         {
             return await context.BookingDetails
-                                                .Include(b => b.RestaurantSchedule)
+                                                .Include(b => b.Schedule)
                                                 .Include(x => x.Booking)
-                                                .Where(x => x.RestaurantScheduleId.Equals(scheduleId))
+                                                .Where(x => x.ScheduleId.Equals(scheduleId))
                                                 .ToListAsync();
         }
     }

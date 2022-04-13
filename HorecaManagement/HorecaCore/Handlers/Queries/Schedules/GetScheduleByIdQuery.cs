@@ -5,7 +5,7 @@ using Horeca.Shared.Dtos.Schedules;
 using MediatR;
 using NLog;
 
-namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
+namespace Horeca.Core.Handlers.Queries.Schedules
 {
     public class GetScheduleByIdQuery : IRequest<ScheduleByIdDto>
     {
@@ -33,7 +33,7 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
         {
             logger.Info("trying to return {object} with id: {id}", nameof(ScheduleByIdDto), request.Id);
 
-            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Id);
+            var restaurantSchedule = repository.Schedules.Get(request.Id);
             var restaurant = repository.Restaurants.Get(restaurantSchedule.RestaurantId);
             if (restaurantSchedule is null)
             {

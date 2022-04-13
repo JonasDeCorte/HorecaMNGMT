@@ -72,7 +72,7 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
                 });
             }
 
-            List<Schedule>? restaurantSchedules = await repository.RestaurantSchedules.GetRestaurantSchedules(restaurant.Id);
+            List<Schedule>? restaurantSchedules = await repository.Schedules.GetRestaurantSchedules(restaurant.Id);
             if (restaurantSchedules.Count != 0)
             {
                 dto.Schedules = restaurantSchedules.Select(x => new ScheduleDto()

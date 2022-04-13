@@ -267,8 +267,8 @@ namespace Horeca.Infrastructure.Data
                     BookingId = booking.Id,
                     Booking = booking,
                     Pax = i,
-                    RestaurantSchedule = restaurantSchedule,
-                    RestaurantScheduleId = restaurantSchedule.Id,
+                    Schedule = restaurantSchedule,
+                    ScheduleId = restaurantSchedule.Id,
                 };
                 context.BookingDetails.Add(bookingDetail);
             }
@@ -281,7 +281,7 @@ namespace Horeca.Infrastructure.Data
                 {
                     Pax = bookingDetail.Pax,
                     BookingDetailId = bookingDetail.Id,
-                    ScheduleId = bookingDetail.RestaurantScheduleId,
+                    ScheduleId = bookingDetail.ScheduleId,
                 };
                 context.Tables.Add(table);
             }
