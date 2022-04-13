@@ -28,7 +28,7 @@ namespace Horeca.Infrastructure.Data.Repositories
                 {
                     throw new EntityNotFoundException();
                 }
-                var restaurantSchedule = await context.RestaurantSchedules.SingleOrDefaultAsync(x => x.Id.Equals(table.RestaurantScheduleId));
+                var restaurantSchedule = await context.Schedules.SingleOrDefaultAsync(x => x.Id.Equals(table.ScheduleId));
 
                 if (restaurantSchedule == null)
                 {

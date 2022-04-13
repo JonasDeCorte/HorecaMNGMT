@@ -21,7 +21,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Index(int restaurantId)
         {
-            IEnumerable<RestaurantScheduleDto> restaurantSchedules = await scheduleService.GetRestaurantSchedules(restaurantId);
+            IEnumerable<ScheduleDto> restaurantSchedules = await scheduleService.GetRestaurantSchedules(restaurantId);
             if (restaurantSchedules == null)
             {
                 return View(nameof(NotFound));

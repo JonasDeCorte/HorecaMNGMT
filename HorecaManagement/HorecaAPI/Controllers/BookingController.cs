@@ -49,7 +49,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success retrieving  the bookings by schedule id .list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("RestaurantSchedule/{scheduleId}")]
+        [Route("Schedule/{scheduleId}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

@@ -17,21 +17,21 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task CreateBookingDetail(BookingDetail bookingDetail)
         {
-            var schedule = context.RestaurantSchedules.Find(bookingDetail.RestaurantScheduleId);
+            var schedule = context.Schedules.Find(bookingDetail.RestaurantScheduleId);
 
             using var transaction = context.Database.BeginTransaction();
             try
             {
                 // Update Schedule AvailableSeat Value
                 schedule.AvailableSeat -= bookingDetail.Pax;
-                context.RestaurantSchedules.Update(schedule);
+                context.Schedules.Update(schedule);
                 context.BookingDetails.Add(bookingDetail);
 
                 context.Tables.Add(new Table()
                 {
                     Pax = bookingDetail.Pax,
-                    RestaurantScheduleId = schedule.Id,
-                    RestaurantSchedule = schedule,
+                    ScheduleId = schedule.Id,
+                    Schedule = schedule,
                     BookingDetail = bookingDetail,
                     BookingDetailId = bookingDetail.Id,
                 });

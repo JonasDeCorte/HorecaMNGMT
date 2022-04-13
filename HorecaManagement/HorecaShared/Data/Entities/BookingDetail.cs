@@ -2,7 +2,7 @@
 {
     public class BookingDetail : BaseEntity
     {
-        private RestaurantSchedule? _restaurantSchedule;
+        private Schedule? _restaurantSchedule;
 
         private Booking? _booking;
 
@@ -17,7 +17,7 @@
 
         public int RestaurantScheduleId { get; set; }
 
-        public RestaurantSchedule RestaurantSchedule
+        public Schedule RestaurantSchedule
         {
             set => _restaurantSchedule = value;
             get => _restaurantSchedule

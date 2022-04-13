@@ -2,7 +2,6 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Bookings;
-using Horeca.Shared.Dtos.RestaurantSchedules;
 using MediatR;
 using NLog;
 
