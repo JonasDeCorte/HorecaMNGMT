@@ -59,8 +59,7 @@ namespace Horeca.Shared.Dtos.Bookings
 
     public class BookingHistoryDto
     {
-        public List<BookingDto> Bookings { get; set; }
-        public List<BookingDetailDto> BookingDetails { get; set; }
+        public List<BookingDetailOnlyBookingsDto> BookingDetails { get; set; } = new();
     }
 
     public class MakeBookingDto

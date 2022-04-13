@@ -3,11 +3,6 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Horeca.Shared.Utils;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Horeca.Infrastructure.Data.Repositories
 {
@@ -27,28 +22,15 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task<Booking> GetBookingByID(int bookingID)
         {
-            return await context.Bookings.Include(b => b.User).FirstOrDefaultAsync(b => b.Id == bookingID);
+            return await context.Bookings
+                                         .Include(b => b.User)
+                                         .FirstOrDefaultAsync(b => b.Id == bookingID);
         }
 
         public async Task<Booking> GetByNumber(string bookingNo)
         {
-            return await context.Bookings.Include(b => b.User).FirstOrDefaultAsync(b => b.BookingNo == bookingNo);
-        }
-
-        public async Task<IEnumerable<Booking>> GetByUserID(string userID, string status = "all")
-        {
-            if (status.Equals("all"))
-            {
-                return await context.Bookings.Where(b => b.UserId == userID)
-                                        .OrderByDescending(b => b.Id)
-                                        .ToListAsync();
-            }
-            else
-            {
-                return await context.Bookings.Where(b => b.UserId == userID && b.BookingStatus.Equals(status))
-                                        .OrderByDescending(b => b.Id)
-                                        .ToListAsync();
-            }
+            return await context.Bookings
+                                        .Include(b => b.User).FirstOrDefaultAsync(b => b.BookingNo == bookingNo);
         }
 
         public async Task<Booking> Add(Booking booking)

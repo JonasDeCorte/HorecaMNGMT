@@ -107,7 +107,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success retrieving booking history list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Member/{userID}/{status}")]
+        [Route("Member/{userID}/BookingStatus/{status}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingHistoryDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
