@@ -87,7 +87,7 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(RestaurantViewModel model)
+        public async Task<IActionResult> Edit(MutateRestaurantViewModel model)
         {
             if (ModelState.IsValid)
             {

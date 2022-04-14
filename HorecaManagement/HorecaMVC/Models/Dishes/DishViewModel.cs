@@ -11,6 +11,7 @@ namespace Horeca.MVC.Models.Dishes
         [Required]
         [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]
         public string Category { get; set; }
+        [Display(Name = "Dish Type")]
         [Required]
         [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]
         public string DishType { get; set; }

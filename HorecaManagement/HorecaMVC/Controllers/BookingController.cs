@@ -90,19 +90,6 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(string bookingNo)
-        {
-            var booking = await bookingService.GetBookingByNumber(bookingNo);
-
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Edit(CreateBookingViewModel model)
-        {
-            return View();
-        }
-
 
         [Route("/Booking/Delete/{scheduleId}/{page}")]
         public async Task<IActionResult> Delete(int scheduleId, string page)

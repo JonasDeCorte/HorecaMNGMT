@@ -19,18 +19,6 @@ namespace Horeca.MVC.Controllers
             this.bookingService = bookingService;
         }
 
-        public async Task<IActionResult> Index(int restaurantId)
-        {
-            IEnumerable<ScheduleDto> schedules = await scheduleService.GetSchedules(restaurantId);
-            if (schedules == null)
-            {
-                return View(nameof(NotFound));
-            }
-            ScheduleListViewModel model = ScheduleMapper.MapScheduleList(schedules);
-
-            return View(model);
-        }
-
         public async Task<ActionResult> Detail(int id)
         {
             var schedule = await scheduleService.GetScheduleById(id);
