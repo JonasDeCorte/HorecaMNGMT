@@ -33,7 +33,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
         public async Task<TableDto> Handle(AddTableForRestaurantScheduleCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to create {object} with request: {@Id}", nameof(Table), request);
-            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Model.RestaurantScheduleId);
+            var restaurantSchedule = repository.Schedules.Get(request.Model.ScheduleId);
 
             if (restaurantSchedule == null)
             {
@@ -44,8 +44,8 @@ namespace Horeca.Core.Handlers.Commands.Tables
 
             var table = new Table()
             {
-                RestaurantScheduleId = restaurantSchedule.Id,
-                RestaurantSchedule = restaurantSchedule,
+                ScheduleId = restaurantSchedule.Id,
+                Schedule = restaurantSchedule,
                 Pax = request.Model.Pax,
             };
             logger.Info("adding {@object} with id {id}", table, table.Id);
@@ -54,7 +54,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
 
             restaurantSchedule.AvailableSeat -= table.Pax;
             logger.Info("updating {object} with id {id}", restaurantSchedule, restaurantSchedule.Id);
-            repository.RestaurantSchedules.Update(restaurantSchedule);
+            repository.Schedules.Update(restaurantSchedule);
 
             await repository.CommitAsync();
 

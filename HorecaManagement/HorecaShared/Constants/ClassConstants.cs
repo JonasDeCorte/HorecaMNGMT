@@ -20,8 +20,16 @@
         public const string Schedule = "Schedule";
         public const string All = "All";
 
+        public const string Booking = "Booking";
+        public const string BookingStatus = "BookingStatus";
+        public const string BookingNo = "BookingNo";
+        public const string Details = "Details";
+        public const string Member = "Member";
+        public const string ListCount = "ListCount";
+
         public const string Account = "Account";
         public const string User = "User";
+        public const string Admin = "Admin";
         public const string Login = "login";
         public const string Register = "register";
         public const string RegisterAdmin = "register-admin";

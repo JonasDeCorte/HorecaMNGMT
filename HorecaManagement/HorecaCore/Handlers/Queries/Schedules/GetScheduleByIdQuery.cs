@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 using MediatR;
 using NLog;
 
-namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
+namespace Horeca.Core.Handlers.Queries.Schedules
 {
-    public class GetScheduleByIdQuery : IRequest<RestaurantScheduleByIdDto>
+    public class GetScheduleByIdQuery : IRequest<ScheduleByIdDto>
     {
         public GetScheduleByIdQuery(int id)
         {
@@ -17,7 +17,7 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
         public int Id { get; }
     }
 
-    public class GetScheduleByIdQueryHandler : IRequestHandler<GetScheduleByIdQuery, RestaurantScheduleByIdDto>
+    public class GetScheduleByIdQueryHandler : IRequestHandler<GetScheduleByIdQuery, ScheduleByIdDto>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IUnitOfWork repository;
@@ -29,11 +29,11 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
             this.mapper = mapper;
         }
 
-        public async Task<RestaurantScheduleByIdDto> Handle(GetScheduleByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ScheduleByIdDto> Handle(GetScheduleByIdQuery request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to return {object} with id: {id}", nameof(RestaurantScheduleByIdDto), request.Id);
+            logger.Info("trying to return {object} with id: {id}", nameof(ScheduleByIdDto), request.Id);
 
-            var restaurantSchedule = repository.RestaurantSchedules.Get(request.Id);
+            var restaurantSchedule = repository.Schedules.Get(request.Id);
             var restaurant = repository.Restaurants.Get(restaurantSchedule.RestaurantId);
             if (restaurantSchedule is null)
             {
@@ -46,7 +46,7 @@ namespace Horeca.Core.Handlers.Queries.RestaurantSchedules
             restaurantSchedule.Restaurant = restaurant;
             restaurantSchedule.RestaurantId = restaurant.Id;
 
-            return mapper.Map<RestaurantScheduleByIdDto>(restaurantSchedule);
+            return mapper.Map<ScheduleByIdDto>(restaurantSchedule);
         }
     }
 }

@@ -1,99 +1,109 @@
 ﻿@model Horeca.MVC.Models.Dishes.DishDetailViewModel
 
 <div class="d-flex flex-column text-center align-items-center">
-    <h1 class="display-4">@Model.Name</h1>
-    <table class="table" style="table-layout: fixed">
-        <thead>
-            <tr>
-                <th scope="col">Dish Type</th>
-                <th scope="col">Category</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td scope="row">@Model.DishType</td>
-                <td>@Model.Category</td>
-            <tr />
-        </tbody>
-    </table>
-    <table class="table">
-        <tbody>
-            <tr class="d-flex flex-column">
-                <th scope="col">Description</th>
-                <td scope="row">
-                    @Model.Description
-                </td>
-            </tr>
-            <tr class="d-flex flex-column">
-                <th scope="col" colspan="2">Ingredients</th>
-                <td scope="row">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Options</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in @Model.Ingredients)
-                                {
-                                    <tr>
-                                        <td scope="row">@item.Name</td>
-                                        <td>@item.BaseAmount</td>
-                                        <td>@item.Unit.Name</td>
-                                        <td>
-                                            @if (accountService.Authorize("Ingredient_Update"))
-                                            {
-                                                <a asp-action="EditIngredient" asp-route-dishId="@Model.DishId" asp-route-ingredientId="@item.IngredientId" 
-                                                    class="btn btn-primary">
-                                                    Edit
-                                                </a>
-                                            }
-                                            @if (accountService.Authorize("Ingredient_Delete"))
-                                            {
-                                                <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IngredientId">
-                                                    Delete
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                                @if (accountService.Authorize("Ingredient_Create"))
-                                {
-                                    <tr>
-                                        <td colspan="4">
-                                            <a asp-action="AddExistingIngredient" asp-route-id="@Model.DishId" type="button" class="btn btn-primary">
-                                                Add Existing Ingredient
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td scope="row">
-                    @if (accountService.Authorize("Dish_Update"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
-                    }
-                    @if (accountService.Authorize("Ingredient_Create"))
-                    {
-                        <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
-                    }
-                    <a asp-action="Index" class="btn btn-secondary">Go Back</a>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1 class="display-4">@Model.Name</h1>
+        </div>
+        <div class="table-responsive">
+            <table class="table" style="table-layout: fixed">
+                <thead>
+                    <tr>
+                        <th scope="col">Dish Type</th>
+                        <th scope="col">Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">@Model.DishType</td>
+                        <td>@Model.Category</td>
+                    <tr />
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr class="d-flex flex-column">
+                        <th scope="col">Description</th>
+                        <td scope="row">
+                            @Model.Description
+                        </td>
+                    </tr>
+                    <tr class="d-flex flex-column">
+                        <th scope="col" colspan="2">Ingredients</th>
+                        <td scope="row">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Unit</th>
+                                            <th scope="col">Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in @Model.Ingredients)
+                                        {
+                                            <tr>
+                                                <td scope="row">@item.Name</td>
+                                                <td>@item.BaseAmount</td>
+                                                <td>@item.Unit.Name</td>
+                                                <td>
+                                                    @if (accountService.Authorize(PermissionConstants.Ingredient_Update))
+                                                    {
+                                                        <a asp-action="EditIngredient" asp-route-dishId="@Model.DishId" asp-route-ingredientId="@item.IngredientId"
+                                                   class="btn btn-primary">
+                                                            Edit
+                                                        </a>
+                                                    }
+                                                    @if (accountService.Authorize(PermissionConstants.Ingredient_Delete))
+                                                    {
+                                                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IngredientId">
+                                                            Delete
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
+                                        {
+                                            <tr>
+                                                <td colspan="4">
+                                                    <a asp-action="AddExistingIngredient" asp-route-id="@Model.DishId" type="button" class="btn btn-primary">
+                                                        Add Existing Ingredient
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td scope="row">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="card-footer">
+            @if (accountService.Authorize(PermissionConstants.Dish_Update))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
+            }
+            @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
+            {
+                <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
+            }
+            <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"

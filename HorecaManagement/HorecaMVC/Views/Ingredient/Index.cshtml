@@ -4,7 +4,7 @@
     <div class="card mt-3">
         <div class="card-header">
             <h1>Ingredients</h1>
-            @if (accountService.Authorize("Ingredient_Create"))
+            @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
             {
                 <a asp-action="Create" class="btn btn-primary">New Ingredient</a>
             }
@@ -30,11 +30,11 @@
                             <td>@ingredient.Unit.Name</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize("Ingredient_Update"))
+                                @if (accountService.Authorize(PermissionConstants.Ingredient_Update))
                                 {
                                     <a asp-action="Edit" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Edit</a>
                                 }
-                                @if (accountService.Authorize("Ingredient_Delete"))
+                                @if (accountService.Authorize(PermissionConstants.Ingredient_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="@ingredient.IngredientId">

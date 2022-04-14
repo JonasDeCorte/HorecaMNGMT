@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Models.MenuCards;
 using Horeca.MVC.Models.Restaurants;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Restaurants;
@@ -10,11 +11,13 @@ namespace Horeca.MVC.Controllers
     {
         private readonly IRestaurantService restaurantService;
         private readonly IAccountService accountService;
+        private readonly IMenuCardService menuCardService;
 
-        public RestaurantController(IRestaurantService restaurantService, IAccountService accountService)
+        public RestaurantController(IRestaurantService restaurantService, IAccountService accountService, IMenuCardService menuCardService)
         {
             this.restaurantService = restaurantService;
             this.accountService = accountService;
+            this.menuCardService = menuCardService;
         }
 
         public async Task<IActionResult> Index(string id = "")
@@ -84,7 +87,7 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(RestaurantViewModel model)
+        public async Task<IActionResult> Edit(MutateRestaurantViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -137,6 +140,38 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> RemoveEmployee(int restaurantId, string employeeId)
         {
             var response = await restaurantService.RemoveRestaurantEmployee(employeeId, restaurantId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = restaurantId });
+        }
+
+        public async Task<IActionResult> AddMenuCard(int restaurantId)
+        {
+            var menuCards = await menuCardService.GetMenuCards();
+            var restaurant = await restaurantService.GetRestaurantById(restaurantId);
+            MutateRestaurantMenuCardViewModel model = RestaurantMapper.MapAddMenuCardModel(menuCards, restaurant);
+            model.RestaurantId = restaurantId;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMenuCard(MutateRestaurantMenuCardViewModel model)
+        {
+            var response = await restaurantService.AddRestaurantMenuCard(model.RestaurantId, model.MenuCardId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
+        }
+
+        [Route("/Restaurant/{restaurantId}/RemoveMenuCard/{menuCardId}")]
+        public async Task<IActionResult> RemoveMenuCard(int restaurantId, int menuCardId)
+        {
+            var response = await restaurantService.RemoveRestaurantMenuCard(menuCardId, restaurantId);
             if (response == null)
             {
                 return View("OperationFailed");

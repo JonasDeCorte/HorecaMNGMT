@@ -5,7 +5,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.MenuCards;
 using Horeca.Shared.Dtos.Restaurants;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 using MediatR;
 using NLog;
 
@@ -72,10 +72,10 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
                 });
             }
 
-            List<RestaurantSchedule>? restaurantSchedules = await repository.RestaurantSchedules.GetRestaurantSchedules(restaurant.Id);
+            List<Schedule>? restaurantSchedules = await repository.Schedules.GetRestaurantSchedules(restaurant.Id);
             if (restaurantSchedules.Count != 0)
             {
-                dto.RestaurantSchedules = restaurantSchedules.Select(x => new RestaurantScheduleDto()
+                dto.Schedules = restaurantSchedules.Select(x => new ScheduleDto()
                 {
                     Id = x.Id,
                     RestaurantId = restaurant.Id,

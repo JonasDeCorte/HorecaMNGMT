@@ -32,22 +32,23 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Booking), request);
 
-                var bookingFromDB = repository.Bookings.Get(request.Model.BookingId);
-
-                if (bookingFromDB == null)
+                var bookingDetailFromDb = await repository.BookingDetails.GetDetailsByBookingId(request.Model.BookingId);
+                if (bookingDetailFromDb == null)
                 {
                     logger.Error(EntityNotFoundException.Instance);
 
                     throw new EntityNotFoundException();
                 }
 
-                bookingFromDB = UpdateEntity(request, bookingFromDB);
-                bookingFromDB.BookingStatus = Constants.BookingStatus.PENDING;
+                bookingDetailFromDb.Booking = UpdateEntity(request, bookingDetailFromDb.Booking);
 
-                repository.Bookings.Update(bookingFromDB);
+                bookingDetailFromDb.Pax = request.Model.Pax != bookingDetailFromDb.Pax ? request.Model.Pax : bookingDetailFromDb.Pax;
+                bookingDetailFromDb.Booking.BookingStatus = Constants.BookingStatus.PENDING;
+                repository.Bookings.Update(bookingDetailFromDb.Booking);
+                repository.BookingDetails.Update(bookingDetailFromDb);
 
                 await repository.CommitAsync();
-                return bookingFromDB.Id;
+                return bookingDetailFromDb.Id;
             }
 
             private static Booking UpdateEntity(EditBookingCommand request, Booking bookingFromDB)
@@ -77,6 +78,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 {
                     bookingFromDB.UserId = request.Model.Booking.UserID;
                 }
+
                 return bookingFromDB;
             }
         }

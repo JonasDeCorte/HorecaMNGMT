@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 
 namespace HorecaCore.Validators
 {
-    public class CreateRestaurantScheduleDtoValidator : AbstractValidator<MutateRestaurantScheduleDto>
+    public class CreateRestaurantScheduleDtoValidator : AbstractValidator<MutateScheduleDto>
     {
         public CreateRestaurantScheduleDtoValidator()
         {

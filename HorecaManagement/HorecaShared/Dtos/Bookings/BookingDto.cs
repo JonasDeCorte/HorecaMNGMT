@@ -1,9 +1,4 @@
-﻿using Horeca.Shared.Dtos.RestaurantSchedules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Horeca.Shared.Dtos.Schedules;
 
 namespace Horeca.Shared.Dtos.Bookings
 {
@@ -37,27 +32,35 @@ namespace Horeca.Shared.Dtos.Bookings
 
     public class BookingDetailDto
     {
-        public int BookingID { get; set; }
+        public int BookingId { get; set; }
 
         public BookingDto Booking { get; set; }
 
-        public int ScheduleID { get; set; }
+        public int ScheduleId { get; set; }
 
-        public RestaurantScheduleDto RestaurantSchedule { get; set; }
+        public ScheduleDto Schedule { get; set; }
+
+        public int Pax { get; set; }
+    }
+
+    public class BookingDetailOnlyBookingsDto
+    {
+        public int BookingId { get; set; }
+
+        public BookingDto Booking { get; set; }
 
         public int Pax { get; set; }
     }
 
     public class BookingHistoryDto
     {
-        public List<BookingDto> Bookings { get; set; }
-        public List<BookingDetailDto> BookingDetails { get; set; }
+        public List<BookingDetailOnlyBookingsDto> BookingDetails { get; set; } = new();
     }
 
     public class MakeBookingDto
     {
         public BookingDtoInfo Booking { get; set; }
-        public int ScheduleID { get; set; }
+        public int ScheduleId { get; set; }
         public int Pax { get; set; }
     }
 
@@ -65,5 +68,7 @@ namespace Horeca.Shared.Dtos.Bookings
     {
         public BookingDtoInfo Booking { get; set; }
         public int BookingId { get; set; }
+
+        public int Pax { get; set; }
     }
 }

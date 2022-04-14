@@ -1,11 +1,12 @@
 ﻿using Horeca.Shared.AuthUtils;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
 
 namespace Horeca.Infrastructure.Data
 {
@@ -42,6 +43,7 @@ namespace Horeca.Infrastructure.Data
 
                 Dish dish = new()
                 {
+                    Price = decimal.One * i * Random.Shared.Next(i, 20),
                     Category = $"Category {i}",
                     Description = $"Description {i}",
                     Name = $"name {i}",
@@ -70,7 +72,10 @@ namespace Horeca.Infrastructure.Data
                 };
 
                 context.Menus.Add(menu);
-
+                foreach (var ds in menu.Dishes)
+                {
+                    menu.Price += ds.Price;
+                }
                 MenuCard card = new()
                 {
                     Name = $"name {i}",
@@ -101,6 +106,8 @@ namespace Horeca.Infrastructure.Data
             var tablePerms = listPermissions.Where(x => x.Name.StartsWith("Table_"));
             var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
             var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
+            var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
+            var appUserRead = listPermissions.Where(x => x.Name.Equals("ApplicationUser_Read"));
 
             #endregion permissions
 
@@ -143,6 +150,8 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(menuPerms);
             listListPerms.Add(menuCardPerms);
             listListPerms.Add(tablePerms);
+            listListPerms.Add(OrderPerms);
+            listListPerms.Add(appUserRead);
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -167,6 +176,9 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(bookingPerms);
             listListPerms.Add(bookingDetailPerms);
             listListPerms.Add(restaurantSchedulePerms);
+            listListPerms.Add(OrderPerms);
+            listListPerms.Add(appUserRead);
+
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
 
@@ -189,12 +201,15 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(restaurantSchedulePerms);
             listListPerms.Add(permissionPerms);
             listListPerms.Add(ApplicationUserPerms);
+            listListPerms.Add(OrderPerms);
+            listListPerms.Add(appUserRead);
+
             AddApplicationUserPermissions(context, restaurantBeheerder, listListPerms);
             listListPerms.Clear();
 
             #endregion ApplicationUser restaurantBeheerder
 
-            #region Add Restaurants, Bookings, Tables
+            #region Add Restaurants, Bookings, Tables, Orders
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -221,9 +236,9 @@ namespace Horeca.Infrastructure.Data
                 context.Restaurants.Add(restaurant);
 
                 await context.SaveChangesAsync();
-
+                context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
                 DateTime newSchedule = DateTime.Today.AddDays(1);
-                RestaurantSchedule restaurantSchedule = new()
+                Schedule Schedule = new()
                 {
                     RestaurantId = restaurant.Id,
                     ScheduleDate = newSchedule,
@@ -233,7 +248,7 @@ namespace Horeca.Infrastructure.Data
                     AvailableSeat = 20,
                     Status = i % 2 == 0 ? Constants.ScheduleStatus.Available : Constants.ScheduleStatus.Expired,
                 };
-                context.RestaurantSchedules.Add(restaurantSchedule);
+                context.Schedules.Add(Schedule);
 
                 Booking booking = new()
                 {
@@ -253,11 +268,13 @@ namespace Horeca.Infrastructure.Data
                     BookingId = booking.Id,
                     Booking = booking,
                     Pax = i,
-                    RestaurantSchedule = restaurantSchedule,
-                    RestaurantScheduleId = restaurantSchedule.Id,
+                    Schedule = Schedule,
+                    ScheduleId = Schedule.Id,
                 };
                 context.BookingDetails.Add(bookingDetail);
             }
+            await context.SaveChangesAsync();
+
             var bookingDetails = context.BookingDetails.ToList();
             foreach (var bookingDetail in bookingDetails)
             {
@@ -265,12 +282,37 @@ namespace Horeca.Infrastructure.Data
                 {
                     Pax = bookingDetail.Pax,
                     BookingDetailId = bookingDetail.Id,
-                    RestaurantScheduleId = bookingDetail.RestaurantScheduleId,
+                    ScheduleId = bookingDetail.ScheduleId,
                 };
                 context.Tables.Add(table);
             }
+            await context.SaveChangesAsync();
+            List<Table> list = context.Tables.AsNoTracking().ToList();
+            foreach (var table in list)
+            {
+                var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
+                Order order = new()
+                {
+                    TableId = table.Id,
+                    OrderState = table.Id % 2 == 0 ? Constants.OrderState.Begin : Constants.OrderState.Prepare,
+                    OrderLines = new List<OrderLine>()
+                    {
+                        new OrderLine()
+                        {
+                        DishId = dish.Id,
+                        Price = dish.Price,
+                        Quantity = table.Id+1,
+                        DishState = table.Id % 2 == 0 ? Constants.DishState.Waiting : Constants.DishState.Preparing,
+                        },
+                     }
+                };
+                var resto = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == table.Id);
+                resto.Orders.Add(order);
+                context.Restaurants.Update(resto);
+                await context.SaveChangesAsync();
+            }
 
-            #endregion Add Restaurants, Bookings, Tables
+            #endregion Add Restaurants, Bookings, Tables, Orders
 
             await context.SaveChangesAsync();
         }
@@ -294,201 +336,217 @@ namespace Horeca.Infrastructure.Data
             {
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_NewUser"
+                    Name = PermissionConstants.NewUser
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Read}"
+                    Name = PermissionConstants.Unit_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Create}"
+                    Name = PermissionConstants.Unit_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Update}"
+                    Name = PermissionConstants.Unit_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Unit)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Unit_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Read}"
+                    Name = PermissionConstants.Ingredient_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Create}"
+                    Name = PermissionConstants.Ingredient_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Update}"
+                    Name = PermissionConstants.Ingredient_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Ingredient)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Ingredient_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Read}"
+                    Name = PermissionConstants.Dish_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Create}"
+                    Name = PermissionConstants.Dish_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Update}"
+                    Name = PermissionConstants.Dish_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Dish)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Dish_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Read}"
+                    Name = PermissionConstants.Menu_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Create}"
+                    Name = PermissionConstants.Menu_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Update}"
+                    Name = PermissionConstants.Menu_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Menu)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Menu_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Read}"
+                    Name = PermissionConstants.MenuCard_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Create}"
+                    Name = PermissionConstants.MenuCard_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Update}"
+                    Name = PermissionConstants.MenuCard_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(MenuCard)}_{Permissions.Delete}"
+                    Name = PermissionConstants.MenuCard_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Read}"
+                    Name = PermissionConstants.Restaurant_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Create}"
+                    Name = PermissionConstants.Restaurant_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Update}"
+                    Name = PermissionConstants.Restaurant_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Restaurant)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Restaurant_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Read}"
+                    Name = PermissionConstants.Schedule_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Create}"
+                    Name = PermissionConstants.Schedule_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Update}"
+                    Name = PermissionConstants.Schedule_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(RestaurantSchedule)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Schedule_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Read}"
+                    Name = PermissionConstants.Booking_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Create}"
+                    Name = PermissionConstants.Booking_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Update}"
+                    Name = PermissionConstants.Booking_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Booking)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Booking_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Read}"
+                    Name = PermissionConstants.BookingDetail_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Create}"
+                    Name = PermissionConstants.BookingDetail_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Update}"
+                    Name = PermissionConstants.BookingDetail_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(BookingDetail)}_{Permissions.Delete}"
+                    Name = PermissionConstants.BookingDetail_Delete
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Read}"
+                    Name = PermissionConstants.Table_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Create}"
+                    Name = PermissionConstants.Table_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Update}"
+                    Name = PermissionConstants.Table_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Table)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Table_Delete
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Order_Read
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Order_Create
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Order_Update
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Order_Delete
                 },
 
                 new Permission()
                 {
-                    Name = $"{nameof(Permission)}_{Permissions.Read}"
+                    Name = PermissionConstants.Permission_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Permission)}_{Permissions.Create}"
+                    Name = PermissionConstants.Permission_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Permission)}_{Permissions.Update}"
+                    Name = PermissionConstants.Permission_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(Permission)}_{Permissions.Delete}"
+                    Name = PermissionConstants.Permission_Delete
                 },
 
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Read}"
+                    Name = PermissionConstants.ApplicationUser_Read
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Create}"
+                    Name = PermissionConstants.ApplicationUser_Create
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Update}"
+                    Name = PermissionConstants.ApplicationUser_Update
                 },
                 new Permission()
                 {
-                    Name = $"{nameof(ApplicationUser)}_{Permissions.Delete}"
+                    Name = PermissionConstants.ApplicationUser_Delete
                 }
             };
 

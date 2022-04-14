@@ -2,7 +2,7 @@
 
 namespace Horeca.Shared.Data.Entities
 {
-    public class RestaurantSchedule : BaseEntity
+    public class Schedule : BaseEntity
     {
         public int RestaurantId { get; set; }
 

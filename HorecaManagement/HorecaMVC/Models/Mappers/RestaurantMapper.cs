@@ -1,5 +1,7 @@
-﻿using Horeca.MVC.Models.Restaurants;
+﻿using Horeca.MVC.Models.MenuCards;
+using Horeca.MVC.Models.Restaurants;
 using Horeca.Shared.Dtos.Accounts;
+using Horeca.Shared.Dtos.MenuCards;
 using Horeca.Shared.Dtos.Restaurants;
 
 namespace Horeca.MVC.Models.Mappers
@@ -33,7 +35,7 @@ namespace Horeca.MVC.Models.Mappers
                 Id = restaurantDto.Id,
                 Name = restaurantDto.Name,
             };
-            restaurantDetailModel.RestaurantScheduleListViewModel = ScheduleMapper.MapRestaurantScheduleList(restaurantDto.RestaurantSchedules);
+            restaurantDetailModel.ScheduleList = ScheduleMapper.MapScheduleList(restaurantDto.Schedules);
             restaurantDetailModel.Employees = AccountMapper.MapUserModelList(restaurantDto.Employees);
             restaurantDetailModel.MenuCards = MenuCardMapper.MapMenuCardModelList(restaurantDto.MenuCards);
             return restaurantDetailModel;
@@ -57,6 +59,21 @@ namespace Horeca.MVC.Models.Mappers
                 {
                     var employeeModel = AccountMapper.MapUserModel(employee);
                     model.Employees.Add(employeeModel);
+                }
+            }
+            return model;
+        }
+
+        public static MutateRestaurantMenuCardViewModel MapAddMenuCardModel(IEnumerable<MenuCardDto> menuCards, 
+            DetailRestaurantDto restaurant)
+        {
+            MutateRestaurantMenuCardViewModel model = new MutateRestaurantMenuCardViewModel();
+            foreach (var menuCard in menuCards)
+            {
+                if (!restaurant.MenuCards.Any(x => x.Id == menuCard.Id))
+                {
+                    var menuCardModel = MenuCardMapper.MapMenuCardModel(menuCard);
+                    model.MenuCards.Add(menuCardModel);
                 }
             }
             return model;

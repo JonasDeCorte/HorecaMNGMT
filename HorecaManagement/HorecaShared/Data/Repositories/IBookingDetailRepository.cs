@@ -4,7 +4,9 @@ namespace Horeca.Shared.Data.Repositories
 {
     public interface IBookingDetailRepository : IRepository<BookingDetail>
     {
-        public Task<BookingDetail> GetDetailsByID(int bookingID);
+        public Task<BookingDetail> GetDetailsByBookingId(int bookingId);
+
+        public Task<IEnumerable<BookingDetail>> GetDetailsByUserId(string userId, string status);
 
         public Task<IEnumerable<BookingDetail>> GetDetailsForRestaurantSchedule(int scheduleId);
 

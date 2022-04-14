@@ -9,7 +9,7 @@ using Horeca.Shared.Dtos.MenuCards;
 using Horeca.Shared.Dtos.Menus;
 using Horeca.Shared.Dtos.Orders;
 using Horeca.Shared.Dtos.Restaurants;
-using Horeca.Shared.Dtos.RestaurantSchedules;
+using Horeca.Shared.Dtos.Schedules;
 using Horeca.Shared.Dtos.Tables;
 using Horeca.Shared.Dtos.Units;
 
@@ -31,8 +31,8 @@ namespace Horeca.Core.Mapper
             CreateMap<Permission, PermissionDto>();
             CreateMap<ApplicationUser, BaseUserDto>();
             CreateMap<Booking, BookingDto>();
-            CreateMap<RestaurantSchedule, RestaurantScheduleDto>();
-            CreateMap<RestaurantSchedule, RestaurantScheduleByIdDto>();
+            CreateMap<Schedule, ScheduleDto>();
+            CreateMap<Schedule, ScheduleByIdDto>();
             CreateMap<Restaurant, DetailRestaurantDto>();
             CreateMap<Table, TableDto>();
             CreateMap<Order, GetOrderLinesByTableIdDto>()
@@ -44,6 +44,9 @@ namespace Horeca.Core.Mapper
 
             CreateMap<OrderLine, OrderLineDto>()
                 .ForMember(dest => dest.DishState, act => act.MapFrom(src => src.DishState));
+            CreateMap<BookingDetail, BookingDetailDto>()
+                .ForMember(dest => dest.ScheduleId, act => act.MapFrom(src => src.ScheduleId));
+            CreateMap<BookingDetail, BookingDetailOnlyBookingsDto>();
         }
     }
 }

@@ -4,14 +4,14 @@
     <div class="card mt-3">
         <div class="card-header">
             <h1>Menu Cards</h1>
-            @if (accountService.Authorize("MenuCard_Create"))
+            @if (accountService.Authorize(PermissionConstants.MenuCard_Create))
             {
                 <a asp-action="Create" class="btn btn-primary">New Menu Card</a>
             }
         </div>
         <div class="table-responsive">
             <table class="table table-hover mb-0">
-                <thead class="card-header">
+                <thead>
                     <tr>
                         <th scope="col" class="col-9">Name</th>
                         <th scope="col" class="col-3">Options</th>
@@ -24,11 +24,11 @@
                             <td>@menuCard.Name</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@menuCard.Id" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize("MenuCard_Update"))
+                                @if (accountService.Authorize(PermissionConstants.MenuCard_Update))
                                 {
                                     <a asp-action="Edit" asp-route-id="@menuCard.Id" class="btn btn-primary">Edit</a>
                                 }
-                                @if (accountService.Authorize("MenuCard_Delete"))
+                                @if (accountService.Authorize(PermissionConstants.MenuCard_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="@menuCard.Id">

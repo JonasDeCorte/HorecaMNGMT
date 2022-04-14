@@ -17,21 +17,21 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task CreateBookingDetail(BookingDetail bookingDetail)
         {
-            var schedule = context.RestaurantSchedules.Find(bookingDetail.RestaurantScheduleId);
+            var schedule = context.Schedules.Find(bookingDetail.ScheduleId);
 
             using var transaction = context.Database.BeginTransaction();
             try
             {
                 // Update Schedule AvailableSeat Value
                 schedule.AvailableSeat -= bookingDetail.Pax;
-                context.RestaurantSchedules.Update(schedule);
+                context.Schedules.Update(schedule);
                 context.BookingDetails.Add(bookingDetail);
 
                 context.Tables.Add(new Table()
                 {
                     Pax = bookingDetail.Pax,
-                    RestaurantScheduleId = schedule.Id,
-                    RestaurantSchedule = schedule,
+                    ScheduleId = schedule.Id,
+                    Schedule = schedule,
                     BookingDetail = bookingDetail,
                     BookingDetailId = bookingDetail.Id,
                 });
@@ -48,20 +48,42 @@ namespace Horeca.Infrastructure.Data.Repositories
             }
         }
 
-        public async Task<BookingDetail> GetDetailsByID(int bookingID)
+        public async Task<BookingDetail> GetDetailsByBookingId(int bookingId)
         {
-            return await context.BookingDetails.Include(b => b.RestaurantSchedule)
+            return await context.BookingDetails.Include(b => b.Schedule)
                                            .ThenInclude(b => b.Restaurant)
                                            .Include(x => x.Booking)
-                                           .FirstOrDefaultAsync(b => b.BookingId == bookingID);
+                                           .FirstOrDefaultAsync(b => b.BookingId.Equals(bookingId));
+        }
+
+        public async Task<IEnumerable<BookingDetail>> GetDetailsByUserId(string userId, string status = "all")
+        {
+            if (status.Equals("all"))
+            {
+                return await context.BookingDetails
+                                               .Include(x => x.Booking)
+                                               .ThenInclude(x => x.User)
+                                               .Where(b => b.Booking.User.Id == userId)
+                                               .ToListAsync();
+            }
+            else
+            {
+                return await context.BookingDetails
+                                               .Include(b => b.Schedule)
+                                               .Include(x => x.Booking)
+                                               .ThenInclude(x => x.User)
+                                               .Where(b => b.Booking.User.Id == userId && b.Booking.BookingStatus.Equals(status))
+                                               .ToListAsync();
+            }
         }
 
         public async Task<IEnumerable<BookingDetail>> GetDetailsForRestaurantSchedule(int scheduleId)
         {
-            return await context.BookingDetails.Include(b => b.RestaurantSchedule)
-                .ThenInclude(x => x.Restaurant)
-                .Include(x => x.Booking)
-                .Where(x => x.RestaurantScheduleId.Equals(scheduleId)).ToListAsync();
+            return await context.BookingDetails
+                                                .Include(b => b.Schedule)
+                                                .Include(x => x.Booking)
+                                                .Where(x => x.ScheduleId.Equals(scheduleId))
+                                                .ToListAsync();
         }
     }
 }

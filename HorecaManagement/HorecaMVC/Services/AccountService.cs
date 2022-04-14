@@ -46,10 +46,8 @@ namespace Horeca.MVC.Services
             UserDto currentUser = await GetUserByName(user.Username);
             if (currentUser != null)
             {
-                //httpContextAccessor.HttpContext.Response.Cookies.Delete("CurrentUser");
                 httpContextAccessor.HttpContext.Session.Remove("CurrentUser");
             }
-            //httpContextAccessor.HttpContext.Response.Cookies.Append("CurrentUser", JsonConvert.SerializeObject(currentUser));
             httpContextAccessor.HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(currentUser));
 
             return response;
@@ -184,7 +182,6 @@ namespace Horeca.MVC.Services
 
         public UserDto GetCurrentUser()
         {
-            //var userCookie = httpContextAccessor.HttpContext.Request.Cookies["CurrentUser"];
             var userCookie = httpContextAccessor.HttpContext.Session.GetString("CurrentUser");
             if (string.IsNullOrEmpty(userCookie))
             {

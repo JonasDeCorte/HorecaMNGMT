@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="col">
-                @if (accountService.Authorize("Order_Create"))
+                @if (accountService.Authorize(PermissionConstants.Order_Create))
                 {
                     <a asp-action="Create" class="btn btn-primary float-end">New Order</a>
                 }
@@ -32,11 +32,11 @@
                         <td>Table @i</td>
                         <td>
                             <a asp-action="Detail" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize("Order_Update"))
+                            @if (accountService.Authorize(PermissionConstants.Order_Update))
                             {
                                 <a asp-action="Edit" class="btn btn-primary">Edit</a>
                             }
-                            @if (accountService.Authorize("Order_Delete"))
+                            @if (accountService.Authorize(PermissionConstants.Order_Delete))
                             {
                                 <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal" data-id="0">

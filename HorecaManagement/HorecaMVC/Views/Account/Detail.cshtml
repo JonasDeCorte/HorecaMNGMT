@@ -3,7 +3,7 @@
 <div class="text-center">
     <div class="container">
         <div class="d-flex justify-content-center">
-            @if (accountService.Authorize("Permission_Create"))
+            @if (accountService.Authorize(PermissionConstants.Permission_Create))
             {
                 <div class="m-2">
                     <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
@@ -11,7 +11,7 @@
                     </a>
                 </div>
             }
-            @if (accountService.Authorize("Permission_Delete"))
+            @if (accountService.Authorize(PermissionConstants.Permission_Delete))
             {
                 <div class="m-2">
                     <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
@@ -20,7 +20,7 @@
                 </div>
             }
             <div class="m-2">
-                <a asp-action="Index" class="btn btn-secondary">Go Back</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </div>
     </div>
