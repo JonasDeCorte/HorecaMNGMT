@@ -113,8 +113,6 @@ namespace Horeca.MVC.Controllers
         {
             var model = new DishViewModel();
 
-            TempData["Id"] = id;
-
             return View(model);
         }
 

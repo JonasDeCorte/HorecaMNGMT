@@ -8,15 +8,15 @@
             <ul class="nav nav-tabs nav-justified">
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
-                        asp-route-state="@OrderState.Prepare">
-                        Prepare
-                        </a>
+                        asp-route-state="@OrderState.Begin">
+                        Begin
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
-                        asp-route-state="@OrderState.Begin">
-                        Ready
-                    </a>
+                        asp-route-state="@OrderState.Prepare">
+                        Prepare
+                        </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"

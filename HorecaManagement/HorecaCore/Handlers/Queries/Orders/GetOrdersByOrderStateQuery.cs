@@ -47,7 +47,7 @@ namespace Horeca.Core.Handlers.Queries.Orders
             if (restaurant.Orders.Count == 0)
             {
                 logger.Error("no orders have been found with this status");
-                throw new ArgumentException("no orders have been found");
+                return new List<OrderDtoDetail>();
             }
 
             logger.Info("returning {@object} with state: {state }", restaurant.Orders, request.OrderState);

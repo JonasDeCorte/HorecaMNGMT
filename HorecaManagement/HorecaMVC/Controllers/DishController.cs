@@ -102,8 +102,6 @@ namespace Horeca.MVC.Controllers
         {
             IngredientViewModel model = new();
 
-            TempData["Id"] = id;
-
             return View(model);
         }
 

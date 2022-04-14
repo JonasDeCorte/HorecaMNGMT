@@ -60,14 +60,37 @@ namespace Horeca.MVC.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+        [Route("/Order/{restaurantId}/{orderId}/Prepare/{orderLineId}")]
+        public async Task<IActionResult> PrepareOrderLine(int restaurantId, int orderId, int orderLineId)
         {
-            return View();
+            var response = await orderService.PrepareOrderLine(restaurantId, orderId, orderLineId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return View(nameof(Index));
         }
 
-        public IActionResult Delete()
+        [Route("/Order/{restaurantId}/{orderId}/Ready/{orderLineId}")]
+        public async Task<IActionResult> ReadyOrderLine(int restaurantId, int orderId, int orderLineId)
         {
-            return View();
+            var response = await orderService.ReadyOrderLine(restaurantId, orderId, orderLineId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return View(nameof(Index));
+        }
+
+        [Route("/Order/{restaurantId}/{orderId}/Deliver")]
+        public async Task<IActionResult> DeliverOrder(int restaurantId, int orderId)
+        {
+            var response = await orderService.DeliverOrder(restaurantId, orderId);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return View(nameof(Index));
         }
     }
 }

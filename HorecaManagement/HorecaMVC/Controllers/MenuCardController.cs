@@ -91,8 +91,6 @@ namespace Horeca.MVC.Controllers
         {
             var model = new DishViewModel();
 
-            TempData["Id"] = id;
-
             return View(model);
         }
 
@@ -120,8 +118,6 @@ namespace Horeca.MVC.Controllers
         public IActionResult CreateMenu(int id)
         {
             var model = new MenuViewModel();
-
-            TempData["Id"] = id;
 
             return View(model);
         }
