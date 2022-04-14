@@ -35,7 +35,7 @@ namespace HorecaAPI.Controllers
         ///
         [PermissionAuthorize(nameof(Order), Permissions.Create)]
         [HttpPost]
-        [Route("Table/{TableId}/Order/")]
+        [Route("Table/{TableId}")]
         [ProducesResponseType(typeof(MutateOrderDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromRoute] int TableId, [FromBody] MutateOrderDto model)
