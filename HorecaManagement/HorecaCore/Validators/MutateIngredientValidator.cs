@@ -3,9 +3,9 @@ using Horeca.Core.Handlers.Commands.Ingredients;
 
 namespace Horeca.Core.Validators
 {
-    public class MutateIngredientDtoValidator : AbstractValidator<CreateIngredientCommand>
+    public class MutateIngredientValidator : AbstractValidator<CreateIngredientCommand>
     {
-        public MutateIngredientDtoValidator()
+        public MutateIngredientValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().WithMessage("Name is required");
             RuleFor(x => x.Model.IngredientType).NotEmpty().WithMessage("IngredientType is required");

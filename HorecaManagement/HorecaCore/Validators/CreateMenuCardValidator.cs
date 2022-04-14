@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Horeca.Core.Handlers.Commands.Units;
+using Horeca.Core.Handlers.Commands.MenuCards;
 
 namespace Horeca.Core.Validators
 {
-    public class CreateUnitDtoValidator : AbstractValidator<CreateUnitCommand>
+    public class CreateMenuCardValidator : AbstractValidator<CreateMenuCardCommand>
     {
-        public CreateUnitDtoValidator()
+        public CreateMenuCardValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().WithMessage("Name is required");
         }

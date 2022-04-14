@@ -1,10 +1,9 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
-using Horeca.Shared.Data;
+﻿using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Schedules;
 using MediatR;
 using NLog;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Core.Handlers.Commands.Schedules
 {
@@ -46,7 +45,7 @@ namespace Horeca.Core.Handlers.Commands.Schedules
                     EndTime = request.Model.EndTime,
                     ScheduleDate = request.Model.ScheduleDate,
                     RestaurantId = request.Model.RestaurantId,
-                    Status = request.Model.Status,
+                    Status = ScheduleStatus.Available
                 };
                 repository.Schedules.Add(entity);
 
