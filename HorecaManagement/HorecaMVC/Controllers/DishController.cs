@@ -1,5 +1,4 @@
-﻿using Horeca.MVC.Controllers.Filters;
-using Horeca.MVC.Models.Dishes;
+﻿using Horeca.MVC.Models.Dishes;
 using Horeca.MVC.Models.Ingredients;
 using Horeca.MVC.Models.Mappers;
 using Horeca.MVC.Services.Interfaces;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class DishController : Controller
     {
         private readonly IDishService dishService;

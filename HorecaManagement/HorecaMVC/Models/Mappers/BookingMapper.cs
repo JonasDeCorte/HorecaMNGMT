@@ -65,11 +65,6 @@ namespace Horeca.MVC.Models.Mappers
             };
         }
 
-        public static BookingInfoViewModel MapBookingInfoModel(UserDto userDto, ScheduleByIdDto scheduleDto)
-        {
-            return new BookingInfoViewModel();
-        }
-
         public static BookingHistoryViewModel MapBookingHistoryModel(BookingHistoryDto bookingHistoryDto)
         {
             BookingHistoryViewModel bookingHistoryViewModel = new BookingHistoryViewModel();

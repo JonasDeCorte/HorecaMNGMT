@@ -69,12 +69,6 @@
                 </ul>
             </li>
         }
-        @if (accountService.Authorize(PermissionConstants.Order_Read))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
-            </li>
-        }
         @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
         {
             <li class="nav-item">

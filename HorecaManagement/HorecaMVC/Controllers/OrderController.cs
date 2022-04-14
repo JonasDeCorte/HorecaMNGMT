@@ -1,18 +1,32 @@
-﻿using Horeca.MVC.Controllers.Filters;
+﻿using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Models.Orders;
+using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Dtos.Orders;
 using Microsoft.AspNetCore.Mvc;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class OrderController : Controller
     {
-        public OrderController()
+        private readonly IOrderService orderService;
+
+        public OrderController(IOrderService orderService)
         {
+            this.orderService = orderService;
         }
 
-        public IActionResult Index()
+        [Route("/Order/{restaurantId}/{state}")]
+        public async Task<IActionResult> Index(int restaurantId, OrderState state = OrderState.Prepare)
         {
-            return View();
+            List<OrderDtoDetail> orders = await orderService.GetOrdersByState(restaurantId, state);
+            if (orders == null)
+            {
+                return View("NotFound");
+            }
+            OrderListViewModel model = OrderMapper.MapOrderListModel(orders, restaurantId);
+
+            return View(model);
         }
 
         public IActionResult Detail()

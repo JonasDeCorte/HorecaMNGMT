@@ -6,7 +6,7 @@ using Horeca.Shared.Dtos.Restaurants;
 
 namespace Horeca.MVC.Models.Mappers
 {
-    public class RestaurantMapper
+    public static class RestaurantMapper
     {
         public static RestaurantViewModel MapRestaurantModel(RestaurantDto restaurantDto)
         {
