@@ -18,10 +18,10 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public async Task<HttpResponseMessage> AddOrder(MutateOrderDto orderDto, int tableId)
+        public async Task<HttpResponseMessage> AddOrder(MutateOrderDto orderDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Order}/{ClassConstants.Table}/{tableId}/{ClassConstants.Order}");
+                $"{ClassConstants.Order}/{ClassConstants.Table}/{orderDto.TableId}/{ClassConstants.Order}");
             request.Content = new StringContent(JsonConvert.SerializeObject(orderDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);

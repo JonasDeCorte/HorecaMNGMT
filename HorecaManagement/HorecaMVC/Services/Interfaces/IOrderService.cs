@@ -5,7 +5,7 @@ namespace Horeca.MVC.Services.Interfaces
 {
     public interface IOrderService
     {
-        public Task<HttpResponseMessage> AddOrder(MutateOrderDto dto, int tableId);
+        public Task<HttpResponseMessage> AddOrder(MutateOrderDto dto);
         public Task<List<GetOrderLinesByTableIdDto>> GetOrderLinesByTableId(int tableId);
         public Task<List<OrderDtoDetail>> GetOrdersByState(int restaurantId, OrderState orderState);
         public Task<HttpResponseMessage> DeliverOrder(int restaurantId, int orderId);

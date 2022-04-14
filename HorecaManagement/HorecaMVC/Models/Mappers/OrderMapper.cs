@@ -1,4 +1,6 @@
-﻿using Horeca.MVC.Models.Orders;
+﻿using Horeca.MVC.Models.Dishes;
+using Horeca.MVC.Models.Orders;
+using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Orders;
 
 namespace Horeca.MVC.Models.Mappers
@@ -44,6 +46,30 @@ namespace Horeca.MVC.Models.Mappers
                 Quantity = orderLine.Quantity,
                 Price = orderLine.Price,
                 DishState = orderLine.DishState
+            };
+        }
+
+        public static MutateOrderDto MapCreateOrderDto(CreateOrderViewModel model)
+        {
+            MutateOrderDto dto = new MutateOrderDto()
+            {
+                Id = model.Id,
+                TableId = model.TableId
+            };
+            foreach (var dish in model.Dishes)
+            {
+                OrderDishDto orderDishDto = MapOrderDishDto(dish);
+                dto.Dishes.Add(orderDishDto);
+            }
+            return dto;
+        }
+
+        public static OrderDishDto MapOrderDishDto(OrderDishViewModel dish)
+        {
+            return new OrderDishDto()
+            {
+                Id = dish.Id,
+                Quantity = dish.Quantity
             };
         }
     }

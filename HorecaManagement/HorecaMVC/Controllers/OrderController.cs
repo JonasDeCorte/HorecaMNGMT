@@ -29,14 +29,35 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        public IActionResult Detail()
+        public async Task<IActionResult> Detail(int tableId)
         {
+            List<GetOrderLinesByTableIdDto> list = await orderService.GetOrderLinesByTableId(tableId);
+            if (list == null)
+            {
+                return View("NotFound");
+            }
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int tableId)
         {
-            return RedirectToAction(nameof(Detail), new { id = 0 });
+            CreateOrderViewModel model = new CreateOrderViewModel()
+            {
+                TableId = tableId
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateOrderViewModel model)
+        {
+            MutateOrderDto dto = OrderMapper.MapCreateOrderDto(model);
+            var response = await orderService.AddOrder(dto);
+            if (response == null)
+            {
+                return View("OperationFailed");
+            }
+            return View();
         }
 
         public IActionResult Edit()
