@@ -1,9 +1,6 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
-using Horeca.Shared.Data;
+﻿using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
-using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
 using NLog;
 
@@ -22,13 +19,14 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class CreateDishCommandHandler : IRequestHandler<AddIngredientDishCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private readonly IValidator<MutateIngredientDto> _validator;
+
+        //private readonly IValidator<MutateIngredientDto> _validator;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateIngredientDto> validator)
+        public CreateDishCommandHandler(IUnitOfWork repository/*IValidator<MutateIngredientDto> validator*/)
         {
             this.repository = repository;
-            _validator = validator;
+            //_validator = validator;
         }
 
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
@@ -38,17 +36,17 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             Ingredient entity = null;
             if (request.Model.Ingredient.Id == 0)
             {
-                var result = _validator.Validate(request.Model.Ingredient);
-                if (!result.IsValid)
-                {
-                    logger.Error("Invalid model with errors: ", result.Errors);
+                //var result = _validator.Validate(request.Model.Ingredient);
+                //if (!result.IsValid)
+                //{
+                //    logger.Error("Invalid model with errors: ", result.Errors);
 
-                    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                    throw new InvalidRequestBodyException
-                    {
-                        Errors = errors
-                    };
-                }
+                //    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
+                //    throw new InvalidRequestBodyException
+                //    {
+                //        Errors = errors
+                //    };
+                //}
 
                 Shared.Data.Entities.Unit unit = repository.Units.Get(request.Model.Ingredient.Unit.Id);
 
