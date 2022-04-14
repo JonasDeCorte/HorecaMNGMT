@@ -20,31 +20,17 @@ namespace Horeca.Core.Handlers.Commands.Dishes
         public class CreateDishCommandHandler : IRequestHandler<CreateDishCommand, int>
         {
             private readonly IUnitOfWork repository;
-            private readonly IValidator<MutateDishDto> validator;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public CreateDishCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
+            public CreateDishCommandHandler(IUnitOfWork repository)
             {
                 this.repository = repository;
-                this.validator = validator;
             }
 
             public async Task<int> Handle(CreateDishCommand request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to create {object} with Id: {Id}", nameof(Dish), request.Model.Id);
 
-                var result = validator.Validate(request.Model);
-
-                if (!result.IsValid)
-                {
-                    logger.Error("Invalid model with errors: ", result.Errors);
-
-                    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                    throw new InvalidRequestBodyException
-                    {
-                        Errors = errors
-                    };
-                }
                 var entity = new Dish
                 {
                     Name = request.Model.Name,

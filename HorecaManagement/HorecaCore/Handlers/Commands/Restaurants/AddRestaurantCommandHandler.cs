@@ -22,33 +22,18 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
         public class AddRestaurantCommandHandler : IRequestHandler<AddRestaurantCommand, int>
         {
             private readonly IUnitOfWork repository;
-            private readonly IValidator<MutateRestaurantDto> validator;
             private readonly UserManager<ApplicationUser> userManager;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public AddRestaurantCommandHandler(IUnitOfWork repository, IValidator<MutateRestaurantDto> validator, UserManager<ApplicationUser> userManager)
+            public AddRestaurantCommandHandler(IUnitOfWork repository, UserManager<ApplicationUser> userManager)
             {
                 this.repository = repository;
-                this.validator = validator;
                 this.userManager = userManager;
             }
 
             public async Task<int> Handle(AddRestaurantCommand request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Restaurant), request);
-
-                var result = validator.Validate(request.Model);
-
-                if (!result.IsValid)
-                {
-                    logger.Error("Invalid model with errors: ", result.Errors);
-
-                    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                    throw new InvalidRequestBodyException
-                    {
-                        Errors = errors
-                    };
-                }
 
                 var entity = new Restaurant
                 {

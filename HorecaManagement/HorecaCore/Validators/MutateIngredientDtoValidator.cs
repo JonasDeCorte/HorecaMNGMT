@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.Ingredients;
-using Horeca.Shared.Dtos.Ingredients;
 
 namespace Horeca.Core.Validators
 {

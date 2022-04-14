@@ -27,8 +27,6 @@ builder.Services.AddSwaggerService();
 builder.Services.AddCustomAuthorizationServices();
 builder.Services.RegisterServices();
 builder.Services.AddNlogConfiguration();
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 var app = builder.Build();

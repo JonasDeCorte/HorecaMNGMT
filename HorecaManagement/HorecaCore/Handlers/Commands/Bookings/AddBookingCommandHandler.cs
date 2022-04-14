@@ -22,14 +22,12 @@ namespace Horeca.Core.Handlers.Commands.Bookings
         public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, BookingDto>
         {
             private readonly IUnitOfWork repository;
-            private readonly IValidator<MakeBookingDto> validator;
             private readonly IMapper mapper;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public AddBookingCommandHandler(IUnitOfWork repository, IValidator<MakeBookingDto> validator, IMapper mapper)
+            public AddBookingCommandHandler(IUnitOfWork repository, IMapper mapper)
             {
                 this.repository = repository;
-                this.validator = validator;
                 this.mapper = mapper;
             }
 
@@ -44,18 +42,6 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 {
                     logger.Error($"Unable to add member new booking {request.Model.Booking} due to insufficient seat");
                     return null;
-                }
-                var result = validator.Validate(request.Model);
-
-                if (!result.IsValid)
-                {
-                    logger.Error("Invalid model with errors: ", result.Errors);
-
-                    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                    throw new InvalidRequestBodyException
-                    {
-                        Errors = errors
-                    };
                 }
 
                 var entity = new Booking

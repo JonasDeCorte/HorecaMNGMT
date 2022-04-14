@@ -22,32 +22,33 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class AddDishMenuCommandHandler : IRequestHandler<AddDishMenuCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private readonly IValidator<MutateDishDto> _validator;
+
+        //private readonly IValidator<MutateDishDto> _validator; // checken
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddDishMenuCommandHandler(IUnitOfWork repository, IValidator<MutateDishDto> validator)
+        public AddDishMenuCommandHandler(IUnitOfWork repository/*, IValidator<MutateDishDto> validator*/)
         {
             this.repository = repository;
-            _validator = validator;
+            //_validator = validator;
         }
 
         public async Task<int> Handle(AddDishMenuCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to add {@object} to menu with Id: {Id}", request.Model.Dish, request.Model.Id);
 
-            var result = _validator.Validate(request.Model.Dish);
+            //var result = _validator.Validate(request.Model.Dish);
             var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
 
-            if (!result.IsValid)
-            {
-                logger.Error("Invalid model with errors: ", result.Errors);
+            //if (!result.IsValid)
+            //{
+            //    logger.Error("Invalid model with errors: ", result.Errors);
 
-                var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                throw new InvalidRequestBodyException
-                {
-                    Errors = errors
-                };
-            }
+            //    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
+            //    throw new InvalidRequestBodyException
+            //    {
+            //        Errors = errors
+            //    };
+            //}
 
             var entity = new Dish
             {

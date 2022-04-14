@@ -20,31 +20,17 @@ namespace Horeca.Core.Handlers.Commands.Schedules
         public class AddScheduleCommandHandler : IRequestHandler<AddScheduleCommand, int>
         {
             private readonly IUnitOfWork repository;
-            private readonly IValidator<MutateScheduleDto> validator;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public AddScheduleCommandHandler(IUnitOfWork repository, IValidator<MutateScheduleDto> validator)
+            public AddScheduleCommandHandler(IUnitOfWork repository)
             {
                 this.repository = repository;
-                this.validator = validator;
             }
 
             public async Task<int> Handle(AddScheduleCommand request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Schedule), request);
 
-                var result = validator.Validate(request.Model);
-
-                if (!result.IsValid)
-                {
-                    logger.Error("Invalid model with errors: ", result.Errors);
-
-                    var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                    throw new InvalidRequestBodyException
-                    {
-                        Errors = errors
-                    };
-                }
                 bool checkStartTime = await repository.Schedules.CheckExistingStartTime(0, request.Model.ScheduleDate, request.Model.StartTime, request.Model.RestaurantId, "add");
 
                 if (checkStartTime)
