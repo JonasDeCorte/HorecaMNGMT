@@ -19,7 +19,7 @@
             <div class="form-group row mt-2">
                 <div class="col">
                     <label asp-for="Booking.BookingDate" class="control-label">Date</label>
-                    <input asp-for="Booking.BookingDate" type="date" id="datePicker" class="form-control" />
+                    <input asp-for="Booking.BookingDate" type="date" id="datePicker" class="form-control" readonly="readonly"/>
                     <span asp-validation-for="Booking.BookingDate" class="text-danger"></span>
                 </div>
                 <div class="col">
@@ -52,15 +52,15 @@
             </div>
             <div class="mt-2 mb-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
-                <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@Model.ScheduleId" class="btn btn-secondary">Cancel</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    function setDefaultTime() {
-        document.getElementById('datePicker').valueAsDate = new Date();
-    }
-    window.onload = setDefaultTime;
+    //function setDefaultTime() {
+    //    document.getElementById('datePicker').valueAsDate = new Date();
+    //}
+    //window.onload = setDefaultTime;
 </script>

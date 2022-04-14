@@ -57,6 +57,7 @@ namespace Horeca.MVC.Models.Mappers
                 Booking = new BookingInfoViewModel
                 {
                     UserID = userDto.Id,
+                    BookingDate = scheduleDto.ScheduleDate,
                     CheckIn = scheduleDto.StartTime,
                     CheckOut = scheduleDto.EndTime
                 },

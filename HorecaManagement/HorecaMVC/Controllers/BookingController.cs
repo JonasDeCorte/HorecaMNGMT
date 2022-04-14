@@ -91,10 +91,10 @@ namespace Horeca.MVC.Controllers
         }
 
 
-        [Route("/Booking/Delete/{scheduleId}/{page}")]
-        public async Task<IActionResult> Delete(int scheduleId, string page)
+        [Route("/Booking/Delete/{bookingId}/{page}")]
+        public async Task<IActionResult> Delete(int bookingId, string page)
         {
-            var response = await bookingService.DeleteBooking(scheduleId);
+            var response = await bookingService.DeleteBooking(bookingId);
             if (response == null)
             {
                 return View("OperationFailed");
@@ -103,11 +103,11 @@ namespace Horeca.MVC.Controllers
             {
                 return RedirectToAction(nameof(YourBookings));
             }
-            else if (page == "ScheduleDetail")
+            else if (page == "BookingIndex")
             {
-                return RedirectToAction(nameof(Detail), "Schedule", new { id = scheduleId });
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Detail), "Schedule", new { id = int.Parse(page) });
         }
     }
 }

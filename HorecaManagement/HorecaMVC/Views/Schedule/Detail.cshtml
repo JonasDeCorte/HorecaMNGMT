@@ -26,7 +26,7 @@
             {
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             }
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
     <div class="card mt-3">
@@ -55,11 +55,7 @@
                         <td>@booking.CheckOut?.ToShortTimeString()</td>
                         <td>@booking.BookingStatus</td>
                         <td>
-                            <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
-                            @if (accountService.Authorize(PermissionConstants.Booking_Update))
-                            {
-                            <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                            }
+                            <a asp-controller="Booking" asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
                             @if (accountService.Authorize(PermissionConstants.Booking_Delete))
                             {
                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
@@ -102,7 +98,7 @@
 
     function OpenModalDelete(){
        var itemId = $(this).data("id");
-       var page = "ScheduleDetail"
+       var page = @Model.Id.ToString()
        $('#deleteButton').attr("href", "/Booking/Delete/" + itemId + "/" + page)
        $("#deleteModal").modal();
     }
