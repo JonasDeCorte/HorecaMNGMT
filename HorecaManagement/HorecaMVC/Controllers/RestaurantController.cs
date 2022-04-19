@@ -81,13 +81,13 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var restaurant = await restaurantService.GetRestaurantById(id);
-            MutateRestaurantViewModel model = RestaurantMapper.MapMutateRestaurantModel(restaurant);
+            RestaurantViewModel model = RestaurantMapper.MapMutateRestaurantModel(restaurant);
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(MutateRestaurantViewModel model)
+        public async Task<IActionResult> Edit(RestaurantViewModel model)
         {
             if (ModelState.IsValid)
             {
