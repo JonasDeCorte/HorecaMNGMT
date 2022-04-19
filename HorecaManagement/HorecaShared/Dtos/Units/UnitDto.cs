@@ -8,5 +8,6 @@
 
     public class MutateUnitDto : UnitDto
     {
+        public int RestaurantId { get; set; }
     }
 }

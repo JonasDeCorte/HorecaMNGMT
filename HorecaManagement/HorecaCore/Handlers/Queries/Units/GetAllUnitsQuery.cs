@@ -10,6 +10,12 @@ namespace Horeca.Core.Handlers.Queries.Units
 {
     public class GetAllUnitsQuery : IRequest<IEnumerable<UnitDto>>
     {
+        public GetAllUnitsQuery(int restaurantId)
+        {
+            RestaurantId = restaurantId;
+        }
+
+        public int RestaurantId { get; }
     }
 
     public class GetAllUnitsQueryHandler : IRequestHandler<GetAllUnitsQuery, IEnumerable<UnitDto>>
@@ -30,7 +36,7 @@ namespace Horeca.Core.Handlers.Queries.Units
 
         public async Task<IEnumerable<UnitDto>> Handle(GetAllUnitsQuery request, CancellationToken cancellationToken)
         {
-            var entities = await Task.FromResult(repository.Units.GetAll());
+            var entities = await repository.Units.GetAllUnits(request.RestaurantId);
             logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(UnitDto));
 
             return _mapper.Map<IEnumerable<UnitDto>>(entities);

@@ -22,33 +22,38 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        ///  Get list of Units
+        ///  Get list of Units by restaurant id
         /// </summary>
+        /// <param name="restaurantId">restuarant id </param>
         /// <returns></returns>
         /// <response code="200">Success retrieving Unit list</response>
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [HttpGet]
+        [Route("restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(IEnumerable<UnitDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromRoute] int restaurantId)
         {
-            return Ok(await mediator.Send(new GetAllUnitsQuery()));
+            return Ok(await mediator.Send(new GetAllUnitsQuery(restaurantId)));
         }
 
         /// <summary>
         /// Create new Unit
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="restaurantId">restaurant id </param>
         /// <returns></returns>
         /// <response code="201">Success creating new Unit</response>
         /// <response code="400">Bad request</response
         [HttpPost]
+        [Route("/restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateUnitDto model)
+        public async Task<IActionResult> Post([FromBody] MutateUnitDto model, [FromRoute] int restaurantId)
         {
+            model.RestaurantId = restaurantId;
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateUnitCommand(model)));
         }
 
@@ -56,29 +61,31 @@ namespace Horeca.API.Controllers
         /// Retrieve Unit by Id
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="restaurantId"></param>
         /// <returns></returns>
         /// <response code="200">Success Retrieve Unit by Id</response>
         /// <response code="400">Bad request</response
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}/restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Read)]
         [ProducesResponseType(typeof(UnitDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
         {
-            return Ok(await mediator.Send(new GetUnitByIdQuery(id)));
+            return Ok(await mediator.Send(new GetUnitByIdQuery(id, restaurantId)));
         }
 
         /// <summary>
         ///  Delete an existing Unit
         /// </summary>
         /// <param name="id"></param>
+        ///
         /// <returns></returns>
         /// <response code="204">Success delete an existing Unit</response>
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id}/restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
@@ -90,15 +97,19 @@ namespace Horeca.API.Controllers
         /// Update an existing Unit
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="restaurantId"></param>
+        ///
         /// <returns></returns>
         /// <response code="200">Success updating existing Unit</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
+        [Route("/restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateUnitDto model)
+        public async Task<IActionResult> Update([FromBody] MutateUnitDto model, [FromRoute] int restaurantId)
         {
+            model.RestaurantId = restaurantId;
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditUnitCommand(model)));
         }
     }

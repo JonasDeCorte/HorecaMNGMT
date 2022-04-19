@@ -317,7 +317,7 @@ namespace Horeca.Infrastructure.Data
 
             #endregion Add Restaurants, Bookings, Tables, Orders
 
-            #region Add restaurantId to ingredient
+            #region Add RestaurantId to ingredient
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -328,7 +328,20 @@ namespace Horeca.Infrastructure.Data
             }
             await context.SaveChangesAsync();
 
-            #endregion Add restaurantId to ingredient
+            #endregion Add RestaurantId to ingredient
+
+            #region Add RestaurantId to Unit
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var unit = context.Units.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                unit.Restaurant = restaurant;
+                context.Units.Update(unit);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to Unit
         }
 
         private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)
