@@ -1,78 +1,89 @@
 ﻿@model Horeca.MVC.Models.Menus.MenuDetailViewModel
 
-<div class="d-flex flex-column text-center align-items-center">
-    <h1 class="display-4">@Model.Name</h1>
-    <div class="table-responsive">
-        <table class="table mt-2">
-            <tbody>
-                <tr class="d-flex flex-column">
-                    <th scope="col">Category</th>
-                    <td scope="row">@Model.Category</td>
-                </tr>
-                <tr class="d-flex flex-column">
-                    <th scope="col">Description</th>
-                    <td scope="row">@Model.Description</td>
-                </tr>
-                <tr class="d-flex flex-column">
-                    <th scope="col">Dishes</th>
-                    <td scope="row">
-                        <div class="table-responsive">
-                            <table class="table table-hover" style="table-layout: fixed">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Dish Type</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Options</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in @Model.Dishes)
-                                    {
-                                        <tr>
-                                            <td>@item.Name</td>
-                                            <td>@item.DishType</td>
-                                            <td>@item.Category</td>
-                                            <td>
-                                                @if (accountService.Authorize(PermissionConstants.Dish_Update))
-                                                {
-                                                    <a asp-action="EditDish" asp-route-menuId="@Model.MenuId"
-                                               asp-route-dishId="@item.DishId" class="btn btn-primary">
-                                                        Edit
-                                                    </a>
-                                                }
-                                                @if (accountService.Authorize(PermissionConstants.Dish_Delete))
-                                                {
-                                                    <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal" data-id="@item.DishId">
-                                                        Delete
-                                                    </button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td scope="row" colspan="2">
-                        @if (accountService.Authorize(PermissionConstants.Menu_Update))
-                        {
-                            <a asp-action="Edit" asp-route-id="@Model.MenuId" class="btn btn-primary">Edit</a>
-                        }
-                        @if (accountService.Authorize(PermissionConstants.Dish_Create))
-                        {
-                            <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Dish</a>
-                        }
-                        <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="text-center">
+    <div class="d-flex flex-column text-center align-items-center">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h1>@Model.Name</h1>
+            </div>
+            <div class="table-responsive">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="d-flex flex-column">
+                            <th scope="col">Category</th>
+                            <td scope="row">@Model.Category</td>
+                        </tr>
+                        <tr class="d-flex flex-column">
+                            <th scope="col">Description</th>
+                            <td scope="row">@Model.Description</td>
+                        </tr>
+                        <tr class="d-flex flex-column">
+                            <th scope="col">Dishes</th>
+                            <td scope="row">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" style="table-layout: fixed">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Dish Type</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in @Model.Dishes)
+                                            {
+                                                <tr>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.DishType</td>
+                                                    <td>@item.Category</td>
+                                                    <td>
+                                                        @if (accountService.Authorize(PermissionConstants.Dish_Update))
+                                                        {
+                                                            <a asp-action="EditDish" asp-route-menuId="@Model.MenuId"
+                                                       asp-route-dishId="@item.DishId" class="btn btn-primary">
+                                                                Edit
+                                                            </a>
+                                                        }
+                                                        @if (accountService.Authorize(PermissionConstants.Dish_Delete))
+                                                        {
+                                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal" data-id="@item.DishId">
+                                                                Delete
+                                                            </button>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td colspan="4">
+                                                    @if (accountService.Authorize(PermissionConstants.Dish_Create))
+                                                    {
+                                                        <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Dish</a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td scope="row" colspan="2">
+                                @if (accountService.Authorize(PermissionConstants.Menu_Update))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@Model.MenuId" class="btn btn-primary">Edit</a>
+                                }
+                                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
 
