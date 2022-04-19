@@ -8,19 +8,19 @@
             <ul class="nav nav-tabs nav-justified">
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
-                        asp-route-state="@OrderState.Begin">
+                       asp-route-state="@OrderState.Begin" id="beginTab">
                         Begin
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
-                        asp-route-state="@OrderState.Prepare">
+                       asp-route-state="@OrderState.Prepare" id="prepareTab">
                         Prepare
-                        </a>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
-                        asp-route-state="@OrderState.Done">
+                       asp-route-state="@OrderState.Done" id="doneTab">
                         Done
                     </a>
                 </li>
@@ -44,7 +44,10 @@
                                     <th scope="col" class="col-1">Quantity</th>
                                     <th scope="col" class="col-2">Price</th>
                                     <th scope="col" class="col-3">State</th>
-                                    <th scope="col" class="col-3">Options</th>
+                                    @if (order.OrderState != OrderState.Done)
+                                    {
+                                        <th scope="col" class="col-3">Options</th>
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,22 +58,25 @@
                                         <td>@orderLine.Quantity</td>
                                         <td>€@orderLine.Price</td>
                                         <td>@orderLine.DishState</td>
-                                        <td>
-                                            @if (order.OrderState == OrderState.Begin)
-                                            {
-                                                <a asp-action="PrepareOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
-                                                    asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
-                                                    Prepare
-                                                </a>
-                                            }
-                                            else if (order.OrderState == OrderState.Prepare)
-                                            {
-                                                <a asp-action="ReadyOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
-                                                    asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
-                                                    Ready
-                                                </a>
-                                            }
-                                        </td>
+                                        @if (order.OrderState != OrderState.Done)
+                                        {
+                                            <td>
+                                                @if (order.OrderState == OrderState.Begin)
+                                                {
+                                                    <a asp-action="PrepareOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
+                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
+                                                        Prepare
+                                                    </a>
+                                                }
+                                                else if (order.OrderState == OrderState.Prepare)
+                                                {
+                                                    <a asp-action="ReadyOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
+                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
+                                                        Ready
+                                                    </a>
+                                                }
+                                            </td>
+                                        }
                                     </tr>
                                 }
                             </tbody>
@@ -83,7 +89,19 @@
 </div>
 
 <script>
-    function CheckOrderLinesReady() {
+    function getUrlParameter(sParam) {
 
     }
+
+    function CheckOrderState() {
+        var location = window.location.href.split('/');
+        if (location[5] == "Begin") {
+            document.getElementById("beginTab").classList.add("active");
+        } else if (location[5] == "Prepare") {
+            document.getElementById("prepareTab").classList.add("active");
+        } else {
+            document.getElementById("doneTab").classList.add("active");
+        }
+    }
+    window.onload = CheckOrderState();
 </script>
