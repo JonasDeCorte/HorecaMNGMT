@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Ingredients;
 using MediatR;
@@ -30,7 +31,14 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
         public async Task<int> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to create {@object} with Id: {Id}", nameof(Ingredient), request.Model.Id);
+            var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
+            if (restaurant == null)
+            {
+                logger.Error(EntityNotFoundException.Instance);
+
+                throw new EntityNotFoundException();
+            }
             var entity = new Ingredient
             {
                 Name = request.Model.Name,
@@ -42,8 +50,13 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
                 },
             };
             repository.Ingredients.Add(entity);
-
             await repository.CommitAsync();
+
+            // now when the entity exists in the db - attach the restaurant as FK
+            entity.Restaurant = restaurant;
+            repository.Ingredients.Update(entity);
+            await repository.CommitAsync();
+
             logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
             return entity.Id;

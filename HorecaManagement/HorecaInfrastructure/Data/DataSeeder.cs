@@ -60,6 +60,7 @@ namespace Horeca.Infrastructure.Data
                     Dish = dish
                 };
                 dish.DishIngredients.Add(dishingred);
+
                 Menu menu = new()
                 {
                     Name = $"name {i}",
@@ -312,9 +313,22 @@ namespace Horeca.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
 
+            await context.SaveChangesAsync();
+
             #endregion Add Restaurants, Bookings, Tables, Orders
 
+            #region Add restaurantId to ingredient
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var ingredient = context.Ingredients.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                ingredient.Restaurant = restaurant;
+                context.Ingredients.Update(ingredient);
+            }
             await context.SaveChangesAsync();
+
+            #endregion Add restaurantId to ingredient
         }
 
         private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)

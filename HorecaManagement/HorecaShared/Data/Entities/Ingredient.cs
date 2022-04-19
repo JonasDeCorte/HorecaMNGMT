@@ -10,6 +10,9 @@
         public Unit Unit { get; set; }
         public int UnitId { get; set; }
 
+        public Restaurant? Restaurant { get; set; }
+
+        public int? RestaurantId { get; set; }
         public List<DishIngredient> Dishes { get; set; } = new();
     }
 }

@@ -11,9 +11,12 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
     {
         public int IngredientId { get; }
 
-        public GetIngredientByIdQuery(int ingredientId)
+        public int RestaurantId { get; set; }
+
+        public GetIngredientByIdQuery(int ingredientId, int restaurantId)
         {
             IngredientId = ingredientId;
+            RestaurantId = restaurantId;
         }
 
         public class GetIngredientByIdQueryHandler : IRequestHandler<GetIngredientByIdQuery, IngredientDto>
@@ -32,7 +35,7 @@ namespace Horeca.Core.Handlers.Queries.Ingredients
             {
                 logger.Info("trying to return {object} with id: {id}", nameof(IngredientDto), request.IngredientId);
 
-                var ingredient = await Task.FromResult(repository.Ingredients.GetIngredientIncludingUnit(request.IngredientId));
+                var ingredient = await repository.Ingredients.GetIngredientIncludingUnit(request.IngredientId, request.RestaurantId);
 
                 if (ingredient == null)
                 {
