@@ -30,6 +30,14 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             public async Task<int> Handle(CreateDishCommand request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to create {object} with Id: {Id}", nameof(Dish), request.Model.Id);
+                var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
+
+                if (restaurant == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+
+                    throw new EntityNotFoundException();
+                }
 
                 var entity = new Dish
                 {
@@ -37,11 +45,16 @@ namespace Horeca.Core.Handlers.Commands.Dishes
                     Category = request.Model.Category,
                     Description = request.Model.Description,
                     DishType = request.Model.DishType,
+                    Price = request.Model.Price,
                 };
 
                 repository.Dishes.Add(entity);
                 await repository.CommitAsync();
 
+                // now when the entity exists in the db - attach the restaurant as FK
+                entity.Restaurant = restaurant;
+                repository.Dishes.Update(entity);
+                await repository.CommitAsync();
                 logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
                 return entity.Id;

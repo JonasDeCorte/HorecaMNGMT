@@ -10,12 +10,14 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 {
     public class GetIngredientsByDishIdQuery : IRequest<DishIngredientsByIdDto>
     {
-        public GetIngredientsByDishIdQuery(int dishId)
+        public GetIngredientsByDishIdQuery(int dishId, int restaurantId)
         {
             DishId = dishId;
+            RestaurantId = restaurantId;
         }
 
         public int DishId { get; }
+        public int RestaurantId { get; }
     }
 
     public class GetIngredientsByDishIdHandler : IRequestHandler<GetIngredientsByDishIdQuery, DishIngredientsByIdDto>
@@ -34,7 +36,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
         {
             logger.Info("trying to return {object} with id: {id}", nameof(DishIngredientsByIdDto), request.DishId);
 
-            var dish = await Task.FromResult(repository.Dishes.GetDishIncludingDependencies(request.DishId));
+            var dish = await repository.Dishes.GetDishIncludingDependencies(request.DishId, request.RestaurantId);
             if (dish is null)
             {
                 logger.Error(EntityNotFoundException.Instance);

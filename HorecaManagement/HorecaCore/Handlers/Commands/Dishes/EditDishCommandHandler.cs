@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
         {
             logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
 
-            var dish = repository.Dishes.Get(request.Model.Id);
+            var dish = await repository.Dishes.GetDishById(request.Model.Id, request.Model.RestaurantId);
 
             if (dish is null)
             {
@@ -43,7 +43,10 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             dish.Description = request.Model.Description ?? dish.Description;
             dish.DishType = request.Model.DishType ?? dish.DishType;
             dish.Category = request.Model.Category ?? dish.Category;
-
+            if (dish.Price != request.Model.Price)
+            {
+                dish.Price = request.Model.Price;
+            }
             repository.Dishes.Update(dish);
 
             await repository.CommitAsync();

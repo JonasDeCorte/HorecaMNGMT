@@ -30,7 +30,8 @@ namespace Horeca.Core.Handlers.Commands.Dishes
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to add {@object} to Dish with Id: {Id}", request.Model.Ingredient, request.Model.Id);
-            var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
+            var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
+
             Ingredient entity;
             if (request.Model.Ingredient.Id == 0)
             {
@@ -64,6 +65,11 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             });
 
             repository.Dishes.Update(dish);
+            await repository.CommitAsync();
+            // now when the entity exists in the db - attach the restaurant as FK
+            entity.Restaurant = dish.Restaurant;
+            entity.Unit.Restaurant = dish.Restaurant;
+            repository.Ingredients.Update(entity);
             await repository.CommitAsync();
 
             logger.Info("succes adding {@object} to dish with id {id}", entity, dish.Id);

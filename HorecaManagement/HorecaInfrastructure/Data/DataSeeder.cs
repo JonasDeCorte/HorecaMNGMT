@@ -342,6 +342,15 @@ namespace Horeca.Infrastructure.Data
             await context.SaveChangesAsync();
 
             #endregion Add RestaurantId to Unit
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var dish = context.Dishes.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                dish.Restaurant = restaurant;
+                context.Dishes.Update(dish);
+            }
+            await context.SaveChangesAsync();
         }
 
         private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)
