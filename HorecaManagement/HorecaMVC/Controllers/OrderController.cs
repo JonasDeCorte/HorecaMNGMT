@@ -68,7 +68,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View("OperationFailed");
             }
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Begin});
         }
 
         [Route("/Order/{restaurantId}/{orderId}/Ready/{orderLineId}")]
@@ -79,7 +79,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View("OperationFailed");
             }
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
         }
 
         [Route("/Order/{restaurantId}/{orderId}/Deliver")]
@@ -90,7 +90,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View("OperationFailed");
             }
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
         }
     }
 }

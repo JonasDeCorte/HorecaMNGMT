@@ -32,6 +32,9 @@
                 <div class="card m-3">
                     <div class="card-header">
                         <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
+                        <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId" asp-route-orderId="@order.Id">
+                            Deliver
+                        </a>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
@@ -78,3 +81,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    function CheckOrderLinesReady() {
+
+    }
+</script>
