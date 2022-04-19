@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Horeca.MVC.Helpers.Attributes;
+using System.ComponentModel.DataAnnotations;
 using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.MVC.Models.Schedules
@@ -18,6 +19,7 @@ namespace Horeca.MVC.Models.Schedules
         public int Capacity { get; set; }
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "{0} must be higher than 0.")]
+        [SmallerThan("Capacity", ErrorMessage = "Available seats must be lower than or equal to capacity.")]
         public int AvailableSeat { get; set; }
         [Required]
         public ScheduleStatus Status { get; set; }

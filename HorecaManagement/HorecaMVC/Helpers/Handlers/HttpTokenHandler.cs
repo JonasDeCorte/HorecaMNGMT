@@ -1,7 +1,7 @@
 ﻿using Horeca.MVC.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Horeca.MVC.Services.Handlers
+namespace Horeca.MVC.Helpers.Handlers
 {
     public class HttpTokenHandler : DelegatingHandler
     {

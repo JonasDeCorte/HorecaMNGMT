@@ -1,9 +1,8 @@
 ﻿using Horeca.MVC.Models.Accounts;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.UserPermissions;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Horeca.MVC.Models.Mappers
+namespace Horeca.MVC.Helpers.Mappers
 {
     public static class AccountMapper
     {

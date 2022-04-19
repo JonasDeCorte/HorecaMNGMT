@@ -1,5 +1,5 @@
 ﻿using Horeca.MVC.Models.Accounts;
-using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.UserPermissions;

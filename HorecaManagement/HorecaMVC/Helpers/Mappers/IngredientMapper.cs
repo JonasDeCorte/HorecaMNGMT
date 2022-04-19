@@ -2,7 +2,7 @@
 using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.Units;
 
-namespace Horeca.MVC.Models.Mappers
+namespace Horeca.MVC.Helpers.Mappers
 {
     public static class IngredientMapper
     {

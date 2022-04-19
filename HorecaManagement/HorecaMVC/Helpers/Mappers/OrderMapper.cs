@@ -3,7 +3,7 @@ using Horeca.MVC.Models.Orders;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Orders;
 
-namespace Horeca.MVC.Models.Mappers
+namespace Horeca.MVC.Helpers.Mappers
 {
     public static class OrderMapper
     {

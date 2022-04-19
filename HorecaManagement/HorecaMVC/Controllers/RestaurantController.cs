@@ -1,4 +1,4 @@
-﻿using Horeca.MVC.Models.Mappers;
+﻿using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Models.MenuCards;
 using Horeca.MVC.Models.Restaurants;
 using Horeca.MVC.Services.Interfaces;

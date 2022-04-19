@@ -2,7 +2,7 @@
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Dtos.Schedules;
 
-namespace Horeca.MVC.Models.Mappers
+namespace Horeca.MVC.Helpers.Mappers
 {
     public class ScheduleMapper
     {

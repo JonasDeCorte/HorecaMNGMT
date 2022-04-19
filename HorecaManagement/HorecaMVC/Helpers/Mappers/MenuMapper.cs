@@ -4,7 +4,7 @@ using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Menus;
 
-namespace Horeca.MVC.Models.Mappers
+namespace Horeca.MVC.Helpers.Mappers
 {
     public static class MenuMapper
     {

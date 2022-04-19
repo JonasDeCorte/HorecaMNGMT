@@ -1,5 +1,5 @@
 ﻿using Horeca.MVC.Models.Bookings;
-using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Bookings;
 using Microsoft.AspNetCore.Mvc;

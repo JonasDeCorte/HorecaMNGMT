@@ -1,6 +1,6 @@
 ﻿using Horeca.MVC.Models.Dishes;
 using Horeca.MVC.Models.Ingredients;
-using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
