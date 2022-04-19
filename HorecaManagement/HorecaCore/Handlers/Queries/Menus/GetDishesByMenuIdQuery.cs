@@ -4,22 +4,19 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Horeca.Core.Handlers.Queries.Menus
 {
     public class GetDishesByMenuIdQuery : IRequest<MenuDishesByIdDto>
     {
-        public GetDishesByMenuIdQuery(int menuId)
+        public GetDishesByMenuIdQuery(int menuId, int restaurantId)
         {
             MenuId = menuId;
+            RestaurantId = restaurantId;
         }
 
         public int MenuId { get; }
+        public int RestaurantId { get; }
     }
 
     public class GetDishesByMenuIdHandler : IRequestHandler<GetDishesByMenuIdQuery, MenuDishesByIdDto>
@@ -38,7 +35,7 @@ namespace Horeca.Core.Handlers.Queries.Menus
         {
             logger.Info("trying to return {object} with id: {id}", nameof(MenuDishesByIdDto), request.MenuId);
 
-            var menu = await Task.FromResult(repository.Menus.GetMenuIncludingDependencies(request.MenuId));
+            var menu = await repository.Menus.GetMenuIncludingDependencies(request.MenuId, request.RestaurantId);
             if (menu is null)
             {
                 logger.Error(EntityNotFoundException.Instance);

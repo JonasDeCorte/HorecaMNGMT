@@ -10,29 +10,31 @@ namespace Horeca.Core.Handlers.Queries.Menus
     public class GetMenuByIdQuery : IRequest<MenuDto>
     {
         public int MenuId { get; }
+        public int RestaurantId { get; }
 
-        public GetMenuByIdQuery(int menuId)
+        public GetMenuByIdQuery(int menuId, int restaurantId)
         {
             MenuId = menuId;
+            RestaurantId = restaurantId;
         }
 
         public class GetMenuByIdQueryHandler : IRequestHandler<GetMenuByIdQuery, MenuDto>
         {
             private readonly IUnitOfWork repository;
-            private readonly IMapper _mapper;
+            private readonly IMapper mapper;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
             public GetMenuByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
                 this.repository = repository;
-                _mapper = mapper;
+                this.mapper = mapper;
             }
 
             public async Task<MenuDto> Handle(GetMenuByIdQuery request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to return {object} with id: {id}", nameof(MenuDto), request.MenuId);
 
-                var menu = await Task.FromResult(repository.Menus.Get(request.MenuId));
+                var menu = await repository.Menus.GetMenuById(request.MenuId, request.RestaurantId);
 
                 if (menu is null)
                 {
@@ -42,7 +44,7 @@ namespace Horeca.Core.Handlers.Queries.Menus
                 }
                 logger.Info("returning {@object} with id: {id}", menu, request.MenuId);
 
-                return _mapper.Map<MenuDto>(menu);
+                return mapper.Map<MenuDto>(menu);
             }
         }
     }

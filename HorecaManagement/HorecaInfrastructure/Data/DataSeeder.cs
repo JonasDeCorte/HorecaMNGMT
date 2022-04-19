@@ -343,6 +343,8 @@ namespace Horeca.Infrastructure.Data
 
             #endregion Add RestaurantId to Unit
 
+            #region Add RestaurantId to Dish
+
             for (int i = 1; i < AmountOfEachType; i++)
             {
                 var dish = context.Dishes.Find(i);
@@ -351,6 +353,21 @@ namespace Horeca.Infrastructure.Data
                 context.Dishes.Update(dish);
             }
             await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to Dish
+
+            #region Add RestaurantId TO Menu
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var menu = context.Menus.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                menu.Restaurant = restaurant;
+                context.Menus.Update(menu);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId TO Menu
         }
 
         private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)

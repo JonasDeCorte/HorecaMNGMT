@@ -34,7 +34,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
         {
             logger.Info("trying to add {@object} to menu with Id: {Id}", request.Model.Dish, request.Model.Id);
 
-            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
+            var menu = await repository.Menus.GetMenuIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
             var entity = new Dish
             {
@@ -42,6 +42,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
                 Category = request.Model.Dish.Category,
                 Description = request.Model.Dish.Description,
                 DishType = request.Model.Dish.DishType,
+                Price = request.Model.Dish.Price,
             };
 
             menu.Dishes.Add(entity);
@@ -49,6 +50,10 @@ namespace Horeca.Core.Handlers.Commands.Menus
             repository.Menus.Update(menu);
             await repository.CommitAsync();
 
+            // now when the entity exists in the db - attach the restaurant as FK
+            entity.Restaurant = menu.Restaurant;
+            repository.Dishes.Update(entity);
+            await repository.CommitAsync();
             logger.Info("succes adding {@object} to menu with id {id}", entity, menu.Id);
 
             return entity.Id;
