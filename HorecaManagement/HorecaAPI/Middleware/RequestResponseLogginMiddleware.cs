@@ -1,5 +1,6 @@
 ﻿using NLog;
 using System.Text;
+using System;
 
 namespace Horeca.API.Middleware
 {
@@ -55,17 +56,17 @@ namespace Horeca.API.Middleware
             await responseBody.CopyToAsync(originalBodyStream);
         }
 
-        private async Task<string> FormatRequest(HttpRequest request)
+        private static async Task<string> FormatRequest(HttpRequest request)
         {
             request.EnableBuffering();
             var buffer = new byte[Convert.ToInt32(request.ContentLength)];
-            await request.Body.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+            await request.Body.ReadAsync(buffer).ConfigureAwait(false);
             var bodyAsText = Encoding.UTF8.GetString(buffer);
             request.Body.Position = 0;
             return $"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}{request.Scheme}  {request.Host}{request.Path} {request.QueryString}  {bodyAsText}{Environment.NewLine}{Environment.NewLine}";
         }
 
-        private async Task<string> FormatResponse(HttpResponse response)
+        private static async Task<string> FormatResponse(HttpResponse response)
         {
             //We need to read the response stream from the beginning...
             response.Body.Seek(0, SeekOrigin.Begin);

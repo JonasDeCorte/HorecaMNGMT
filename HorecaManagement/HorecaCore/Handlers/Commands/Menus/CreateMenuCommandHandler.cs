@@ -22,31 +22,16 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
     {
         private readonly IUnitOfWork repository;
-        private readonly IValidator<MutateMenuDto> _validator;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public CreateMenuCommandHandler(IUnitOfWork repository, IValidator<MutateMenuDto> validator)
+        public CreateMenuCommandHandler(IUnitOfWork repository)
         {
             this.repository = repository;
-            _validator = validator;
         }
 
         public async Task<int> Handle(CreateMenuCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to create {object} with Id: {Id}", nameof(Menu), request.Model.Id);
-
-            var result = _validator.Validate(request.Model);
-
-            if (!result.IsValid)
-            {
-                logger.Error("Invalid model with errors: ", result.Errors);
-
-                var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                throw new InvalidRequestBodyException
-                {
-                    Errors = errors
-                };
-            }
 
             var entity = new Menu
             {

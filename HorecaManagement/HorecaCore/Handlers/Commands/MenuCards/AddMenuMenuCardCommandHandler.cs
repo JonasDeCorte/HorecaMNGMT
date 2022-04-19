@@ -22,32 +22,19 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
     public class AddMenuMenuCardCommandHandler : IRequestHandler<AddMenuMenuCardCommand, int>
     {
         private readonly IUnitOfWork repository;
-        private readonly IValidator<MutateMenuDto> validator;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddMenuMenuCardCommandHandler(IUnitOfWork repository, IValidator<MutateMenuDto> validator)
+        public AddMenuMenuCardCommandHandler(IUnitOfWork repository)
         {
             this.repository = repository;
-            this.validator = validator;
         }
 
         public async Task<int> Handle(AddMenuMenuCardCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to add {@object} to menucard with Id: {Id}", request.Model.Menu, request.Model.MenuCardId);
 
-            var result = validator.Validate(request.Model.Menu);
             var menuCard = repository.MenuCards.GetMenuCardIncludingDependencies(request.Model.MenuCardId);
-
-            if (!result.IsValid)
-            {
-                logger.Error("Invalid model with errors: ", result.Errors);
-
-                var errors = result.Errors.Select(x => x.ErrorMessage).ToArray();
-                throw new InvalidRequestBodyException
-                {
-                    Errors = errors
-                };
-            }
 
             var entity = new Menu
             {

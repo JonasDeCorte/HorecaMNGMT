@@ -1,6 +1,9 @@
+using FluentValidation;
 using Horeca.API.Authorization;
 using Horeca.API.Middleware;
+using Horeca.API.PipelineBehaviours;
 using Horeca.Core;
+using Horeca.Core.Validators;
 using Horeca.Infrastructure;
 using Horeca.Infrastructure.Data;
 using MediatR;
@@ -20,12 +23,12 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddCore();
 builder.Services.AddIdentity();
 builder.Services.AddAuthentication(builder.Configuration);
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSwaggerService();
 builder.Services.AddCustomAuthorizationServices();
 builder.Services.RegisterServices();
 builder.Services.AddNlogConfiguration();
-
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-DataSeeder.Seed(app);
+//DataSeeder.Seed(app)
 app.UseHttpsRedirection();
 // Authentication & Authorization
 app.UseAuthentication();
@@ -43,7 +46,7 @@ app.UseMiddleware<PermissionsMiddleware>();
 
 app.UseAuthorization();
 app.UseMiddleware<RequestResponseLogginMiddleware>();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();
