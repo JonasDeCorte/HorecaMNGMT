@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
         {
             logger.Info("trying to edit {object} with Id: {Id}", request.Model, request.Model.Id);
 
-            var menu = await repository.Menus.GetMenuIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
+            var menu = await repository.Menus.GetMenuById(request.Model.Id, request.Model.RestaurantId);
 
             if (menu is null)
             {

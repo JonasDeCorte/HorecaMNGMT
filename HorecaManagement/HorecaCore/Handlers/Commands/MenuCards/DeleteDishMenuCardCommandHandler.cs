@@ -28,7 +28,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(DeleteDishMenuCardCommand request, CancellationToken cancellationToken)
         {
-            var menuCard = repository.MenuCards.GetMenuCardIncludingDependencies(request.Model.MenuCardId);
+            var menuCard = await repository.MenuCards.GetMenuCardIncludingDependencies(request.Model.MenuCardId, request.Model.RestaurantId);
             var dish = repository.Dishes.Get(request.Model.DishId);
 
             logger.Info("trying to delete {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menuCard, request.Model.MenuCardId);

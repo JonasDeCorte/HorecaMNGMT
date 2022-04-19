@@ -233,7 +233,6 @@ namespace Horeca.Infrastructure.Data
                     Restaurant = restaurant,
                     User = superAdmin
                 });
-                restaurant.MenuCards.Add(context.MenuCards.Find(i));
                 context.Restaurants.Add(restaurant);
 
                 await context.SaveChangesAsync();
@@ -356,7 +355,7 @@ namespace Horeca.Infrastructure.Data
 
             #endregion Add RestaurantId to Dish
 
-            #region Add RestaurantId TO Menu
+            #region Add RestaurantId to Menu
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -367,7 +366,20 @@ namespace Horeca.Infrastructure.Data
             }
             await context.SaveChangesAsync();
 
-            #endregion Add RestaurantId TO Menu
+            #endregion Add RestaurantId to Menu
+
+            #region Add RestaurantId to MenuCard
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var menuCard = context.MenuCards.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                menuCard.Restaurant = restaurant;
+                context.MenuCards.Update(menuCard);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to MenuCard
         }
 
         private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)

@@ -71,7 +71,7 @@ namespace Horeca.API.Controllers
         [Route("{id}/restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(MenuDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetById(int id, [FromRoute] int restaurantId)
+        public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
         {
             return Ok(await mediator.Send(new GetMenuByIdQuery(id, restaurantId)));
         }
@@ -147,7 +147,7 @@ namespace Horeca.API.Controllers
         [Route("{id}/dishes/restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(MenuDishesByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetDishesByMenuhId([FromRoute] int id, [FromRoute] int restaurantId)
+        public async Task<IActionResult> GetDishesByMenuId([FromRoute] int id, [FromRoute] int restaurantId)
         {
             return Ok(await mediator.Send(new GetDishesByMenuIdQuery(id, restaurantId)));
         }

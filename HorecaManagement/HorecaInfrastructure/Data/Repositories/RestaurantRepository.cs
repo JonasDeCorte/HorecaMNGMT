@@ -18,18 +18,10 @@ namespace Horeca.Infrastructure.Data.Repositories
         public async Task<Restaurant> GetRestaurantIncludingDependenciesById(int restaurantId)
         {
             return await context.Restaurants
-                .Include(x => x.MenuCards)
                 .Include(x => x.Employees)
                 .ThenInclude(x => x.User)
                 .Include(x => x.Orders)
                 .ThenInclude(x => x.OrderLines)
-                .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
-        }
-
-        public async Task<Restaurant> GetRestaurantIncludingMenuCardsById(int restaurantId)
-        {
-            return await context.Restaurants
-                .Include(x => x.MenuCards)
                 .Where(x => x.Id.Equals(restaurantId)).FirstOrDefaultAsync();
         }
 

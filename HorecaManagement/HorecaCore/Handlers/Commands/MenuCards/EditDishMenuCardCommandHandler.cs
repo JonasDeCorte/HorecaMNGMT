@@ -28,7 +28,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(EditDishMenuCardCommand request, CancellationToken cancellationToken)
         {
-            var menuCard = repository.MenuCards.GetMenuCardIncludingDependencies(request.Model.MenuCardId);
+            var menuCard = await repository.MenuCards.GetMenuCardIncludingDishes(request.Model.MenuCardId, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", menuCard, request.Model.MenuCardId);
 
@@ -50,7 +50,10 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             dish.Description = request.Model.Dish.Description ?? dish.Description;
             dish.Name = request.Model.Dish.Name ?? dish.Name;
             dish.DishType = request.Model.Dish.DishType ?? dish.DishType;
-
+            if (dish.Price != request.Model.Dish.Price)
+            {
+                dish.Price = request.Model.Dish.Price;
+            }
             repository.Dishes.Update(dish);
             repository.MenuCards.Update(menuCard);
 

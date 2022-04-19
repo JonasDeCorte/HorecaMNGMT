@@ -1,15 +1,9 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
+﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Horeca.Core.Handlers.Commands.MenuCards
 {
@@ -37,13 +31,25 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
         {
             logger.Info("trying to create {object} with Id: {Id}", nameof(MenuCard), request.Model.Id);
 
+            var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
+
+            if (restaurant == null)
+            {
+                logger.Error(EntityNotFoundException.Instance);
+
+                throw new EntityNotFoundException();
+            }
             var entity = new MenuCard
             {
                 Name = request.Model.Name,
             };
 
             repository.MenuCards.Add(entity);
+            await repository.CommitAsync();
 
+            // now when the entity exists in the db - attach the restaurant as FK
+            entity.Restaurant = restaurant;
+            repository.MenuCards.Update(entity);
             await repository.CommitAsync();
             logger.Info("adding {@object} with id {id}", entity, entity.Id);
 

@@ -14,9 +14,41 @@ namespace Horeca.Infrastructure.Data.Repositories
             this.context = context;
         }
 
-        public MenuCard GetMenuCardIncludingDependencies(int id)
+        public async Task<IEnumerable<MenuCard>> GetAllMenuCards(int restaurantId)
         {
-            return context.MenuCards.Include(x => x.Menus).Include(x => x.Dishes).Where(x => x.Id.Equals(id)).SingleOrDefault();
+            return await context.MenuCards
+                                         .Where(x => x.RestaurantId.Equals(restaurantId))
+                                         .ToListAsync();
+        }
+
+        public async Task<MenuCard> GetMenuCardById(int id, int restaurantId)
+        {
+            return await context.MenuCards
+                                         .Where(x => x.RestaurantId.Equals(restaurantId))
+                                         .SingleOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public async Task<MenuCard> GetMenuCardIncludingDependencies(int id, int restaurantId)
+        {
+            return await context.MenuCards.Include(x => x.Menus)
+                                          .Include(x => x.Dishes)
+                                          .Where(x => x.RestaurantId.Equals(restaurantId))
+                                          .SingleOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public async Task<MenuCard> GetMenuCardIncludingDishes(int id, int restaurantId)
+        {
+            return await context.MenuCards
+                                         .Include(x => x.Dishes)
+                                         .Where(x => x.RestaurantId.Equals(restaurantId))
+                                         .SingleOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public async Task<MenuCard> GetMenuCardIncludingMenus(int id, int restaurantId)
+        {
+            return await context.MenuCards.Include(x => x.Menus)
+                                        .Where(x => x.RestaurantId.Equals(restaurantId))
+                                        .SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
     }
 }

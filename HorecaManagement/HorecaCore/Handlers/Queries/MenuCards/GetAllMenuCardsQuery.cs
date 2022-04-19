@@ -8,9 +8,12 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
 {
     public class GetAllMenuCardsQuery : IRequest<IEnumerable<MenuCardDto>>
     {
-        public GetAllMenuCardsQuery()
+        public GetAllMenuCardsQuery(int restaurantId)
         {
+            RestaurantId = restaurantId;
         }
+
+        public int RestaurantId { get; }
     }
 
     public class GetAllMenuCardsQueryHandler : IRequestHandler<GetAllMenuCardsQuery, IEnumerable<MenuCardDto>>
@@ -30,7 +33,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
         public async Task<IEnumerable<MenuCardDto>> Handle(GetAllMenuCardsQuery request, CancellationToken cancellationToken)
 
         {
-            var entities = await Task.FromResult(repository.MenuCards.GetAll());
+            var entities = await repository.MenuCards.GetAllMenuCards(request.RestaurantId);
             logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(MenuCardDto));
 
             return _mapper.Map<IEnumerable<MenuCardDto>>(entities);

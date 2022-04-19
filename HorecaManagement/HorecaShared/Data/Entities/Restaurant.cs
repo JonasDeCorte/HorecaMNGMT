@@ -6,8 +6,6 @@
 
         public List<RestaurantUser> Employees { get; set; } = new();
 
-        public List<MenuCard> MenuCards { get; set; } = new();
-
         public List<Order> Orders { get; set; } = new();
     }
 }
