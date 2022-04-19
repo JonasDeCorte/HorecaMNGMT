@@ -32,9 +32,12 @@
                 <div class="card m-3">
                     <div class="card-header">
                         <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
-                        <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId" asp-route-orderId="@order.Id">
-                            Deliver
-                        </a>
+                        @if (order.OrderState == OrderState.Prepare)
+                        {
+                            <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId" asp-route-orderId="@order.Id">
+                                Deliver
+                            </a>
+                        }
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
@@ -68,7 +71,7 @@
                                                         Prepare
                                                     </a>
                                                 }
-                                                else if (order.OrderState == OrderState.Prepare)
+                                                else if (order.OrderState == OrderState.Prepare && orderLine.DishState != DishState.Ready)
                                                 {
                                                     <a asp-action="ReadyOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
                                                         asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
@@ -89,10 +92,6 @@
 </div>
 
 <script>
-    function getUrlParameter(sParam) {
-
-    }
-
     function CheckOrderState() {
         var location = window.location.href.split('/');
         if (location[5] == "Begin") {
