@@ -25,7 +25,7 @@ namespace HorecaAPI.Controllers
         /// <summary>
         /// Get all existing restaurant schedules from the database
         /// </summary>
-        /// <param name="id">Restaurant Id</param>
+        /// <param name="restaurantId">Restaurant Id</param>
         /// <returns>
         /// A list of restaurant schedules results will be returned.
         /// </returns>
@@ -33,13 +33,13 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
 
         [HttpGet]
-        [Route("All/{id}")]
+        [Route("restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(List<ScheduleDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAll(int id)
+        public async Task<IActionResult> GetAll([FromRoute] int restaurantId)
         {
-            return Ok(await mediator.Send(new GetAvailableSchedulesQuery(id)));
+            return Ok(await mediator.Send(new GetAvailableSchedulesQuery(restaurantId)));
         }
 
         /// <summary>
@@ -53,13 +53,13 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}/restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(ScheduleByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id, [FromRoute] int restaurantId)
         {
-            return Ok(await mediator.Send(new GetScheduleByIdQuery(id)));
+            return Ok(await mediator.Send(new GetScheduleByIdQuery(id, restaurantId)));
         }
 
         /// <summary>
@@ -73,11 +73,13 @@ namespace HorecaAPI.Controllers
         /// <response code="204">No content</response>
         /// <response code="400">Bad request</
         [HttpPost]
+        [Route("restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateScheduleDto model)
+        public async Task<IActionResult> Post([FromBody] MutateScheduleDto model, [FromRoute] int restaurantId)
         {
+            model.RestaurantId = restaurantId;
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddScheduleCommand(model)));
         }
 
@@ -94,11 +96,14 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success updating existing restaurant</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
+        [Route("{id}/restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateScheduleDto model)
+        public async Task<IActionResult> Update([FromBody] MutateScheduleDto model, [FromRoute] int restaurantId, [FromRoute] int id)
         {
+            model.Id = id;
+            model.RestaurantId = restaurantId;
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditScheduleCommand(model)));
         }
 
@@ -110,7 +115,7 @@ namespace HorecaAPI.Controllers
         /// <response code="204">Success delete an existing Restaurant schedule</response>
         /// <response code="400">Bad request</response
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id}/restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

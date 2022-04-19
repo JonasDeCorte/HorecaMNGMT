@@ -40,7 +40,7 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task<List<Schedule>> GetAvailableRestaurantSchedules(int restaurantId)
         {
-            return await context.Schedules
+            return await context.Schedules.Include(x => x.Restaurant)
                 .Where(rs => rs.RestaurantId == restaurantId && rs.Status == Constants.ScheduleStatus.Available)
                 .ToListAsync();
         }
@@ -50,6 +50,13 @@ namespace Horeca.Infrastructure.Data.Repositories
             return await context.Schedules
                 .Where(rs => rs.RestaurantId == restaurantId)
                 .ToListAsync();
+        }
+
+        public async Task<Schedule> GetScheduleById(int id, int restaurantId)
+        {
+            return await context.Schedules.Include(x => x.Restaurant)
+                                          .Where(x => x.Restaurant.Id.Equals(restaurantId))
+                                          .SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
     }
 }
