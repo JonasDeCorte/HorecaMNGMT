@@ -148,25 +148,25 @@ namespace Horeca.MVC.Controllers
             return RedirectToAction(nameof(Detail), new { id = restaurantId });
         }
 
-        public async Task<IActionResult> AddMenuCard(int restaurantId)
-        {
-            var menuCards = await menuCardService.GetMenuCards();
-            var restaurant = await restaurantService.GetRestaurantById(restaurantId);
-            MutateRestaurantMenuCardViewModel model = RestaurantMapper.MapAddMenuCardModel(menuCards, restaurant);
-            model.RestaurantId = restaurantId;
-            return View(model);
-        }
+        //public async Task<IActionResult> AddMenuCard(int restaurantId)
+        //{
+        //    var menuCards = await menuCardService.GetMenuCards();
+        //    var restaurant = await restaurantService.GetRestaurantById(restaurantId);
+        //    MutateRestaurantMenuCardViewModel model = RestaurantMapper.MapAddMenuCardModel(menuCards, restaurant);
+        //    model.RestaurantId = restaurantId;
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> AddMenuCard(MutateRestaurantMenuCardViewModel model)
-        {
-            var response = await restaurantService.AddRestaurantMenuCard(model.RestaurantId, model.MenuCardId);
-            if (response == null)
-            {
-                return View("OperationFailed");
-            }
-            return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> AddMenuCard(MutateRestaurantMenuCardViewModel model)
+        //{
+        //    var response = await restaurantService.AddRestaurantMenuCard(model.RestaurantId, model.MenuCardId);
+        //    if (response == null)
+        //    {
+        //        return View("OperationFailed");
+        //    }
+        //    return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
+        //}
 
         [Route("/Restaurant/{restaurantId}/RemoveMenuCard/{menuCardId}")]
         public async Task<IActionResult> RemoveMenuCard(int restaurantId, int menuCardId)

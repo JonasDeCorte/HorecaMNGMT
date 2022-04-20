@@ -10,16 +10,19 @@ namespace Horeca.MVC.Services
     {
         private readonly HttpClient httpClient;
         private readonly IConfiguration configuration;
+        private readonly IRestaurantService restaurantService;
 
-        public ScheduleService(HttpClient httpClient, IConfiguration configuration)
+        public ScheduleService(HttpClient httpClient, IConfiguration configuration, IRestaurantService restaurantService)
         {
             this.httpClient = httpClient;
             this.configuration = configuration;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<ScheduleByIdDto> GetScheduleById(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{id}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
+                $"{ClassConstants.Schedule}/{id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             var response = await httpClient.SendAsync(request);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -36,25 +39,23 @@ namespace Horeca.MVC.Services
 
         public async Task<IEnumerable<ScheduleDto>> GetSchedules(int restaurantId)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.All}/{restaurantId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/" +
+                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             var response = await httpClient.SendAsync(request);
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var result = JsonConvert.DeserializeObject<IEnumerable<ScheduleDto>>(await response.Content.ReadAsStringAsync());
-                return result;
-            }
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-            return null;
+            var result = JsonConvert.DeserializeObject<IEnumerable<ScheduleDto>>(await response.Content.ReadAsStringAsync());
+            return result;
         }
 
         public async Task<HttpResponseMessage> AddSchedule(MutateScheduleDto scheduleDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}")
+               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}/" +
+               $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(scheduleDto), Encoding.UTF8, "application/json")
             };
@@ -70,7 +71,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateSchedule(MutateScheduleDto scheduleDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                  $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}")
+                  $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}/" +
+                  $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(scheduleDto), Encoding.UTF8, "application/json")
             };
@@ -86,7 +88,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> DeleteSchedule(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{id}");
+               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{id}/{ClassConstants.Restaurant}/" +
+               $"{restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)

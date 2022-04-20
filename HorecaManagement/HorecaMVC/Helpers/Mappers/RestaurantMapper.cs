@@ -37,7 +37,7 @@ namespace Horeca.MVC.Helpers.Mappers
             };
             restaurantDetailModel.ScheduleList = ScheduleMapper.MapScheduleList(restaurantDto.Schedules);
             restaurantDetailModel.Employees = AccountMapper.MapUserModelList(restaurantDto.Employees);
-            restaurantDetailModel.MenuCards = MenuCardMapper.MapMenuCardModelList(restaurantDto.MenuCards);
+            //restaurantDetailModel.MenuCards = MenuCardMapper.MapMenuCardModelList(restaurantDto.MenuCards);
             return restaurantDetailModel;
         }
 
@@ -64,20 +64,20 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
-        public static MutateRestaurantMenuCardViewModel MapAddMenuCardModel(IEnumerable<MenuCardDto> menuCards, 
-            DetailRestaurantDto restaurant)
-        {
-            MutateRestaurantMenuCardViewModel model = new MutateRestaurantMenuCardViewModel();
-            foreach (var menuCard in menuCards)
-            {
-                if (!restaurant.MenuCards.Any(x => x.Id == menuCard.Id))
-                {
-                    var menuCardModel = MenuCardMapper.MapMenuCardModel(menuCard);
-                    model.MenuCards.Add(menuCardModel);
-                }
-            }
-            return model;
-        }
+        //public static MutateRestaurantMenuCardViewModel MapAddMenuCardModel(IEnumerable<MenuCardDto> menuCards, 
+        //    DetailRestaurantDto restaurant)
+        //{
+        //    MutateRestaurantMenuCardViewModel model = new MutateRestaurantMenuCardViewModel();
+        //    foreach (var menuCard in menuCards)
+        //    {
+        //        if (!restaurant.MenuCards.Any(x => x.Id == menuCard.Id))
+        //        {
+        //            var menuCardModel = MenuCardMapper.MapMenuCardModel(menuCard);
+        //            model.MenuCards.Add(menuCardModel);
+        //        }
+        //    }
+        //    return model;
+        //}
 
         public static MutateRestaurantDto MapCreateRestaurantDto(MutateRestaurantViewModel model)
         {

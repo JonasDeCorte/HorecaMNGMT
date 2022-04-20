@@ -10,11 +10,13 @@ namespace Horeca.MVC.Services
     {
         private readonly HttpClient httpClient;
         private readonly IConfiguration configuration;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public RestaurantService(HttpClient httpClient, IConfiguration configuration)
+        public RestaurantService(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
             this.configuration = configuration;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<RestaurantDto>> GetRestaurants()
@@ -43,6 +45,9 @@ namespace Horeca.MVC.Services
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<DetailRestaurantDto>(await response.Content.ReadAsStringAsync());
+
+                SetCurrentRestaurantId(id);
+
                 return result;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -58,16 +63,12 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.User}/{userId}");
 
             var response = await httpClient.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(await response.Content.ReadAsStringAsync());
-                return result;
-            }
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-            return null;
+            var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(await response.Content.ReadAsStringAsync());
+            return result;
         }
 
         public async Task<HttpResponseMessage> AddRestaurant(MutateRestaurantDto restaurantDto)
@@ -167,6 +168,20 @@ namespace Horeca.MVC.Services
                 return null;
             }
             return response;
+        }
+
+        public int? GetCurrentRestaurantId()
+        {
+            return httpContextAccessor.HttpContext.Session.GetInt32("CurrentRestaurant");
+        }
+
+        public void SetCurrentRestaurantId(int restaurantId)
+        {
+            if (httpContextAccessor.HttpContext.Session.GetInt32("CurrentRestaurant") != null)
+            {
+                httpContextAccessor.HttpContext.Session.Remove("CurrentRestaurant");
+            }
+            httpContextAccessor.HttpContext.Session.SetInt32("CurrentRestaurant", restaurantId);
         }
     }
 }

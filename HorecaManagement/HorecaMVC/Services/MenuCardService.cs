@@ -12,16 +12,19 @@ namespace Horeca.MVC.Services
     {
         private readonly HttpClient httpClient;
         private readonly IConfiguration configuration;
+        private readonly IRestaurantService restaurantService;
 
-        public MenuCardService(HttpClient httpClient, IConfiguration iConfig)
+        public MenuCardService(HttpClient httpClient, IConfiguration configuration, IRestaurantService restaurantService)
         {
             this.httpClient = httpClient;
-            configuration = iConfig;
+            this.configuration = configuration;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<IEnumerable<MenuCardDto>> GetMenuCards()
         {
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}");
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/" +
+                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -33,8 +36,8 @@ namespace Horeca.MVC.Services
 
         public async Task<MenuCardDto> GetMenuCardById(int id)
         {
-            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.MenuCard}/{id}");
+            var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
+                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -47,7 +50,7 @@ namespace Horeca.MVC.Services
         public async Task<MenuCardsByIdDto> GetListsByMenuCardId(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}" +
-                $"/{ClassConstants.Menus}/{ClassConstants.Dishes}");
+                $"/{ClassConstants.Menus}/{ClassConstants.Dishes}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -72,7 +75,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddMenuCard(MutateMenuCardDto menuCard)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{ClassConstants.Restaurant}/" +
+                $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(menuCard), Encoding.UTF8, "application/json")
             };
@@ -89,7 +93,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
-                $"{ClassConstants.Dishes}")
+                $"{ClassConstants.Dishes}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json")
             };
@@ -106,7 +110,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
-                $"{ClassConstants.Menus}")
+                $"{ClassConstants.Menus}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json")
             };
@@ -121,7 +125,8 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> DeleteMenuCard(int id)
         {
-            var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}");
+            var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
+                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -133,7 +138,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{dish.MenuCardId}/" +
-                $"{ClassConstants.Dishes}/{dish.DishId}")
+                $"{ClassConstants.Dishes}/{dish.DishId}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json")
             };
@@ -150,7 +155,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{menu.MenuCardId}/{ClassConstants.Menus}/" +
-                $"{menu.MenuId}")
+                $"{menu.MenuId}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(menu), Encoding.UTF8, "application/json")
             };
@@ -166,7 +171,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateMenuCard(MutateMenuCardDto menuCard)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{ClassConstants.Restaurant}/" +
+                $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(menuCard), Encoding.UTF8, "application/json")
             };
@@ -183,7 +189,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{dishMenuCardDto.MenuCardId}/" +
-                $"{ClassConstants.Dishes}/{dishMenuCardDto.Dish.Id}")
+                $"{ClassConstants.Dishes}/{dishMenuCardDto.Dish.Id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dishMenuCardDto), Encoding.UTF8, "application/json")
             };
@@ -200,7 +206,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{menuMenuCardDto.MenuCardId}/" +
-                $"{ClassConstants.Menus}/{menuMenuCardDto.Menu.Id}")
+                $"{ClassConstants.Menus}/{menuMenuCardDto.Menu.Id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(menuMenuCardDto), Encoding.UTF8, "application/json")
             };

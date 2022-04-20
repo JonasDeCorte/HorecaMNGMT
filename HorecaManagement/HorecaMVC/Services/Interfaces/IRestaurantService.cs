@@ -14,5 +14,7 @@ namespace Horeca.MVC.Services.Interfaces
         public Task<HttpResponseMessage> RemoveRestaurantEmployee(string userId, int restaurantId);
         public Task<HttpResponseMessage> AddRestaurantMenuCard(int restaurantId, int menuCardId);
         public Task<HttpResponseMessage> RemoveRestaurantMenuCard(int restaurantId, int menuCardId);
+        public int? GetCurrentRestaurantId();
+        public void SetCurrentRestaurantId(int restaurantId);
     }
 }
