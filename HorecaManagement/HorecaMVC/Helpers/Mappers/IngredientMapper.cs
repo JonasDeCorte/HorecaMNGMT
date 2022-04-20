@@ -6,23 +6,37 @@ namespace Horeca.MVC.Helpers.Mappers
 {
     public static class IngredientMapper
     {
-        public static IngredientViewModel MapModel(IngredientDto ingredient)
+        public static IngredientViewModel MapModel(IngredientDto ingredientDto)
         {
             return new IngredientViewModel
             {
-                IngredientId = ingredient.Id,
-                Name = ingredient.Name,
-                IngredientType = ingredient.IngredientType,
-                BaseAmount = ingredient.BaseAmount,
+                IngredientId = ingredientDto.Id,
+                Name = ingredientDto.Name,
+                IngredientType = ingredientDto.IngredientType,
+                BaseAmount = ingredientDto.BaseAmount,
                 Unit = new UnitViewModel
                 {
-                    Id = ingredient.Unit.Id,
-                    Name = ingredient.Unit.Name
+                    Id = ingredientDto.Unit.Id,
+                    Name = ingredientDto.Unit.Name
                 }
             };
         }
 
-        public static MutateIngredientDto MapCreateIngredientDto(IngredientViewModel ingredientModel)
+        public static CreateIngredientViewModel MapCreateIngredientModel(List<UnitDto> unitDtos)
+        {
+            CreateIngredientViewModel model = new CreateIngredientViewModel();
+            foreach (var unitDto in unitDtos)
+            {
+                model.Units.Add(new UnitViewModel
+                {
+                    Id = unitDto.Id,
+                    Name = unitDto.Name,
+                });
+            }
+            return model;
+        }
+
+        public static MutateIngredientDto MapCreateIngredientDto(CreateIngredientViewModel ingredientModel)
         {
             return new MutateIngredientDto
             {
@@ -32,8 +46,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 IngredientType = ingredientModel.IngredientType,
                 Unit = new UnitDto
                 {
-                    Id = ingredientModel.Unit.Id,
-                    Name = ingredientModel.Unit.Name,
+                    Id = ingredientModel.UnitId,
+                    Name = ""
                 },
             };
         }

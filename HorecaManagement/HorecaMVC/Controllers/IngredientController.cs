@@ -9,10 +9,12 @@ namespace Horeca.MVC.Controllers
     public class IngredientController : Controller
     {
         private readonly IIngredientService ingredientService;
+        private readonly IUnitService unitService;
 
-        public IngredientController(IIngredientService ingredientService)
+        public IngredientController(IIngredientService ingredientService, IUnitService unitService)
         {
             this.ingredientService = ingredientService;
+            this.unitService = unitService;
         }
 
         public async Task<IActionResult> Index()
@@ -55,15 +57,16 @@ namespace Horeca.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var model = new IngredientViewModel();
+            var units = await unitService.GetUnits();
+            var model = IngredientMapper.MapCreateIngredientModel(units.ToList());
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(IngredientViewModel ingredient)
+        public async Task<IActionResult> Create(CreateIngredientViewModel ingredient)
         {
             if (ModelState.IsValid)
             {

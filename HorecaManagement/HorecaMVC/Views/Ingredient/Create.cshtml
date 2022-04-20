@@ -1,4 +1,4 @@
-﻿@model Horeca.MVC.Models.Ingredients.IngredientViewModel
+﻿@model Horeca.MVC.Models.Ingredients.CreateIngredientViewModel
 
 <div class="text-center">
     <h1 class="display-4">Create Ingredient</h1>
@@ -20,10 +20,17 @@
                     <input asp-for="BaseAmount" class="form-control" id="baseAmount" placeholder="Base Amount">
                     <span asp-validation-for="BaseAmount" class="text-danger"></span>
                 </div>
-                <div class="col">
-                    <label asp-for="Unit.Name" class="form-label">Unit name</label>
+@*                <div class="col">
+                    <label asp-for="Unit.Name" class="form-label">Unit Name</label>
                     <input asp-for="Unit.Name" class="form-control" id="unitName" placeholder="Unit name">
                     <span asp-validation-for="Unit.Name" class="text-danger"></span>
+                </div>*@
+                <div class="col form-group">
+                    <label asp-for="UnitId" class="form-label">Existing Unit</label>
+                    <select asp-for="UnitId" asp-items="@(new SelectList(Model.Units, "Id", "Name"))" 
+                        class="form-control">
+                        <option value="0">Please select</option>
+                    </select>
                 </div>
             </div>
             <div class="mt-2">
