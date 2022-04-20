@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Horeca.Shared.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Accounts
 {
     public class LoginUserViewModel
     {
         [Required]
-        [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]
+        [StringLength(50, ErrorMessage = ErrorConstants.StringLength50)]
         public string Username { get; set; }
 
         [Required]

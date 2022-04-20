@@ -23,8 +23,6 @@ namespace Horeca.MVC.Services
             this.configuration = configuration;
         }
 
-        public UserDto CurrentUser { get; set; }
-
         public async Task<HttpResponseMessage> LoginUser(LoginUserDto user)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
@@ -150,13 +148,16 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Account}/{ClassConstants.User}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<BaseUserDto>();
+                }
+                return result;
             }
-
-            var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(await response.Content.ReadAsStringAsync());
-            return result;
+            return null;
         }
 
         public async Task<UserDto> GetUserByName(string username)

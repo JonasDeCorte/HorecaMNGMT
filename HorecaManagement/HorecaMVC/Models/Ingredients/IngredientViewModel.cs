@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Horeca.Shared.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Ingredients
 {
@@ -7,21 +8,21 @@ namespace Horeca.MVC.Models.Ingredients
         public int IngredientId { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]
+        [StringLength(50, ErrorMessage = ErrorConstants.StringLength50)]
         public string Name { get; set; }
 
         [Display(Name = "Ingredient Type")]
         [Required]
-        [StringLength(50, ErrorMessage = "{0} may not contain more than 50 characters!")]
+        [StringLength(50, ErrorMessage = ErrorConstants.StringLength50)]
         public string IngredientType { get; set; }
 
         [Display(Name = "Base amount")]
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "{0} must be higher than 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int BaseAmount { get; set; }
 
         [Display(Name = "Unit name")]
-        [Required(ErrorMessage = "Unit name is required.")]
+        [Required]
         public UnitViewModel Unit { get; set; }
     }
 }

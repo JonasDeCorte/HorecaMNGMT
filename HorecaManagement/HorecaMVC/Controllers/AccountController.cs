@@ -14,7 +14,6 @@ namespace Horeca.MVC.Controllers
 
         public AccountController(IAccountService accountService, IPermissionService permissionService)
         {
-            ;
             this.accountService = accountService;
             this.permissionService = permissionService;
         }
@@ -167,7 +166,7 @@ namespace Horeca.MVC.Controllers
             {
                 Username = userModel.Username,
                 Permissions = AccountMapper.MapRemovePermissionsList(userModel)
-        };
+            };
 
             return View(editModel);
         }

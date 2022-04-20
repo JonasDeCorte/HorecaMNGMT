@@ -5,7 +5,6 @@ namespace Horeca.MVC.Services.Interfaces
 {
     public interface IAccountService
     {
-        public abstract UserDto CurrentUser { get; set; }
         public Task<HttpResponseMessage> LoginUser(LoginUserDto user);
         public Task<HttpResponseMessage> LogoutUser();
         public Task<HttpResponseMessage> RegisterUser(RegisterUserDto user);

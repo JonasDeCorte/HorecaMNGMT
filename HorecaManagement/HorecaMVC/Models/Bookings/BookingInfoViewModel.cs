@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Helpers.Attributes;
+using Horeca.Shared.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Bookings
@@ -21,7 +22,7 @@ namespace Horeca.MVC.Models.Bookings
 
         [Display(Name = "Check-in time")]
         [Required]
-        [DateSmallerThan("CheckOut", ErrorMessage = "Check-in time must be earlier than Check-out time.")]
+        [DateSmallerThan("CheckOut", ErrorMessage = ErrorConstants.CheckInSmaller)]
         public DateTime? CheckIn { get; set; }
 
         [Display(Name = "Check-out time")]

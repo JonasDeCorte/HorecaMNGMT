@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Helpers.Attributes;
+using Horeca.Shared.Constants;
 using System.ComponentModel.DataAnnotations;
 using static Horeca.Shared.Utils.Constants;
 
@@ -16,7 +17,7 @@ namespace Horeca.MVC.Models.Schedules
 
         [Display(Name = "Start Time")]
         [Required]
-        [DateSmallerThan("EndTime", ErrorMessage = "Start Time must be earlier than End Time.")]
+        [DateSmallerThan("EndTime", ErrorMessage = ErrorConstants.StartTimeEarlier)]
         public DateTime StartTime { get; set; }
 
         [Display(Name = "End Time")]
@@ -24,13 +25,13 @@ namespace Horeca.MVC.Models.Schedules
         public DateTime EndTime { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "{0} must be higher than 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int Capacity { get; set; }
 
         [Display(Name = "Available Seats")]
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "{0} must be higher than 0.")]
-        [SmallerThan("Capacity", ErrorMessage = "Available seats must be lower than or equal to capacity.")]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
+        [SmallerThan("Capacity", ErrorMessage = ErrorConstants.SeatsSmaller)]
         public int AvailableSeat { get; set; }
 
         [Required]
