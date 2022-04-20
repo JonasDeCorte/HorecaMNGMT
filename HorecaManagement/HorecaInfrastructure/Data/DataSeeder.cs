@@ -288,8 +288,12 @@ namespace Horeca.Infrastructure.Data
                     ScheduleId = bookingDetail.ScheduleId,
                 };
                 context.Tables.Add(table);
+                var schedule = await context.Schedules.FindAsync(bookingDetail.ScheduleId);
+                schedule.AvailableSeat -= table.Pax;
+                context.Schedules.Update(schedule);
             }
             await context.SaveChangesAsync();
+
             List<Table> list = context.Tables.AsNoTracking().ToList();
             foreach (var table in list)
             {
