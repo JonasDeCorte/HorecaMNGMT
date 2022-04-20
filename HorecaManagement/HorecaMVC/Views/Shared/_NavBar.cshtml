@@ -8,72 +8,75 @@
                 </a>
             </li>
         }
-        @if (accountService.Authorize(PermissionConstants.Ingredient_Read) || accountService.Authorize(PermissionConstants.Dish_Read) ||
-        accountService.Authorize(PermissionConstants.Menu_Read) || accountService.Authorize(PermissionConstants.MenuCard_Read))
+        @if (restaurantService.GetCurrentRestaurantId() != null)
         {
-            <li class="nav-item dropdown">
-                <a class="nav-link text-dark dropdown-toggle" href="#" id="kitchenDropdown" role="button"
+            @if (accountService.Authorize(PermissionConstants.Ingredient_Read) || accountService.Authorize(PermissionConstants.Dish_Read) ||
+           accountService.Authorize(PermissionConstants.Menu_Read) || accountService.Authorize(PermissionConstants.MenuCard_Read))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" id="kitchenDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
-                    Kitchen
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="kitchenDropdown">
-                    @if (accountService.Authorize(PermissionConstants.Ingredient_Read))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ingredient" asp-action="Index">
-                                Ingredients
-                            </a>
-                        </li>
-                    }
-                    @if (accountService.Authorize(PermissionConstants.Dish_Read))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Dish" asp-action="Index">
-                                Dishes
-                            </a>
-                        </li>
-                    }
-                    @if (accountService.Authorize(PermissionConstants.Menu_Read))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Menu" asp-action="Index">
-                                Menus
-                            </a>
-                        </li>
-                    }
-                    @if (accountService.Authorize(PermissionConstants.MenuCard_Read))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="MenuCard" asp-action="Index">
-                                Menu Cards
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </li>
-        }
-        @if (accountService.Authorize(PermissionConstants.Booking_Read))
-        {
-            <li class="nav-item dropdown">
-                <a class="nav-link text-dark dropdown-toggle" href="#" id="bookingDropdown" role="button"
+                        Kitchen
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="kitchenDropdown">
+                        @if (accountService.Authorize(PermissionConstants.Ingredient_Read))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ingredient" asp-action="Index">
+                                    Ingredients
+                                </a>
+                            </li>
+                        }
+                        @if (accountService.Authorize(PermissionConstants.Dish_Read))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Dish" asp-action="Index">
+                                    Dishes
+                                </a>
+                            </li>
+                        }
+                        @if (accountService.Authorize(PermissionConstants.Menu_Read))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Menu" asp-action="Index">
+                                    Menus
+                                </a>
+                            </li>
+                        }
+                        @if (accountService.Authorize(PermissionConstants.MenuCard_Read))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="MenuCard" asp-action="Index">
+                                    Menu Cards
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            @if (accountService.Authorize(PermissionConstants.Booking_Read))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" id="bookingDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
-                    Bookings
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="bookingDropdown">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">All Bookings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
-                    </li>
-                </ul>
-            </li>
-        }
-        @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
-            </li>
+                        Bookings
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="bookingDropdown">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">All Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
+                </li>
+            }
         }
     </ul>
     <ul class="navbar-nav flex-grow-1 flex-row-reverse">
