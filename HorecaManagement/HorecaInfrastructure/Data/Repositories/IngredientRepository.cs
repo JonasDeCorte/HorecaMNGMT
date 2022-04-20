@@ -14,14 +14,20 @@ namespace Horeca.Infrastructure.Data.Repositories
             this.context = context;
         }
 
-        public IEnumerable<Ingredient> GetAllIncludingUnit()
+        public async Task<IEnumerable<Ingredient>> GetAllIncludingUnit(int restaurantId)
         {
-            return context.Ingredients.Include(x => x.Unit).ToList();
+            return await context.Ingredients.Include(x => x.Unit)
+                                            .Include(x => x.Restaurant)
+                                            .Where(x => x.RestaurantId.Equals(restaurantId))
+                                            .ToListAsync();
         }
 
-        public Ingredient GetIngredientIncludingUnit(int id)
+        public async Task<Ingredient> GetIngredientIncludingUnit(int id, int restaurantId)
         {
-            return context.Ingredients.Include(x => x.Unit).Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return await context.Ingredients.Include(x => x.Unit)
+                                            .Include(x => x.Restaurant)
+                                            .Where(x => x.RestaurantId.Equals(restaurantId))
+                                            .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
         public async Task<int> Handle(EditMenuCardCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to edit {object} with Id: {Id}", request.Model, request.Model.Id);
-            var menuCard = repository.MenuCards.Get(request.Model.Id);
+            var menuCard = await repository.MenuCards.GetMenuCardById(request.Model.Id, request.Model.RestaurantId);
 
             if (menuCard is null)
             {

@@ -31,7 +31,7 @@ namespace Horeca.Core.Handlers.Commands.Schedules
         {
             logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
 
-            var restaurantSchedule = repository.Schedules.Get(request.Model.Id);
+            var restaurantSchedule = await repository.Schedules.GetScheduleById(request.Model.Id, request.Model.RestaurantId);
 
             if (restaurantSchedule is null)
             {

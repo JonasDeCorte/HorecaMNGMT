@@ -31,7 +31,7 @@ namespace Horeca.Core.Handlers.Queries.Schedules
 
         public async Task<IEnumerable<ScheduleDto>> Handle(GetAvailableSchedulesQuery request, CancellationToken cancellationToken)
         {
-            List<Schedule>? schedules = await repository.Schedules.GetAvailableRestaurantSchedules(request.RestaurantId);
+            var schedules = await repository.Schedules.GetAvailableRestaurantSchedules(request.RestaurantId);
 
             logger.Info("Restaurant schedules have been retrieved {@schedules}", schedules);
 

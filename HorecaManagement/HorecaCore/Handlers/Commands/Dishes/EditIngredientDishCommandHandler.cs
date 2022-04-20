@@ -29,7 +29,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(EditIngredientDishCommand request, CancellationToken cancellationToken)
         {
-            var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.Id);
+            var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", dish, request.Model.Id);
 

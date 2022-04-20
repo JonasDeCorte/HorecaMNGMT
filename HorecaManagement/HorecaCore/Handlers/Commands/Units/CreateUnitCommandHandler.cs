@@ -30,14 +30,25 @@ namespace Horeca.Core.Handlers.Commands.Units
             {
                 logger.Info("trying to create {@object} with Id: {Id}", nameof(Shared.Data.Entities.Unit), request.Model.Id);
 
+                var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
+
+                if (restaurant == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+
+                    throw new EntityNotFoundException();
+                }
                 var entity = new Shared.Data.Entities.Unit
                 {
                     Name = request.Model.Name,
                 };
                 repository.Units.Add(entity);
                 await repository.CommitAsync();
+                // now when the entity exists in the db - attach the restaurant as FK
+                entity.Restaurant = restaurant;
+                repository.Units.Update(entity);
+                await repository.CommitAsync();
                 logger.Info("adding {@unit} with id {id}", entity, entity.Id);
-
                 return entity.Id;
             }
         }

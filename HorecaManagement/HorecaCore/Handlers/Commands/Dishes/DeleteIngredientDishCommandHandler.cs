@@ -31,7 +31,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(DeleteIngredientDishCommand request, CancellationToken cancellationToken)
         {
-            var dish = repository.Dishes.GetDishIncludingDependencies(request.Model.DishId);
+            var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.DishId, request.Model.RestaurantId);
 
             var ingredient = repository.Ingredients.Get(request.Model.IngredientId);
             logger.Info("trying to delete {@object} with id {objId} from {@dish} with Id: {id}", ingredient, request.Model.IngredientId, dish, request.Model.DishId);

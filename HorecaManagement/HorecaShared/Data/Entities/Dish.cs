@@ -9,5 +9,9 @@
 
         public decimal Price { get; set; }
         public List<DishIngredient> DishIngredients { get; set; } = new();
+
+        public Restaurant? Restaurant { get; set; }
+
+        public int? RestaurantId { get; set; }
     }
 }

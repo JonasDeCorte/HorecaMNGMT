@@ -2,11 +2,6 @@
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Horeca.Core.Handlers.Commands.Menus
 {
@@ -33,7 +28,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
         public async Task<int> Handle(DeleteDishMenuCommand request, CancellationToken cancellationToken)
         {
-            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.MenuId);
+            var menu = await repository.Menus.GetMenuIncludingDependencies(request.Model.MenuId, request.Model.RestaurantId);
             var dish = repository.Dishes.Get(request.Model.DishId);
 
             logger.Info("trying to delete {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menu, request.Model.MenuId);

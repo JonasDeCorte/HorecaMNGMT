@@ -9,12 +9,14 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
 {
     public class GetMenuCardWithAllDependenciesByIdQuery : IRequest<MenuCardsByIdDto>
     {
-        public GetMenuCardWithAllDependenciesByIdQuery(int menuCardId)
+        public GetMenuCardWithAllDependenciesByIdQuery(int menuCardId, int restaurantId)
         {
             MenuCardId = menuCardId;
+            RestaurantId = restaurantId;
         }
 
         public int MenuCardId { get; }
+        public int RestaurantId { get; }
     }
 
     public class GetMenuCardWithAllDependenciesByIdQueryHandler : IRequestHandler<GetMenuCardWithAllDependenciesByIdQuery, MenuCardsByIdDto>
@@ -33,7 +35,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
         {
             logger.Info("trying to return a full {object} with id: {id}", nameof(MenuCardsByIdDto), request.MenuCardId);
 
-            var menuCard = await Task.FromResult(repository.MenuCards.GetMenuCardIncludingDependencies(request.MenuCardId));
+            var menuCard = await repository.MenuCards.GetMenuCardIncludingDependencies(request.MenuCardId, request.RestaurantId);
             if (menuCard is null)
             {
                 logger.Error(EntityNotFoundException.Instance);

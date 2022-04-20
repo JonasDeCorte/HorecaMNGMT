@@ -63,14 +63,6 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
                     Username = item.User.UserName
                 });
             }
-            foreach (MenuCard? item in restaurant.MenuCards)
-            {
-                dto.MenuCards.Add(new MenuCardDto()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                });
-            }
 
             List<Schedule>? restaurantSchedules = await repository.Schedules.GetRestaurantSchedules(restaurant.Id);
             if (restaurantSchedules.Count != 0)

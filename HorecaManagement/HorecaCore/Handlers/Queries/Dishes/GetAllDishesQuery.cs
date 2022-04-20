@@ -8,6 +8,12 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 {
     public class GetAllDishesQuery : IRequest<IEnumerable<DishDto>>
     {
+        public GetAllDishesQuery(int restaurantId)
+        {
+            RestaurantId = restaurantId;
+        }
+
+        public int RestaurantId { get; }
     }
 
     public class GetAllDishesQueryHandler : IRequestHandler<GetAllDishesQuery, IEnumerable<DishDto>>
@@ -26,7 +32,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
 
         public async Task<IEnumerable<DishDto>> Handle(GetAllDishesQuery request, CancellationToken cancellationToken)
         {
-            var entities = await Task.FromResult(repository.Dishes.GetAll());
+            var entities = await repository.Dishes.GetAllDishes(request.RestaurantId);
 
             logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(DishDto));
 

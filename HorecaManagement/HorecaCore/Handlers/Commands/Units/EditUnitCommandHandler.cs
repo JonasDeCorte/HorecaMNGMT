@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Commands.Units
         {
             logger.Info("trying to edit {object} with Id: {Id}", nameof(Shared.Data.Entities.Unit), request.Model.Id);
 
-            var unit = repository.Units.Get(request.Model.Id);
+            var unit = await repository.Units.GetUnitById(request.Model.Id, request.Model.RestaurantId);
 
             if (unit is null)
             {

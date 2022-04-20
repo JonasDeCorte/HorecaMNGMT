@@ -60,6 +60,7 @@ namespace Horeca.Infrastructure.Data
                     Dish = dish
                 };
                 dish.DishIngredients.Add(dishingred);
+
                 Menu menu = new()
                 {
                     Name = $"name {i}",
@@ -232,7 +233,6 @@ namespace Horeca.Infrastructure.Data
                     Restaurant = restaurant,
                     User = superAdmin
                 });
-                restaurant.MenuCards.Add(context.MenuCards.Find(i));
                 context.Restaurants.Add(restaurant);
 
                 await context.SaveChangesAsync();
@@ -312,9 +312,74 @@ namespace Horeca.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
 
+            await context.SaveChangesAsync();
+
             #endregion Add Restaurants, Bookings, Tables, Orders
 
+            #region Add RestaurantId to ingredient
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var ingredient = context.Ingredients.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                ingredient.Restaurant = restaurant;
+                context.Ingredients.Update(ingredient);
+            }
             await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to ingredient
+
+            #region Add RestaurantId to Unit
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var unit = context.Units.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                unit.Restaurant = restaurant;
+                context.Units.Update(unit);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to Unit
+
+            #region Add RestaurantId to Dish
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var dish = context.Dishes.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                dish.Restaurant = restaurant;
+                context.Dishes.Update(dish);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to Dish
+
+            #region Add RestaurantId to Menu
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var menu = context.Menus.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                menu.Restaurant = restaurant;
+                context.Menus.Update(menu);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to Menu
+
+            #region Add RestaurantId to MenuCard
+
+            for (int i = 1; i < AmountOfEachType; i++)
+            {
+                var menuCard = context.MenuCards.Find(i);
+                var restaurant = context.Restaurants.Find(i);
+                menuCard.Restaurant = restaurant;
+                context.MenuCards.Update(menuCard);
+            }
+            await context.SaveChangesAsync();
+
+            #endregion Add RestaurantId to MenuCard
         }
 
         private static void AddApplicationUserPermissions(DatabaseContext? context, ApplicationUser applicationUser, List<IEnumerable<Permission>> listListPerms)

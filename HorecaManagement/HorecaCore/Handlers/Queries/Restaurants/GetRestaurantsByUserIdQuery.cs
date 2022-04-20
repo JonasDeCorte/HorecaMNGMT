@@ -7,6 +7,7 @@ using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Restaurants;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using System.Linq;
 
@@ -51,7 +52,9 @@ namespace Horeca.Core.Handlers.Queries.Restaurants
                 throw new UserNotFoundException();
             }
             List<Restaurant> restos = new();
-            List<RestaurantUser>? restaurantUsers = context.RestaurantUsers.Where(x => x.UserId == user.Id).ToList();
+            List<RestaurantUser>? restaurantUsers = context.RestaurantUsers.Include(x => x.Restaurant)
+                                                                           .Where(x => x.UserId == user.Id)
+                                                                           .ToList();
 
             if (user.IsOwner)
             {

@@ -4,6 +4,10 @@ namespace Horeca.Shared.Data.Repositories
 {
     public interface IDishRepository : IRepository<Dish>
     {
-        Dish GetDishIncludingDependencies(int id);
+        Task<Dish> GetDishIncludingDependencies(int id, int restaurantId);
+
+        Task<IEnumerable<Dish>> GetAllDishes(int restaurantId);
+
+        Task<Dish> GetDishById(int id, int restaurantId);
     }
 }

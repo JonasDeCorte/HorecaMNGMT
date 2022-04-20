@@ -29,7 +29,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
         public async Task<int> Handle(EditIngredientCommand request, CancellationToken cancellationToken)
         {
-            var ingredient = repository.Ingredients.GetIngredientIncludingUnit(request.Model.Id);
+            var ingredient = await repository.Ingredients.GetIngredientIncludingUnit(request.Model.Id, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", ingredient, request.Model.Id);
 
@@ -47,6 +47,13 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
                 ingredient.BaseAmount = request.Model.BaseAmount;
 
             var modelUnit = repository.Units.Get(request.Model.Unit.Id);
+
+            if (modelUnit is null)
+            {
+                logger.Error(EntityNotFoundException.Instance);
+
+                throw new EntityNotFoundException();
+            }
             modelUnit.Name = request.Model.Unit.Name ?? modelUnit.Name;
 
             ingredient.Unit = modelUnit ?? ingredient.Unit;

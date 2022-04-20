@@ -10,10 +10,12 @@ namespace Horeca.Core.Handlers.Queries.Dishes
     public class GetDishByIdQuery : IRequest<DishDto>
     {
         public int DishId { get; }
+        public int RestaurantId { get; }
 
-        public GetDishByIdQuery(int dishId)
+        public GetDishByIdQuery(int dishId, int restaurantId)
         {
             DishId = dishId;
+            RestaurantId = restaurantId;
         }
 
         public class GetDishByIdQueryHandler : IRequestHandler<GetDishByIdQuery, DishDto>
@@ -32,7 +34,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
             {
                 logger.Info("trying to return {object} with id: {id}", nameof(DishDto), request.DishId);
 
-                var dish = await Task.FromResult(repository.Dishes.Get(request.DishId));
+                var dish = await repository.Dishes.GetDishById(request.DishId, request.RestaurantId);
 
                 if (dish is null)
                 {

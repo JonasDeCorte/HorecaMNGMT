@@ -7,8 +7,6 @@ namespace Horeca.Shared.Data.Repositories
     {
         Task<Restaurant> GetRestaurantIncludingDependenciesById(int restaurantId);
 
-        Task<Restaurant> GetRestaurantIncludingMenuCardsById(int restaurantId);
-
         Task<Restaurant> GetRestaurantByIdWithOrdersWithOrderState(int restaurantId, OrderState orderState);
     }
 }

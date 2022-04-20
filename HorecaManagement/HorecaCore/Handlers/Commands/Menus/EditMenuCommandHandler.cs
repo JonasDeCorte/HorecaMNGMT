@@ -30,7 +30,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
         {
             logger.Info("trying to edit {object} with Id: {Id}", request.Model, request.Model.Id);
 
-            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
+            var menu = await repository.Menus.GetMenuById(request.Model.Id, request.Model.RestaurantId);
 
             if (menu is null)
             {
@@ -42,6 +42,10 @@ namespace Horeca.Core.Handlers.Commands.Menus
             menu.Category = request.Model.Category ?? menu.Category;
             menu.Description = request.Model.Description ?? menu.Description;
             menu.Name = request.Model.Name ?? menu.Name;
+            if (menu.Price != request.Model.Price)
+            {
+                menu.Price = request.Model.Price;
+            }
 
             repository.Menus.Update(menu);
             await repository.CommitAsync();

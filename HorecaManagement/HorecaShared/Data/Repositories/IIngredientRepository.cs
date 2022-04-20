@@ -4,8 +4,8 @@ namespace Horeca.Shared.Data.Repositories
 {
     public interface IIngredientRepository : IRepository<Ingredient>
     {
-        IEnumerable<Ingredient> GetAllIncludingUnit();
+        Task<IEnumerable<Ingredient>> GetAllIncludingUnit(int restaurantId);
 
-        Ingredient GetIngredientIncludingUnit(int id);
+        Task<Ingredient> GetIngredientIncludingUnit(int id, int restaurantId);
     }
 }

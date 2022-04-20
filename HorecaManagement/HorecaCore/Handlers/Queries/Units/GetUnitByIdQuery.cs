@@ -10,10 +10,12 @@ namespace Horeca.Core.Handlers.Queries.Units
     public class GetUnitByIdQuery : IRequest<UnitDto>
     {
         public int UnitId { get; }
+        public int RestaurantId { get; }
 
-        public GetUnitByIdQuery(int unitId)
+        public GetUnitByIdQuery(int unitId, int restaurantId)
         {
             UnitId = unitId;
+            RestaurantId = restaurantId;
         }
 
         public class GetUnitByIdQueryHandler : IRequestHandler<GetUnitByIdQuery, UnitDto>
@@ -30,7 +32,7 @@ namespace Horeca.Core.Handlers.Queries.Units
 
             public async Task<UnitDto> Handle(GetUnitByIdQuery request, CancellationToken cancellationToken)
             {
-                var unit = await Task.FromResult(repository.Units.Get(request.UnitId));
+                var unit = await repository.Units.GetUnitById(request.UnitId, request.RestaurantId);
 
                 if (unit == null)
                 {

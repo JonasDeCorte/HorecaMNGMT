@@ -9,12 +9,14 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
 {
     public class GetMenuCardByIdQuery : IRequest<MenuCardDto>
     {
-        public GetMenuCardByIdQuery(int menuCardId)
+        public GetMenuCardByIdQuery(int menuCardId, int restaurantId)
         {
             MenuCardId = menuCardId;
+            RestaurantId = restaurantId;
         }
 
         public int MenuCardId { get; }
+        public int RestaurantId { get; }
     }
 
     public class GetMenuCardByIdQueryHandler : IRequestHandler<GetMenuCardByIdQuery, MenuCardDto>
@@ -33,7 +35,7 @@ namespace Horeca.Core.Handlers.Queries.MenuCards
         {
             logger.Info("trying to return {object} with id: {id}", nameof(MenuCardDto), request.MenuCardId);
 
-            var menuCard = await Task.FromResult(repository.MenuCards.Get(request.MenuCardId));
+            var menuCard = await repository.MenuCards.GetMenuCardById(request.MenuCardId, request.RestaurantId);
 
             if (menuCard is null)
             {

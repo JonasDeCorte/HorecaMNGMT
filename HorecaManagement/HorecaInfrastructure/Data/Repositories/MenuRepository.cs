@@ -14,10 +14,25 @@ namespace Horeca.Infrastructure.Data.Repositories
             this.context = context;
         }
 
-        public Menu GetMenuIncludingDependencies(int id)
+        public async Task<IEnumerable<Menu>> GetAllMenus(int restaurantId)
         {
-            Console.WriteLine(context.ChangeTracker.DebugView.LongView);
-            return context.Menus.Include(x => x.Dishes).Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return await context.Menus.Include(x => x.Restaurant)
+                                       .Where(x => x.RestaurantId.Equals(restaurantId))
+                                       .ToListAsync();
+        }
+
+        public async Task<Menu> GetMenuById(int id, int restaurantId)
+        {
+            return await context.Menus.Include(x => x.Restaurant)
+                                      .Where(x => x.RestaurantId.Equals(restaurantId))
+                                      .FirstOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public async Task<Menu> GetMenuIncludingDependencies(int id, int restaurantId)
+        {
+            return await context.Menus.Include(x => x.Dishes)
+                                      .Where(x => x.RestaurantId.Equals(restaurantId))
+                                      .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
     }
 }

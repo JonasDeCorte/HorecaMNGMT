@@ -28,7 +28,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
         public async Task<int> Handle(EditDishMenuCommand request, CancellationToken cancellationToken)
         {
-            var menu = repository.Menus.GetMenuIncludingDependencies(request.Model.Id);
+            var menu = await repository.Menus.GetMenuIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", menu, request.Model.Id);
 
@@ -51,7 +51,10 @@ namespace Horeca.Core.Handlers.Commands.Menus
             dish.DishType = request.Model.Dish.DishType ?? dish.DishType;
             dish.Category = request.Model.Dish.Category ?? dish.Category;
             dish.Description = request.Model.Dish.Description ?? dish.Description;
-
+            if (dish.Price != request.Model.Dish.Price)
+            {
+                dish.Price = request.Model.Dish.Price;
+            }
             repository.Dishes.Update(dish);
             repository.Menus.Update(menu);
 

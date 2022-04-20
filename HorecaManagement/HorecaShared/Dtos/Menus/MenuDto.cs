@@ -15,11 +15,13 @@ namespace Horeca.Shared.Dtos.Menus
 
     public class MutateMenuDto : MenuDto
     {
+        public int RestaurantId { get; set; }
     }
 
     public class MutateDishMenuDto
     {
         public int Id { get; set; }
+        public int RestaurantId { get; set; }
         public MutateDishDto Dish { get; set; }
     }
 
@@ -34,5 +36,7 @@ namespace Horeca.Shared.Dtos.Menus
     {
         public int DishId { get; set; }
         public int MenuId { get; set; }
+
+        public int RestaurantId { get; set; }
     }
 }
