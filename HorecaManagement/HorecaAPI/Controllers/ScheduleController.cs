@@ -33,7 +33,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
 
         [HttpGet]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(List<ScheduleDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -53,7 +53,7 @@ namespace HorecaAPI.Controllers
         /// <response code="400">Bad request</response
 
         [HttpGet]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(ScheduleByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -73,7 +73,7 @@ namespace HorecaAPI.Controllers
         /// <response code="204">No content</response>
         /// <response code="400">Bad request</
         [HttpPost]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -96,7 +96,7 @@ namespace HorecaAPI.Controllers
         /// <response code="200">Success updating existing restaurant</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -115,7 +115,7 @@ namespace HorecaAPI.Controllers
         /// <response code="204">Success delete an existing Restaurant schedule</response>
         /// <response code="400">Bad request</response
         [HttpDelete]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Schedule), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

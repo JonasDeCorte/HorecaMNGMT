@@ -31,7 +31,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Menu), Permissions.Read)]
         [HttpGet]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(IEnumerable<MenuDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get([FromRoute] int restaurantId)
@@ -49,7 +49,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Create)]
         [HttpPost]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateMenuDto model, [FromRoute] int restaurantId)
@@ -68,7 +68,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Read)]
         [HttpGet]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(MenuDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
@@ -86,7 +86,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
@@ -104,7 +104,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Update)]
         [HttpPut]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateMenuDto model, [FromRoute] int id, [FromRoute] int restaurantId)
@@ -125,7 +125,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Create)]
         [HttpPost]
-        [Route("{id}/dishes/restaurant/{restaurantId}")]
+        [Route("{id}/dishes/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> AddDishToMenu([FromRoute] int id, [FromBody] MutateDishMenuDto model, [FromRoute] int restaurantId)
@@ -144,7 +144,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Menu), Permissions.Read)]
         [HttpGet]
-        [Route("{id}/dishes/restaurant/{restaurantId}")]
+        [Route("{id}/dishes/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(MenuDishesByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetDishesByMenuId([FromRoute] int id, [FromRoute] int restaurantId)
@@ -163,7 +163,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}/dishes/{dishId}/restaurant/{restaurantId}")]
+        [Route("{id}/dishes/{dishId}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteDishByMenuId([FromRoute] int id, [FromRoute] int dishId, [FromRoute] int restaurantId)
@@ -184,7 +184,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Menu), Permissions.Update)]
         [HttpPut]
-        [Route("{id}/dishes/{dishId}/restaurant/{restaurantId}")]
+        [Route("{id}/dishes/{dishId}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> EditDishFromMenu([FromRoute] int id, [FromRoute] int dishId, [FromBody] MutateDishMenuDto model, [FromRoute] int restaurantId)

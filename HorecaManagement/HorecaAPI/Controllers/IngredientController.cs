@@ -32,7 +32,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Read)]
         [HttpGet]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(IEnumerable<IngredientDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAllIngredientsByRestaurantId([FromRoute] int restaurantId)
@@ -50,7 +50,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Create)]
         [HttpPost]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
@@ -69,7 +69,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Update)]
         [HttpPut]
-        [Route("restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
@@ -88,7 +88,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Read)]
         [HttpGet]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
@@ -106,7 +106,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}/restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
