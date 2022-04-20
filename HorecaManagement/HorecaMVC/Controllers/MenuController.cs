@@ -1,16 +1,14 @@
 ﻿using Horeca.Shared.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Horeca.MVC.Models.Menus;
-using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Helpers.Mappers;
 using Horeca.Shared.Dtos.Menus;
 using Horeca.MVC.Models.Dishes;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Dishes;
-using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class MenuController : Controller
     {
         private readonly IMenuService menuService;
@@ -114,8 +112,6 @@ namespace Horeca.MVC.Controllers
         public IActionResult CreateDish(int id)
         {
             var model = new DishViewModel();
-
-            TempData["Id"] = id;
 
             return View(model);
         }

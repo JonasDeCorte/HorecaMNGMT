@@ -7,6 +7,7 @@ namespace Horeca.MVC.Models.Bookings
         [Display(Name = "Phone number")]
         [Required]
         public string PhoneNo { get; set; }
+
         [Display(Name = "Contact name")]
         [Required]
         public string FullName { get; set; }

@@ -1,6 +1,5 @@
-using Horeca.MVC.Controllers.Filters;
 using Horeca.MVC.Services;
-using Horeca.MVC.Services.Handlers;
+using Horeca.MVC.Helpers.Handlers;
 using Horeca.MVC.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +27,9 @@ builder.Services.AddHttpClient<IPermissionService, PermissionService>("HttpMessa
 builder.Services.AddHttpClient<IAccountService, AccountService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IScheduleService, ScheduleService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IBookingService, BookingService>("HttpMessageHandler");
+builder.Services.AddHttpClient<IOrderService, OrderService>("HttpMessageHandler");
 
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<TokenFilter>();
 
 var app = builder.Build();
 

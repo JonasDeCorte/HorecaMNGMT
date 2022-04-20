@@ -1,6 +1,6 @@
 ﻿using Horeca.Shared.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Horeca.MVC.Models.Mappers;
+using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Models.MenuCards;
 using Horeca.MVC.Models.Dishes;
 using Horeca.Shared.Dtos.MenuCards;
@@ -8,7 +8,6 @@ using Horeca.MVC.Models.Menus;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Menus;
-using Horeca.MVC.Controllers.Filters;
 
 namespace Horeca.MVC.Controllers
 {
@@ -92,8 +91,6 @@ namespace Horeca.MVC.Controllers
         {
             var model = new DishViewModel();
 
-            TempData["Id"] = id;
-
             return View(model);
         }
 
@@ -121,8 +118,6 @@ namespace Horeca.MVC.Controllers
         public IActionResult CreateMenu(int id)
         {
             var model = new MenuViewModel();
-
-            TempData["Id"] = id;
 
             return View(model);
         }

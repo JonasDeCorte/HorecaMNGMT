@@ -1,11 +1,9 @@
-﻿using Horeca.MVC.Controllers.Filters;
-using Horeca.MVC.Models;
+﻿using Horeca.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Horeca.MVC.Controllers
 {
-    [TypeFilter(typeof(TokenFilter))]
     public class HomeController : Controller
     {
         public HomeController()

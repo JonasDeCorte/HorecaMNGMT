@@ -3,7 +3,7 @@ using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Dtos.Schedules;
 
-namespace Horeca.MVC.Models.Mappers
+namespace Horeca.MVC.Helpers.Mappers
 {
     public static class BookingMapper
     {
@@ -63,11 +63,6 @@ namespace Horeca.MVC.Models.Mappers
                 },
                 ScheduleId = scheduleDto.Id
             };
-        }
-
-        public static BookingInfoViewModel MapBookingInfoModel(UserDto userDto, ScheduleByIdDto scheduleDto)
-        {
-            return new BookingInfoViewModel();
         }
 
         public static BookingHistoryViewModel MapBookingHistoryModel(BookingHistoryDto bookingHistoryDto)

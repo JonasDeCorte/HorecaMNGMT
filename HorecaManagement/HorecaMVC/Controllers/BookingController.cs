@@ -1,6 +1,5 @@
-﻿using Horeca.MVC.Controllers.Filters;
-using Horeca.MVC.Models.Bookings;
-using Horeca.MVC.Models.Mappers;
+﻿using Horeca.MVC.Models.Bookings;
+using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Bookings;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +8,9 @@ namespace Horeca.MVC.Controllers
 {
     public class BookingController : Controller
     {
-        public IBookingService bookingService { get; }
-        public IAccountService accountService { get; }
-        public IScheduleService scheduleService { get; }
+        private IBookingService bookingService { get; }
+        private IAccountService accountService { get; }
+        private IScheduleService scheduleService { get; }
 
         public BookingController(IBookingService bookingService, IAccountService accountService, IScheduleService scheduleService)
         {

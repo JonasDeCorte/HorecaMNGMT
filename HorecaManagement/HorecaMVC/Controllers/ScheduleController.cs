@@ -1,4 +1,4 @@
-﻿using Horeca.MVC.Models.Mappers;
+﻿using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Models.Schedules;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Schedules;

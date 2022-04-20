@@ -27,6 +27,13 @@
         public const string Member = "Member";
         public const string ListCount = "ListCount";
 
+        public const string Order = "Order";
+        public const string Orders = "Orders";
+        public const string OrderLine = "OrderLine";
+        public const string Table = "Table";
+        public const string Prepare = "Prepare";
+        public const string Ready = "Ready";
+
         public const string Account = "Account";
         public const string User = "User";
         public const string Admin = "Admin";
