@@ -116,11 +116,11 @@ namespace Horeca.MVC.Services
             request.Content = new StringContent(JsonConvert.SerializeObject(bookingDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateBooking(EditBookingDto bookingDto)
@@ -130,11 +130,11 @@ namespace Horeca.MVC.Services
             request.Content = new StringContent(JsonConvert.SerializeObject(bookingDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteBooking(int id)
@@ -143,11 +143,11 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{id}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
     }
 }

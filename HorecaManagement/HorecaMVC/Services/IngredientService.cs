@@ -25,10 +25,7 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Ingredient}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            } else
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(await response.Content.ReadAsStringAsync());
                 if (result == null)
@@ -36,7 +33,8 @@ namespace Horeca.MVC.Services
                     return new List<IngredientDto>();
                 }
                 return result;
-            } 
+            }
+            return null;
         }
 
         public async Task<IngredientDto> GetIngredientById(int id)
@@ -45,11 +43,7 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Ingredient}/{id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            } 
-            else
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<IngredientDto>(await response.Content.ReadAsStringAsync());
                 if (result == null)
@@ -58,6 +52,7 @@ namespace Horeca.MVC.Services
                 }
                 return result;
             }
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddIngredient(MutateIngredientDto ingredient)
@@ -70,11 +65,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteIngredient(int id)
@@ -84,11 +79,11 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateIngredient(MutateIngredientDto ingredient)
@@ -101,11 +96,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
     }
 }

@@ -66,17 +66,16 @@ namespace Horeca.MVC.Services
             request.Content = new StringContent(JsonConvert.SerializeObject(refreshToken), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                foreach (string key in httpContextAccessor.HttpContext.Session.Keys)
+                {
+                    httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
+                    httpContextAccessor.HttpContext.Session.Remove(key);
+                }
+                return response;
             }
-            foreach (string key in httpContextAccessor.HttpContext.Session.Keys)
-            {
-                httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
-                httpContextAccessor.HttpContext.Session.Remove(key);
-            }
-
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RegisterUser(RegisterUserDto user)
@@ -89,11 +88,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
@@ -106,11 +105,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddPermissions(MutateUserPermissionsDto model)
@@ -123,11 +122,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
@@ -140,11 +139,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<IEnumerable<BaseUserDto>> GetUsers()
