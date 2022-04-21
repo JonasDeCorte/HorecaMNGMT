@@ -41,7 +41,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = dish.Name,
                 DishType = dish.DishType,
                 Category = dish.Category,
-                Description = dish.Description
+                Description = dish.Description,
+                Price = dish.Price,
             };
         }
 
@@ -53,7 +54,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 MenuId = menu.Id,
                 Name = menu.Name,
                 Description = menu.Description,
-                Category = menu.Category
+                Category = menu.Category,
+                Price = menu.Price,
             };
         }
 
@@ -107,7 +109,8 @@ namespace Horeca.MVC.Helpers.Mappers
                     Name = dish.Name,
                     DishType = dish.DishType,
                     Category = dish.Category,
-                    Description = dish.Description
+                    Description = dish.Description,
+                    Price = dish.Price,
                 }
             };
         }
@@ -122,7 +125,8 @@ namespace Horeca.MVC.Helpers.Mappers
                     Id = menu.MenuId,
                     Name = menu.Name,
                     Category = menu.Category,
-                    Description = menu.Description
+                    Description = menu.Description,
+                    Price = menu.Price,
                 }
             };
         }
