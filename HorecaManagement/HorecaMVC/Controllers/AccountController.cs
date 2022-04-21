@@ -25,12 +25,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserListViewModel listModel = new();
-            foreach (var user in users)
-            {
-                UserViewModel model = AccountMapper.MapUserModel(user);
-                listModel.Users.Add(model);
-            }
+            UserListViewModel listModel = AccountMapper.MapUserListModel(users);
 
             return View(listModel);
         }
@@ -120,14 +115,9 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
             var permissions = await permissionService.GetPermissions();
-
-            MutatePermissionsViewModel editModel = new()
-            {
-                Username = userModel.Username,
-                Permissions = AccountMapper.MapAddPermissionsList(userModel, permissions)
-            };
+            MutatePermissionsViewModel editModel = AccountMapper.MapMutatePermissionsModel(
+                AccountMapper.MapUserPermissionsModel(user), permissions);
 
             return View(editModel);
         }
@@ -160,13 +150,8 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
-
-            MutatePermissionsViewModel editModel = new()
-            {
-                Username = userModel.Username,
-                Permissions = AccountMapper.MapRemovePermissionsList(userModel)
-            };
+            MutatePermissionsViewModel editModel = AccountMapper.MapMutatePermissionsModel(
+                AccountMapper.MapUserPermissionsModel(user), new());
 
             return View(editModel);
         }

@@ -24,5 +24,9 @@ namespace Horeca.MVC.Models.Dishes
         [StringLength(500, ErrorMessage = ErrorConstants.StringLength500)]
         public string Description { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
+        public decimal Price { get; set; }
+
     }
 }

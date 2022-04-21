@@ -50,7 +50,7 @@
             @if (accountService.Authorize(PermissionConstants.Order_Read))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Order" asp-action="Index" 
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" 
                         asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-state="@OrderState.Prepare">
                         Orders
                     </a>

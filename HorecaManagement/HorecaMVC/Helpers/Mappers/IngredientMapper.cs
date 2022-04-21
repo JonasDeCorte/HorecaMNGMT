@@ -14,11 +14,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = ingredientDto.Name,
                 IngredientType = ingredientDto.IngredientType,
                 BaseAmount = ingredientDto.BaseAmount,
-                Unit = new UnitViewModel
-                {
-                    Id = ingredientDto.Unit.Id,
-                    Name = ingredientDto.Unit.Name
-                }
+                Unit = UnitMapper.MapUnitModel(ingredientDto.Unit)
             };
         }
 
@@ -27,11 +23,7 @@ namespace Horeca.MVC.Helpers.Mappers
             CreateIngredientViewModel model = new CreateIngredientViewModel();
             foreach (var unitDto in unitDtos)
             {
-                model.Units.Add(new UnitViewModel
-                {
-                    Id = unitDto.Id,
-                    Name = unitDto.Name,
-                });
+                model.Units.Add(UnitMapper.MapUnitModel(unitDto));
             }
             return model;
         }
@@ -44,11 +36,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = ingredientModel.Name,
                 BaseAmount = ingredientModel.BaseAmount,
                 IngredientType = ingredientModel.IngredientType,
-                Unit = new UnitDto
-                {
-                    Id = ingredientModel.UnitId,
-                    Name = ""
-                },
+                Unit = UnitMapper.MapUnitDto(ingredientModel)
             };
         }
 
@@ -60,11 +48,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = ingredientModel.Name,
                 IngredientType = ingredientModel.IngredientType,
                 BaseAmount = ingredientModel.BaseAmount,
-                Unit = new UnitDto
-                {
-                    Id = ingredient.Unit.Id,
-                    Name = ingredientModel.Unit.Name,
-                }
+                Unit = UnitMapper.MapUnitDto(ingredientModel, ingredient)
             };
         }
     }
