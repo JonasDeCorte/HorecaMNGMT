@@ -13,9 +13,10 @@
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th scope="col" class="col-3">Name</th>
+                        <th scope="col" class="col-2">Name</th>
                         <th scope="col" class="col-2">Category</th>
-                        <th scope="col" class="col-4">Description</th>
+                        <th scope="col" class="col-2">Price</th>
+                        <th scope="col" class="col-3">Description</th>
                         <th scope="col" class="col-3">Options</th>
                     </tr>
                 </thead>
@@ -25,6 +26,7 @@
                         <tr>
                             <td>@menu.Name</td>
                             <td>@menu.Category</td>
+                            <td>€@menu.Price</td>
                             <td>@menu.Description</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@menu.MenuId" class="btn btn-primary">Details</a>

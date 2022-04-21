@@ -27,6 +27,7 @@
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Dish Type</th>
                                                 <th scope="col">Category</th>
+                                                <th scope="col">Price</th>
                                                 <th scope="col">Options</th>
                                             </tr>
                                         </thead>
@@ -37,6 +38,7 @@
                                                     <td>@item.Name</td>
                                                     <td>@item.DishType</td>
                                                     <td>@item.Category</td>
+                                                    <td>€@item.Price</td>
                                                     <td>
                                                         @if (accountService.Authorize(PermissionConstants.Dish_Update))
                                                         {
@@ -56,7 +58,7 @@
                                                 </tr>
                                             }
                                             <tr>
-                                                <td colspan="4">
+                                                <td colspan="5">
                                                     @if (accountService.Authorize(PermissionConstants.Dish_Create))
                                                     {
                                                         <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Dish</a>
