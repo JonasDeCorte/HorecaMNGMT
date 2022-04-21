@@ -76,7 +76,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuCardService.AddMenuCard(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -104,7 +104,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuCardService.AddMenuCardDish(id, result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id });
@@ -132,7 +132,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuCardService.AddMenuCardMenu(id, result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id });
@@ -162,7 +162,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuCardService.UpdateMenuCard(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id = menuCard.Id });
@@ -193,7 +193,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuCardService.UpdateMenuCardDish(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id = model.MenuCardId });
@@ -224,7 +224,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuCardService.UpdateMenuCardMenu(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id = model.MenuCardId });
@@ -240,7 +240,7 @@ namespace Horeca.MVC.Controllers
             var response = await menuCardService.DeleteMenuCard(id);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Index));
@@ -256,7 +256,7 @@ namespace Horeca.MVC.Controllers
             var response = await menuCardService.DeleteMenuCardDish(dish);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = menuCardId });
@@ -272,7 +272,7 @@ namespace Horeca.MVC.Controllers
             var response = await menuCardService.DeleteMenuCardMenu(menu);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = menuCardId });

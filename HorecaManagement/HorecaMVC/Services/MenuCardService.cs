@@ -25,39 +25,48 @@ namespace Horeca.MVC.Services
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/" +
                 $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<IEnumerable<MenuCardDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<MenuCardDto>();
+                }
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<IEnumerable<MenuCardDto>>(await response.Content.ReadAsStringAsync());
-
-            return result;
+            return null;
         }
 
         public async Task<MenuCardDto> GetMenuCardById(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
                 $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<MenuCardDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new MenuCardDto();
+                }
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<MenuCardDto>(await response.Content.ReadAsStringAsync());
-
-            return result;
+            return null;
         }
 
         public async Task<MenuCardsByIdDto> GetListsByMenuCardId(int id)
         {
             var response = await httpClient.GetAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}" +
                 $"/{ClassConstants.Menus}/{ClassConstants.Dishes}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new MenuCardsByIdDto();
+                }
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<MenuCardsByIdDto>(await response.Content.ReadAsStringAsync());
-
-            return result;
+            return null;
         }
 
         public async Task<MenuCard> GetMenuCardDetailById(int id)
@@ -82,11 +91,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddMenuCardDish(int id, MutateDishMenuCardDto dish)
@@ -99,11 +108,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddMenuCardMenu(int id, MutateMenuMenuCardDto menu)
@@ -116,22 +125,22 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteMenuCard(int id)
         {
             var response = await httpClient.DeleteAsync($"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{id}/" +
                 $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteMenuCardDish(DeleteDishMenuCardDto dish)
@@ -144,11 +153,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteMenuCardMenu(DeleteMenuMenuCardDto menu)
@@ -161,11 +170,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateMenuCard(MutateMenuCardDto menuCard)
@@ -178,11 +187,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateMenuCardDish(MutateDishMenuCardDto dishMenuCardDto)
@@ -195,11 +204,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateMenuCardMenu(MutateMenuMenuCardDto menuMenuCardDto)
@@ -212,11 +221,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
     }
 }

@@ -28,6 +28,10 @@ namespace Horeca.MVC.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<UnitDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<UnitDto>();
+                }
                 return result;
             }
             return null;
@@ -42,6 +46,10 @@ namespace Horeca.MVC.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<UnitDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new UnitDto();
+                }
                 return result;
             }
             return null;

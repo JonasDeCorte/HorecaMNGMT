@@ -28,9 +28,15 @@ namespace Horeca.MVC.Services
             if (!response.IsSuccessStatusCode)
             {
                 return null;
-            }
-
-            return JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(await response.Content.ReadAsStringAsync());
+            } else
+            {
+                var result = JsonConvert.DeserializeObject<IEnumerable<IngredientDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<IngredientDto>();
+                }
+                return result;
+            } 
         }
 
         public async Task<IngredientDto> GetIngredientById(int id)
@@ -42,8 +48,16 @@ namespace Horeca.MVC.Services
             if (!response.IsSuccessStatusCode)
             {
                 return null;
+            } 
+            else
+            {
+                var result = JsonConvert.DeserializeObject<IngredientDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new IngredientDto();
+                }
+                return result;
             }
-            return JsonConvert.DeserializeObject<IngredientDto>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<HttpResponseMessage> AddIngredient(MutateIngredientDto ingredient)

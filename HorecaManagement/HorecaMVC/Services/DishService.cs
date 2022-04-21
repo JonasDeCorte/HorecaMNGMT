@@ -30,6 +30,10 @@ namespace Horeca.MVC.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<DishDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<DishDto>();
+                }
                 return result;
             }
             return null;
@@ -44,6 +48,10 @@ namespace Horeca.MVC.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<DishDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new DishDto();
+                }
                 return result;
             }
             return null;
@@ -57,8 +65,12 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
-                var listResult = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(await response.Content.ReadAsStringAsync());
-                return listResult;
+                var result = JsonConvert.DeserializeObject<DishIngredientsByIdDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new DishIngredientsByIdDto();
+                }
+                return result;
             }
             return null;
         }

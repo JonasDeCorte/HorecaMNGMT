@@ -74,7 +74,7 @@ namespace Horeca.MVC.Controllers
             var response = await accountService.LogoutUser();
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Index), "Home");
@@ -116,7 +116,7 @@ namespace Horeca.MVC.Controllers
                 return View(nameof(NotFound));
             }
             var permissions = await permissionService.GetPermissions();
-            MutatePermissionsViewModel editModel = AccountMapper.MapMutatePermissionsModel(
+            MutatePermissionsViewModel editModel = AccountMapper.MapAddPermissionsModel(
                 AccountMapper.MapUserPermissionsModel(user), permissions);
 
             return View(editModel);
@@ -132,7 +132,7 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.AddPermissions(dto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { username = model.Username });
@@ -150,8 +150,8 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            MutatePermissionsViewModel editModel = AccountMapper.MapMutatePermissionsModel(
-                AccountMapper.MapUserPermissionsModel(user), new());
+            MutatePermissionsViewModel editModel = AccountMapper.MapRemovePermissionsModel(
+                AccountMapper.MapUserPermissionsModel(user));
 
             return View(editModel);
         }
@@ -166,7 +166,7 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.RemovePermissions(dto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { username = model.Username });

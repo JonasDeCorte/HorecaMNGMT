@@ -42,6 +42,10 @@ namespace Horeca.MVC.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<List<GetOrderLinesByTableIdDto>>(response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new List<GetOrderLinesByTableIdDto>();
+                }
                 return result;
             }
             return null;
@@ -57,6 +61,10 @@ namespace Horeca.MVC.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<List<OrderDtoDetail>>(response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new List<OrderDtoDetail>();
+                }
                 return result;
             }
             return null;

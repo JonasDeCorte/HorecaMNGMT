@@ -49,7 +49,7 @@ namespace Horeca.MVC.Controllers
             var response = await dishService.DeleteDish(id);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Index));
@@ -65,7 +65,7 @@ namespace Horeca.MVC.Controllers
             var response = await dishService.DeleteDishIngredient(ingredient);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = dishId });
@@ -87,7 +87,7 @@ namespace Horeca.MVC.Controllers
                 var response = await dishService.AddDish(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -114,7 +114,7 @@ namespace Horeca.MVC.Controllers
                 var response = await dishService.AddDishIngredient(id, result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id });
@@ -148,7 +148,7 @@ namespace Horeca.MVC.Controllers
             var response = await dishService.AddDishIngredient(id, result);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id });
@@ -175,7 +175,7 @@ namespace Horeca.MVC.Controllers
                 var response = await dishService.UpdateDish(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id });
@@ -209,7 +209,7 @@ namespace Horeca.MVC.Controllers
                 var response = await dishService.UpdateDishIngredient(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id = ingredient.DishId });

@@ -59,7 +59,7 @@ namespace Horeca.MVC.Controllers
             var response = await menuService.DeleteMenu(id);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Index));
@@ -75,7 +75,7 @@ namespace Horeca.MVC.Controllers
             var response = await menuService.DeleteMenuDish(dish);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = menuId });
@@ -98,7 +98,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuService.AddMenu(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -126,7 +126,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuService.AddMenuDish(id, result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id });
@@ -155,7 +155,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuService.UpdateMenu(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id });
@@ -186,7 +186,7 @@ namespace Horeca.MVC.Controllers
                 var response = await menuService.UpdateMenuDish(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { id = dish.MenuId });

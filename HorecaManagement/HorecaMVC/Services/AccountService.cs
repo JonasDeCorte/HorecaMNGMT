@@ -175,15 +175,16 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-            else
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new UserDto();
+                }
                 return result;
             }
+            return null;
         }
 
         public UserDto GetCurrentUser()
@@ -196,7 +197,7 @@ namespace Horeca.MVC.Services
             var currentUser = JsonConvert.DeserializeObject<UserDto>(userCookie);
             if (currentUser == null)
             {
-                return null;
+                return new UserDto();
             }
             else
             {
@@ -220,7 +221,8 @@ namespace Horeca.MVC.Services
 
         public bool IsLoggedIn()
         {
-            if (GetCurrentUser() == null)
+            var user = GetCurrentUser();
+            if (user == null || user.Id == null)
             {
                 return false;
             }

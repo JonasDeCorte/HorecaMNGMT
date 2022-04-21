@@ -51,7 +51,7 @@ namespace Horeca.MVC.Controllers
             var response = await ingredientService.DeleteIngredient(id);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Index));
@@ -74,7 +74,7 @@ namespace Horeca.MVC.Controllers
                 var response = await ingredientService.AddIngredient(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -106,7 +106,7 @@ namespace Horeca.MVC.Controllers
                 var response = await ingredientService.UpdateIngredient(result);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Index));

@@ -51,7 +51,7 @@ namespace Horeca.MVC.Controllers
                 var response = await scheduleService.AddSchedule(restaurantDto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
                 return RedirectToAction(nameof(Detail), "Restaurant", new { id = model.RestaurantId });
             }
@@ -78,7 +78,7 @@ namespace Horeca.MVC.Controllers
                 var response = await scheduleService.UpdateSchedule(restaurantDto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
                 return RedirectToAction(nameof(Detail), "Restaurant", new { id = model.RestaurantId });
             }
@@ -94,7 +94,7 @@ namespace Horeca.MVC.Controllers
             var response = await scheduleService.DeleteSchedule(scheduleId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             return RedirectToAction(nameof(Detail), "Restaurant", new { id = restaurantId });
         }

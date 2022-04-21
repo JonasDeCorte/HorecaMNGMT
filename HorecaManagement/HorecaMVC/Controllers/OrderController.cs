@@ -55,7 +55,7 @@ namespace Horeca.MVC.Controllers
             var response = await orderService.AddOrder(dto);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             return View();
         }
@@ -66,7 +66,7 @@ namespace Horeca.MVC.Controllers
             var response = await orderService.PrepareOrderLine(restaurantId, orderId, orderLineId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Begin});
         }
@@ -77,7 +77,7 @@ namespace Horeca.MVC.Controllers
             var response = await orderService.ReadyOrderLine(restaurantId, orderId, orderLineId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
         }
@@ -88,7 +88,7 @@ namespace Horeca.MVC.Controllers
             var response = await orderService.DeliverOrder(restaurantId, orderId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
         }
