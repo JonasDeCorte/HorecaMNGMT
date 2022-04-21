@@ -7,13 +7,6 @@
         <div class="card mt-3">
             <div class="card-header">
                 <h1>@Model.Name</h1>
-                @if (accountService.Authorize(PermissionConstants.Order_Read))
-                {
-                    <a class="btn btn-primary" asp-controller="Order" asp-action="Index" asp-route-restaurantId="@Model.Id" 
-                        asp-route-state="@OrderState.Prepare">
-                        Orders
-                    </a>
-                }
             </div>
             @if (accountService.Authorize(PermissionConstants.Schedule_Read))
             {

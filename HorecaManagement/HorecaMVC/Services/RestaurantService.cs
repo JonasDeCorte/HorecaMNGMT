@@ -186,11 +186,8 @@ namespace Horeca.MVC.Services
                 httpContextAccessor.HttpContext.Session.Remove("CurrentRestaurantId");
                 httpContextAccessor.HttpContext.Session.Remove("CurrentRestaurantName");
             }
-            if(restaurantId != 0 && restaurantName != "Horeca")
-            {
-                httpContextAccessor.HttpContext.Session.SetInt32("CurrentRestaurantId", restaurantId);
-                httpContextAccessor.HttpContext.Session.SetString("CurrentRestaurantName", restaurantName);
-            }
+            httpContextAccessor.HttpContext.Session.SetInt32("CurrentRestaurantId", restaurantId);
+            httpContextAccessor.HttpContext.Session.SetString("CurrentRestaurantName", restaurantName);
         }
     }
 }

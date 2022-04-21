@@ -14,12 +14,15 @@ namespace Horeca.MVC.Services
         private readonly IConfiguration configuration;
         private readonly ITokenService tokenService;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IRestaurantService restaurantService;
 
-        public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, 
+            IHttpContextAccessor httpContextAccessor, IRestaurantService restaurantService)
         {
             this.httpClient = httpClient;
             this.tokenService = tokenService;
             this.httpContextAccessor = httpContextAccessor;
+            this.restaurantService = restaurantService;
             this.configuration = configuration;
         }
 
@@ -47,6 +50,8 @@ namespace Horeca.MVC.Services
                 httpContextAccessor.HttpContext.Session.Remove("CurrentUser");
             }
             httpContextAccessor.HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(currentUser));
+
+            restaurantService.SetCurrentRestaurant(0, "Horeca");
 
             return response;
         }
