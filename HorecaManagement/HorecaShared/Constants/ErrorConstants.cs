@@ -8,6 +8,6 @@
         public const string StartTimeEarlier = "Start Time must be earlier than End Time.";
         public const string SeatsSmaller = "{0} must be lower than or equal to capacity.";
         public const string AboveZero = "{0} must be higher than 0.";
-        public const string InvalidEmail = "Invalid Email Address";
+        public const string Invalid = "Invalid {0}";
     }
 }

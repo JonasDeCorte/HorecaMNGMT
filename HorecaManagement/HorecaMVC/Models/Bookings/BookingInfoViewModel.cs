@@ -10,10 +10,12 @@ namespace Horeca.MVC.Models.Bookings
 
         [Display(Name = "Contact Name")]
         [Required]
+        [StringLength(50, ErrorMessage = ErrorConstants.StringLength50)]
         public string FullName { get; set; }
 
         [Display(Name = "Phone Number")]
         [Required]
+        [RegularExpression(@"\+[0-9]+", ErrorMessage = ErrorConstants.Invalid)]
         public string PhoneNo { get; set; }
 
         [Display(Name = "Booking Date")]
