@@ -13,12 +13,14 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 {
     public class DeleteUserPermissionsCommand : IRequest<string>
     {
-        public DeleteUserPermissionsCommand(DeleteUserPermissionsDto model)
+        public DeleteUserPermissionsCommand(DeleteUserPermissionsDto model, string username)
         {
             Model = model;
+            Username = username;
         }
 
         public DeleteUserPermissionsDto Model { get; }
+        public string Username { get; }
     }
 
     public class DeleteUserPermissionsCommandHandler : IRequestHandler<DeleteUserPermissionsCommand, string>
@@ -40,6 +42,7 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
 
         public async Task<string> Handle(DeleteUserPermissionsCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             var user = await userManager.FindByNameAsync(request.Model.UserName);
             if (user is null)
             {
@@ -78,6 +81,14 @@ namespace Horeca.Core.Handlers.Commands.UserPermissions
             logger.Info("refresh user sign in : {object}", user.Id);
 
             return user.Id;
+        }
+
+        private static void ValidateModelIds(DeleteUserPermissionsCommand request)
+        {
+            if (string.IsNullOrEmpty(request.Model.UserName))
+            {
+                request.Model.UserName = request.Username;
+            }
         }
 
         private ClaimsIdentity RemoveClaims(List<UserPermission> duplicates)

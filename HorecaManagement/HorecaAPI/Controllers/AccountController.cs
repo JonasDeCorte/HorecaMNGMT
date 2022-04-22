@@ -13,7 +13,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Http;
 
 namespace Horeca.API.Controllers
 {
@@ -174,8 +173,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> RemovePermissions([FromRoute] string username, DeleteUserPermissionsDto model)
         {
-            model.UserName = username;
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUserPermissionsCommand(model)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUserPermissionsCommand(model, username)));
         }
     }
 }
