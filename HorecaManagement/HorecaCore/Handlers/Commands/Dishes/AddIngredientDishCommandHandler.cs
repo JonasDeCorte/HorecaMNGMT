@@ -9,10 +9,14 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class AddIngredientDishCommand : IRequest<int>
     {
         public MutateIngredientByDishDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
 
-        public AddIngredientDishCommand(MutateIngredientByDishDto model)
+        public AddIngredientDishCommand(MutateIngredientByDishDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -29,6 +33,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to add {@object} to Dish with Id: {Id}", request.Model.Ingredient, request.Model.Id);
             var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
@@ -75,6 +80,18 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             logger.Info("succes adding {@object} to dish with id {id}", entity, dish.Id);
 
             return entity.Id;
+        }
+
+        private static void ValidateModelIds(AddIngredientDishCommand request)
+        {
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

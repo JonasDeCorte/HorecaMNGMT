@@ -10,10 +10,16 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
     {
         public DeleteIngredientDishDto Model { get; set; }
+        public int Id { get; }
+        public int IngredientId { get; }
+        public int RestaurantId { get; }
 
-        public DeleteIngredientDishCommand(DeleteIngredientDishDto model)
+        public DeleteIngredientDishCommand(DeleteIngredientDishDto model, int id, int ingredientId, int restaurantId)
         {
             Model = model;
+            Id = id;
+            IngredientId = ingredientId;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -31,6 +37,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(DeleteIngredientDishCommand request, CancellationToken cancellationToken)
         {
+            ValidateRequestIds(request);
             var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.DishId, request.Model.RestaurantId);
 
             var ingredient = repository.Ingredients.Get(request.Model.IngredientId);
@@ -47,6 +54,22 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             logger.Info("Deleted {@object} with id {ingredId} from {@dish} with Id: {id}", ingredient, request.Model.IngredientId, dish, request.Model.DishId);
 
             return ingredient.Id;
+        }
+
+        private static void ValidateRequestIds(DeleteIngredientDishCommand request)
+        {
+            if (request.Model.DishId == 0)
+            {
+                request.Model.DishId = request.Id;
+            }
+            if (request.Model.IngredientId == 0)
+            {
+                request.Model.IngredientId = request.IngredientId;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

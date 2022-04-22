@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
+﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Dishes;
@@ -11,10 +10,12 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class CreateDishCommand : IRequest<int>
     {
         public MutateDishDto Model { get; }
+        public int RestaurantId { get; }
 
-        public CreateDishCommand(MutateDishDto model)
+        public CreateDishCommand(MutateDishDto model, int restaurantId)
         {
             Model = model;
+            RestaurantId = restaurantId;
         }
 
         public class CreateDishCommandHandler : IRequestHandler<CreateDishCommand, int>
@@ -29,7 +30,8 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
             public async Task<int> Handle(CreateDishCommand request, CancellationToken cancellationToken)
             {
-                logger.Info("trying to create {object} with Id: {Id}", nameof(Dish), request.Model.Id);
+                ValidateModelIds(request);
+                logger.Info("trying to create {object}", nameof(Dish));
                 var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
                 if (restaurant == null)
@@ -58,6 +60,14 @@ namespace Horeca.Core.Handlers.Commands.Dishes
                 logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
                 return entity.Id;
+            }
+
+            private static void ValidateModelIds(CreateDishCommand request)
+            {
+                if (request.Model.RestaurantId == 0)
+                {
+                    request.Model.RestaurantId = request.RestaurantId;
+                }
             }
         }
     }

@@ -9,10 +9,14 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class EditDishCommand : IRequest<int>
     {
         public MutateDishDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
 
-        public EditDishCommand(MutateDishDto model)
+        public EditDishCommand(MutateDishDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -28,6 +32,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(EditDishCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
 
             var dish = await repository.Dishes.GetDishById(request.Model.Id, request.Model.RestaurantId);
@@ -53,6 +58,18 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             logger.Info("updated {@object} with Id: {id}", dish, dish.Id);
 
             return dish.Id;
+        }
+
+        private static void ValidateModelIds(EditDishCommand request)
+        {
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

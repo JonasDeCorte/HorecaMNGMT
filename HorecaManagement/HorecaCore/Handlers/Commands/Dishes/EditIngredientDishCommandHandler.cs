@@ -10,10 +10,16 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class EditIngredientDishCommand : IRequest<int>
     {
         public MutateIngredientByDishDto Model { get; }
+        public int Id { get; }
+        public int IngredientId { get; }
+        public int RestaurantId { get; }
 
-        public EditIngredientDishCommand(MutateIngredientByDishDto model)
+        public EditIngredientDishCommand(MutateIngredientByDishDto model, int id, int ingredientId, int restaurantId)
         {
             Model = model;
+            Id = id;
+            IngredientId = ingredientId;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -29,6 +35,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
         public async Task<int> Handle(EditIngredientDishCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", dish, request.Model.Id);
@@ -39,6 +46,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
 
                 throw new EntityNotFoundException();
             }
+
             DishIngredient? dishIngredient = dish.DishIngredients.SingleOrDefault(x => x.IngredientId == request.Model.Ingredient.Id);
             if (dishIngredient is null)
             {
@@ -69,6 +77,22 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             logger.Info("updated {@object} with Id: {id}", dishIngredient.Ingredient, dishIngredient.Ingredient.Id);
 
             return dish.Id;
+        }
+
+        private static void ValidateModelIds(EditIngredientDishCommand request)
+        {
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
+            if (request.Model.Ingredient.Id == 0)
+            {
+                request.Model.Ingredient.Id = request.IngredientId;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

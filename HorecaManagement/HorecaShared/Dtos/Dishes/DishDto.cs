@@ -45,6 +45,7 @@ namespace Horeca.Shared.Dtos.Dishes
         public int Id { get; set; }
 
         public int RestaurantId { get; set; }
+
         public MutateIngredientDto Ingredient { get; set; }
     }
 }
