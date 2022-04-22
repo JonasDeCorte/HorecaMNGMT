@@ -44,22 +44,23 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             ingredient.Name = request.Model.Name ?? ingredient.Name;
 
             if (request.Model.BaseAmount != ingredient.BaseAmount)
-                ingredient.BaseAmount = request.Model.BaseAmount;
-
-            var modelUnit = repository.Units.Get(request.Model.Unit.Id);
-
-            if (modelUnit is null)
             {
-                logger.Error(EntityNotFoundException.Instance);
-
-                throw new EntityNotFoundException();
+                ingredient.BaseAmount = request.Model.BaseAmount;
             }
-            modelUnit.Name = request.Model.Unit.Name ?? modelUnit.Name;
 
-            ingredient.Unit = modelUnit ?? ingredient.Unit;
-            ingredient.Unit.IsEnabled = true;
+            if (request.Model.Unit.Id != 0)
+            {
+                var modelUnit = repository.Units.Get(request.Model.Unit.Id);
+                if (modelUnit is null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
 
-            repository.Units.Update(modelUnit);
+                    throw new EntityNotFoundException();
+                }
+                ingredient.Unit = modelUnit ?? ingredient.Unit;
+                ingredient.Unit.IsEnabled = true;
+            }
+
             repository.Ingredients.Update(ingredient);
 
             await repository.CommitAsync();

@@ -69,12 +69,13 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Update)]
         [HttpPut]
-        [Route("Restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
         {
             model.RestaurantId = restaurantId;
+            model.Id = id;
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditIngredientCommand(model)));
         }
 
