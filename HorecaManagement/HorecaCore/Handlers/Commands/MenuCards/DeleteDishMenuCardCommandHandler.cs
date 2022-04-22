@@ -9,10 +9,16 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
     {
         public DeleteDishMenuCardDto Model { get; set; }
+        public int Id { get; }
+        public int DishId { get; }
+        public int RestaurantId { get; }
 
-        public DeleteDishMenuCardCommand(DeleteDishMenuCardDto model)
+        public DeleteDishMenuCardCommand(DeleteDishMenuCardDto model, int id, int dishId, int restaurantId)
         {
             Model = model;
+            Id = id;
+            DishId = dishId;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -28,6 +34,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(DeleteDishMenuCardCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             var menuCard = await repository.MenuCards.GetMenuCardIncludingDependencies(request.Model.MenuCardId, request.Model.RestaurantId);
             var dish = repository.Dishes.Get(request.Model.DishId);
 
@@ -40,6 +47,22 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             logger.Info("deleted {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menuCard, request.Model.MenuCardId);
 
             return request.Model.DishId;
+        }
+
+        private static void ValidateModelIds(DeleteDishMenuCardCommand request)
+        {
+            if (request.Model.MenuCardId == 0)
+            {
+                request.Model.MenuCardId = request.Id;
+            }
+            if (request.Model.DishId == 0)
+            {
+                request.Model.DishId = request.DishId;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

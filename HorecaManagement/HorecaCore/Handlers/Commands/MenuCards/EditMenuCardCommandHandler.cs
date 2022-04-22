@@ -8,12 +8,16 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 {
     public class EditMenuCardCommand : IRequest<int>
     {
-        public EditMenuCardCommand(MutateMenuCardDto model)
+        public EditMenuCardCommand(MutateMenuCardDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
 
         public MutateMenuCardDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
     }
 
     public class EditMenuCardCommandHandler : IRequestHandler<EditMenuCardCommand, int>
@@ -28,6 +32,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(EditMenuCardCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to edit {object} with Id: {Id}", request.Model, request.Model.Id);
             var menuCard = await repository.MenuCards.GetMenuCardById(request.Model.Id, request.Model.RestaurantId);
 
@@ -45,6 +50,18 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             logger.Info("updated {@object} with Id: {id}", menuCard, menuCard.Id);
 
             return menuCard.Id;
+        }
+
+        private static void ValidateModelIds(EditMenuCardCommand request)
+        {
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

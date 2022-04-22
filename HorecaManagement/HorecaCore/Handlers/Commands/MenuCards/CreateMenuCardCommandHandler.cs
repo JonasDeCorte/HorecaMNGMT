@@ -9,12 +9,14 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 {
     public class CreateMenuCardCommand : IRequest<int>
     {
-        public CreateMenuCardCommand(MutateMenuCardDto model)
+        public CreateMenuCardCommand(MutateMenuCardDto model, int restaurantId)
         {
             Model = model;
+            RestaurantId = restaurantId;
         }
 
         public MutateMenuCardDto Model { get; }
+        public int RestaurantId { get; }
     }
 
     public class CreateMenuCardCommandHandler : IRequestHandler<CreateMenuCardCommand, int>
@@ -29,7 +31,8 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(CreateMenuCardCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to create {object} with Id: {Id}", nameof(MenuCard), request.Model.Id);
+            ValidateModelIds(request);
+            logger.Info("trying to create {object}", nameof(MenuCard));
 
             var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
@@ -54,6 +57,14 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
             return entity.Id;
+        }
+
+        private static void ValidateModelIds(CreateMenuCardCommand request)
+        {
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

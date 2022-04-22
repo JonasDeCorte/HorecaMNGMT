@@ -8,12 +8,16 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 {
     public class AddMenuMenuCardCommand : IRequest<int>
     {
-        public AddMenuMenuCardCommand(MutateMenuMenuCardDto model)
+        public AddMenuMenuCardCommand(MutateMenuMenuCardDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
 
         public MutateMenuMenuCardDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
     }
 
     public class AddMenuMenuCardCommandHandler : IRequestHandler<AddMenuMenuCardCommand, int>
@@ -29,6 +33,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
 
         public async Task<int> Handle(AddMenuMenuCardCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to add {@object} to menucard with Id: {Id}", request.Model.Menu, request.Model.MenuCardId);
 
             var menuCard = await repository.MenuCards.GetMenuCardIncludingMenus(request.Model.MenuCardId, request.Model.RestaurantId);
@@ -52,6 +57,18 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             logger.Info("succes adding {@object} to menucard with id {id}", entity, menuCard.Id);
 
             return entity.Id;
+        }
+
+        private static void ValidateModelIds(AddMenuMenuCardCommand request)
+        {
+            if (request.Model.MenuCardId == 0)
+            {
+                request.Model.MenuCardId = request.Id;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }
