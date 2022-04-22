@@ -35,19 +35,18 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Order), Permissions.Create)]
         [HttpPost]
-        [Route("Table/{TableId}")]
+        [Route("Table/{tableId}")]
         [ProducesResponseType(typeof(MutateOrderDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromRoute] int TableId, [FromBody] MutateOrderDto model)
+        public async Task<IActionResult> Post([FromRoute] int tableId, [FromBody] MutateOrderDto model)
         {
-            model.TableId = TableId;
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddOrderCommand(model)));
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddOrderCommand(model, tableId)));
         }
 
         /// <summary>
         /// Retrieve order lines list from the selected table
         /// </summary>
-        /// <param name="TableId">Table Id</param>
+        /// <param name="tableId">Table Id</param>
         /// <returns>
         /// Relevant order lines will be returned based on the table id
         /// </returns>
@@ -55,18 +54,18 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Order), Permissions.Read)]
         [HttpGet]
-        [Route("Table/{TableId}/Details")]
+        [Route("Table/{tableId}/Details")]
         [ProducesResponseType(typeof(IEnumerable<GetOrderLinesByTableIdDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetByTableId([FromRoute] int TableId)
+        public async Task<IActionResult> GetByTableId([FromRoute] int tableId)
         {
-            return Ok(await mediator.Send(new GetOrderLinesByTableIdQuery(TableId)));
+            return Ok(await mediator.Send(new GetOrderLinesByTableIdQuery(tableId)));
         }
 
         /// <summary>
         /// Retrieve orders list
         /// </summary>
-        /// <param name="TableId">Table Id</param>
+        /// <param name="restaurantId">restaurant Id</param>
         /// <returns>
         /// Relevant order lines will be returned based on the table id
         /// </returns>

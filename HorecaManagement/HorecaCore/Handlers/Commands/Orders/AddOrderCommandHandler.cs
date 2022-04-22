@@ -10,12 +10,14 @@ namespace Horeca.Core.Handlers.Commands.Orders
 {
     public class AddOrderCommand : IRequest<int>
     {
-        public AddOrderCommand(MutateOrderDto model)
+        public AddOrderCommand(MutateOrderDto model, int tableId)
         {
             Model = model;
+            TableId = tableId;
         }
 
         public MutateOrderDto Model { get; }
+        public int TableId { get; }
     }
 
     public class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, int>
@@ -30,6 +32,7 @@ namespace Horeca.Core.Handlers.Commands.Orders
 
         public async Task<int> Handle(AddOrderCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to create {object} with request: {@Id}", nameof(Order), request);
 
             Receipt receipt = new();
@@ -53,6 +56,14 @@ namespace Horeca.Core.Handlers.Commands.Orders
             await repository.CommitAsync();
 
             return order.Id;
+        }
+
+        private static void ValidateModelIds(AddOrderCommand request)
+        {
+            if (request.Model.TableId == 0)
+            {
+                request.Model.TableId = request.TableId;
+            }
         }
     }
 }
