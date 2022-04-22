@@ -11,12 +11,16 @@ namespace Horeca.Core.Handlers.Commands.Menus
 {
     public class AddDishMenuCommand : IRequest<int>
     {
-        public AddDishMenuCommand(MutateDishMenuDto model)
+        public AddDishMenuCommand(MutateDishMenuDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
 
         public MutateDishMenuDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
     }
 
     public class AddDishMenuCommandHandler : IRequestHandler<AddDishMenuCommand, int>
@@ -32,8 +36,8 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
         public async Task<int> Handle(AddDishMenuCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to add {@object} to menu with Id: {Id}", request.Model.Dish, request.Model.Id);
-
             var menu = await repository.Menus.GetMenuIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
             var entity = new Dish
@@ -56,6 +60,18 @@ namespace Horeca.Core.Handlers.Commands.Menus
             logger.Info("succes adding {@object} to menu with id {id}", entity, menu.Id);
 
             return entity.Id;
+        }
+
+        private static void ValidateModelIds(AddDishMenuCommand request)
+        {
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
+            if (request.Model.Dish.Id == 0)
+            {
+                request.Model.Dish.Id = request.Id;
+            }
         }
     }
 }

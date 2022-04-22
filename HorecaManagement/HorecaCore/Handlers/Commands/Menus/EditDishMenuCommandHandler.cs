@@ -9,10 +9,16 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class EditDishMenuCommand : IRequest<int>
     {
         public MutateDishMenuDto Model { get; }
+        public int Id { get; }
+        public int DishId { get; }
+        public int RestaurantId { get; }
 
-        public EditDishMenuCommand(MutateDishMenuDto model)
+        public EditDishMenuCommand(MutateDishMenuDto model, int id, int DishId, int restaurantId)
         {
             Model = model;
+            Id = id;
+            this.DishId = DishId;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -28,6 +34,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
         public async Task<int> Handle(EditDishMenuCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             var menu = await repository.Menus.GetMenuIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", menu, request.Model.Id);
@@ -62,6 +69,22 @@ namespace Horeca.Core.Handlers.Commands.Menus
             logger.Info("updated {@object} with Id: {id}", dish, dish.Id);
 
             return dish.Id;
+        }
+
+        private static void ValidateModelIds(EditDishMenuCommand request)
+        {
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
+            if (request.Model.Dish.Id == 0)
+            {
+                request.Model.Dish.Id = request.DishId;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

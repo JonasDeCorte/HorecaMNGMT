@@ -11,10 +11,12 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class CreateMenuCommand : IRequest<int>
     {
         public MutateMenuDto Model { get; }
+        public int RestaurantId { get; }
 
-        public CreateMenuCommand(MutateMenuDto model)
+        public CreateMenuCommand(MutateMenuDto model, int restaurantId)
         {
             Model = model;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -31,7 +33,8 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
         public async Task<int> Handle(CreateMenuCommand request, CancellationToken cancellationToken)
         {
-            logger.Info("trying to create {object} with Id: {Id}", nameof(Menu), request.Model.Id);
+            ValidateModelIds(request);
+            logger.Info("trying to create {object}", nameof(Menu));
             var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
             if (restaurant == null)
@@ -59,6 +62,14 @@ namespace Horeca.Core.Handlers.Commands.Menus
             logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
             return entity.Id;
+        }
+
+        private static void ValidateModelIds(CreateMenuCommand request)
+        {
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }
