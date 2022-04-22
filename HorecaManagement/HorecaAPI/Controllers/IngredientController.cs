@@ -55,8 +55,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
         {
-            model.RestaurantId = restaurantId;
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateIngredientCommand(model)));
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateIngredientCommand(model, restaurantId)));
         }
 
         /// <summary>
@@ -74,9 +73,7 @@ namespace Horeca.API.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
         {
-            model.RestaurantId = restaurantId;
-            model.Id = id;
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditIngredientCommand(model)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditIngredientCommand(model, id, restaurantId)));
         }
 
         /// <summary>

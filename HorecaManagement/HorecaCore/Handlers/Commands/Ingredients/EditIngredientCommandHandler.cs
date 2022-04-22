@@ -10,10 +10,14 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
     public class EditIngredientCommand : IRequest<int>
     {
         public MutateIngredientDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
 
-        public EditIngredientCommand(MutateIngredientDto model)
+        public EditIngredientCommand(MutateIngredientDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -29,6 +33,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
         public async Task<int> Handle(EditIngredientCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             var ingredient = await repository.Ingredients.GetIngredientIncludingUnit(request.Model.Id, request.Model.RestaurantId);
 
             logger.Info("trying to edit {@object} with Id: {Id}", ingredient, request.Model.Id);
@@ -67,6 +72,18 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             logger.Info("updated {@object} with Id: {id}", ingredient, ingredient.Id);
 
             return ingredient.Id;
+        }
+
+        private static void ValidateModelIds(EditIngredientCommand request)
+        {
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }

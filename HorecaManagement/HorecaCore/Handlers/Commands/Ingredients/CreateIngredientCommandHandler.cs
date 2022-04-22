@@ -10,10 +10,12 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
     public class CreateIngredientCommand : IRequest<int>
     {
         public MutateIngredientDto Model { get; }
+        public int RestaurantId { get; }
 
-        public CreateIngredientCommand(MutateIngredientDto model)
+        public CreateIngredientCommand(MutateIngredientDto model, int restaurantId)
         {
             Model = model;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -30,6 +32,7 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
         public async Task<int> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to create {@object} with Id: {Id}", nameof(Ingredient), request.Model.Id);
             var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
@@ -64,6 +67,14 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
             logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
             return entity.Id;
+        }
+
+        private static void ValidateModelIds(CreateIngredientCommand request)
+        {
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
         }
     }
 }
