@@ -46,7 +46,6 @@ namespace Horeca.Core.Handlers.Commands.Menus
             };
 
             menu.Dishes.Add(entity);
-            repository.Dishes.Add(entity);
             repository.Menus.Update(menu);
             await repository.CommitAsync();
 
