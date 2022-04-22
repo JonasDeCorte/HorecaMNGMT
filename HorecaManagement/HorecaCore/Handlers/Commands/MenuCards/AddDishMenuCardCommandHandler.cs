@@ -43,7 +43,6 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
                 Price = request.Model.Dish.Price,
             };
 
-            repository.Dishes.Add(entity);
             menuCard.Dishes.Add(entity);
             repository.MenuCards.Update(menuCard);
             await repository.CommitAsync();

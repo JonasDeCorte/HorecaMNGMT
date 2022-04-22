@@ -1,14 +1,11 @@
-using FluentValidation;
 using Horeca.API.Authorization;
 using Horeca.API.Middleware;
 using Horeca.API.PipelineBehaviours;
 using Horeca.Core;
-using Horeca.Core.Validators;
 using Horeca.Infrastructure;
 using Horeca.Infrastructure.Data;
 using MediatR;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

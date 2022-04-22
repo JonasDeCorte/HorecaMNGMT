@@ -38,7 +38,7 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task<MenuCard> GetMenuCardIncludingDishes(int id, int restaurantId)
         {
-            return await context.MenuCards
+            return await context.MenuCards.Include(x => x.Restaurant)
                                          .Include(x => x.Dishes)
                                          .Where(x => x.RestaurantId.Equals(restaurantId))
                                          .SingleOrDefaultAsync(x => x.Id.Equals(id));
@@ -46,7 +46,8 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task<MenuCard> GetMenuCardIncludingMenus(int id, int restaurantId)
         {
-            return await context.MenuCards.Include(x => x.Menus)
+            return await context.MenuCards.Include(x => x.Restaurant)
+                                        .Include(x => x.Menus)
                                         .Where(x => x.RestaurantId.Equals(restaurantId))
                                         .SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
