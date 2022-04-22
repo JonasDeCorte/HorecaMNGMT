@@ -39,20 +39,24 @@ namespace Horeca.Core.Handlers.Commands.Ingredients
 
                 throw new EntityNotFoundException();
             }
+
+            Shared.Data.Entities.Unit unit = null;
+            if (request.Model.Unit.Id != 0)
+            {
+                unit = repository.Units.Get(request.Model.Unit.Id);
+            }
+
             var entity = new Ingredient
             {
                 Name = request.Model.Name,
                 BaseAmount = request.Model.BaseAmount,
                 IngredientType = request.Model.IngredientType,
-                Unit = new Shared.Data.Entities.Unit
-                {
-                    Name = request.Model.Unit.Name,
-                },
             };
             repository.Ingredients.Add(entity);
             await repository.CommitAsync();
-
             // now when the entity exists in the db - attach the restaurant as FK
+
+            entity.Unit = unit ?? new Shared.Data.Entities.Unit { Name = request.Model.Unit.Name };
             entity.Restaurant = restaurant;
             repository.Ingredients.Update(entity);
             await repository.CommitAsync();

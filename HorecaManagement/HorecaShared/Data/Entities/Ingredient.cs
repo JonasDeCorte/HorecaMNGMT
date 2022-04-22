@@ -7,8 +7,8 @@
 
         public int BaseAmount { get; set; }
 
-        public Unit Unit { get; set; }
-        public int UnitId { get; set; }
+        public Unit? Unit { get; set; }
+        public int? UnitId { get; set; }
 
         public Restaurant? Restaurant { get; set; }
 
