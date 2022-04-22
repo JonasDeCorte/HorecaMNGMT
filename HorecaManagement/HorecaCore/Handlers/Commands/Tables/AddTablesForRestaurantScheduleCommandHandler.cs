@@ -10,12 +10,14 @@ namespace Horeca.Core.Handlers.Commands.Tables
 {
     public class AddTableForRestaurantScheduleCommand : IRequest<TableDto>
     {
-        public AddTableForRestaurantScheduleCommand(MutateTableDto model)
+        public AddTableForRestaurantScheduleCommand(MutateTableDto model, int scheduleId)
         {
             Model = model;
+            ScheduleId = scheduleId;
         }
 
         public MutateTableDto Model { get; }
+        public int ScheduleId { get; }
     }
 
     public class AddTableForRestaurantScheduleCommandHandler : IRequestHandler<AddTableForRestaurantScheduleCommand, TableDto>
@@ -32,6 +34,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
 
         public async Task<TableDto> Handle(AddTableForRestaurantScheduleCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to create {object} with request: {@Id}", nameof(Table), request);
             var restaurantSchedule = repository.Schedules.Get(request.Model.ScheduleId);
 
@@ -59,6 +62,14 @@ namespace Horeca.Core.Handlers.Commands.Tables
             await repository.CommitAsync();
 
             return mapper.Map<TableDto>(table);
+        }
+
+        private static void ValidateModelIds(AddTableForRestaurantScheduleCommand request)
+        {
+            if (request.Model.ScheduleId == 0)
+            {
+                request.Model.ScheduleId = request.ScheduleId;
+            }
         }
     }
 }

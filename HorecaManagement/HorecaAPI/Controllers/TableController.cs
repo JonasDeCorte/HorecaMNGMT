@@ -38,8 +38,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromRoute] int ScheduleId, [FromBody] MutateTableDto model)
         {
-            model.ScheduleId = ScheduleId;
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddTableForRestaurantScheduleCommand(model)));
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddTableForRestaurantScheduleCommand(model, ScheduleId)));
         }
     }
 }
