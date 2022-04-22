@@ -9,10 +9,14 @@ namespace Horeca.Core.Handlers.Commands.Units
     public class EditUnitCommand : IRequest<int>
     {
         public MutateUnitDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
 
-        public EditUnitCommand(MutateUnitDto model)
+        public EditUnitCommand(MutateUnitDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -28,8 +32,8 @@ namespace Horeca.Core.Handlers.Commands.Units
 
         public async Task<int> Handle(EditUnitCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to edit {object} with Id: {Id}", nameof(Shared.Data.Entities.Unit), request.Model.Id);
-
             var unit = await repository.Units.GetUnitById(request.Model.Id, request.Model.RestaurantId);
 
             if (unit is null)
@@ -47,6 +51,18 @@ namespace Horeca.Core.Handlers.Commands.Units
             logger.Info("updated {@object} with Id: {id}", unit, unit.Id);
 
             return unit.Id;
+        }
+
+        private static void ValidateModelIds(EditUnitCommand request)
+        {
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
         }
     }
 }

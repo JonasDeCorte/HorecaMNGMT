@@ -10,10 +10,12 @@ namespace Horeca.Core.Handlers.Commands.Units
     public class CreateUnitCommand : IRequest<int>
     {
         public MutateUnitDto Model { get; }
+        public int RestaurantId { get; }
 
-        public CreateUnitCommand(MutateUnitDto model)
+        public CreateUnitCommand(MutateUnitDto model, int restaurantId)
         {
             Model = model;
+            RestaurantId = restaurantId;
         }
 
         public class CreateUnitCommandHandler : IRequestHandler<CreateUnitCommand, int>
@@ -28,8 +30,8 @@ namespace Horeca.Core.Handlers.Commands.Units
 
             public async Task<int> Handle(CreateUnitCommand request, CancellationToken cancellationToken)
             {
-                logger.Info("trying to create {@object} with Id: {Id}", nameof(Shared.Data.Entities.Unit), request.Model.Id);
-
+                ValidateModelIds(request);
+                logger.Info("trying to create {@object}", nameof(Shared.Data.Entities.Unit));
                 var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
                 if (restaurant == null)
@@ -50,6 +52,14 @@ namespace Horeca.Core.Handlers.Commands.Units
                 await repository.CommitAsync();
                 logger.Info("adding {@unit} with id {id}", entity, entity.Id);
                 return entity.Id;
+            }
+
+            private static void ValidateModelIds(CreateUnitCommand request)
+            {
+                if (request.Model.RestaurantId == 0)
+                {
+                    request.Model.RestaurantId = request.RestaurantId;
+                }
             }
         }
     }

@@ -54,7 +54,7 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> Post([FromBody] MutateUnitDto model, [FromRoute] int restaurantId)
         {
             model.RestaurantId = restaurantId;
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateUnitCommand(model)));
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateUnitCommand(model, restaurantId)));
         }
 
         /// <summary>
@@ -103,14 +103,13 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success updating existing Unit</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
-        [Route("/Restaurant/{restaurantId}")]
+        [Route("{id}/Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateUnitDto model, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Update([FromBody] MutateUnitDto model, [FromRoute] int restaurantId, [FromRoute] int id)
         {
-            model.RestaurantId = restaurantId;
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditUnitCommand(model)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditUnitCommand(model, id, restaurantId)));
         }
     }
 }
