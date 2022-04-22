@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using static Horeca.Shared.Utils.Constants;
 
-namespace HorecaAPI.Controllers
+namespace Horeca.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

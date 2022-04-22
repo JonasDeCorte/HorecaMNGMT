@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace HorecaAPI.Controllers
+namespace Horeca.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -79,8 +79,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateScheduleDto model, [FromRoute] int restaurantId)
         {
-            model.RestaurantId = restaurantId;
-            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddScheduleCommand(model)));
+            return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddScheduleCommand(model, restaurantId)));
         }
 
         /// <summary>
@@ -102,9 +101,7 @@ namespace HorecaAPI.Controllers
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromBody] MutateScheduleDto model, [FromRoute] int restaurantId, [FromRoute] int id)
         {
-            model.Id = id;
-            model.RestaurantId = restaurantId;
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditScheduleCommand(model)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditScheduleCommand(model, id, restaurantId)));
         }
 
         /// <summary>

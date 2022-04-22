@@ -10,10 +10,12 @@ namespace Horeca.Core.Handlers.Commands.Schedules
     public class AddScheduleCommand : IRequest<int>
     {
         public MutateScheduleDto Model { get; }
+        public int RestaurantId { get; }
 
-        public AddScheduleCommand(MutateScheduleDto model)
+        public AddScheduleCommand(MutateScheduleDto model, int restaurantId)
         {
             Model = model;
+            RestaurantId = restaurantId;
         }
 
         public class AddScheduleCommandHandler : IRequestHandler<AddScheduleCommand, int>
@@ -28,6 +30,7 @@ namespace Horeca.Core.Handlers.Commands.Schedules
 
             public async Task<int> Handle(AddScheduleCommand request, CancellationToken cancellationToken)
             {
+                ValidateModelIds(request);
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Schedule), request);
 
                 bool checkStartTime = await repository.Schedules.CheckExistingStartTime(0, request.Model.ScheduleDate, request.Model.StartTime, request.Model.RestaurantId, "add");
@@ -54,6 +57,14 @@ namespace Horeca.Core.Handlers.Commands.Schedules
                 logger.Info("adding {@object} with id {id}", entity, entity.Id);
 
                 return entity.Id;
+            }
+
+            private static void ValidateModelIds(AddScheduleCommand request)
+            {
+                if (request.Model.RestaurantId == 0)
+                {
+                    request.Model.RestaurantId = request.RestaurantId;
+                }
             }
         }
     }

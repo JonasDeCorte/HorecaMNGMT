@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace HorecaAPI.Controllers
+namespace Horeca.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

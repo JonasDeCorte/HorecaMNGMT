@@ -10,10 +10,14 @@ namespace Horeca.Core.Handlers.Commands.Schedules
     public class EditScheduleCommand : IRequest<int>
     {
         public MutateScheduleDto Model { get; }
+        public int Id { get; }
+        public int RestaurantId { get; }
 
-        public EditScheduleCommand(MutateScheduleDto model)
+        public EditScheduleCommand(MutateScheduleDto model, int id, int restaurantId)
         {
             Model = model;
+            Id = id;
+            RestaurantId = restaurantId;
         }
     }
 
@@ -29,6 +33,7 @@ namespace Horeca.Core.Handlers.Commands.Schedules
 
         public async Task<int> Handle(EditScheduleCommand request, CancellationToken cancellationToken)
         {
+            ValidateModelIds(request);
             logger.Info("trying to edit {@object} with Id: {Id}", request.Model, request.Model.Id);
 
             var restaurantSchedule = await repository.Schedules.GetScheduleById(request.Model.Id, request.Model.RestaurantId);
@@ -53,6 +58,18 @@ namespace Horeca.Core.Handlers.Commands.Schedules
             logger.Info("updated {@object} with Id: {id}", restaurantSchedule, restaurantSchedule.Id);
 
             return restaurantSchedule.Id;
+        }
+
+        private static void ValidateModelIds(EditScheduleCommand request)
+        {
+            if (request.Model.RestaurantId == 0)
+            {
+                request.Model.RestaurantId = request.RestaurantId;
+            }
+            if (request.Model.Id == 0)
+            {
+                request.Model.Id = request.Id;
+            }
         }
 
         private static Schedule UpdateEntity(EditScheduleCommand request, Schedule? restaurantSchedule)
