@@ -2,6 +2,7 @@
 using Horeca.Core.Handlers.Queries.Ingredients;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Ingredients;
@@ -32,7 +33,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Read)]
         [HttpGet]
-        [Route("Restaurant/{restaurantId}")]
+        [Route(RouteConstants.IngredientConstants.GetAllIngredientsByRestaurantId)]
         [ProducesResponseType(typeof(IEnumerable<IngredientDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAllIngredientsByRestaurantId([FromRoute] int restaurantId)
@@ -50,7 +51,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Create)]
         [HttpPost]
-        [Route("Restaurant/{restaurantId}")]
+        [Route(RouteConstants.IngredientConstants.Post)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
@@ -68,7 +69,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Update)]
         [HttpPut]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.IngredientConstants.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
@@ -86,7 +87,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Read)]
         [HttpGet]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.IngredientConstants.GetById)]
         [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
@@ -104,7 +105,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Ingredient), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.IngredientConstants.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)

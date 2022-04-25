@@ -44,6 +44,11 @@
 
         public static class IngredientConstants
         {
+            public const string GetAllIngredientsByRestaurantId = $"Restaurant{Slash}restaurantId";
+            public const string Post = $"Restaurant{Slash}restaurantId";
+            public const string Update = $"id{Slash}Restaurant{Slash}restaurantId";
+            public const string Delete = $"id{Slash}Restaurant{Slash}restaurantId";
+            public const string GetById = $"id{Slash}Restaurant{Slash}restaurantId";
         }
 
         public static class MenuCardConstants
