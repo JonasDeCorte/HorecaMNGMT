@@ -2,6 +2,7 @@
 using Horeca.Core.Handlers.Queries.Orders;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Orders;
@@ -35,7 +36,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Order), Permissions.Create)]
         [HttpPost]
-        [Route("Table/{tableId}")]
+        [Route(RouteConstants.OrderConstants.Post)]
         [ProducesResponseType(typeof(MutateOrderDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Post([FromRoute] int tableId, [FromBody] MutateOrderDto model)
@@ -54,7 +55,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Order), Permissions.Read)]
         [HttpGet]
-        [Route("Table/{tableId}/Details")]
+        [Route(RouteConstants.OrderConstants.Get)]
         [ProducesResponseType(typeof(IEnumerable<GetOrderLinesByTableIdDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetByTableId([FromRoute] int tableId)
@@ -73,7 +74,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Order), Permissions.Read)]
         [HttpGet]
-        [Route("Restaurant/{restaurantId}/Orders/{orderState}")]
+        [Route(RouteConstants.OrderConstants.GetOrderState)]
         [ProducesResponseType(typeof(IEnumerable<OrderDtoDetail>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetOrdersByOrderStateQuery([FromRoute] int restaurantId, [FromRoute] OrderState orderState)
@@ -94,7 +95,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Order), Permissions.Update)]
         [HttpPut]
-        [Route("Restaurant/{restaurantId}/Order/{orderId}")]
+        [Route(RouteConstants.OrderConstants.DeliverOrder)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeliverOrderCommand([FromRoute] int restaurantId, [FromRoute] int orderId)
@@ -114,7 +115,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Order), Permissions.Update)]
         [HttpPut]
-        [Route("Restaurant/{restaurantId}/Order/{orderId}/OrderLine/{orderLineId}/Prepare")]
+        [Route(RouteConstants.OrderConstants.PrepareOrderLine)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> PrepareOrderLine([FromRoute] int orderLineId, [FromRoute] int restaurantId, [FromRoute] int orderId)
@@ -135,7 +136,7 @@ namespace Horeca.API.Controllers
         ///
         [PermissionAuthorize(nameof(Order), Permissions.Update)]
         [HttpPut]
-        [Route("Restaurant/{restaurantId}/Order/{orderId}/OrderLine/{orderLineId}/Ready")]
+        [Route(RouteConstants.OrderConstants.ReadyOrderLine)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> ReadyOrderLine([FromRoute] int orderLineId, [FromRoute] int restaurantId, [FromRoute] int orderId)

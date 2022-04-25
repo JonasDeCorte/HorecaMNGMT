@@ -43,9 +43,16 @@
         public const string ListCount = "ListCount";
 
         public const string Order = "Order";
+        public const string OrderId = "orderId";
+        public const string OrderState = "orderState";
+
         public const string Orders = "Orders";
         public const string OrderLine = "OrderLine";
+        public const string OrderLineId = "orderLineId";
+
         public const string Table = "Table";
+        public const string TableId = "tableId";
+
         public const string Prepare = "Prepare";
         public const string Ready = "Ready";
 

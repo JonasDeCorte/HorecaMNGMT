@@ -76,10 +76,27 @@
 
         public static class MenuConstants
         {
+            public const string GetAllByRestaurantId = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string PostDishes = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string UpdateDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string DeleteDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+
         }
 
         public static class OrderConstants
         {
+            public const string Post = $"{ClassConstants.Table}{Slash}{ClassConstants.TableId}";
+            public const string Get = $"{ClassConstants.Table}{Slash}{ClassConstants.TableId}{Slash}{ClassConstants.Details}";
+            public const string GetOrderState = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderState}";
+            public const string DeliverOrder = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderId}";
+            public const string PrepareOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderId}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.OrderLineId}{Slash}{ClassConstants.Prepare}";
+            public const string ReadyOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderId}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.OrderLineId}{Slash}{ClassConstants.Ready}";
+
         }
 
         public static class PermissionConstants
