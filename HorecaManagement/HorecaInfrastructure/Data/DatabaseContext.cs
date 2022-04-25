@@ -89,7 +89,6 @@ namespace Horeca.Infrastructure.Data
         public DbSet<Schedule> Schedules { get; set; }
 
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<BookingDetail> BookingDetails { get; set; }
 
         public DbSet<Table> Tables { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }

@@ -1,4 +1,5 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.MenuCards;
 using MediatR;
@@ -37,14 +38,35 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
             logger.Info("trying to add {@object} to menucard with Id: {Id}", request.Model.Menu, request.Model.MenuCardId);
 
             var menuCard = await repository.MenuCards.GetMenuCardIncludingMenus(request.Model.MenuCardId, request.Model.RestaurantId);
-
-            var entity = new Menu
+            Menu entity;
+            if (request.Model.Menu.Id == 0)
             {
-                Name = request.Model.Menu.Name,
-                Description = request.Model.Menu.Description,
-                Category = request.Model.Menu.Category,
-                Price = request.Model.Menu.Price,
-            };
+                entity = new Menu
+                {
+                    Name = request.Model.Menu.Name,
+                    Description = request.Model.Menu.Description,
+                    Category = request.Model.Menu.Category,
+                    Price = request.Model.Menu.Price,
+                };
+            }
+            else
+            {
+                logger.Info("menu exists, get Menu from database  {id} ", request.Model.Menu.Id);
+                entity = await repository.Menus.GetMenuById(request.Model.Menu.Id, request.Model.Menu.RestaurantId);
+                if (entity == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+                    throw new EntityNotFoundException();
+                }
+                logger.Info("check if menuCard contains dish with id {id}", entity.Id);
+                var existingMenu = menuCard.Dishes.SingleOrDefault(x => x.Id.Equals(entity.Id), null);
+
+                if (existingMenu != null)
+                {
+                    logger.Error(EntityIsAlreadyPartOfThisCollectionException.Instance);
+                    throw new EntityIsAlreadyPartOfThisCollectionException();
+                }
+            }
 
             menuCard.Menus.Add(entity);
             repository.MenuCards.Update(menuCard);

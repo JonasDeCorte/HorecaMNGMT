@@ -1,5 +1,7 @@
-﻿using Horeca.Shared.Data;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Dishes;
 using MediatR;
 using NLog;
@@ -23,26 +25,27 @@ namespace Horeca.Core.Handlers.Commands.Dishes
     public class AddIngredientDishCommandHandler : IRequestHandler<AddIngredientDishCommand, int>
     {
         private readonly IUnitOfWork repository;
-
+        private readonly IApplicationDbContext context;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddIngredientDishCommandHandler(IUnitOfWork repository)
+        public AddIngredientDishCommandHandler(IUnitOfWork repository, IApplicationDbContext context)
         {
             this.repository = repository;
+            this.context = context;
         }
 
         public async Task<int> Handle(AddIngredientDishCommand request, CancellationToken cancellationToken)
         {
             ValidateModelIds(request);
             logger.Info("trying to add {@object} to Dish with Id: {Id}", request.Model.Ingredient, request.Model.Id);
-            var dish = await repository.Dishes.GetDishIncludingDependencies(request.Model.Id, request.Model.RestaurantId);
+            var dish = await repository.Dishes.GetDishById(request.Model.Id, request.Model.RestaurantId);
 
             Ingredient entity;
             if (request.Model.Ingredient.Id == 0)
             {
                 Shared.Data.Entities.Unit unit = repository.Units.Get(request.Model.Ingredient.Unit.Id);
 
-                logger.Info("check if unit exists in database with id {id} ", request.Model.Ingredient.Unit.Id);
+                logger.Info("Check if unit exists in database with id {id} ", request.Model.Ingredient.Unit.Id);
 
                 entity = new Ingredient
                 {
@@ -58,9 +61,22 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             else
             {
                 logger.Info("ingredients exists, get ingredient from database  {id} ", request.Model.Ingredient.Id);
-
                 entity = await repository.Ingredients.GetIngredientIncludingUnit(request.Model.Ingredient.Id, request.Model.Ingredient.RestaurantId);
-                logger.Info("ingredients exists, get ingredient from database  {@entity} ", entity);
+                if (entity != null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+                    throw new EntityNotFoundException();
+                }
+                logger.Info("get list of ingredients from dish with id {id}", dish.Id);
+                var dishIngredients = context.DishIngredients.Where(x => x.DishId.Equals(dish.Id)).ToList();
+                logger.Info("check if dishIngredients contains ingredient with id {id}", entity.Id);
+                var existingIngredient = dishIngredients.SingleOrDefault(x => x.IngredientId.Equals(entity.Id), null);
+
+                if (existingIngredient != null)
+                {
+                    logger.Error(EntityIsAlreadyPartOfThisCollectionException.Instance);
+                    throw new EntityIsAlreadyPartOfThisCollectionException();
+                }
             }
 
             dish.DishIngredients.Add(new DishIngredient()

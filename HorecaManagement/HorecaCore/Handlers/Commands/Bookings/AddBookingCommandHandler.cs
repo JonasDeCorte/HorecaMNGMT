@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos.Bookings;
 using Horeca.Shared.Utils;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Bookings
@@ -23,48 +24,58 @@ namespace Horeca.Core.Handlers.Commands.Bookings
         {
             private readonly IUnitOfWork repository;
             private readonly IMapper mapper;
+            private readonly UserManager<ApplicationUser> userManager;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public AddBookingCommandHandler(IUnitOfWork repository, IMapper mapper)
+            public AddBookingCommandHandler(IUnitOfWork repository, IMapper mapper, UserManager<ApplicationUser> userManager)
             {
                 this.repository = repository;
                 this.mapper = mapper;
+                this.userManager = userManager;
             }
 
             public async Task<BookingDto> Handle(AddBookingCommand request, CancellationToken cancellationToken)
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Booking), request);
+                var user = await userManager.FindByIdAsync(request.Model.UserId);
 
-                var scheduleToBeFound = repository.Schedules.Get(request.Model.ScheduleId);
-                int pax = scheduleToBeFound.AvailableSeat - request.Model.Pax;
-
-                if (pax < 0)
+                if (user == null)
                 {
-                    logger.Error($"Unable to add member new booking {request.Model.Booking} due to insufficient seat");
-                    return null;
+                    logger.Error(UserNotFoundException.Instance);
+                    throw new UserNotFoundException();
+                }
+                var schedule = repository.Schedules.Get(request.Model.ScheduleId);
+
+                if (schedule == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+                    throw new EntityNotFoundException();
+                }
+
+                int remainingSeats = schedule.AvailableSeat - request.Model.Pax;
+
+                if (remainingSeats < 0)
+                {
+                    logger.Error($"Unable to add member new booking {request.Model} due to insufficient seat");
+                    logger.Error(UnAvailableSeatException.Instance);
+                    throw new UnAvailableSeatException();
                 }
 
                 var entity = new Booking
                 {
-                    BookingDate = request.Model.Booking.BookingDate,
+                    BookingDate = request.Model.BookingDate,
                     BookingNo = Guid.NewGuid().ToString(),
                     BookingStatus = Constants.BookingStatus.PENDING,
-                    CheckIn = request.Model.Booking.CheckIn,
-                    CheckOut = request.Model.Booking.CheckOut,
-                    FullName = request.Model.Booking.FullName,
-                    PhoneNo = request.Model.Booking.PhoneNo,
-                    UserId = request.Model.Booking.UserID,
+                    CheckIn = request.Model.CheckIn,
+                    CheckOut = request.Model.CheckOut,
+                    FullName = request.Model.FullName,
+                    PhoneNo = request.Model.PhoneNo,
+                    UserId = user.Id,
+                    Pax = request.Model.Pax,
+                    ScheduleId = schedule.Id
                 };
 
                 entity = await repository.Bookings.Add(entity);
-
-                BookingDetail bookingDetail = new()
-                {
-                    BookingId = entity.Id,
-                    ScheduleId = request.Model.ScheduleId,
-                    Pax = request.Model.Pax
-                };
-                await repository.BookingDetails.CreateBookingDetail(bookingDetail);
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
                 return mapper.Map<BookingDto>(entity);

@@ -6,7 +6,7 @@ using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Bookings
 {
-    public class GetAllBookingsByScheduleIdQuery : IRequest<IEnumerable<BookingDetailOnlyBookingsDto>>
+    public class GetAllBookingsByScheduleIdQuery : IRequest<IEnumerable<BookingDto>>
     {
         public GetAllBookingsByScheduleIdQuery(int scheduleId)
         {
@@ -16,7 +16,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
         public int ScheduleId { get; }
     }
 
-    public class GetAllBookingsByScheduleIdQueryHandler : IRequestHandler<GetAllBookingsByScheduleIdQuery, IEnumerable<BookingDetailOnlyBookingsDto>>
+    public class GetAllBookingsByScheduleIdQueryHandler : IRequestHandler<GetAllBookingsByScheduleIdQuery, IEnumerable<BookingDto>>
     {
         private readonly IUnitOfWork repository;
         private readonly IMapper mapper;
@@ -28,15 +28,17 @@ namespace Horeca.Core.Handlers.Queries.Bookings
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<BookingDetailOnlyBookingsDto>> Handle(GetAllBookingsByScheduleIdQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BookingDto>> Handle(GetAllBookingsByScheduleIdQuery request, CancellationToken cancellationToken)
         {
             logger.Info("requested to return bookings with request: {@req}", request);
 
-            var bookingDetails = await repository.BookingDetails.GetDetailsForRestaurantSchedule(request.ScheduleId);
+            var bookings = await repository.Bookings.GetBookingsForRestaurantSchedule(request.ScheduleId);
 
-            logger.Info("bookings found with: {req} items", bookingDetails.Count());
+            logger.Info("bookings found with: {req} items", bookings.Count());
+            Console.WriteLine(bookings);
 
-            return mapper.Map<IEnumerable<BookingDetailOnlyBookingsDto>>(bookingDetails);
+            var mapped = mapper.Map<IEnumerable<BookingDto>>(bookings);
+            return mapped;
         }
     }
 }

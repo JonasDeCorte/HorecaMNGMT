@@ -7,9 +7,9 @@ using NLog;
 
 namespace Horeca.Core.Handlers.Queries.Bookings
 {
-    public class GetAllBookingsByUserIDQuery : IRequest<BookingHistoryDto>
+    public class GetAllBookingsByUserIdQuery : IRequest<BookingHistoryDto>
     {
-        public GetAllBookingsByUserIDQuery(string userId, string status)
+        public GetAllBookingsByUserIdQuery(string userId, string status)
         {
             UserId = userId;
             Status = status;
@@ -19,52 +19,47 @@ namespace Horeca.Core.Handlers.Queries.Bookings
         public string Status { get; }
     }
 
-    public class GetAllBookingsByUserIDQueryHandler : IRequestHandler<GetAllBookingsByUserIDQuery, BookingHistoryDto>
+    public class GetAllBookingsByUserIdQueryHandler : IRequestHandler<GetAllBookingsByUserIdQuery, BookingHistoryDto>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IUnitOfWork repository;
-        private readonly IMapper mapper;
 
-        public GetAllBookingsByUserIDQueryHandler(IUnitOfWork repository, IMapper mapper)
+        public GetAllBookingsByUserIdQueryHandler(IUnitOfWork repository)
         {
             this.repository = repository;
-            this.mapper = mapper;
         }
 
-        public async Task<BookingHistoryDto> Handle(GetAllBookingsByUserIDQuery request, CancellationToken cancellationToken)
+        public async Task<BookingHistoryDto> Handle(GetAllBookingsByUserIdQuery request, CancellationToken cancellationToken)
         {
             logger.Info("requested to return bookinghistory with request: {@req}", request);
 
-            var bookingDetailList = await repository.BookingDetails.GetDetailsByUserId(request.UserId, request.Status);
-            logger.Info("bookinglist found with: {req} items", bookingDetailList.Count());
+            var bookings = await repository.Bookings.GetDetailsByUserId(request.UserId, request.Status);
+            logger.Info("bookinglist found with: {req} items", bookings.Count());
             BookingHistoryDto dto = new();
 
-            MapToBookingHistoryDto(bookingDetailList, dto);
+            MapToBookingHistoryDto(bookings, dto);
 
             return dto;
         }
 
-        private static void MapToBookingHistoryDto(IEnumerable<BookingDetail> bookingDetailList, BookingHistoryDto dto)
+        private static void MapToBookingHistoryDto(IEnumerable<Booking> bookings, BookingHistoryDto dto)
         {
-            foreach (var bd in bookingDetailList)
+            foreach (var b in bookings)
             {
-                dto.BookingDetails.Add(new BookingDetailOnlyBookingsDto
+                dto.BookingDetails.Add(new BookingDto
                 {
-                    Booking = new BookingDto
-                    {
-                        BookingDate = bd.Booking.BookingDate,
-                        BookingNo = bd.Booking.BookingNo,
-                        BookingStatus = bd.Booking.BookingStatus,
-                        CheckIn = bd.Booking.CheckIn,
-                        CheckOut = bd.Booking.CheckOut,
-                        FullName = bd.Booking.FullName,
-                        Id = bd.Booking.Id,
-                        PhoneNo = bd.Booking.PhoneNo,
-                        UserID = bd.Booking.UserId
-                    },
-                    BookingId = bd.BookingId,
-                    Pax = bd.Pax,
+                    BookingDate = b.BookingDate,
+                    BookingNo = b.BookingNo,
+                    BookingStatus = b.BookingStatus,
+                    CheckIn = b.CheckIn,
+                    CheckOut = b.CheckOut,
+                    FullName = b.FullName,
+                    Id = b.Id,
+                    PhoneNo = b.PhoneNo,
+                    UserId = b.UserId,
+                    Pax = b.Pax,
+                    ScheduleId = b.ScheduleId,
                 });
             }
         }

@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
+﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Bookings;
@@ -32,51 +31,56 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             {
                 logger.Info("trying to create {object} with request: {@Id}", nameof(Booking), request);
 
-                var bookingDetailFromDb = await repository.BookingDetails.GetDetailsByBookingId(request.Model.BookingId);
-                if (bookingDetailFromDb == null)
+                var bookingFromDb = await repository.Bookings.GetBookingById(request.Model.Id);
+                if (bookingFromDb == null)
                 {
                     logger.Error(EntityNotFoundException.Instance);
 
                     throw new EntityNotFoundException();
                 }
 
-                bookingDetailFromDb.Booking = UpdateEntity(request, bookingDetailFromDb.Booking);
+                bookingFromDb = UpdateEntity(request, bookingFromDb);
+                if (bookingFromDb.Schedule == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
 
-                bookingDetailFromDb.Pax = request.Model.Pax != bookingDetailFromDb.Pax ? request.Model.Pax : bookingDetailFromDb.Pax;
-                bookingDetailFromDb.Booking.BookingStatus = Constants.BookingStatus.PENDING;
-                repository.Bookings.Update(bookingDetailFromDb.Booking);
-                repository.BookingDetails.Update(bookingDetailFromDb);
-
+                    throw new EntityNotFoundException();
+                }
+                if (request.Model.Pax != bookingFromDb.Pax)
+                {
+                    bookingFromDb.Schedule.AvailableSeat += bookingFromDb.Pax;
+                    bookingFromDb.Pax = request.Model.Pax;
+                    bookingFromDb.Schedule.AvailableSeat -= bookingFromDb.Pax;
+                }
+                bookingFromDb.BookingStatus = Constants.BookingStatus.PENDING;
+                repository.Schedules.Update(bookingFromDb.Schedule);
+                repository.Bookings.Update(bookingFromDb);
                 await repository.CommitAsync();
-                return bookingDetailFromDb.Id;
+                return bookingFromDb.Id;
             }
 
             private static Booking UpdateEntity(EditBookingCommand request, Booking bookingFromDB)
             {
-                if (bookingFromDB.BookingDate != request.Model.Booking.BookingDate)
+                if (bookingFromDB.BookingDate != request.Model.BookingDate)
                 {
-                    bookingFromDB.BookingDate = request.Model.Booking.BookingDate;
+                    bookingFromDB.BookingDate = request.Model.BookingDate;
                 }
 
-                if (bookingFromDB.CheckIn != request.Model.Booking.CheckIn)
+                if (bookingFromDB.CheckIn != request.Model.CheckIn)
                 {
-                    bookingFromDB.CheckIn = request.Model.Booking.CheckIn;
+                    bookingFromDB.CheckIn = request.Model.CheckIn;
                 }
-                if (bookingFromDB.CheckOut != request.Model.Booking.CheckOut)
+                if (bookingFromDB.CheckOut != request.Model.CheckOut)
                 {
-                    bookingFromDB.CheckOut = request.Model.Booking.CheckOut;
+                    bookingFromDB.CheckOut = request.Model.CheckOut;
                 }
-                if (bookingFromDB.FullName != request.Model.Booking.FullName)
+                if (bookingFromDB.FullName != request.Model.FullName)
                 {
-                    bookingFromDB.FullName = request.Model.Booking.FullName;
+                    bookingFromDB.FullName = request.Model.FullName;
                 }
-                if (bookingFromDB.PhoneNo != request.Model.Booking.PhoneNo)
+                if (bookingFromDB.PhoneNo != request.Model.PhoneNo)
                 {
-                    bookingFromDB.PhoneNo = request.Model.Booking.PhoneNo;
-                }
-                if (bookingFromDB.UserId != request.Model.Booking.UserID)
-                {
-                    bookingFromDB.UserId = request.Model.Booking.UserID;
+                    bookingFromDB.PhoneNo = request.Model.PhoneNo;
                 }
 
                 return bookingFromDB;

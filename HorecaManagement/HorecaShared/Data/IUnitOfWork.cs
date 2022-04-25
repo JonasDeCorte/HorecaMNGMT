@@ -16,7 +16,6 @@ namespace Horeca.Shared.Data
 
         IRestaurantRepository Restaurants { get; }
         IScheduleRepository Schedules { get; }
-        IBookingDetailRepository BookingDetails { get; }
         IBookingRepository Bookings { get; }
 
         ITableRepository Tables { get; }

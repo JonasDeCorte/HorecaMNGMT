@@ -5,7 +5,7 @@ namespace Horeca.Shared.Dtos.Bookings
     public class BookingDto
     {
         public int Id { get; set; }
-        public string UserID { get; set; }
+        public string UserId { get; set; }
         public DateTime BookingDate { get; set; }
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { get; set; }
@@ -17,17 +17,8 @@ namespace Horeca.Shared.Dtos.Bookings
         public string FullName { get; set; }
 
         public string PhoneNo { get; set; }
-    }
-
-    public class BookingDtoInfo
-    {
-        public string UserID { get; set; }
-        public string FullName { get; set; }
-
-        public string PhoneNo { get; set; }
-        public DateTime BookingDate { get; set; }
-        public DateTime? CheckIn { get; set; }
-        public DateTime? CheckOut { get; set; }
+        public int ScheduleId { get; set; }
+        public int Pax { get; set; }
     }
 
     public class BookingDetailDto
@@ -43,32 +34,36 @@ namespace Horeca.Shared.Dtos.Bookings
         public int Pax { get; set; }
     }
 
-    public class BookingDetailOnlyBookingsDto
-    {
-        public int BookingId { get; set; }
-
-        public BookingDto Booking { get; set; }
-
-        public int Pax { get; set; }
-    }
-
     public class BookingHistoryDto
     {
-        public List<BookingDetailOnlyBookingsDto> BookingDetails { get; set; } = new();
+        public List<BookingDto> BookingDetails { get; set; } = new();
     }
 
     public class MakeBookingDto
     {
-        public BookingDtoInfo Booking { get; set; }
+        public string UserId { get; set; }
+        public DateTime BookingDate { get; set; }
+        public DateTime? CheckIn { get; set; }
+        public DateTime? CheckOut { get; set; }
+
+        public string FullName { get; set; }
+
+        public string PhoneNo { get; set; }
         public int ScheduleId { get; set; }
         public int Pax { get; set; }
     }
 
     public class EditBookingDto
     {
-        public BookingDtoInfo Booking { get; set; }
-        public int BookingId { get; set; }
+        public int Id { get; set; }
+        public DateTime BookingDate { get; set; }
+        public DateTime? CheckIn { get; set; }
+        public DateTime? CheckOut { get; set; }
 
+        public string FullName { get; set; }
+
+        public string PhoneNo { get; set; }
+        public int ScheduleId { get; set; }
         public int Pax { get; set; }
     }
 }

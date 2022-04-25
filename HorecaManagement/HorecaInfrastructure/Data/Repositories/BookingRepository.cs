@@ -1,4 +1,5 @@
-﻿using Horeca.Infrastructure.Data.Repositories.Generic;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Horeca.Shared.Utils;
@@ -20,30 +21,56 @@ namespace Horeca.Infrastructure.Data.Repositories
             return context.Bookings.Count(b => b.BookingStatus.Equals(Constants.BookingStatus.PENDING));
         }
 
-        public async Task<Booking> GetBookingByID(int bookingID)
+        public async Task<Booking> GetBookingById(int bookingID)
         {
-            return await context.Bookings
-                                         .Include(b => b.User)
+            return await context.Bookings.Include(b => b.User)
+                                         .Include(x => x.Schedule)
                                          .FirstOrDefaultAsync(b => b.Id == bookingID);
         }
 
         public async Task<Booking> GetByNumber(string bookingNo)
         {
-            return await context.Bookings
-                                        .Include(b => b.User).FirstOrDefaultAsync(b => b.BookingNo == bookingNo);
+            return await context.Bookings.Include(b => b.User)
+                                         .Include(x => x.Schedule)
+                                         .FirstOrDefaultAsync(b => b.BookingNo == bookingNo);
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsForRestaurantSchedule(int scheduleId)
+        {
+            return await context.Bookings.Include(b => b.User)
+                                         .Include(b => b.Schedule)
+                                         .Where(x => x.ScheduleId.Equals(scheduleId))
+                                         .ToListAsync();
         }
 
         public async Task<Booking> Add(Booking booking)
         {
-            Booking newBooking = booking;
-
             using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = context.Database.BeginTransaction())
             {
                 try
                 {
-                    newBooking.BookingStatus = Constants.BookingStatus.COMPLETE;
-
-                    context.Bookings.Add(newBooking);
+                    var schedule = context.Schedules.Find(booking.ScheduleId);
+                    if (schedule == null)
+                    {
+                        throw new EntityNotFoundException();
+                    }
+                    if (schedule.AvailableSeat < booking.Pax)
+                    {
+                        throw new UnAvailableSeatException();
+                    }
+                    schedule.AvailableSeat -= booking.Pax;
+                    booking.BookingStatus = Constants.BookingStatus.COMPLETE;
+                    context.Schedules.Update(schedule);
+                    context.Bookings.Add(booking);
+                    await context.SaveChangesAsync();
+                    context.Tables.Add(new Table()
+                    {
+                        Pax = booking.Pax,
+                        ScheduleId = schedule.Id,
+                        Schedule = schedule,
+                        Booking = booking,
+                        BookingId = booking.Id
+                    });
                     await context.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
@@ -56,7 +83,34 @@ namespace Horeca.Infrastructure.Data.Repositories
                     await transaction.DisposeAsync();
                 }
             }
-            return newBooking;
+
+            return booking;
+        }
+
+        public async Task<IEnumerable<Booking>> GetDetailsByUserId(string userId, string status)
+        {
+            if (status.Equals("all"))
+            {
+                return await context.Bookings.Include(x => x.User)
+                                             .Include(x => x.Schedule)
+                                             .Where(b => b.User.Id == userId)
+                                             .ToListAsync();
+            }
+            else
+            {
+                return await context.Bookings.Include(b => b.Schedule)
+                                             .Include(x => x.User)
+                                             .Where(b => b.User.Id == userId && b.BookingStatus.Equals(status))
+                                             .ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Booking>> GetAllBookings(int scheduleId)
+        {
+            return await context.Bookings.Include(b => b.User)
+                                         .Include(b => b.Schedule)
+                                         .Where(x => x.ScheduleId.Equals(scheduleId))
+                                         .ToListAsync();
         }
     }
 }

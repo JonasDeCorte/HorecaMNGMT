@@ -6,9 +6,9 @@
 
         public Schedule Schedule { get; set; }
 
-        public int? BookingDetailId { get; set; }
+        public int? BookingId { get; set; }
 
-        public BookingDetail? BookingDetail { get; set; }
+        public Booking? Booking { get; set; }
 
         public List<Order> Orders { get; set; } = new();
 

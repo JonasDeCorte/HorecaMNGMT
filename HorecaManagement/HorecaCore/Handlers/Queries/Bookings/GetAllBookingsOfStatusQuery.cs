@@ -10,12 +10,14 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 {
     public class GetAllBookingsOfStatusQuery : IRequest<IEnumerable<BookingDto>>
     {
-        public GetAllBookingsOfStatusQuery(string status)
+        public GetAllBookingsOfStatusQuery(string status, int scheduleId)
         {
             Status = status;
+            ScheduleId = scheduleId;
         }
 
         public string Status { get; }
+        public int ScheduleId { get; }
     }
 
     public class GetAllBookingsOfStatusQueryHandler : IRequestHandler<GetAllBookingsOfStatusQuery, IEnumerable<BookingDto>>
@@ -34,7 +36,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
         {
             logger.Info("requested to return bookings with request: {@req}", request);
 
-            var bookings = repository.Bookings.GetAll();
+            var bookings = await repository.Bookings.GetAllBookings(request.ScheduleId);
 
             logger.Info("bookings found with: {req} items", bookings.Count());
 
@@ -47,6 +49,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         private static IEnumerable<Booking> FilterBookingStatus(IEnumerable<Booking> bookings, string status)
         {
+            status = char.ToUpper(status[0]) + status[1..];
             switch (status)
             {
                 case Constants.BookingStatus.PENDING:

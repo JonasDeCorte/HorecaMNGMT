@@ -51,7 +51,7 @@ namespace Horeca.API.Controllers
         [HttpGet]
         [Route("Schedule/{scheduleId}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
-        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BookingDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetAllBookingsByScheduleIdQuery([FromRoute] int scheduleId)
         {
@@ -59,22 +59,23 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// Get all members' bookings of a specific status.
+        /// Get all members' bookings of a specific status for a specific schedule.
         /// </summary>
-        /// <param name="status">Booking status, e.g. Pending, Expired, Complete</param>
+        /// <param name="status">Booking status, e.g. Pending, Expired, Completed</param>
+        /// <param name="scheduleId"> schedule Id </param>
         /// <returns>
         /// A list of members' booking records will be returned.
         /// </returns>
         /// <response code="200">Success retrieving Booking list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("{status}")]
+        [Route("{status}/Schedule/{scheduleId}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAllBookingsOfStatus([FromRoute] string status)
+        public async Task<IActionResult> GetAllBookingsOfStatus([FromRoute] int scheduleId, [FromRoute] string status = "all")
         {
-            return Ok(await mediator.Send(new GetAllBookingsOfStatusQuery(status)));
+            return Ok(await mediator.Send(new GetAllBookingsOfStatusQuery(status, scheduleId)));
         }
 
         /// <summary>
@@ -107,13 +108,13 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success retrieving booking history list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Member/{userID}/BookingStatus/{status}")]
+        [Route("Member/{userId}/BookingStatus/{status}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingHistoryDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAllBookingsByUserID([FromRoute] string userID, [FromRoute] string status = "all")
+        public async Task<IActionResult> GetAllBookingsByUserID([FromRoute] string userId, [FromRoute] string status = "all")
         {
-            return Ok(await mediator.Send(new GetAllBookingsByUserIDQuery(userID, status)));
+            return Ok(await mediator.Send(new GetAllBookingsByUserIdQuery(userId, status)));
         }
 
         /// <summary>
