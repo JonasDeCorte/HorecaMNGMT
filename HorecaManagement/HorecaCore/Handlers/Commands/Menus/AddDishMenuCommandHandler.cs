@@ -53,7 +53,11 @@ namespace Horeca.Core.Handlers.Commands.Menus
             {
                 logger.Info("dish exists, get dish   from database  {id} ", request.Model.Dish.Id);
                 entity = await repository.Dishes.GetDishById(request.Model.Dish.Id, request.Model.Dish.RestaurantId);
-
+                if (entity == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+                    throw new EntityNotFoundException();
+                }
                 logger.Info("check if menu contains dish with id {id}", entity.Id);
                 var existingDish = menu.Dishes.SingleOrDefault(x => x.Id.Equals(entity.Id), null);
 
