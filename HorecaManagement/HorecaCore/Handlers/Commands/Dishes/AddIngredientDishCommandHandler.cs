@@ -62,7 +62,7 @@ namespace Horeca.Core.Handlers.Commands.Dishes
             {
                 logger.Info("ingredients exists, get ingredient from database  {id} ", request.Model.Ingredient.Id);
                 entity = await repository.Ingredients.GetIngredientIncludingUnit(request.Model.Ingredient.Id, request.Model.Ingredient.RestaurantId);
-                if (entity != null)
+                if (entity == null)
                 {
                     logger.Error(EntityNotFoundException.Instance);
                     throw new EntityNotFoundException();
