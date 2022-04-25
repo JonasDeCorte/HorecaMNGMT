@@ -29,18 +29,17 @@ namespace Horeca.Core.Handlers.Commands.Bookings
         public async Task<int> Handle(DeleteBookingCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to delete {object} with Id: {id}", nameof(Booking), request.Id);
-            var bookingsdetail = await repository.BookingDetails.GetDetailsByBookingId(request.Id);
-            if (bookingsdetail == null)
+            var booking = await repository.Bookings.GetBookingById(request.Id);
+            if (booking == null)
             {
                 logger.Error(EntityNotFoundException.Instance);
 
                 throw new EntityNotFoundException();
             }
 
-            bookingsdetail.Schedule.AvailableSeat += bookingsdetail.Pax;
-            repository.Schedules.Update(bookingsdetail.Schedule);
-            repository.BookingDetails.Delete(bookingsdetail.Id);
-            repository.Bookings.Delete(request.Id);
+            booking.Schedule.AvailableSeat += booking.Pax;
+            repository.Schedules.Update(booking.Schedule);
+            repository.Bookings.Delete(booking.Id);
 
             await repository.CommitAsync();
 

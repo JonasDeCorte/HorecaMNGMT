@@ -14,6 +14,19 @@ namespace Horeca.Shared.Data.Entities
                    ?? throw new InvalidOperationException("Uninitialized property: " + nameof(User));
         }
 
+        private Schedule? _schedule;
+
+        public int ScheduleId { get; set; }
+
+        public Schedule Schedule
+        {
+            set => _schedule = value;
+            get => _schedule
+                   ?? throw new InvalidOperationException("Uninitialized property: " + nameof(Schedule));
+        }
+
+        public int Pax { get; set; }
+
         public DateTime BookingDate { get; set; }
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { get; set; }

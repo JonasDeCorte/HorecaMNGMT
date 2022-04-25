@@ -31,8 +31,6 @@ namespace Horeca.Infrastructure.Data
 
         public IScheduleRepository Schedules => new ScheduleRepository(context);
 
-        public IBookingDetailRepository BookingDetails => new BookingDetailRepository(context);
-
         public IBookingRepository Bookings => new BookingRepository(context);
 
         public ITableRepository Tables => new TableRepository(context);

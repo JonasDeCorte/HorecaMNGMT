@@ -67,13 +67,6 @@ namespace Horeca.Shared.Constants
         public const string Booking_Update = $"{nameof(Booking)}_{Permissions.Update}";
         public const string Booking_Delete = $"{nameof(Booking)}_{Permissions.Delete}";
 
-        // BookingDetail perms
-
-        public const string BookingDetail_Read = $"{nameof(BookingDetail)}_{Permissions.Read}";
-        public const string BookingDetail_Create = $"{nameof(BookingDetail)}_{Permissions.Create}";
-        public const string BookingDetail_Update = $"{nameof(BookingDetail)}_{Permissions.Update}";
-        public const string BookingDetail_Delete = $"{nameof(BookingDetail)}_{Permissions.Delete}";
-
         // Table perms
 
         public const string Table_Read = $"{nameof(Table)}_{Permissions.Read}";
