@@ -27,6 +27,8 @@
         public const string RestaurantId = "restaurantId";
 
         public const string Employee = "Employee";
+        public const string EmployeeId = "employeeId";
+
 
         public const string Schedule = "Schedule";
         public const string ScheduleId = "scheduleId";

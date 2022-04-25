@@ -2,6 +2,7 @@
 using Horeca.Core.Handlers.Queries.Restaurants;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Restaurants;
@@ -45,7 +46,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Restaurant), Permissions.Read)]
         [HttpGet]
-        [Route("User/{userId}")]
+        [Route(RouteConstants.RestaurantConstants.GetByUser)]
         [ProducesResponseType(typeof(IEnumerable<RestaurantDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetRestaurantByUserId([FromRoute] string userId)
@@ -62,7 +63,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Restaurant), Permissions.Read)]
         [HttpGet]
-        [Route("{id}")]
+        [Route(RouteConstants.RestaurantConstants.GetById)]
+
         [ProducesResponseType(typeof(DetailRestaurantDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
@@ -111,7 +113,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}")]
+        [Route(RouteConstants.RestaurantConstants.Delete)]
+
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
@@ -129,7 +132,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Restaurant), Permissions.Update)]
         [HttpPost]
-        [Route("{restaurantId}/Employee/{employeeId}")]
+        [Route(RouteConstants.RestaurantConstants.PostEmployee)]
+
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> AddEmployeeToRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)
@@ -147,7 +151,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
         [HttpDelete]
-        [Route("{restaurantId}/Employee/{employeeId}")]
+        [Route(RouteConstants.RestaurantConstants.DeleteEmployee)]
+
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> RemoveEmployeeFromRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)

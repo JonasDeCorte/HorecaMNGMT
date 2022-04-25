@@ -2,6 +2,7 @@
 using Horeca.Core.Handlers.Queries.Units;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Units;
 using MediatR;
@@ -30,7 +31,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [HttpGet]
-        [Route("Restaurant/{restaurantId}")]
+        [Route(RouteConstants.UnitConstants.GetAllByRestaurantId)]
+
         [ProducesResponseType(typeof(IEnumerable<UnitDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Get([FromRoute] int restaurantId)
@@ -47,7 +49,8 @@ namespace Horeca.API.Controllers
         /// <response code="201">Success creating new Unit</response>
         /// <response code="400">Bad request</response
         [HttpPost]
-        [Route("Restaurant/{restaurantId}")]
+        [Route(RouteConstants.UnitConstants.Post)]
+
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -66,7 +69,8 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success Retrieve Unit by Id</response>
         /// <response code="400">Bad request</response
         [HttpGet]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.UnitConstants.GetById)]
+
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Read)]
         [ProducesResponseType(typeof(UnitDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -85,7 +89,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Delete)]
         [HttpDelete]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.UnitConstants.Delete)]
+
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
@@ -103,7 +108,8 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success updating existing Unit</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.UnitConstants.Update)]
+
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

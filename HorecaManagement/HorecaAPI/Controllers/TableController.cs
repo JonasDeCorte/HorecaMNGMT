@@ -1,6 +1,7 @@
 ﻿using Horeca.Core.Handlers.Commands.Tables;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Tables;
@@ -32,7 +33,8 @@ namespace Horeca.API.Controllers
         ///  /// <response code="201">Success creating new table</response>
         /// <response code="400">Bad request</response
         [HttpPost]
-        [Route("{ScheduleId}")]
+
+        [Route(RouteConstants.TableConstants.Post)]
         [PermissionAuthorize(nameof(Table), Permissions.Create)]
         [ProducesResponseType(typeof(TableDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

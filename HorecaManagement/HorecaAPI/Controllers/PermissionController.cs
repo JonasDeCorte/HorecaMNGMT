@@ -1,4 +1,5 @@
 ﻿using Horeca.Core.Handlers.Queries.Permissions;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Accounts;
 using MediatR;
@@ -40,7 +41,7 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success Retrieve permission by Id</response>
         /// <response code="400">Bad request</response
         [HttpGet]
-        [Route("{id}")]
+        [Route(RouteConstants.PermissionConstants.GetById)]
         [ProducesResponseType(typeof(PermissionDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)

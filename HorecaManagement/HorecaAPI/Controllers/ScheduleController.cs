@@ -2,6 +2,7 @@
 using Horeca.Core.Handlers.Queries.Schedules;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Schedules;
@@ -33,7 +34,7 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
 
         [HttpGet]
-        [Route("Restaurant/{restaurantId}")]
+        [Route(RouteConstants.ScheduleConstants.GetAllByRestaurantId)]
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(List<ScheduleDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -53,7 +54,8 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
 
         [HttpGet]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.ScheduleConstants.GetById)]
+
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(ScheduleByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -73,7 +75,8 @@ namespace Horeca.API.Controllers
         /// <response code="204">No content</response>
         /// <response code="400">Bad request</
         [HttpPost]
-        [Route("Restaurant/{restaurantId}")]
+        [Route(RouteConstants.ScheduleConstants.Post)]
+
         [PermissionAuthorize(nameof(Schedule), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -95,7 +98,8 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success updating existing restaurant</response>
         /// <response code="400">Bad request</response>
         [HttpPut]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.ScheduleConstants.Update)]
+
         [PermissionAuthorize(nameof(Schedule), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
@@ -112,7 +116,8 @@ namespace Horeca.API.Controllers
         /// <response code="204">Success delete an existing Restaurant schedule</response>
         /// <response code="400">Bad request</response
         [HttpDelete]
-        [Route("{id}/Restaurant/{restaurantId}")]
+        [Route(RouteConstants.ScheduleConstants.Delete)]
+
         [PermissionAuthorize(nameof(Schedule), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
