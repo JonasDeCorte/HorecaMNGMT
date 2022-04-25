@@ -21,19 +21,6 @@ namespace Horeca.Shared.Dtos.Bookings
         public int Pax { get; set; }
     }
 
-    public class BookingDetailDto
-    {
-        public int BookingId { get; set; }
-
-        public BookingDto Booking { get; set; }
-
-        public int ScheduleId { get; set; }
-
-        public ScheduleDto Schedule { get; set; }
-
-        public int Pax { get; set; }
-    }
-
     public class BookingHistoryDto
     {
         public List<BookingDto> BookingDetails { get; set; } = new();

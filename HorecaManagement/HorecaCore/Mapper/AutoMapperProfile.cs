@@ -44,8 +44,7 @@ namespace Horeca.Core.Mapper
 
             CreateMap<OrderLine, OrderLineDto>()
                 .ForMember(dest => dest.DishState, act => act.MapFrom(src => src.DishState));
-            CreateMap<Booking, BookingDetailDto>()
-                .ForMember(dest => dest.ScheduleId, act => act.MapFrom(src => src.ScheduleId));
+
             CreateMap<Booking, BookingDto>()
                 .ForMember(dest => dest.ScheduleId, act => act.MapFrom(src => src.ScheduleId))
                 .ForMember(dest => dest.UserId, act => act.MapFrom(src => src.UserId));
