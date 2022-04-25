@@ -239,7 +239,7 @@ namespace Horeca.Infrastructure.Data
                 context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
                 DateTime newSchedule = DateTime.Today.AddDays(1);
                 Array scheduleStatus = Enum.GetValues(typeof(Constants.ScheduleStatus));
-                Random randomStatus = new Random();
+                Random randomStatus = new();
                 Schedule Schedule = new()
                 {
                     RestaurantId = restaurant.Id,
@@ -290,7 +290,7 @@ namespace Horeca.Infrastructure.Data
             List<Table> list = context.Tables.AsNoTracking().ToList();
             Array orderstate = Enum.GetValues(typeof(Constants.OrderState));
             Array dishstate = Enum.GetValues(typeof(Constants.OrderState));
-            Random random = new Random();
+            Random random = new();
 
             foreach (var table in list)
             {

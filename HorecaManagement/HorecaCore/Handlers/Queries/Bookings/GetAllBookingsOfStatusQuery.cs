@@ -49,7 +49,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
 
         private static IEnumerable<Booking> FilterBookingStatus(IEnumerable<Booking> bookings, string status)
         {
-            status = char.ToUpper(status[0]) + status.Substring(1);
+            status = char.ToUpper(status[0]) + status[1..];
             switch (status)
             {
                 case Constants.BookingStatus.PENDING:
