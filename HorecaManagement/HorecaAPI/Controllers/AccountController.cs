@@ -125,8 +125,8 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [PermissionAuthorize(nameof(Permission), Permissions.Update)]
         [Route(RouteConstants.AccountConstants.UserPermissions)]
+        [PermissionAuthorize(nameof(Permission), Permissions.Update)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
@@ -140,7 +140,7 @@ namespace Horeca.API.Controllers
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("UserPermissions/{username}")]
+        [Route(RouteConstants.AccountConstants.UserPermissions)]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
@@ -170,7 +170,7 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("UserPermissions/{username}")]
+        [Route(RouteConstants.AccountConstants.UserPermissions)]
         [PermissionAuthorize(nameof(Permission), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

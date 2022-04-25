@@ -16,9 +16,53 @@
             public const string Login = "login";
             public const string Register = "register";
             public const string RegisterAdmin = "register-admin";
-            public const string UserPermissions = "UserPermissions";
-            public const string GetUserByUserName = $"UserPermissions{Slash}";
-            public const string GetAllUsers = $"User";
+            public const string UserPermissions = $"User{Slash}UserPermissions";
+            public const string GetAllUsers = $"Users";
+        }
+
+        public static class BookingConstants
+        {
+            public const string GetPendingBookingCount = "ListCount";
+        }
+
+        public static class DishConstants
+        {
+        }
+
+        public static class IngredientConstants
+        {
+        }
+
+        public static class MenuCardConstants
+        {
+        }
+
+        public static class MenuConstants
+        {
+        }
+
+        public static class OrderConstants
+        {
+        }
+
+        public static class PermissionConstants
+        {
+        }
+
+        public static class RestaurantConstants
+        {
+        }
+
+        public static class ScheduleConstants
+        {
+        }
+
+        public static class TableConstants
+        {
+        }
+
+        public static class UnitConstants
+        {
         }
     }
 }

@@ -2,6 +2,7 @@
 using Horeca.Core.Handlers.Queries.Bookings;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Bookings;
@@ -31,7 +32,7 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success retrieving total number of pending reservations list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("ListCount")]
+        [Route(RouteConstants.BookingConstants.GetPendingBookingCount)]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
