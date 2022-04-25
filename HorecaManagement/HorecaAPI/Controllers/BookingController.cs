@@ -50,11 +50,11 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success retrieving  the bookings by schedule id .list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Schedule/{scheduleId}")]
+        [Route(RouteConstants.Schedule)]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(BookingDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAllBookingsByScheduleIdQuery([FromRoute] int scheduleId)
+        public async Task<IActionResult> GetAllBookingsByScheduleIdQuery(int scheduleId)
         {
             return Ok(await mediator.Send(new GetAllBookingsByScheduleIdQuery(scheduleId)));
         }
@@ -70,11 +70,11 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success retrieving Booking list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("{status}/Schedule/{scheduleId}")]
+        [Route(RouteConstants.BookingConstants.GetAllBookingsOfStatus)]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAllBookingsOfStatus([FromRoute] int scheduleId, [FromRoute] string status = "all")
+        public async Task<IActionResult> GetAllBookingsOfStatus(int scheduleId, string status = "all")
         {
             return Ok(await mediator.Send(new GetAllBookingsOfStatusQuery(status, scheduleId)));
         }
@@ -89,11 +89,11 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success retrieving booking details list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Details/BookingNo/{bookingNo}")]
+        [Route(RouteConstants.BookingConstants.GetByBookingNo)]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetByBookingNo([FromRoute] string bookingNo)
+        public async Task<IActionResult> GetByBookingNo(string bookingNo)
         {
             return Ok(await mediator.Send(new GetByBookingNoQuery(bookingNo)));
         }
@@ -109,11 +109,11 @@ namespace Horeca.API.Controllers
         /// <response code="200">Success retrieving booking history list</response>
         /// <response code="400">Bad request</response>
         [HttpGet]
-        [Route("Member/{userId}/BookingStatus/{status}")]
+        [Route(RouteConstants.BookingConstants.GetAllBookingsByUserId)]
         [PermissionAuthorize(nameof(Booking), Permissions.Read)]
         [ProducesResponseType(typeof(IEnumerable<BookingHistoryDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAllBookingsByUserID([FromRoute] string userId, [FromRoute] string status = "all")
+        public async Task<IActionResult> GetAllBookingsByUserId(string userId, string status = "all")
         {
             return Ok(await mediator.Send(new GetAllBookingsByUserIdQuery(userId, status)));
         }
@@ -163,7 +163,6 @@ namespace Horeca.API.Controllers
         /// <response code="204">Success delete an existing booking</response>
         /// <response code="400">Bad request</response
         [HttpDelete]
-        [Route("{id}")]
         [PermissionAuthorize(nameof(Booking), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

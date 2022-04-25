@@ -7,6 +7,8 @@
         /// </summary>
         private const string Slash = "/";
 
+        public const string Schedule = "Schedule";
+
         public static class AccountConstants
         {
             public const string LoginSuperAdmin = "SuperAdminAccessToken";
@@ -23,6 +25,9 @@
         public static class BookingConstants
         {
             public const string GetPendingBookingCount = "ListCount";
+            public const string GetByBookingNo = $"Details{Slash}BookingNo";
+            public const string GetAllBookingsByUserId = $"User{Slash}BookingStatus";
+            public const string GetAllBookingsOfStatus = $"Schedule{Slash}BookingStatus";
         }
 
         public static class DishConstants
