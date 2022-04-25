@@ -180,7 +180,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateMenuCard(MutateMenuCardDto menuCard)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{ClassConstants.Restaurant}/" +
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.MenuCard}/{menuCard.Id}/{ClassConstants.Restaurant}/" +
                 $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(menuCard), Encoding.UTF8, "application/json")
