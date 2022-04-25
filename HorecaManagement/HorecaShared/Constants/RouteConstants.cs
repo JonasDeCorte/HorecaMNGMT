@@ -84,7 +84,7 @@
             public const string PostDishes = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
             public const string UpdateDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
             public const string DeleteDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetDishes = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
         }
 
         public static class OrderConstants

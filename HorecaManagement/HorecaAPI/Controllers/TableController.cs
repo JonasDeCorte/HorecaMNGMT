@@ -33,12 +33,11 @@ namespace Horeca.API.Controllers
         ///  /// <response code="201">Success creating new table</response>
         /// <response code="400">Bad request</response
         [HttpPost]
-
         [Route(RouteConstants.TableConstants.Post)]
         [PermissionAuthorize(nameof(Table), Permissions.Create)]
         [ProducesResponseType(typeof(TableDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromRoute] int ScheduleId, [FromBody] MutateTableDto model)
+        public async Task<IActionResult> Post(int ScheduleId, [FromBody] MutateTableDto model)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddTableForRestaurantScheduleCommand(model, ScheduleId)));
         }

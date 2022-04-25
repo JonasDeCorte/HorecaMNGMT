@@ -39,7 +39,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.OrderConstants.Post)]
         [ProducesResponseType(typeof(MutateOrderDto), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromRoute] int tableId, [FromBody] MutateOrderDto model)
+        public async Task<IActionResult> Post(int tableId, [FromBody] MutateOrderDto model)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddOrderCommand(model, tableId)));
         }
@@ -58,7 +58,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.OrderConstants.Get)]
         [ProducesResponseType(typeof(IEnumerable<GetOrderLinesByTableIdDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetByTableId([FromRoute] int tableId)
+        public async Task<IActionResult> GetByTableId(int tableId)
         {
             return Ok(await mediator.Send(new GetOrderLinesByTableIdQuery(tableId)));
         }
@@ -77,7 +77,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.OrderConstants.GetOrderState)]
         [ProducesResponseType(typeof(IEnumerable<OrderDtoDetail>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetOrdersByOrderStateQuery([FromRoute] int restaurantId, [FromRoute] OrderState orderState)
+        public async Task<IActionResult> GetOrdersByOrderStateQuery(int restaurantId, OrderState orderState)
         {
             return Ok(await mediator.Send(new GetOrdersByOrderStateQuery(restaurantId, orderState)));
         }
@@ -98,7 +98,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.OrderConstants.DeliverOrder)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> DeliverOrderCommand([FromRoute] int restaurantId, [FromRoute] int orderId)
+        public async Task<IActionResult> DeliverOrderCommand(int restaurantId, int orderId)
         {
             return Ok(await mediator.Send(new DeliverOrderCommand(orderId, restaurantId)));
         }
@@ -118,7 +118,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.OrderConstants.PrepareOrderLine)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> PrepareOrderLine([FromRoute] int orderLineId, [FromRoute] int restaurantId, [FromRoute] int orderId)
+        public async Task<IActionResult> PrepareOrderLine(int orderLineId, int restaurantId, int orderId)
         {
             return Ok(await mediator.Send(new PrepareOrderLineCommand(orderLineId, orderId, restaurantId)));
         }
@@ -139,7 +139,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.OrderConstants.ReadyOrderLine)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> ReadyOrderLine([FromRoute] int orderLineId, [FromRoute] int restaurantId, [FromRoute] int orderId)
+        public async Task<IActionResult> ReadyOrderLine(int orderLineId, int restaurantId, int orderId)
         {
             return Ok(await mediator.Send(new ReadyOrderLineCommand(orderLineId, orderId, restaurantId)));
         }

@@ -49,7 +49,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.RestaurantConstants.GetByUser)]
         [ProducesResponseType(typeof(IEnumerable<RestaurantDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetRestaurantByUserId([FromRoute] string userId)
+        public async Task<IActionResult> GetRestaurantByUserId(string userId)
         {
             return Ok(await mediator.Send(new GetRestaurantByUserIdQuery(userId)));
         }
@@ -64,7 +64,6 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Restaurant), Permissions.Read)]
         [HttpGet]
         [Route(RouteConstants.RestaurantConstants.GetById)]
-
         [ProducesResponseType(typeof(DetailRestaurantDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> GetById(int id)
@@ -114,7 +113,6 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
         [HttpDelete]
         [Route(RouteConstants.RestaurantConstants.Delete)]
-
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
@@ -133,10 +131,9 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Restaurant), Permissions.Update)]
         [HttpPost]
         [Route(RouteConstants.RestaurantConstants.PostEmployee)]
-
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> AddEmployeeToRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)
+        public async Task<IActionResult> AddEmployeeToRestaurant(int restaurantId, string employeeId)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddEmployeeCommand(employeeId, restaurantId)));
         }
@@ -152,10 +149,9 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Restaurant), Permissions.Delete)]
         [HttpDelete]
         [Route(RouteConstants.RestaurantConstants.DeleteEmployee)]
-
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> RemoveEmployeeFromRestaurant([FromRoute] int restaurantId, [FromRoute] string employeeId)
+        public async Task<IActionResult> RemoveEmployeeFromRestaurant(int restaurantId, string employeeId)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new RemoveEmployeeFromRestaurantCommand(restaurantId, employeeId)));
         }

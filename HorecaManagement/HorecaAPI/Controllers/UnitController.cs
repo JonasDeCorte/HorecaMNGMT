@@ -32,10 +32,9 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [HttpGet]
         [Route(RouteConstants.UnitConstants.GetAllByRestaurantId)]
-
         [ProducesResponseType(typeof(IEnumerable<UnitDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Get([FromRoute] int restaurantId)
+        public async Task<IActionResult> Get(int restaurantId)
         {
             return Ok(await mediator.Send(new GetAllUnitsQuery(restaurantId)));
         }
@@ -50,11 +49,10 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [HttpPost]
         [Route(RouteConstants.UnitConstants.Post)]
-
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateUnitDto model, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Post([FromBody] MutateUnitDto model, int restaurantId)
         {
             model.RestaurantId = restaurantId;
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateUnitCommand(model, restaurantId)));
@@ -70,11 +68,10 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [HttpGet]
         [Route(RouteConstants.UnitConstants.GetById)]
-
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Read)]
         [ProducesResponseType(typeof(UnitDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
+        public async Task<IActionResult> GetById(int id, int restaurantId)
         {
             return Ok(await mediator.Send(new GetUnitByIdQuery(id, restaurantId)));
         }
@@ -90,7 +87,6 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Delete)]
         [HttpDelete]
         [Route(RouteConstants.UnitConstants.Delete)]
-
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> DeleteById(int id)
@@ -109,11 +105,10 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [HttpPut]
         [Route(RouteConstants.UnitConstants.Update)]
-
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateUnitDto model, [FromRoute] int restaurantId, [FromRoute] int id)
+        public async Task<IActionResult> Update([FromBody] MutateUnitDto model, int restaurantId, int id)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditUnitCommand(model, id, restaurantId)));
         }

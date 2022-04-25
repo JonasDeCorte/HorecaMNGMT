@@ -38,7 +38,7 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(List<ScheduleDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAll([FromRoute] int restaurantId)
+        public async Task<IActionResult> GetAll(int restaurantId)
         {
             return Ok(await mediator.Send(new GetAvailableSchedulesQuery(restaurantId)));
         }
@@ -55,11 +55,10 @@ namespace Horeca.API.Controllers
 
         [HttpGet]
         [Route(RouteConstants.ScheduleConstants.GetById)]
-
         [PermissionAuthorize(nameof(Schedule), Permissions.Read)]
         [ProducesResponseType(typeof(ScheduleByIdDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Get([FromRoute] int id, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Get(int id, int restaurantId)
         {
             return Ok(await mediator.Send(new GetScheduleByIdQuery(id, restaurantId)));
         }
@@ -76,11 +75,10 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</
         [HttpPost]
         [Route(RouteConstants.ScheduleConstants.Post)]
-
         [PermissionAuthorize(nameof(Schedule), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateScheduleDto model, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Post([FromBody] MutateScheduleDto model, int restaurantId)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new AddScheduleCommand(model, restaurantId)));
         }
@@ -99,11 +97,10 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response>
         [HttpPut]
         [Route(RouteConstants.ScheduleConstants.Update)]
-
         [PermissionAuthorize(nameof(Schedule), Permissions.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateScheduleDto model, [FromRoute] int restaurantId, [FromRoute] int id)
+        public async Task<IActionResult> Update([FromBody] MutateScheduleDto model, int restaurantId, int id)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditScheduleCommand(model, id, restaurantId)));
         }
@@ -117,7 +114,6 @@ namespace Horeca.API.Controllers
         /// <response code="400">Bad request</response
         [HttpDelete]
         [Route(RouteConstants.ScheduleConstants.Delete)]
-
         [PermissionAuthorize(nameof(Schedule), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

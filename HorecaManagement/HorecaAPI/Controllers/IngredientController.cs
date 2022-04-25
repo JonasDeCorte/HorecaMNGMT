@@ -36,7 +36,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.IngredientConstants.GetAllIngredientsByRestaurantId)]
         [ProducesResponseType(typeof(IEnumerable<IngredientDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetAllIngredientsByRestaurantId([FromRoute] int restaurantId)
+        public async Task<IActionResult> GetAllIngredientsByRestaurantId(int restaurantId)
         {
             return Ok(await mediator.Send(new GetAllIngredientsByRestaurantIdQuery(restaurantId)));
         }
@@ -54,7 +54,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.IngredientConstants.Post)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Post([FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Post([FromBody] MutateIngredientDto model, int restaurantId)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateIngredientCommand(model, restaurantId)));
         }
@@ -72,7 +72,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.IngredientConstants.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MutateIngredientDto model, [FromRoute] int restaurantId)
+        public async Task<IActionResult> Update(int id, [FromBody] MutateIngredientDto model, int restaurantId)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditIngredientCommand(model, id, restaurantId)));
         }
@@ -90,7 +90,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.IngredientConstants.GetById)]
         [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> GetById([FromRoute] int id, [FromRoute] int restaurantId)
+        public async Task<IActionResult> GetById(int id, int restaurantId)
         {
             return Ok(await mediator.Send(new GetIngredientByIdQuery(id, restaurantId)));
         }
