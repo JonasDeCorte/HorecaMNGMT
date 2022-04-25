@@ -1,11 +1,33 @@
-﻿using Horeca.Shared.Constants;
+﻿using Horeca.MVC.Helpers.Attributes;
+using Horeca.Shared.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Bookings
 {
     public class CreateBookingViewModel
     {
-        public BookingInfoViewModel Booking { get; set; }
+        public string UserID { get; set; }
+
+        [Display(Name = "Booking date")]
+        [Required]
+        public DateTime BookingDate { get; set; }
+
+        [Display(Name = "Check-in time")]
+        [Required]
+        [DateSmallerThan("CheckOut", ErrorMessage = ErrorConstants.CheckInSmaller)]
+        public DateTime? CheckIn { get; set; }
+
+        [Display(Name = "Check-out time")]
+        [Required]
+        public DateTime? CheckOut { get; set; }
+
+        [Display(Name = "Contact name")]
+        [Required]
+        public string FullName { get; set; }
+
+        [Display(Name = "Phone number")]
+        [Required]
+        public string PhoneNo { get; set; }
 
         public int ScheduleId { get; set; }
 

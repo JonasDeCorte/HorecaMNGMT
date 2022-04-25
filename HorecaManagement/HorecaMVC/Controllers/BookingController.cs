@@ -69,25 +69,25 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Create(CreateBookingViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        MakeBookingDto bookingDto = BookingMapper.MapMakeBookingDto(model);
-        //        var response = await bookingService.AddBooking(bookingDto);
-        //        if (response == null)
-        //        {
-        //            return View(nameof(NotFound));
-        //        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateBookingViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                MakeBookingDto bookingDto = BookingMapper.MapMakeBookingDto(model);
+                var response = await bookingService.AddBooking(bookingDto);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
 
-        //        return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });
-        //    } 
-        //    else
-        //    {
-        //        return View(model);
-        //    }
-        //}
+                return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });
+            }
+            else
+            {
+                return View(model);
+            }
+        }
 
 
         [Route("/Booking/Delete/{bookingId}/{page}")]

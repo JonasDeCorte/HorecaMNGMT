@@ -29,14 +29,9 @@ namespace Horeca.MVC.Helpers.Mappers
         {
             return new CreateBookingViewModel
             {
-                Booking = new BookingInfoViewModel
-                {
-                    UserID = userDto.Id,
-                    BookingDate = scheduleDto.ScheduleDate,
-                    CheckIn = scheduleDto.StartTime,
-                    CheckOut = scheduleDto.EndTime
-                },
-                ScheduleId = scheduleDto.Id
+                UserID = userDto.Id,
+                ScheduleId = scheduleDto.Id,
+                BookingDate = scheduleDto.ScheduleDate,
             };
         }
 
@@ -59,6 +54,21 @@ namespace Horeca.MVC.Helpers.Mappers
                 bookingListViewModel.Bookings.Add(MapBookingModel(bookingDto));
             }
             return bookingListViewModel;
+        }
+
+        public static MakeBookingDto MapMakeBookingDto(CreateBookingViewModel model)
+        {
+            return new MakeBookingDto()
+            {
+                UserId = model.UserID,
+                BookingDate = model.BookingDate,
+                CheckIn = model.CheckIn,
+                CheckOut = model.CheckOut,
+                FullName = model.FullName,
+                PhoneNo = model.PhoneNo,
+                ScheduleId = model.ScheduleId,
+                Pax = model.Pax,
+            };
         }
     }
 }
