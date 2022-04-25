@@ -38,6 +38,8 @@
 
         public const string Account = "Account";
         public const string User = "User";
+        public const string Users = "Users";
+        public const string Username = "username";
         public const string Admin = "Admin";
         public const string Login = "login";
         public const string Register = "register";

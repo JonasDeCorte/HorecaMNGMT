@@ -34,7 +34,7 @@ namespace Horeca.MVC.Helpers.Mappers
         }
 
         public static ScheduleDetailViewModel MapScheduleDetailModel(
-            ScheduleByIdDto scheduleByIdDto, IEnumerable<BookingDetailOnlyBookingsDto> scheduleBookings)
+            ScheduleByIdDto scheduleByIdDto, IEnumerable<BookingDto> scheduleBookings)
         {
             ScheduleDetailViewModel model = new ScheduleDetailViewModel()
             {
