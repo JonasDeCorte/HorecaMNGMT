@@ -22,5 +22,14 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = ""
             };
         }
+
+        internal static MutateUnitDto MapMutateUnitDto(UnitViewModel unit)
+        {
+            return new MutateUnitDto()
+            {
+                Id = unit.Id,
+                Name = unit.Name
+            };
+        }
     }
 }

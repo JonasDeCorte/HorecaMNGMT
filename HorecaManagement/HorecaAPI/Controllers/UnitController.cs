@@ -47,7 +47,7 @@ namespace Horeca.API.Controllers
         /// <response code="201">Success creating new Unit</response>
         /// <response code="400">Bad request</response
         [HttpPost]
-        [Route("/Restaurant/{restaurantId}")]
+        [Route("Restaurant/{restaurantId}")]
         [PermissionAuthorize(nameof(Shared.Data.Entities.Unit), Permissions.Create)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]

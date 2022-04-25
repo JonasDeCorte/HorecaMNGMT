@@ -58,8 +58,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddUnit(MutateUnitDto unitDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(unitDto), Encoding.UTF8, "application/json")
             };
@@ -75,7 +74,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateUnit(MutateUnitDto unitDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/" +
+                $"{configuration.GetSection("BaseURL").Value}//{ClassConstants.Unit}/{unitDto.Id}/{ClassConstants.Restaurant}/" +
                 $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(unitDto), Encoding.UTF8, "application/json")
