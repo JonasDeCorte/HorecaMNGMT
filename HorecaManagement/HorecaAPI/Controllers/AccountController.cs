@@ -3,6 +3,7 @@ using Horeca.Core.Handlers.Commands.UserPermissions;
 using Horeca.Core.Handlers.Queries.Accounts;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
+using Horeca.Shared.Constants;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Entities.Account;
 using Horeca.Shared.Dtos;
@@ -35,15 +36,15 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        [Route("SuperAdminAccessToken")]
+        [Route(RouteConstants.AccountConstants.LoginSuperAdmin)]
         public async Task<IActionResult> LoginSuperAdmin()
         {
             return Ok(await mediator.Send(new LoginCommand(new LoginUserDto() { Password = "SuperAdmin123!", Username = "SuperAdmin" })));
         }
 
-        [HttpGet("me")]
+        [HttpGet(RouteConstants.AccountConstants.GetUserClaims)]
         [AllowAnonymous]
-        public IActionResult Get()
+        public IActionResult GetUserClaims()
         {
             // return all the user claims in all identities
             return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
@@ -56,7 +57,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        [Route("RefreshToken")]
+        [Route(RouteConstants.AccountConstants.RefreshToken)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
         {
             return Ok(await mediator.Send(new RefreshCommand(model)));
@@ -69,7 +70,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [AllowAnonymous]
-        [Route("RefreshToken/revoke")]
+        [Route(RouteConstants.AccountConstants.RevokeToken)]
         public async Task<IActionResult> RevokeToken([FromBody] string token)
         {
             return Ok(await mediator.Send(new RevokeTokenCommand(token)));
@@ -82,7 +83,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        [Route("login")]
+        [Route(RouteConstants.AccountConstants.Login)]
         public async Task<IActionResult> Login([FromBody] LoginUserDto model)
         {
             return Ok(await mediator.Send(new LoginCommand(model)));
@@ -95,7 +96,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]
+        [Route(RouteConstants.AccountConstants.Register)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto model)
@@ -109,7 +110,7 @@ namespace Horeca.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("register-admin")]
+        [Route(RouteConstants.AccountConstants.RegisterAdmin)]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Create)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
@@ -125,7 +126,9 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [PermissionAuthorize(nameof(Permission), Permissions.Update)]
-        [Route("UserPermissions")]
+        [Route(RouteConstants.AccountConstants.UserPermissions)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> ManageUserPermissions([FromBody] MutateUserPermissionsDto model)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new AddUserPermissionsCommand(model)));
@@ -137,7 +140,7 @@ namespace Horeca.API.Controllers
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("User/{username}")]
+        [Route("UserPermissions/{username}")]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
@@ -151,7 +154,7 @@ namespace Horeca.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("User")]
+        [Route(RouteConstants.AccountConstants.GetAllUsers)]
         [PermissionAuthorize(nameof(ApplicationUser), Permissions.Read)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
