@@ -147,7 +147,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateDish(MutateDishDto dish)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ClassConstants.Restaurant}/" +
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{dish.Id}/{ClassConstants.Restaurant}/" +
                 $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json")
