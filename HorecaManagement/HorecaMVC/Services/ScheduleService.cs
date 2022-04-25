@@ -25,14 +25,14 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Schedule}/{id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             var response = await httpClient.SendAsync(request);
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<ScheduleByIdDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new ScheduleByIdDto();
+                }
                 return result;
-            }
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                return null;
             }
             return null;
         }
@@ -43,12 +43,16 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
             var response = await httpClient.SendAsync(request);
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<IEnumerable<ScheduleDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<ScheduleDto>();
+                }
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<IEnumerable<ScheduleDto>>(await response.Content.ReadAsStringAsync());
-            return result;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddSchedule(MutateScheduleDto scheduleDto)
@@ -61,11 +65,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateSchedule(MutateScheduleDto scheduleDto)
@@ -78,11 +82,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteSchedule(int id)
@@ -92,11 +96,11 @@ namespace Horeca.MVC.Services
                $"{restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
     }
 }

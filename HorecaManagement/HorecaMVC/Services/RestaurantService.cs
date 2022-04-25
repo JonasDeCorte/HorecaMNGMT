@@ -24,15 +24,17 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<IEnumerable<RestaurantDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<RestaurantDto>();
+                }
+                SetCurrentRestaurant(0, "Horeca");
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<IEnumerable<RestaurantDto>>(await response.Content.ReadAsStringAsync());
-
-            SetCurrentRestaurant(0, "Horeca");
-
-            return result;
+            return null;
         }
 
         public async Task<DetailRestaurantDto> GetRestaurantById(int id)
@@ -41,15 +43,17 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<DetailRestaurantDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new DetailRestaurantDto();
+                }
+                SetCurrentRestaurant(id, result.Name);
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<DetailRestaurantDto>(await response.Content.ReadAsStringAsync());
-
-            SetCurrentRestaurant(id, result.Name);
-
-            return result;
+            return null;
         }
 
         public async Task<List<RestaurantDto>> GetRestaurantsByUser(string userId)
@@ -58,15 +62,17 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.User}/{userId}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<RestaurantDto>();
+                }
+                SetCurrentRestaurant(0, "Horeca");
+                return result;
             }
-            var result = JsonConvert.DeserializeObject<List<RestaurantDto>>(await response.Content.ReadAsStringAsync());
-
-            SetCurrentRestaurant(0, "Horeca");
-
-            return result;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddRestaurant(MutateRestaurantDto restaurantDto)
@@ -76,13 +82,12 @@ namespace Horeca.MVC.Services
             {
                 Content = new StringContent(JsonConvert.SerializeObject(restaurantDto), Encoding.UTF8, "application/json")
             };
-
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateRestaurant(EditRestaurantDto restaurantDto)
@@ -94,11 +99,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteRestaurant(int id)
@@ -107,11 +112,11 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddRestaurantEmployee(string userId, int restaurantId)
@@ -120,11 +125,11 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RemoveRestaurantEmployee(string userId, int restaurantId)
@@ -133,11 +138,11 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddRestaurantMenuCard(int restaurantId, int menuCardId)
@@ -147,11 +152,11 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.MenuCard}/{menuCardId}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RemoveRestaurantMenuCard(int restaurantId, int menuCardId)
@@ -161,11 +166,11 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.MenuCard}/{menuCardId}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public int? GetCurrentRestaurantId()
@@ -186,11 +191,8 @@ namespace Horeca.MVC.Services
                 httpContextAccessor.HttpContext.Session.Remove("CurrentRestaurantId");
                 httpContextAccessor.HttpContext.Session.Remove("CurrentRestaurantName");
             }
-            if(restaurantId != 0 && restaurantName != "Horeca")
-            {
-                httpContextAccessor.HttpContext.Session.SetInt32("CurrentRestaurantId", restaurantId);
-                httpContextAccessor.HttpContext.Session.SetString("CurrentRestaurantName", restaurantName);
-            }
+            httpContextAccessor.HttpContext.Session.SetInt32("CurrentRestaurantId", restaurantId);
+            httpContextAccessor.HttpContext.Session.SetString("CurrentRestaurantName", restaurantName);
         }
     }
 }

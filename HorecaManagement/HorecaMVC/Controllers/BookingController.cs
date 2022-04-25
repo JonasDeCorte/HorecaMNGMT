@@ -78,7 +78,7 @@ namespace Horeca.MVC.Controllers
                 var response = await bookingService.AddBooking(bookingDto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });
@@ -96,7 +96,7 @@ namespace Horeca.MVC.Controllers
             var response = await bookingService.DeleteBooking(bookingId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             if (page == "BookingYourBookings") 
             {

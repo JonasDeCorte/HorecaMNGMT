@@ -14,7 +14,6 @@ namespace Horeca.MVC.Controllers
 
         public AccountController(IAccountService accountService, IPermissionService permissionService)
         {
-            ;
             this.accountService = accountService;
             this.permissionService = permissionService;
         }
@@ -26,12 +25,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserListViewModel listModel = new();
-            foreach (var user in users)
-            {
-                UserViewModel model = AccountMapper.MapUserModel(user);
-                listModel.Users.Add(model);
-            }
+            UserListViewModel listModel = AccountMapper.MapUserListModel(users);
 
             return View(listModel);
         }
@@ -80,7 +74,7 @@ namespace Horeca.MVC.Controllers
             var response = await accountService.LogoutUser();
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Index), "Home");
@@ -121,14 +115,9 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
             var permissions = await permissionService.GetPermissions();
-
-            MutatePermissionsViewModel editModel = new()
-            {
-                Username = userModel.Username,
-                Permissions = AccountMapper.MapAddPermissionsList(userModel, permissions)
-            };
+            MutatePermissionsViewModel editModel = AccountMapper.MapAddPermissionsModel(
+                AccountMapper.MapUserPermissionsModel(user), permissions);
 
             return View(editModel);
         }
@@ -143,7 +132,7 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.AddPermissions(dto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { username = model.Username });
@@ -161,13 +150,8 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            UserPermissionsViewModel userModel = AccountMapper.MapUserPermissionsModel(user);
-
-            MutatePermissionsViewModel editModel = new()
-            {
-                Username = userModel.Username,
-                Permissions = AccountMapper.MapRemovePermissionsList(userModel)
-        };
+            MutatePermissionsViewModel editModel = AccountMapper.MapRemovePermissionsModel(
+                AccountMapper.MapUserPermissionsModel(user));
 
             return View(editModel);
         }
@@ -182,7 +166,7 @@ namespace Horeca.MVC.Controllers
                 var response = await accountService.RemovePermissions(dto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
 
                 return RedirectToAction(nameof(Detail), new { username = model.Username });

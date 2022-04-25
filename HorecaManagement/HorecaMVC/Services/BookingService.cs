@@ -26,6 +26,10 @@ namespace Horeca.MVC.Services
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<int>(response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return 0;
+                }
                 return result;
             }
             return 0;
@@ -40,6 +44,10 @@ namespace Horeca.MVC.Services
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<BookingDto>>(response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new List<BookingDto>();
+                }
                 return result;
             }
             return null;
@@ -55,6 +63,10 @@ namespace Horeca.MVC.Services
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<BookingDto>(response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new BookingDto();
+                }
                 return result;
             }
             return null;
@@ -69,6 +81,10 @@ namespace Horeca.MVC.Services
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = JsonConvert.DeserializeObject<BookingHistoryDto>(response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new BookingHistoryDto();
+                }
                 return result;
             }
             return null;
@@ -82,7 +98,12 @@ namespace Horeca.MVC.Services
             var response = await httpClient.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var result = JsonConvert.DeserializeObject<IEnumerable<BookingDetailOnlyBookingsDto>>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<IEnumerable<BookingDetailOnlyBookingsDto>>(
+                    response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new List<BookingDetailOnlyBookingsDto>();
+                }
                 return result;
             }
             return null;
@@ -95,11 +116,11 @@ namespace Horeca.MVC.Services
             request.Content = new StringContent(JsonConvert.SerializeObject(bookingDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> UpdateBooking(EditBookingDto bookingDto)
@@ -109,11 +130,11 @@ namespace Horeca.MVC.Services
             request.Content = new StringContent(JsonConvert.SerializeObject(bookingDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> DeleteBooking(int id)
@@ -122,11 +143,11 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{id}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
     }
 }

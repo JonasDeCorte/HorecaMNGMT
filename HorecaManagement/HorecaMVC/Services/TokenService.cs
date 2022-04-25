@@ -47,15 +47,14 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
+                SetAccessToken(result.AccessToken);
+                SetRefreshToken(result.RefreshToken);
+                return result.AccessToken;
             }
-
-            TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(response.Content.ReadAsStringAsync().Result);
-            SetAccessToken(result.AccessToken);
-            SetRefreshToken(result.RefreshToken);
-            return result.AccessToken;
+            return null;
         }
     }
 }

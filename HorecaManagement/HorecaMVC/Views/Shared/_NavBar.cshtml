@@ -1,21 +1,14 @@
-﻿<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+﻿@using static Horeca.Shared.Utils.Constants
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
     <ul class="navbar-nav flex-grow-1">
-        @if (accountService.Authorize(PermissionConstants.Restaurant_Read))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
-                    Restaurants
-                </a>
-            </li>
-        }
-        @if (restaurantService.GetCurrentRestaurantId() != null)
+        @if (restaurantService.GetCurrentRestaurantId() != 0 && restaurantService.GetCurrentRestaurantId != null)
         {
             @if (accountService.Authorize(PermissionConstants.Ingredient_Read) || accountService.Authorize(PermissionConstants.Dish_Read) ||
            accountService.Authorize(PermissionConstants.Menu_Read) || accountService.Authorize(PermissionConstants.MenuCard_Read))
             {
                 <li class="nav-item dropdown">
                     <a class="nav-link text-dark dropdown-toggle" href="#" id="kitchenDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         Kitchen
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="kitchenDropdown">
@@ -54,6 +47,15 @@
                     </ul>
                 </li>
             }
+            @if (accountService.Authorize(PermissionConstants.Order_Read))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" 
+                        asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-state="@OrderState.Prepare">
+                        Orders
+                    </a>
+                </li>
+            }
             @if (accountService.Authorize(PermissionConstants.Booking_Read))
             {
                 <li class="nav-item dropdown">
@@ -88,8 +90,31 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Log out</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark">Welcome, @accountService.GetCurrentUser().Username!</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link text-dark dropdown-toggle" href="#" id="userNavDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Welcome, @accountService.GetCurrentUser().Username!
+                </a>
+
+                @if (accountService.Authorize(PermissionConstants.Restaurant_Read))
+                {
+                    <ul class="dropdown-menu" aria-labelledby="restaurantNavDropdown">
+                        @if (!restaurantService.GetCurrentRestaurantName().Equals("Horeca"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Restaurant" asp-action="Detail"
+                                    asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                                    View @restaurantService.GetCurrentRestaurantName()
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Restaurant" asp-action="Index">
+                                Switch Restaurant
+                            </a>
+                        </li>
+                    </ul>
+                }
             </li>
         }
         else

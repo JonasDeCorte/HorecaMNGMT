@@ -2,6 +2,8 @@
 {
     public static class ClassConstants
     {
+        public const string Unit = "Unit";
+
         public const string Ingredient = "Ingredient";
         public const string Ingredients = "ingredients";
 

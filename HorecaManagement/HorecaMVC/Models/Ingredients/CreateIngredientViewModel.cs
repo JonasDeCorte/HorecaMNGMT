@@ -1,9 +1,10 @@
-﻿using Horeca.Shared.Constants;
+﻿using Horeca.MVC.Models.Ingredients;
+using Horeca.Shared.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Ingredients
 {
-    public class IngredientViewModel
+    public class CreateIngredientViewModel
     {
         public int IngredientId { get; set; }
 
@@ -21,8 +22,8 @@ namespace Horeca.MVC.Models.Ingredients
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int BaseAmount { get; set; }
 
-        [Display(Name = "Unit name")]
-        [Required]
-        public UnitViewModel Unit { get; set; }
+        public int UnitId { get; set; }
+
+        public List<UnitViewModel> Units { get; set; } = new List<UnitViewModel>();
     }
 }

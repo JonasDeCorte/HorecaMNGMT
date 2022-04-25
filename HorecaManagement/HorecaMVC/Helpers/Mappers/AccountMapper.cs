@@ -30,6 +30,37 @@ namespace Horeca.MVC.Helpers.Mappers
             return userPermissionsModel;
         }
 
+        public static MutatePermissionsViewModel MapAddPermissionsModel(UserPermissionsViewModel userModel, List<PermissionDto> permissions)
+        {
+            MutatePermissionsViewModel model = new()
+            {
+                Username = userModel.Username,
+                Permissions = MapAddPermissionsList(userModel, permissions)
+            };
+            return model;
+        }
+
+        public static MutatePermissionsViewModel MapRemovePermissionsModel(UserPermissionsViewModel userModel)
+        {
+            MutatePermissionsViewModel model = new()
+            {
+                Username = userModel.Username,
+                Permissions = MapRemovePermissionsList(userModel)
+            };
+            return model;
+        }
+
+        public static UserListViewModel MapUserListModel(IEnumerable<BaseUserDto> users)
+        {
+            UserListViewModel listModel = new UserListViewModel();
+            foreach (var user in users)
+            {
+                UserViewModel model = MapUserModel(user);
+                listModel.Users.Add(model);
+            }
+            return listModel;
+        }
+
         public static PermissionViewModel MapPermissionModel(PermissionDto permission)
         {
             return new PermissionViewModel

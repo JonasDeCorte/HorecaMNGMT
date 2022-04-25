@@ -15,7 +15,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 MenuId = menu.Id,
                 Name = menu.Name,
                 Description = menu.Description,
-                Category = menu.Category
+                Category = menu.Category,
+                Price = menu.Price,
             };
         }
 
@@ -27,6 +28,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = menu.Name,
                 Description = menu.Description,
                 Category = menu.Category,
+                Price = menu.Price,
             };
             model.Dishes = DishMapper.MapDishModelList(menu.Dishes);
             return model;
@@ -41,7 +43,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = dish.Name,
                 DishType = dish.DishType,
                 Category = dish.Category,
-                Description = dish.Description
+                Description = dish.Description,
+                Price = dish.Price,
             };
         }
 
@@ -65,6 +68,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = menuDto.Name,
                 Description = menuDto.Description,
                 Category = menuDto.Category,
+                Price = menuDto.Price,
             };
         }
 
@@ -86,7 +90,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 Id = menu.Id,
                 Name = menu.Name,
                 Category = menu.Category,
-                Description = menu.Description
+                Description = menu.Description,
+                Price = menu.Price,
             };
         }
 
@@ -98,6 +103,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = menuModel.Name,
                 Description = menuModel.Description,
                 Category = menuModel.Category,
+                Price = menuModel.Price,
             };
         }
 
@@ -112,7 +118,8 @@ namespace Horeca.MVC.Helpers.Mappers
                     Name = model.Name,
                     DishType = model.DishType,
                     Category = model.Category,
-                    Description = model.Description
+                    Description = model.Description,
+                    Price = model.Price,
                 }
             };
         }

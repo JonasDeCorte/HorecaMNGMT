@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Horeca.Shared.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Bookings
 {
@@ -10,7 +11,7 @@ namespace Horeca.MVC.Models.Bookings
 
         [Display(Name = "Amount of people")]
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "{0} must be higher than 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int Pax { get; set; }
     }
 }

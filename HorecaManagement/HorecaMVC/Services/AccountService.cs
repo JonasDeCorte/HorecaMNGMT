@@ -14,16 +14,17 @@ namespace Horeca.MVC.Services
         private readonly IConfiguration configuration;
         private readonly ITokenService tokenService;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IRestaurantService restaurantService;
 
-        public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, 
+            IHttpContextAccessor httpContextAccessor, IRestaurantService restaurantService)
         {
             this.httpClient = httpClient;
             this.tokenService = tokenService;
             this.httpContextAccessor = httpContextAccessor;
+            this.restaurantService = restaurantService;
             this.configuration = configuration;
         }
-
-        public UserDto CurrentUser { get; set; }
 
         public async Task<HttpResponseMessage> LoginUser(LoginUserDto user)
         {
@@ -50,6 +51,8 @@ namespace Horeca.MVC.Services
             }
             httpContextAccessor.HttpContext.Session.SetString("CurrentUser", JsonConvert.SerializeObject(currentUser));
 
+            restaurantService.SetCurrentRestaurant(0, "Horeca");
+
             return response;
         }
 
@@ -63,17 +66,16 @@ namespace Horeca.MVC.Services
             request.Content = new StringContent(JsonConvert.SerializeObject(refreshToken), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                foreach (string key in httpContextAccessor.HttpContext.Session.Keys)
+                {
+                    httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
+                    httpContextAccessor.HttpContext.Session.Remove(key);
+                }
+                return response;
             }
-            foreach (string key in httpContextAccessor.HttpContext.Session.Keys)
-            {
-                httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
-                httpContextAccessor.HttpContext.Session.Remove(key);
-            }
-
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RegisterUser(RegisterUserDto user)
@@ -86,11 +88,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
@@ -103,11 +105,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> AddPermissions(MutateUserPermissionsDto model)
@@ -120,11 +122,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
@@ -137,11 +139,11 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                return response;
             }
-            return response;
+            return null;
         }
 
         public async Task<IEnumerable<BaseUserDto>> GetUsers()
@@ -150,13 +152,16 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Account}/{ClassConstants.User}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<BaseUserDto>();
+                }
+                return result;
             }
-
-            var result = JsonConvert.DeserializeObject<IEnumerable<BaseUserDto>>(await response.Content.ReadAsStringAsync());
-            return result;
+            return null;
         }
 
         public async Task<UserDto> GetUserByName(string username)
@@ -169,15 +174,16 @@ namespace Horeca.MVC.Services
                 $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
 
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-            else
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new UserDto();
+                }
                 return result;
             }
+            return null;
         }
 
         public UserDto GetCurrentUser()
@@ -190,7 +196,7 @@ namespace Horeca.MVC.Services
             var currentUser = JsonConvert.DeserializeObject<UserDto>(userCookie);
             if (currentUser == null)
             {
-                return null;
+                return new UserDto();
             }
             else
             {
@@ -214,7 +220,8 @@ namespace Horeca.MVC.Services
 
         public bool IsLoggedIn()
         {
-            if (GetCurrentUser() == null)
+            var user = GetCurrentUser();
+            if (user == null || user.Id == null)
             {
                 return false;
             }

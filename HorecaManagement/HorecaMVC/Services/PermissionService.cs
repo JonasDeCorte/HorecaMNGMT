@@ -21,13 +21,16 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Permission}");
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<List<PermissionDto>>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new List<PermissionDto>();
+                }
+                return result;
             }
-
-            var result = JsonConvert.DeserializeObject<List<PermissionDto>>(await response.Content.ReadAsStringAsync());
-            return result;
+            return null;
         }
 
         public async Task<PermissionDto> GetPermissionById(int id)
@@ -35,13 +38,16 @@ namespace Horeca.MVC.Services
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
                 $"{ClassConstants.Permission}/{id}");
             var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var result = JsonConvert.DeserializeObject<PermissionDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new PermissionDto();
+                }
+                return result;
             }
-
-            var result = JsonConvert.DeserializeObject<PermissionDto>(await response.Content.ReadAsStringAsync());
-            return result;
+            return null;
         }
     }
 }

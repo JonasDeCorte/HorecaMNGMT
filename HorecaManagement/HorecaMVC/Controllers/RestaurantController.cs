@@ -68,7 +68,7 @@ namespace Horeca.MVC.Controllers
                 var response = await restaurantService.AddRestaurant(restaurantDto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -95,7 +95,7 @@ namespace Horeca.MVC.Controllers
                 var response = await restaurantService.UpdateRestaurant(restaurantDto);
                 if (response == null)
                 {
-                    return View("OperationFailed");
+                    return View(nameof(NotFound));
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -110,7 +110,7 @@ namespace Horeca.MVC.Controllers
             var response = await restaurantService.DeleteRestaurant(id);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
             return RedirectToAction(nameof(Index));
         }
@@ -130,7 +130,7 @@ namespace Horeca.MVC.Controllers
             var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
@@ -142,7 +142,7 @@ namespace Horeca.MVC.Controllers
             var response = await restaurantService.RemoveRestaurantEmployee(employeeId, restaurantId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = restaurantId });
@@ -163,7 +163,7 @@ namespace Horeca.MVC.Controllers
         //    var response = await restaurantService.AddRestaurantMenuCard(model.RestaurantId, model.MenuCardId);
         //    if (response == null)
         //    {
-        //        return View("OperationFailed");
+        //        return View(nameof(NotFound));
         //    }
         //    return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
         //}
@@ -174,7 +174,7 @@ namespace Horeca.MVC.Controllers
             var response = await restaurantService.RemoveRestaurantMenuCard(menuCardId, restaurantId);
             if (response == null)
             {
-                return View("OperationFailed");
+                return View(nameof(NotFound));
             }
 
             return RedirectToAction(nameof(Detail), new { id = restaurantId });

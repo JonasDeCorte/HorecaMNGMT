@@ -17,7 +17,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = dish.Name,
                 Category = dish.Category,
                 DishType = dish.DishType,
-                Description = dish.Description
+                Description = dish.Description,
+                Price = dish.Price,
             };
 
             return model;
@@ -59,7 +60,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = dish.Name,
                 Category = dish.Category,
                 DishType = dish.DishType,
-                Description = dish.Description
+                Description = dish.Description,
+                Price = dish.Price
             };
             foreach (var ingredient in dish.DishIngredients)
             {
@@ -109,6 +111,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Description = dishDto.Description,
                 Category = dishDto.Category,
                 DishType = dishDto.DishType,
+                Price = dishDto.Price,
             };
         }
 
@@ -122,7 +125,8 @@ namespace Horeca.MVC.Helpers.Mappers
                     Name = dishDto.Name,
                     Description = dishDto.Description,
                     Category = dishDto.Category,
-                    DishType = dishDto.DishType
+                    DishType = dishDto.DishType,
+                    Price = dishDto.Price
                 },
                 IngredientId = ingredientDto.Id,
                 Ingredient = new Ingredient
@@ -172,7 +176,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = dish.Name,
                 Description = dish.Description,
                 Category = dish.Category,
-                DishType = dish.DishType
+                DishType = dish.DishType,
+                Price = dish.Price,
             };
         }
 
@@ -185,6 +190,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 DishType = dishModel.DishType,
                 Description = dishModel.Description,
                 Category = dishModel.Category,
+                Price = dishModel.Price,
             };
         }
 
