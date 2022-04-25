@@ -18,6 +18,23 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
+        public static CreateIngredientViewModel MapEditIngredientModel(IngredientDto ingredientDto, List<UnitDto> unitDtos)
+        {
+            CreateIngredientViewModel model = new CreateIngredientViewModel()
+            {
+                IngredientId = ingredientDto.Id,
+                Name = ingredientDto.Name,
+                IngredientType = ingredientDto.IngredientType,
+                BaseAmount = ingredientDto.BaseAmount,
+                UnitId = ingredientDto.Unit.Id
+            };
+            foreach (var unitDto in unitDtos)
+            {
+                model.Units.Add(UnitMapper.MapUnitModel(unitDto));
+            }
+            return model;
+        }
+
         public static CreateIngredientViewModel MapCreateIngredientModel(List<UnitDto> unitDtos)
         {
             CreateIngredientViewModel model = new CreateIngredientViewModel();
@@ -40,7 +57,7 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static MutateIngredientDto MapUpdateIngredientDto(IngredientViewModel ingredientModel, IngredientDto ingredient)
+        public static MutateIngredientDto MapUpdateIngredientDto(CreateIngredientViewModel ingredientModel, IngredientDto ingredient)
         {
             return new MutateIngredientDto
             {
@@ -48,7 +65,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = ingredientModel.Name,
                 IngredientType = ingredientModel.IngredientType,
                 BaseAmount = ingredientModel.BaseAmount,
-                Unit = UnitMapper.MapUnitDto(ingredientModel, ingredient)
+                Unit = UnitMapper.MapUnitDto(ingredientModel)
             };
         }
     }

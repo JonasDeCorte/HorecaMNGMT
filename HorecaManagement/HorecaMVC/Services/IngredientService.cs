@@ -89,7 +89,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/" +
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{ingredient.Id}/" +
                 $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")

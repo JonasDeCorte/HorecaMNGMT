@@ -1,5 +1,4 @@
 ﻿using Horeca.MVC.Models.Ingredients;
-using Horeca.Shared.Dtos.Ingredients;
 using Horeca.Shared.Dtos.Units;
 
 namespace Horeca.MVC.Helpers.Mappers
@@ -21,15 +20,6 @@ namespace Horeca.MVC.Helpers.Mappers
             {
                 Id = ingredientModel.UnitId,
                 Name = ""
-            };
-        }
-
-        internal static UnitDto MapUnitDto(IngredientViewModel ingredientModel, IngredientDto ingredient)
-        {
-            return new UnitDto
-            {
-                Id = ingredient.Unit.Id,
-                Name = ingredientModel.Unit.Name,
             };
         }
     }
