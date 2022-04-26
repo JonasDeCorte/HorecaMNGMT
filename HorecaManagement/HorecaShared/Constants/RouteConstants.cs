@@ -22,79 +22,81 @@
 
         public static class BookingConstants
         {
-            public const string GetAllBookingsByScheduleId = $"{ClassConstants.Schedule}{Slash}{ClassConstants.ScheduleId}";
+            public const string GetAllBookingsByScheduleId = $"{ClassConstants.Schedule}";
             public const string GetPendingBookingCount = $"{ClassConstants.ListCount}";
             public const string GetByBookingNo = $"{ClassConstants.Details}{Slash}{ClassConstants.BookingNo}";
-            public const string GetAllBookingsByUserId = $"{ClassConstants.User}{Slash}{ClassConstants.UserId}{Slash}{ClassConstants.BookingStatus}{Slash}{ClassConstants.Status}";
-            public const string GetAllBookingsOfStatus = $"{ClassConstants.Schedule}{Slash}{ClassConstants.ScheduleId}{Slash}{ClassConstants.BookingStatus}{Slash}{ClassConstants.Status}";
+            public const string GetAllBookingsByUserId = $"{ClassConstants.User}{Slash}{ClassConstants.BookingStatus}";
+            public const string GetAllBookingsOfStatus = $"{ClassConstants.Schedule}{Slash}{ClassConstants.BookingStatus}";
         }
 
         public static class DishConstants
         {
-            public const string Get = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Get = $"{ClassConstants.Restaurant}";
+            public const string Post = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string Update = $"{ClassConstants.Restaurant}";
 
-            public const string GetIngredientsByDishId = $"{ClassConstants.Id}{Slash}{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string AddIngredientToDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string EditIngredientFromDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Ingredients}{Slash}{ClassConstants.IngredientId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string DeleteById = $"{ClassConstants.Id}{Slash}{ClassConstants.Ingredients}{Slash}{ClassConstants.IngredientId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetAll = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetDishById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetIngredientsByDishId = $"{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}";
+            public const string AddIngredientToDish = $"{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}";
+            public const string EditIngredientFromDish = $"{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}";
+            public const string DeleteById = $"{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}";
+            public const string GetAll = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
+            public const string GetDishById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}";
         }
 
         public static class IngredientConstants
         {
-            public const string GetAllIngredientsByRestaurantId = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetAllIngredientsByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
+            public const string Post = $"{ClassConstants.Restaurant}";
+            public const string Update = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}";
         }
 
         public static class MenuCardConstants
         {
-            public const string GetAllMenuCardsByRestaurantId = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetAllMenuCardsByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
 
-            public const string GetFullMenuCard = $"{ClassConstants.Id}{Slash}{ClassConstants.Menus}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetFullMenuCard = $"{ClassConstants.Menus}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
 
-            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string PostMenu = $"{ClassConstants.Id}{Slash}{ClassConstants.Menus}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string PostDishes = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Post = $"{ClassConstants.Restaurant}";
+            public const string PostMenu = $"{ClassConstants.Menus}{Slash}{ClassConstants.Restaurant}";
+            public const string PostDishes = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
 
-            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string UpdateMenu = $"{ClassConstants.Id}{Slash}{ClassConstants.Menus}{Slash}{ClassConstants.MenuId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string UpdateDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Update = $"{ClassConstants.Restaurant}";
+            public const string UpdateMenu = $"{ClassConstants.Menus}{Slash}{ClassConstants.Restaurant}";
+            public const string UpdateDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
 
-            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string DeleteMenu = $"{ClassConstants.Id}{Slash}{ClassConstants.Menus}{Slash}{ClassConstants.MenuId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string DeleteDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string DeleteMenu = $"{ClassConstants.Menus}{Slash}{ClassConstants.Restaurant}";
+            public const string DeleteDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
 
-            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetById = $"{ClassConstants.Restaurant}";
         }
 
         public static class MenuConstants
         {
-            public const string GetAllByRestaurantId = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string PostDishes = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string UpdateDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string DeleteDish = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.DishId}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetDishes = $"{ClassConstants.Id}{Slash}{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetAllByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
+            public const string Post = $"{ClassConstants.Restaurant}";
+            public const string Update = $"{ClassConstants.Restaurant}";
+
+            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string GetById = $"{ClassConstants.Restaurant}";
+            public const string PostDishes = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
+            public const string UpdateDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
+            public const string DeleteDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
+            public const string GetDishes = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
         }
 
         public static class OrderConstants
         {
-            public const string Post = $"{ClassConstants.Table}{Slash}{ClassConstants.TableId}";
-            public const string Get = $"{ClassConstants.Table}{Slash}{ClassConstants.TableId}{Slash}{ClassConstants.Details}";
-            public const string GetOrderState = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderState}";
-            public const string DeliverOrder = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderId}";
-            public const string PrepareOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderId}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.OrderLineId}{Slash}{ClassConstants.Prepare}";
-            public const string ReadyOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderId}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.OrderLineId}{Slash}{ClassConstants.Ready}";
+            public const string Post = $"{ClassConstants.Restaurant}";
+
+            public const string Get = $"{ClassConstants.Table}{Slash}{ClassConstants.Details}";
+            public const string GetOrderState = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderState}";
+            public const string DeliverOrder = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.Order}";
+            public const string PrepareOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.Prepare}";
+            public const string ReadyOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.Order}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.Ready}";
         }
 
         public static class PermissionConstants
@@ -104,34 +106,35 @@
 
         public static class RestaurantConstants
         {
-            public const string GetByUser = $"{ClassConstants.User}{Slash}{ClassConstants.UserId}";
+            public const string GetByUser = $"{ClassConstants.User}";
             public const string GetById = $"{ClassConstants.Id}";
             public const string Delete = $"{ClassConstants.Id}";
-            public const string PostEmployee = $"{ClassConstants.RestaurantId}{Slash}{ClassConstants.Employee}{Slash}{ClassConstants.EmployeeId}";
-            public const string DeleteEmployee = $"{ClassConstants.RestaurantId}{Slash}{ClassConstants.Employee}{Slash}{ClassConstants.EmployeeId}";
+            public const string PostEmployee = $"{ClassConstants.Employee}";
+            public const string DeleteEmployee = $"{ClassConstants.Employee}";
         }
 
         public static class ScheduleConstants
         {
-            public const string GetAllByRestaurantId = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetAllByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
+            public const string Post = $"{ClassConstants.Restaurant}";
+            public const string Update = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string GetById = $"{ClassConstants.Restaurant}";
         }
 
         public static class TableConstants
         {
-            public const string Post = $"{ClassConstants.Schedule}{Slash}{ClassConstants.ScheduleId}";
+            public const string Post = $"{ClassConstants.Schedule}";
         }
 
         public static class UnitConstants
         {
-            public const string GetAllByRestaurantId = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Post = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Update = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string Delete = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
-            public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}{Slash}{ClassConstants.RestaurantId}";
+            public const string GetAllByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
+
+            public const string Post = $"{ClassConstants.Restaurant}";
+            public const string Update = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string GetById = $"{ClassConstants.Restaurant}";
         }
     }
 }
