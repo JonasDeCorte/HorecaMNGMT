@@ -131,7 +131,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.User}/{ClassConstants.UserPermissions}?{ClassConstants.Username}={model.UserName}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.User}/{ClassConstants.UserPermissions}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
             };
