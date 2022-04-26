@@ -7,7 +7,6 @@
         /// </summary>
         private const string Slash = "/";
 
-        // test
         public static class AccountConstants
         {
             public const string LoginSuperAdmin = $"{ClassConstants.SuperAdminAccessToken}";
