@@ -1,10 +1,15 @@
-﻿@model Horeca.MVC.Models.Dishes.DishViewModel
+﻿@model Horeca.MVC.Models.Dishes.MenuDishViewModel
 
 <div class="text-center">
     <h1 class="display-4">Create Menu Dish</h1>
     <div>
         <form class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mt-2" style="display: none">
+                <label asp-for="MenuId" class="control-label"></label>
+                <input asp-for="MenuId" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="MenuId" class="text-danger"></span>
+            </div>
             <div class="mt-2">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />

@@ -108,14 +108,16 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static MutateDishMenuDto MapMutateMenuDish(int id, DishViewModel model)
+        public static MutateDishMenuDto MapMutateMenuDish(MenuDishViewModel model, int? restaurantId)
         {
             return new MutateDishMenuDto
             {
-                Id = id,
+                Id = model.MenuId,
+                RestaurantId = (int)restaurantId,
                 Dish = new MutateDishDto
                 {
                     Id = model.DishId,
+                    RestaurantId = (int)restaurantId,
                     Name = model.Name,
                     DishType = model.DishType,
                     Category = model.Category,
