@@ -22,7 +22,8 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<IngredientDto>> GetIngredients()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Ingredient}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+                $"{ClassConstants.Ingredient}/{ClassConstants.All}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -40,7 +41,8 @@ namespace Horeca.MVC.Services
         public async Task<IngredientDto> GetIngredientById(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Ingredient}/{id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+                $"{ClassConstants.Ingredient}/{ClassConstants.Id}/{ClassConstants.Restaurant}" +
+                $"?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -58,8 +60,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
             };
@@ -75,8 +77,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> DeleteIngredient(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{id}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}?id={id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -89,8 +90,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateIngredient(MutateIngredientDto ingredient)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{ingredient.Id}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Ingredient}/{ClassConstants.Restaurant}" +
+                $"?id={ingredient.Id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(ingredient), Encoding.UTF8, "application/json")
             };

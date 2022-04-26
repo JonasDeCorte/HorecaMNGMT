@@ -95,7 +95,7 @@ namespace Horeca.MVC.Services
         public async Task<BookingHistoryDto> GetBookingsByUserId(string userId, string status)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{ClassConstants.BookingStatus}" +
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.User}/{ClassConstants.BookingStatus}" +
                 $"?{ClassConstants.UserId}={userId}&{ClassConstants.Status}={status}");
 
             var response = await httpClient.SendAsync(request);

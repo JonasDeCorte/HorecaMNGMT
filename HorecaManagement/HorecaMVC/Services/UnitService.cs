@@ -21,8 +21,8 @@ namespace Horeca.MVC.Services
 
         public async Task<IEnumerable<UnitDto>> GetUnits()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{ClassConstants.All}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -58,7 +58,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddUnit(MutateUnitDto unitDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(unitDto), Encoding.UTF8, "application/json")
             };
@@ -74,8 +75,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateUnit(MutateUnitDto unitDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}//{ClassConstants.Unit}/{unitDto.Id}/{ClassConstants.Restaurant}/" +
-                $"{restaurantService.GetCurrentRestaurantId()}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}&id={unitDto.Id}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(unitDto), Encoding.UTF8, "application/json")
             };
@@ -90,8 +91,7 @@ namespace Horeca.MVC.Services
 
         public async Task<HttpResponseMessage> DeleteUnit(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{id}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}?id={id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
