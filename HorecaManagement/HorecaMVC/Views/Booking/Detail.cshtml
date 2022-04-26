@@ -1,32 +1,34 @@
-﻿<div class="text-center">
-    <div class="d-flex flex-column">
-        <h1 class="display-4">Booking @Model.Id</h1>
-        <table class="table table-responsive mt-2">
-            <thead>
-                <tr>
-                    <th scope="col" class="col-2">Contact Name</th>
-                    <th scope="col" class="col-2">Date</th>
-                    <th scope="col" class="col-2">Check In</th>
-                    <th scope="col" class="col-2">Check Out</th>
-                    <th scope="col" class="col-2">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td scope="row">@Model.FullName</td>
-                    <td>@Model.BookingDate</td>
-                    <td>@Model.CheckIn</td>
-                    <td>@Model.CheckOut</td>
-                    <td>@Model.BookingStatus</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td scope="row" colspan="5">
-                        <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+﻿@model Horeca.MVC.Models.Bookings.BookingViewModel
+
+<div class="text-center">
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1>Booking @Model.Id</h1>
+        </div>
+        <div class="table-responsive">
+            <table class="table mt-2 mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="col-2">Date</th>
+                        <th scope="col" class="col-2">Period</th>
+                        <th scope="col" class="col-2">Contact Name</th>
+                        <th scope="col" class="col-2">Phone Number</th>
+                        <th scope="col" class="col-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">@Model.BookingDate.ToShortDateString()</td>
+                        <td>@Model.CheckIn?.ToShortTimeString() - @Model.CheckOut?.ToShortTimeString()</td>
+                        <td>@Model.FullName</td>
+                        <td>@Model.PhoneNo</td>
+                        <td>@Model.BookingStatus</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+        </div>
     </div>
 </div>

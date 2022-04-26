@@ -20,10 +20,10 @@ namespace Horeca.MVC.Services
         public async Task<int> GetPendingBookings()
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Admin}/{ClassConstants.ListCount}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.ListCount}");
 
             var response = await httpClient.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<int>(response.Content.ReadAsStringAsync().Result);
                 if (result == null)
@@ -35,13 +35,32 @@ namespace Horeca.MVC.Services
             return 0;
         }
 
-        public async Task<IEnumerable<BookingDto>> GetBookingsByStatus(string status)
+        public async Task<IEnumerable<BookingDto>> GetBookingsBySchedule(int scheduleId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{status}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Schedule}/{scheduleId}");
 
             var response = await httpClient.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<IEnumerable<BookingDto>>(
+                    response.Content.ReadAsStringAsync().Result);
+                if (result == null)
+                {
+                    return new List<BookingDto>();
+                }
+                return result;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<BookingDto>> GetBookingsByStatus(int scheduleId, string status)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{status}/{ClassConstants.Schedule}/{scheduleId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<IEnumerable<BookingDto>>(response.Content.ReadAsStringAsync().Result);
                 if (result == null)
@@ -60,7 +79,7 @@ namespace Horeca.MVC.Services
                 $"/{ClassConstants.BookingNo}/{bookingNo}");
 
             var response = await httpClient.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<BookingDto>(response.Content.ReadAsStringAsync().Result);
                 if (result == null)
@@ -78,31 +97,12 @@ namespace Horeca.MVC.Services
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{userId}/{ClassConstants.BookingStatus}/{status}");
 
             var response = await httpClient.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<BookingHistoryDto>(response.Content.ReadAsStringAsync().Result);
                 if (result == null)
                 {
                     return new BookingHistoryDto();
-                }
-                return result;
-            }
-            return null;
-        }
-
-        public async Task<IEnumerable<BookingDetailOnlyBookingsDto>> GetBookingsBySchedule(int scheduleId)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Schedule}/{scheduleId}");
-
-            var response = await httpClient.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var result = JsonConvert.DeserializeObject<IEnumerable<BookingDetailOnlyBookingsDto>>(
-                    response.Content.ReadAsStringAsync().Result);
-                if (result == null)
-                {
-                    return new List<BookingDetailOnlyBookingsDto>();
                 }
                 return result;
             }
