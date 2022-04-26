@@ -93,7 +93,7 @@
             public const string Post = $"{ClassConstants.Restaurant}";
 
             public const string Get = $"{ClassConstants.Table}{Slash}{ClassConstants.Details}";
-            public const string GetOrderState = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.OrderState}";
+            public const string GetOrderState = $"{ClassConstants.Restaurant}";
             public const string DeliverOrder = $"{ClassConstants.Restaurant}";
             public const string PrepareOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.Prepare}";
             public const string ReadyOrderLine = $"{ClassConstants.Restaurant}{Slash}{ClassConstants.OrderLine}{Slash}{ClassConstants.Ready}";
