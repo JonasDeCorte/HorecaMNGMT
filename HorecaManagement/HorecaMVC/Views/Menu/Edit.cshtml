@@ -3,8 +3,13 @@
 <div class="text-center">
     <h1 class="display-4">Edit @Model.Name</h1>
     <div>
-        <form asp-action="Edit" asp-route-id="@Model.MenuId" class="w-75 mx-auto">
+        <form asp-action="Edit" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-2" style="display: none">
+                <label asp-for="MenuId" class="control-label"></label>
+                <input asp-for="MenuId" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="MenuId" class="text-danger"></span>
+            </div>
             <div class="form-group mt-2">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
