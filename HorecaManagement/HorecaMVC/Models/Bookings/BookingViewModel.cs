@@ -31,8 +31,9 @@ namespace Horeca.MVC.Models.Bookings
         [Required]
         public string BookingStatus { get; set; }
 
-        [Display(Name = "Phone number")]
+        [Display(Name = "Phone Number")]
         [Required]
+        [RegularExpression(@"\+[0-9]+", ErrorMessage = ErrorConstants.Invalid)]
         public string PhoneNo { get; set; }
 
         [Display(Name = "Contact name")]

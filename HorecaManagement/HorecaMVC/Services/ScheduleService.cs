@@ -75,7 +75,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateSchedule(MutateScheduleDto scheduleDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                  $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}/" +
+                  $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{scheduleDto.Id}/{ClassConstants.Restaurant}/" +
                   $"{restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(scheduleDto), Encoding.UTF8, "application/json")

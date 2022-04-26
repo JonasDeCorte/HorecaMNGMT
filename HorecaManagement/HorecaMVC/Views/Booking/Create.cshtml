@@ -2,7 +2,7 @@
 
 <div class="card text-center mt-3">
     <div class="card-header">
-        <h1 class="display-4">Create Booking</h1>
+        <h1>Create Booking for @Model.BookingDate.ToShortDateString()</h1>
     </div><div>
         <form class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -17,7 +17,7 @@
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
             <div class="form-group row mt-2">
-                <div class="col">
+                <div class="col" style="display: none">
                     <label asp-for="BookingDate" class="control-label">Date</label>
                     <input asp-for="BookingDate" type="date" id="datePicker" class="form-control" readonly="readonly"/>
                     <span asp-validation-for="BookingDate" class="text-danger"></span>

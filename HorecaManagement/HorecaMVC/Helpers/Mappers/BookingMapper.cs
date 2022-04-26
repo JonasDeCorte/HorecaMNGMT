@@ -7,9 +7,9 @@ namespace Horeca.MVC.Helpers.Mappers
 {
     public static class BookingMapper
     {
-        public static BookingDetailViewModel MapBookingModel(BookingDto bookingDto)
+        public static BookingViewModel MapBookingModel(BookingDto bookingDto)
         {
-            return new BookingDetailViewModel
+            return new BookingViewModel
             {
                 Id = bookingDto.Id,
                 BookingNo = bookingDto.BookingNo,
@@ -32,6 +32,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 UserID = userDto.Id,
                 ScheduleId = scheduleDto.Id,
                 BookingDate = scheduleDto.ScheduleDate,
+                CheckIn = scheduleDto.StartTime,
+                CheckOut = scheduleDto.EndTime,
             };
         }
 

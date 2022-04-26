@@ -58,7 +58,10 @@
             }
             @if (accountService.Authorize(PermissionConstants.Booking_Read))
             {
-                <li class="nav-item dropdown">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
+                </li>
+@*                <li class="nav-item dropdown">
                     <a class="nav-link text-dark dropdown-toggle" href="#" id="bookingDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
                         Bookings
@@ -71,7 +74,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
                         </li>
                     </ul>
-                </li>
+                </li>*@
             }
             @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
             {
