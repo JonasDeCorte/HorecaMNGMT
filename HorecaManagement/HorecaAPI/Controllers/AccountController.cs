@@ -174,9 +174,9 @@ namespace Horeca.API.Controllers
         [PermissionAuthorize(nameof(Permission), Permissions.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> RemovePermissions(string username, DeleteUserPermissionsDto model)
+        public async Task<IActionResult> RemovePermissions([FromBody] DeleteUserPermissionsDto model)
         {
-            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUserPermissionsCommand(model, username)));
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUserPermissionsCommand(model)));
         }
     }
 }
