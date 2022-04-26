@@ -22,6 +22,7 @@
                                     <th scope="col">Schedule Date</th>
                                     <th scope="col">Period</th>
                                     <th scope="col">Capacity</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Options</th>
                                 </tr>
                             </thead>
@@ -33,6 +34,7 @@
                                         <td>@schedule.ScheduleDate.ToShortDateString()</td>
                                         <td>@schedule.StartTime.ToShortTimeString() - @schedule.EndTime.ToShortTimeString()</td>
                                         <td>@schedule.AvailableSeat / @schedule.Capacity</td>
+                                        <td>@schedule.Status</td>
                                         <td>
                                             <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
                                             @if (accountService.Authorize(PermissionConstants.Booking_Create))

@@ -38,7 +38,7 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<BookingDto>> GetBookingsBySchedule(int scheduleId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Schedule}/{scheduleId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Schedule}?{ClassConstants.ScheduleId}={scheduleId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -57,7 +57,8 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<BookingDto>> GetBookingsByStatus(int scheduleId, string status)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{status}/{ClassConstants.Schedule}/{scheduleId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Schedule}" +
+                $"?{ClassConstants.ScheduleId}={scheduleId}&{ClassConstants.Status}={status}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -75,8 +76,8 @@ namespace Horeca.MVC.Services
         public async Task<BookingDto> GetBookingByNumber(string bookingNo)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Details}" +
-                $"/{ClassConstants.BookingNo}/{bookingNo}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Details}/{ClassConstants.BookingNo}" +
+                $"?bookingNo={bookingNo}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -94,7 +95,8 @@ namespace Horeca.MVC.Services
         public async Task<BookingHistoryDto> GetBookingsByUserId(string userId, string status)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{userId}/{ClassConstants.BookingStatus}/{status}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{ClassConstants.Member}/{ClassConstants.BookingStatus}" +
+                $"?{ClassConstants.UserId}={userId}&{ClassConstants.Status}={status}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -140,7 +142,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> DeleteBooking(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}/{id}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Booking}?id={id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

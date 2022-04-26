@@ -21,7 +21,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddOrder(MutateOrderDto orderDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Order}/{ClassConstants.Table}/{orderDto.TableId}");
+                $"{ClassConstants.Order}/{ClassConstants.Restaurant}?{ClassConstants.TableId}={orderDto.TableId}");
             request.Content = new StringContent(JsonConvert.SerializeObject(orderDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
@@ -36,7 +36,8 @@ namespace Horeca.MVC.Services
         public async Task<List<GetOrderLinesByTableIdDto>> GetOrderLinesByTableId(int tableId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Table}/{tableId}/{ClassConstants.Details}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Table}/{ClassConstants.Details}" +
+                $"?{ClassConstants.TableId}={tableId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -54,8 +55,8 @@ namespace Horeca.MVC.Services
         public async Task<List<OrderDtoDetail>> GetOrdersByState(int restaurantId, Constants.OrderState orderState)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}/{restaurantId}/" +
-                $"{ClassConstants.Orders}/{orderState}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantId}&{ClassConstants.OrderState}={orderState}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -73,8 +74,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> DeliverOrder(int restaurantId, int orderId)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}/{restaurantId}/" +
-                $"{ClassConstants.Order}/{orderId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantId}&{ClassConstants.OrderId}={orderId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -87,8 +88,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> PrepareOrderLine(int restaurantId, int orderId, int orderLineId)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}/{restaurantId}/" +
-                $"{ClassConstants.Order}/{orderId}/{ClassConstants.OrderLine}/{orderLineId}/{ClassConstants.Prepare}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}/{ClassConstants.OrderLine}/{ClassConstants.Prepare}" +
+                $"?{ClassConstants.OrderLineId}={orderLineId}&{ClassConstants.RestaurantId}={restaurantId}&{ClassConstants.OrderId}={orderId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -101,8 +102,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> ReadyOrderLine(int restaurantId, int orderId, int orderLineId)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}/{restaurantId}/" +
-                $"{ClassConstants.Order}/{orderId}/{ClassConstants.OrderLine}/{orderLineId}/{ClassConstants.Ready}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Order}/{ClassConstants.Restaurant}/{ClassConstants.OrderLine}/{ClassConstants.Ready}" +
+                $"?{ClassConstants.OrderLineId}={orderLineId}&{ClassConstants.RestaurantId}={restaurantId}&{ClassConstants.OrderId}={orderId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
