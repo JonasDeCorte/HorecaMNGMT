@@ -115,8 +115,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddPermissions(MutateUserPermissionsDto model)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.UserPermissions}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.User}/{ClassConstants.UserPermissions}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
             };
@@ -132,12 +131,12 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> RemovePermissions(MutateUserPermissionsDto model)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/" +
-                $"{ClassConstants.UserPermissions}/{model.UserName}")
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.User}/{ClassConstants.UserPermissions}?{ClassConstants.Username}={model.UserName}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
             };
-
+            var test = request.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(test);
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
@@ -149,7 +148,7 @@ namespace Horeca.MVC.Services
         public async Task<IEnumerable<BaseUserDto>> GetUsers()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Account}/{ClassConstants.User}");
+                $"{ClassConstants.Account}/{ClassConstants.Users}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -171,7 +170,7 @@ namespace Horeca.MVC.Services
                 return null;
             }
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Account}/{ClassConstants.User}/{username}");
+                $"{ClassConstants.Account}/{ClassConstants.User}/{ClassConstants.UserPermissions}?{ClassConstants.Username}={username}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

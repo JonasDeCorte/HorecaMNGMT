@@ -2,14 +2,14 @@
 
 <div class="card text-center mt-3">
     <div class="card-header">
-        <h1 class="display-4">Create Booking</h1>
+        <h1>Create Booking for @Model.BookingDate.ToShortDateString()</h1>
     </div><div>
         <form class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" style="display: none">
-                <label asp-for="Booking.UserID" class="control-label"></label>
-                <input asp-for="Booking.UserID" class="form-control" readonly="readonly" />
-                <span asp-validation-for="Booking.UserID" class="text-danger"></span>
+                <label asp-for="UserID" class="control-label"></label>
+                <input asp-for="UserID" class="form-control" readonly="readonly" />
+                <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
             <div style="display: none">
                 <label asp-for="ScheduleId" class="control-label"></label>
@@ -17,32 +17,32 @@
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
             <div class="form-group row mt-2">
-                <div class="col">
-                    <label asp-for="Booking.BookingDate" class="control-label">Date</label>
-                    <input asp-for="Booking.BookingDate" type="date" id="datePicker" class="form-control" readonly="readonly"/>
-                    <span asp-validation-for="Booking.BookingDate" class="text-danger"></span>
+                <div class="col" style="display: none">
+                    <label asp-for="BookingDate" class="control-label">Date</label>
+                    <input asp-for="BookingDate" type="date" id="datePicker" class="form-control" readonly="readonly"/>
+                    <span asp-validation-for="BookingDate" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="Booking.CheckIn" class="control-label">Check-in Time</label>
-                    <input asp-for="Booking.CheckIn" type="time" id="checkInPicker" class="form-control" />
-                    <span asp-validation-for="Booking.CheckIn" class="text-danger"></span>
+                    <label asp-for="CheckIn" class="control-label">Check-in Time</label>
+                    <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control" />
+                    <span asp-validation-for="CheckIn" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="Booking.CheckOut" class="control-label">Check-out Time</label>
-                    <input asp-for="Booking.CheckOut" type="time" id="checkOutPicker" class="form-control" />
-                    <span asp-validation-for="Booking.CheckOut" class="text-danger"></span>
+                    <label asp-for="CheckOut" class="control-label">Check-out Time</label>
+                    <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control" />
+                    <span asp-validation-for="CheckOut" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row mt-2">
                 <div class="col">
-                    <label asp-for="Booking.FullName" class="control-label">Contact Name</label>
-                    <input asp-for="Booking.FullName" class="form-control" />
-                    <span asp-validation-for="Booking.FullName" class="text-danger"></span>
+                    <label asp-for="FullName" class="control-label">Contact Name</label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="Booking.PhoneNo" class="control-label">Phone Number</label>
-                    <input asp-for="Booking.PhoneNo" class="form-control" />
-                    <span asp-validation-for="Booking.PhoneNo" class="text-danger"></span>
+                    <label asp-for="PhoneNo" class="control-label">Phone Number</label>
+                    <input asp-for="PhoneNo" class="form-control" />
+                    <span asp-validation-for="PhoneNo" class="text-danger"></span>
                 </div>
             </div>
             <div class="mt-2">
@@ -57,10 +57,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    //function setDefaultTime() {
-    //    document.getElementById('datePicker').valueAsDate = new Date();
-    //}
-    //window.onload = setDefaultTime;
-</script>

@@ -125,16 +125,11 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static MutateUserPermissionsDto MapMutatePermissionsDto(MutatePermissionsViewModel model)
         {
-            MutateUserPermissionsDto result = new()
+            return new MutateUserPermissionsDto()
             {
                 UserName = model.Username,
-                PermissionIds = new List<int>()
+                PermissionIds = model.PermissionId
             };
-            foreach (var id in model.PermissionId)
-            {
-                result.PermissionIds.Add(id);
-            }
-            return result;
         }
     }
 }

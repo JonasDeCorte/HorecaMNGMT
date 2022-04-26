@@ -19,18 +19,6 @@ namespace Horeca.MVC.Controllers
             this.scheduleService = scheduleService;
         }
 
-        public async Task<IActionResult> Index(string status = "all")
-        {
-            IEnumerable<BookingDto> bookings = await bookingService.GetBookingsByStatus(status);
-            if (bookings == null)
-            {
-                return View("NotFound");
-            }
-            BookingListViewModel model = BookingMapper.MapBookingListModel(bookings);
-
-            return View(model);
-        }
-
         public async Task<IActionResult> YourBookings(string status = "all")
         {
             var currentUser = accountService.GetCurrentUser();
@@ -51,7 +39,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View("NotFound");
             }
-            BookingDetailViewModel model = BookingMapper.MapBookingDetailModel(booking);
+            BookingViewModel model = BookingMapper.MapBookingModel(booking);
 
             return View(model);
         }
@@ -82,7 +70,7 @@ namespace Horeca.MVC.Controllers
                 }
 
                 return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });
-            } 
+            }
             else
             {
                 return View(model);

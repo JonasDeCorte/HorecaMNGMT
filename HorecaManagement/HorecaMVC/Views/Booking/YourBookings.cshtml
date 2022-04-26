@@ -16,9 +16,6 @@
                         <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.EXPIRED" class="dropdown-item">Expired</a></li>
                         <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.COMPLETE" class="dropdown-item">Complete</a></li>
                     </ul>
-                    <a asp-action="Index" class="btn btn-primary" style="margin-left: 5px">
-                        All bookings
-                    </a>
                 </div>
         </div>
         <div class="table-responsive">
@@ -27,8 +24,9 @@
                     <tr>
                         <th scope="col" class="col-1">Id</th>
                         <th scope="col" class="col-2">Date</th>
-                        <th scope="col" class="col-2">Check in</th>
-                        <th scope="col" class="col-2">Check out</th>
+                        <th scope="col" class="col-2">Period</th>
+                        <th scope="col" class="col-2">Contact Name</th>
+                        <th scope="col" class="col-2">Phone Number</th>
                         <th scope="col" class="col-2">Status</th>
                         <th scope="col" class="col-4">Options</th>
                     </tr>
@@ -39,8 +37,9 @@
                     <tr>
                         <td>@booking.Id</td>
                         <td>@booking.BookingDate.ToShortDateString()</td>
-                        <td>@booking.CheckIn?.ToShortTimeString()</td>
-                        <td>@booking.CheckOut?.ToShortTimeString()</td>
+                        <td>@booking.CheckIn?.ToShortTimeString() - @booking.CheckOut?.ToShortTimeString()</td>
+                        <td>@booking.FullName</td>
+                        <td>@booking.PhoneNo</td>
                         <td>@booking.BookingStatus</td>
                         <td>
                             <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
