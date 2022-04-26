@@ -40,7 +40,7 @@ namespace Horeca.MVC.Services
         public async Task<DetailRestaurantDto> GetRestaurantById(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.Id}?id={id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -59,7 +59,7 @@ namespace Horeca.MVC.Services
         public async Task<List<RestaurantDto>> GetRestaurantsByUser(string userId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.User}/{userId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.User}?userId={userId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -109,7 +109,7 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> DeleteRestaurant(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{id}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.Id}?id={id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -119,10 +119,11 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<HttpResponseMessage> AddRestaurantEmployee(string userId, int restaurantId)
+        public async Task<HttpResponseMessage> AddRestaurantEmployee(string employeeId, int restaurantId)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.Employee}" +
+                $"?{ClassConstants.RestaurantId}={restaurantId}&{ClassConstants.EmployeeId}={employeeId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
@@ -132,10 +133,11 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<HttpResponseMessage> RemoveRestaurantEmployee(string userId, int restaurantId)
+        public async Task<HttpResponseMessage> RemoveRestaurantEmployee(string employeeId, int restaurantId)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{restaurantId}/{ClassConstants.Employee}/{userId}");
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Restaurant}/{ClassConstants.Employee}" +
+                $"?{ClassConstants.RestaurantId}={restaurantId}&{ClassConstants.EmployeeId}={employeeId}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

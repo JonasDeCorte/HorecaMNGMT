@@ -60,6 +60,7 @@
 
         public const string Account = "Account";
         public const string User = "User";
+        public const string Username = "username";
         public const string Users = "Users";
         public const string UserId = "userId";
 
