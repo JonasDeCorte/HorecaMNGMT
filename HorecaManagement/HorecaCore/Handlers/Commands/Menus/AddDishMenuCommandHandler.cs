@@ -1,6 +1,7 @@
 ﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
+using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using NLog;
@@ -24,12 +25,13 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class AddDishMenuCommandHandler : IRequestHandler<AddDishMenuCommand, int>
     {
         private readonly IUnitOfWork repository;
-
+        private readonly IApplicationDbContext context;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddDishMenuCommandHandler(IUnitOfWork repository)
+        public AddDishMenuCommandHandler(IUnitOfWork repository, IApplicationDbContext context)
         {
             this.repository = repository;
+            this.context = context;
         }
 
         public async Task<int> Handle(AddDishMenuCommand request, CancellationToken cancellationToken)
@@ -51,15 +53,19 @@ namespace Horeca.Core.Handlers.Commands.Menus
             }
             else
             {
-                logger.Info("dish exists, get dish   from database  {id} ", request.Model.Dish.Id);
+                logger.Info("dish exists, get dish from database  {id} ", request.Model.Dish.Id);
                 entity = await repository.Dishes.GetDishById(request.Model.Dish.Id, request.Model.Dish.RestaurantId);
                 if (entity == null)
                 {
                     logger.Error(EntityNotFoundException.Instance);
                     throw new EntityNotFoundException();
                 }
+                logger.Info("get list of dishes from menu with id {id}", menu.Id);
+
+                var menuDishes = context.MenuDishes.Where(x => x.menuId.Equals(menu.Id)).ToList();
+
                 logger.Info("check if menu contains dish with id {id}", entity.Id);
-                var existingDish = menu.Dishes.SingleOrDefault(x => x.Id.Equals(entity.Id), null);
+                var existingDish = menuDishes.SingleOrDefault(x => x.DishId.Equals(entity.Id), null);
 
                 if (existingDish != null)
                 {
@@ -67,8 +73,11 @@ namespace Horeca.Core.Handlers.Commands.Menus
                     throw new EntityIsAlreadyPartOfThisCollectionException();
                 }
             }
-
-            menu.Dishes.Add(entity);
+            menu.MenuDishes.Add(new MenuDish()
+            {
+                Dish = entity,
+                Menu = menu
+            });
             repository.Menus.Update(menu);
             await repository.CommitAsync();
 
@@ -76,7 +85,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
             entity.Restaurant = menu.Restaurant;
             repository.Dishes.Update(entity);
             await repository.CommitAsync();
-            logger.Info("succes adding {@object} to menu with id {id}", entity, menu.Id);
+            logger.Info("succes adding {object} to menu with id {id}", entity, menu.Id);
 
             return entity.Id;
         }

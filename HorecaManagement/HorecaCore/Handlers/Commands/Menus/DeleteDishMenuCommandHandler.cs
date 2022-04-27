@@ -1,4 +1,5 @@
 ﻿using Horeca.Shared.Data;
+using Horeca.Shared.Data.Services;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using NLog;
@@ -25,11 +26,13 @@ namespace Horeca.Core.Handlers.Commands.Menus
     public class DeleteDishMenuCommandHandler : IRequestHandler<DeleteDishMenuCommand, int>
     {
         private readonly IUnitOfWork repository;
+        private readonly IApplicationDbContext context;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public DeleteDishMenuCommandHandler(IUnitOfWork repository)
+        public DeleteDishMenuCommandHandler(IUnitOfWork repository, IApplicationDbContext context)
         {
             this.repository = repository;
+            this.context = context;
         }
 
         public async Task<int> Handle(DeleteDishMenuCommand request, CancellationToken cancellationToken)
@@ -39,9 +42,11 @@ namespace Horeca.Core.Handlers.Commands.Menus
             var dish = repository.Dishes.Get(request.Model.DishId);
 
             logger.Info("trying to delete {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menu, request.Model.MenuId);
+            var menuDish = menu.MenuDishes.Find(x => x.DishId == dish.Id);
+            menu.MenuDishes.Remove(menuDish);
+            context.MenuDishes.Remove(menuDish);
 
-            menu.Dishes.Remove(dish);
-
+            await context.SaveChangesAsync(cancellationToken);
             await repository.CommitAsync();
 
             logger.Info("deleted {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menu, request.Model.MenuId);

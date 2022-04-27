@@ -13,11 +13,11 @@ namespace Horeca.Core.Handlers.Commands.Menus
         public int DishId { get; }
         public int RestaurantId { get; }
 
-        public EditDishMenuCommand(MutateDishMenuDto model, int id, int DishId, int restaurantId)
+        public EditDishMenuCommand(MutateDishMenuDto model, int id, int dishId, int restaurantId)
         {
             Model = model;
             Id = id;
-            this.DishId = DishId;
+            DishId = dishId;
             RestaurantId = restaurantId;
         }
     }
@@ -45,30 +45,30 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
                 throw new EntityNotFoundException();
             }
-            var dish = menu.Dishes.SingleOrDefault(x => x.Id == request.Model.Dish.Id);
+            var menuDish = menu.MenuDishes.SingleOrDefault(x => x.Id == request.Model.Dish.Id);
 
-            if (dish is null)
+            if (menuDish is null)
             {
                 logger.Error(EntityNotFoundException.Instance);
 
                 throw new EntityNotFoundException();
             }
 
-            dish.Name = request.Model.Dish.Name ?? dish.Name;
-            dish.DishType = request.Model.Dish.DishType ?? dish.DishType;
-            dish.Category = request.Model.Dish.Category ?? dish.Category;
-            dish.Description = request.Model.Dish.Description ?? dish.Description;
-            if (dish.Price != request.Model.Dish.Price)
+            menuDish.Dish.Name = request.Model.Dish.Name ?? menuDish.Dish.Name;
+            menuDish.Dish.DishType = request.Model.Dish.DishType ?? menuDish.Dish.DishType;
+            menuDish.Dish.Category = request.Model.Dish.Category ?? menuDish.Dish.Category;
+            menuDish.Dish.Description = request.Model.Dish.Description ?? menuDish.Dish.Description;
+            if (menuDish.Dish.Price != request.Model.Dish.Price)
             {
-                dish.Price = request.Model.Dish.Price;
+                menuDish.Dish.Price = request.Model.Dish.Price;
             }
-            repository.Dishes.Update(dish);
+            repository.Dishes.Update(menuDish.Dish);
             repository.Menus.Update(menu);
 
             await repository.CommitAsync();
-            logger.Info("updated {@object} with Id: {id}", dish, dish.Id);
+            logger.Info("updated {object} with Id: {id}", menuDish, menuDish.Id);
 
-            return dish.Id;
+            return menuDish.Id;
         }
 
         private static void ValidateModelIds(EditDishMenuCommand request)

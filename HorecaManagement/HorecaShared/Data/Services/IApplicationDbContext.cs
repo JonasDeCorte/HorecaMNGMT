@@ -11,6 +11,8 @@ namespace Horeca.Shared.Data.Services
         public DbSet<Dish> Dishes { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
+        public DbSet<MenuDish> MenuDishes { get; set; }
+
         public DbSet<MenuCard> MenuCards { get; set; }
 
         public DbSet<Permission> Permissions { get; set; }

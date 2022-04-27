@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
+using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Menus;
 using MediatR;
 using NLog;
@@ -42,10 +43,25 @@ namespace Horeca.Core.Handlers.Queries.Menus
 
                 throw new EntityNotFoundException();
             }
-
-            logger.Info("returning {@object} with id: {id}", menu, request.MenuId);
-
-            return mapper.Map<MenuDishesByIdDto>(menu);
+            List<DishDto> dishDto = new();
+            foreach (var item in menu.MenuDishes)
+            {
+                dishDto.Add(new DishDto
+                {
+                    Id = item.Dish.Id,
+                    Category = item.Dish.Category,
+                    Description = item.Dish.Description,
+                    DishType = item.Dish.DishType,
+                    Name = item.Dish.Name,
+                    Price = item.Dish.Price,
+                });
+            }
+            logger.Info("returning {object} wisth id: {id}", menu, request.MenuId);
+            return new MenuDishesByIdDto()
+            {
+                Id = menu.Id,
+                Dishes = dishDto
+            };
         }
     }
 }

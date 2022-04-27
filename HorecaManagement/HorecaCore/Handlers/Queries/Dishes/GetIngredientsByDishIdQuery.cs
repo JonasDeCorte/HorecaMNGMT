@@ -45,10 +45,10 @@ namespace Horeca.Core.Handlers.Queries.Dishes
             }
 
             logger.Info("returning {@object} with id: {id}", dish, request.DishId);
-            List<IngredientDto> ingreddto = new();
+            List<IngredientDto> ingredDto = new();
             foreach (var item in dish.DishIngredients)
             {
-                ingreddto.Add(new IngredientDto()
+                ingredDto.Add(new IngredientDto()
                 {
                     BaseAmount = item.Ingredient.BaseAmount,
                     Id = item.Ingredient.Id,
@@ -64,7 +64,7 @@ namespace Horeca.Core.Handlers.Queries.Dishes
             return new DishIngredientsByIdDto()
             {
                 Id = dish.Id,
-                Ingredients = ingreddto
+                Ingredients = ingredDto
             };
         }
     }

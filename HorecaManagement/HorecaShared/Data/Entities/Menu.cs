@@ -8,7 +8,7 @@
         public string Name { get; set; }
 
         public decimal Price { get; set; }
-        public List<Dish> Dishes { get; set; } = new();
+        public List<MenuDish> MenuDishes { get; set; } = new();
 
         public Restaurant? Restaurant { get; set; }
         public int? RestaurantId { get; set; }

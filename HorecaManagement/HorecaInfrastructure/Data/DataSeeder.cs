@@ -66,16 +66,21 @@ namespace Horeca.Infrastructure.Data
                     Name = $"name {i}",
                     Description = $"Description {i}",
                     Category = $"Category {i}",
-                    Dishes = new()
+                    MenuDishes = new()
                     {
-                        dish
                     },
                 };
 
                 context.Menus.Add(menu);
-                foreach (var ds in menu.Dishes)
+                var menuDish = new MenuDish()
                 {
-                    menu.Price += ds.Price;
+                    Menu = menu,
+                    Dish = dish
+                };
+                menu.MenuDishes.Add(menuDish);
+                foreach (var menuDishObj in menu.MenuDishes)
+                {
+                    menu.Price += menuDishObj.Dish.Price;
                 }
                 MenuCard card = new()
                 {

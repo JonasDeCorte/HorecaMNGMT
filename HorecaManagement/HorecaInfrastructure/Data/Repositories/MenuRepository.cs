@@ -31,7 +31,8 @@ namespace Horeca.Infrastructure.Data.Repositories
         public async Task<Menu> GetMenuIncludingDependencies(int id, int restaurantId)
         {
             return await context.Menus.Include(x => x.Restaurant)
-                                      .Include(x => x.Dishes)
+                                      .Include(x => x.MenuDishes)
+                                      .ThenInclude(x => x.Dish)
                                       .Where(x => x.RestaurantId.Equals(restaurantId))
                                       .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
