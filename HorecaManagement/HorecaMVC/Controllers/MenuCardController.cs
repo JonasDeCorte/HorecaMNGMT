@@ -16,12 +16,14 @@ namespace Horeca.MVC.Controllers
         private readonly IMenuCardService menuCardService;
         private readonly IMenuService menuService;
         private readonly IDishService dishService;
+        private readonly IRestaurantService restaurantService;
 
-        public MenuCardController(IMenuCardService menuCardService, IMenuService menuService, IDishService dishService)
+        public MenuCardController(IMenuCardService menuCardService, IMenuService menuService, IDishService dishService, IRestaurantService restaurantService)
         {
             this.menuCardService = menuCardService;
             this.menuService = menuService;
             this.dishService = dishService;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<IActionResult> Index()
@@ -99,7 +101,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, dish);
+                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, restaurantService.GetCurrentRestaurantId(), dish);
 
                 var response = await menuCardService.AddMenuCardDish(id, result);
                 if (response == null)
@@ -113,6 +115,35 @@ namespace Horeca.MVC.Controllers
             {
                 return View(dish);
             }
+        }
+
+        public async Task<IActionResult> AddExistingDish(int id)
+        {
+            MenuCardsByIdDto menuListsDto = await menuCardService.GetListsByMenuCardId(id);
+            IEnumerable<DishDto> dishes = await dishService.GetDishes();
+            if (dishes == null || menuListsDto == null)
+            {
+                return View(nameof(NotFound));
+            }
+
+            ExistingMenuCardDishesViewModel model = new() { MenuCardId = id };
+            model.Dishes = MenuCardMapper.MapRemainingDishesList(menuListsDto, dishes);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExistingDish(int id, ExistingMenuCardDishesViewModel model)
+        {
+            MenuCardDishViewModel dishModel = MenuCardMapper.MapMutateMenuCardDishModel(id, await dishService.GetDishById(model.DishId));
+            MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, restaurantService.GetCurrentRestaurantId(), dishModel);
+            var response = await menuCardService.AddMenuCardDish(id, result);
+            if (response == null)
+            {
+                return View(nameof(NotFound));
+            }
+
+            return RedirectToAction(nameof(Detail), new { id });
         }
 
         public IActionResult CreateMenu(int id)
@@ -188,7 +219,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(model.MenuCardId, model);
+                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(model.MenuCardId, restaurantService.GetCurrentRestaurantId(), model);
 
                 var response = await menuCardService.UpdateMenuCardDish(result);
                 if (response == null)

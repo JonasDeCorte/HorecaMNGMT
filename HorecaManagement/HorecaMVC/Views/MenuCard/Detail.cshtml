@@ -15,7 +15,7 @@
                 <h2>Dishes</h2>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover mb-0">
                     <thead>
                         <tr>
                             <th scope="col" class="col-3">Name</th>
@@ -55,12 +55,18 @@
                             <td colspan="5">
                                 @if (accountService.Authorize(PermissionConstants.Dish_Create))
                                 {
-                                    <a asp-action="CreateDish" asp-route-id="@Model.Id" class="btn btn-primary">Add Dish</a>
+                                    <a asp-action="AddExistingDish" asp-route-id="@Model.Id" class="btn btn-primary">Add Existing Dish</a>
                                 }
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="card-footer">
+                @if (accountService.Authorize(PermissionConstants.Dish_Create))
+                {
+                    <a asp-action="CreateDish" asp-route-id="@Model.Id" class="btn btn-primary">Create Dish</a>
+                }
             </div>
         </div>
         <div class="card m-3">
@@ -68,7 +74,7 @@
                 <h2>Menus</h2>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover mb-0">
                     <thead>
                         <tr>
                             <th scope="col" class="col-2">Name</th>
@@ -108,12 +114,18 @@
                             <td colspan="5">
                                 @if (accountService.Authorize(PermissionConstants.Menu_Create))
                                 {
-                                    <a asp-action="CreateMenu" asp-route-id="@Model.Id" class="btn btn-primary">Add Menu</a>
+                                    <a asp-action="AddExistingMenu" asp-route-id="@Model.Id" class="btn btn-primary">Add Existing Menu</a>
                                 }
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="card-footer">
+                @if (accountService.Authorize(PermissionConstants.Dish_Create))
+                {
+                    <a asp-action="CreateMenu" asp-route-id="@Model.Id" class="btn btn-primary">Create Menu</a>
+                }
             </div>
         </div>
     </div>

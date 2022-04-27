@@ -1,6 +1,8 @@
-﻿namespace Horeca.MVC.Models.Dishes
+﻿using Horeca.MVC.Models.Dishes;
+
+namespace Horeca.MVC.Models.Menus
 {
-    public class ExistingDishesViewModel : DishListViewModel
+    public class ExistingMenuDishesViewModel : DishListViewModel
     {
         public int RestaurantId { get; set; }
 
