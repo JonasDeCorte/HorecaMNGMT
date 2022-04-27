@@ -41,7 +41,6 @@ namespace Horeca.Core.Handlers.Commands.Menus
             logger.Info("trying to delete {@object} with id {objId} from {@dish} with Id: {id}", dish, request.Model.DishId, menu, request.Model.MenuId);
 
             menu.Dishes.Remove(dish);
-            repository.Dishes.Delete(dish.Id);
 
             await repository.CommitAsync();
 
