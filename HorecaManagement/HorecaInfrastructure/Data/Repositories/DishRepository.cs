@@ -37,5 +37,14 @@ namespace Horeca.Infrastructure.Data.Repositories
                                  .Where(x => x.RestaurantId.Equals(restaurantId))
                                  .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
+
+        public async Task<Dish> GetDishIncludingIngredient(int id, int restaurantId)
+        {
+            return await context.Dishes.Include(x => x.Restaurant)
+                               .Include(x => x.DishIngredients)
+                               .ThenInclude(x => x.Ingredient)
+                               .Where(x => x.RestaurantId.Equals(restaurantId))
+                               .FirstOrDefaultAsync(x => x.Id.Equals(id));
+        }
     }
 }
