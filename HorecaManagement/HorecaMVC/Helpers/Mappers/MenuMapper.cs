@@ -30,7 +30,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Category = menu.Category,
                 Price = menu.Price,
             };
-            model.Dishes = DishMapper.MapDishModelList(menu.Dishes);
+            model.Dishes = DishMapper.MapMenuDishModelList(menu.MenuDishes);
             return model;
         }
 
@@ -85,14 +85,24 @@ namespace Horeca.MVC.Helpers.Mappers
                 Price = menuDto.Price,
             };
         }
+        public static MenuDish MapMenuDish(MenuDto menuDto, DishDto dishDto)
+        {
+            return new MenuDish
+            {
+                DishId = dishDto.Id,
+                menuId = menuDto.Id,
+                Dish = DishMapper.MapDish(dishDto),
+                Menu = MapMenu(menuDto)
+            };
+        }
 
         public static Menu MapMenuDetail(MenuDto menuDto, MenuDishesByIdDto dishList)
         {
             Menu result = MapMenu(menuDto);
             foreach (var dishDto in dishList.Dishes)
             {
-                Dish dishResult = DishMapper.MapDish(dishDto);
-                result.Dishes.Add(dishResult);
+                MenuDish menuDishResult = MapMenuDish(menuDto, dishDto);
+                result.MenuDishes.Add(menuDishResult);
             }
             return result;
         }

@@ -102,6 +102,18 @@ namespace Horeca.MVC.Helpers.Mappers
             return list;
         }
 
+        public static List<DishViewModel> MapMenuDishModelList(List<MenuDish> dishes)
+        {
+            List<DishViewModel> list = new();
+            foreach (var dish in dishes)
+            {
+                DishDto dishDto = MapDishDto(dish);
+                DishViewModel dishModel = MapModel(dishDto);
+                list.Add(dishModel);
+            }
+            return list;
+        }
+
         public static Dish MapDish(DishDto dishDto)
         {
             return new Dish
@@ -178,6 +190,19 @@ namespace Horeca.MVC.Helpers.Mappers
                 Category = dish.Category,
                 DishType = dish.DishType,
                 Price = dish.Price,
+            };
+        }
+
+        public static DishDto MapDishDto(MenuDish menuDish)
+        {
+            return new DishDto
+            {
+                Id = menuDish.Dish.Id,
+                Name = menuDish.Dish.Name,
+                Description = menuDish.Dish.Description,
+                Category = menuDish.Dish.Category,
+                DishType = menuDish.Dish.DishType,
+                Price = menuDish.Dish.Price,
             };
         }
 
