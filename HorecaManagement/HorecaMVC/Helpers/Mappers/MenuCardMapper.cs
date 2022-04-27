@@ -94,13 +94,27 @@ namespace Horeca.MVC.Helpers.Mappers
             List<DishViewModel> dishList = new();
             foreach (var dish in dishes)
             {
-                DishViewModel dishModel = DishMapper.MapModel(dish);
                 if (!menuListsDto.Dishes.Any(item => item.Id == dish.Id))
                 {
+                    DishViewModel dishModel = DishMapper.MapModel(dish);
                     dishList.Add(dishModel);
                 }
             }
             return dishList;
+        }
+
+        public static List<MenuViewModel> MapRemainingMenusList(MenuCardsByIdDto menuListsDto, IEnumerable<MenuDto> menus)
+        {
+            List<MenuViewModel> menuList = new();
+            foreach (var menu in menus)
+            {
+                if (!menuListsDto.Dishes.Any(item => item.Id == menu.Id))
+                {
+                    MenuViewModel menuModel = MenuMapper.MapModel(menu);
+                    menuList.Add(menuModel);
+                }
+            }
+            return menuList;
         }
 
         public static MutateMenuCardDto MapMutateMenuCard(MenuCardViewModel menuCardModel, MenuCardDto menuCard)
@@ -131,14 +145,16 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static MutateMenuMenuCardDto MapMutateMenuCardMenu(int id, MenuViewModel menu)
+        public static MutateMenuMenuCardDto MapMutateMenuCardMenu(int id, int? restaurantId, MenuViewModel menu)
         {
             return new MutateMenuMenuCardDto
             {
                 MenuCardId = id,
+                RestaurantId = (int)restaurantId,
                 Menu = new MutateMenuDto
                 {
                     Id = menu.MenuId,
+                    RestaurantId = (int)restaurantId,
                     Name = menu.Name,
                     Category = menu.Category,
                     Description = menu.Description,
