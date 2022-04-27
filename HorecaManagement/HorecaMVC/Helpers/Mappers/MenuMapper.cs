@@ -60,6 +60,20 @@ namespace Horeca.MVC.Helpers.Mappers
             return result;
         }
 
+        public static List<DishViewModel> MapRemainingDishesList(MenuDishesByIdDto menuDishesDto, IEnumerable<DishDto> dishes)
+        {
+            List<DishViewModel> dishList = new();
+            foreach (var dish in dishes)
+            {
+                DishViewModel dishModel = DishMapper.MapModel(dish);
+                if (!menuDishesDto.Dishes.Any(item => item.Id == dish.Id))
+                {
+                    dishList.Add(dishModel);
+                }
+            }
+            return dishList;
+        }
+
         public static Menu MapMenu(MenuDto menuDto)
         {
             return new Menu
@@ -108,20 +122,36 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static MutateDishMenuDto MapMutateMenuDish(int id, DishViewModel model)
+        public static MutateDishMenuDto MapMutateMenuDish(MenuDishViewModel model, int? restaurantId)
         {
             return new MutateDishMenuDto
             {
-                Id = id,
+                Id = model.MenuId,
+                RestaurantId = (int)restaurantId,
                 Dish = new MutateDishDto
                 {
                     Id = model.DishId,
+                    RestaurantId = (int)restaurantId,
                     Name = model.Name,
                     DishType = model.DishType,
                     Category = model.Category,
                     Description = model.Description,
                     Price = model.Price,
                 }
+            };
+        }
+
+        public static MenuDishViewModel MapMenuDishModel(int id, DishDto dishDto)
+        {
+            return new MenuDishViewModel()
+            {
+                MenuId = id,
+                DishId = dishDto.Id,
+                Name = dishDto.Name,
+                Category = dishDto.Category,
+                DishType = dishDto.DishType,
+                Description = dishDto.Description,
+                Price = dishDto.Price,
             };
         }
     }

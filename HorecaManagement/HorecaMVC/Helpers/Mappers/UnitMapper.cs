@@ -19,7 +19,7 @@ namespace Horeca.MVC.Helpers.Mappers
             return new UnitDto
             {
                 Id = ingredientModel.UnitId,
-                Name = ""
+                Name = ingredientModel.Name
             };
         }
 

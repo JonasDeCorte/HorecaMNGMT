@@ -27,7 +27,7 @@
                     <h2>Dishes</h2>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover" style="table-layout: fixed">
+                    <table class="table table-hover mb-0" style="table-layout: fixed">
                         <thead>
                             <tr>
                                 <th scope="col">Name</th>
@@ -63,13 +63,21 @@
                                     </td>
                                 </tr>
                             }
+                            <tr>
+                                <td colspan="5">
+                                    @if (accountService.Authorize(PermissionConstants.Dish_Create))
+                                    {
+                                        <a asp-action="AddExistingDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Existing Dish</a>
+                                    }
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="card-footer">
                     @if (accountService.Authorize(PermissionConstants.Dish_Create))
                     {
-                        <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Dish</a>
+                        <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Create Dish</a>
                     }
                 </div>
             </div>

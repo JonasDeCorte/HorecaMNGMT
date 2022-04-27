@@ -1,8 +1,10 @@
 ﻿@model Horeca.MVC.Models.Dishes.DishViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Create Dish</h1>
-    <div>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1>Create Dish</h1>
+        </div>
         <form class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mt-2">
@@ -10,27 +12,29 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="mt-2">
-                <label asp-for="DishType" class="control-label"></label>
-                <input asp-for="DishType" class="form-control" />
-                <span asp-validation-for="DishType" class="text-danger"></span>
+            <div class="row mt-2">
+                <div class="col">
+                    <label asp-for="Category" class="control-label"></label>
+                    <input asp-for="Category" class="form-control" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="DishType" class="control-label"></label>
+                    <input asp-for="DishType" class="form-control" />
+                    <span asp-validation-for="DishType" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" id="baseAmount">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
             <div class="mt-2">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea asp-for="Description" class="form-control row-3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <label asp-for="Price" class="form-label"></label>
-                <input asp-for="Price" class="form-control" id="baseAmount">
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="mt-2">
+            <div class="mt-2 mb-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
                 <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>

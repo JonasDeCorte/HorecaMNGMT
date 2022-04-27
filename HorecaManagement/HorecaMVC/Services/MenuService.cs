@@ -98,13 +98,13 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public async Task<HttpResponseMessage> AddMenuDish(int id, MutateDishMenuDto dish)
+        public async Task<HttpResponseMessage> AddMenuDish(MutateDishMenuDto menuDishDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Menu}/{ClassConstants.Dishes}/{ClassConstants.Restaurant}" +
-                $"?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
+                $"?id={menuDishDto.Id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
             {
-                Content = new StringContent(JsonConvert.SerializeObject(dish), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonConvert.SerializeObject(menuDishDto), Encoding.UTF8, "application/json")
             };
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

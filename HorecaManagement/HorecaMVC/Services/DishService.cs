@@ -116,6 +116,8 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
+            
+            var test = request.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 return response;

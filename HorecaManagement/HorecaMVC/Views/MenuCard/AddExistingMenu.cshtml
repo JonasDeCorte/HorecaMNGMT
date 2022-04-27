@@ -1,15 +1,15 @@
-﻿@model Horeca.MVC.Models.Ingredients.ExistingIngredientsViewModel
+﻿@model Horeca.MVC.Models.MenuCards.ExistingMenuCardMenusViewModel
 
 <div class="text-center">
     <div class="card mt-3">
         <div class="card-header">
-            <h1>Add Existing Ingredient</h1>
+            <h1>Add Existing Menu</h1>
         </div>
-        <form asp-action="AddExistingIngredient" class="w-75 mx-auto">
+        <form asp-action="AddExistingMenu" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-2">
-                <label asp-for="IngredientId" class="control-label">Pick an ingredient:</label>
-                <select asp-for="IngredientId" asp-items="@(new SelectList(Model.Ingredients, "IngredientId", "Name"))" class="form-control">
+                <label asp-for="MenuId" class="control-label">Pick a dish:</label>
+                <select asp-for="MenuId" asp-items="@(new SelectList(Model.Menus, "MenuId", "Name"))" class="form-control">
                 </select>
             </div>
             <div class="form-group mt-2 mb-2">
