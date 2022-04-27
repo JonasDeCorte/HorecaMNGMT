@@ -102,19 +102,20 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-        public IActionResult CreateIngredient(int id)
+        public async Task<IActionResult> CreateIngredient(int id)
         {
-            IngredientViewModel model = new();
+            var units = await unitService.GetUnits();
+            CreateIngredientViewModel model = IngredientMapper.MapCreateIngredientModel(units.ToList());
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateIngredient(int id, IngredientViewModel model)
+        public async Task<IActionResult> CreateIngredient(int id, CreateIngredientViewModel model)
         {
             if (ModelState.IsValid)
             {
-                MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(id, restaurantService.GetCurrentRestaurantId(), model);
+                MutateIngredientByDishDto result = DishMapper.MapCreateDishIngredientDto(id, restaurantService.GetCurrentRestaurantId(), model);
                 var response = await dishService.AddDishIngredient(id, result);
                 if (response == null)
                 {

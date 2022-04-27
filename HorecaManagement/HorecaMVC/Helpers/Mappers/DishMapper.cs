@@ -235,5 +235,23 @@ namespace Horeca.MVC.Helpers.Mappers
                 }
             };
         }
+
+        public static MutateIngredientByDishDto MapCreateDishIngredientDto(int id, int? restaurantId, CreateIngredientViewModel ingredient)
+        {
+            return new MutateIngredientByDishDto
+            {
+                Id = id,
+                RestaurantId = (int)restaurantId,
+                Ingredient = new MutateIngredientDto
+                {
+                    Id = ingredient.IngredientId,
+                    RestaurantId = (int)restaurantId,
+                    Name = ingredient.Name,
+                    IngredientType = ingredient.IngredientType,
+                    BaseAmount = ingredient.BaseAmount,
+                    Unit = UnitMapper.MapUnitDto(ingredient)
+                }
+            };
+        }
     }
 }
