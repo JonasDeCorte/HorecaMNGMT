@@ -3,18 +3,18 @@
 @model Horeca.MVC.Models.Restaurants.RestaurantDetailViewModel
 
 <div class="text-center">
-    <div class="shadow card mt-3">
+    <div class="shadow card bg-dark mt-3">
         <div class="card-header">
             <h1>@Model.Name</h1>
         </div>
         @if (accountService.Authorize(PermissionConstants.Schedule_Read))
         {
-            <div class="shadow card m-3">
+            <div class="shadow card bg-dark m-3">
                 <div class="card-header">
                     <h2>Schedules</h2>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-light table-hover mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
@@ -69,12 +69,12 @@
         }
         @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
         {
-            <div class="shadow card m-3">
+            <div class="shadow card bg-dark m-3">
                 <div class="card-header">
                     <h2>Employees</h2>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-light table-hover mb-0">
                         <thead>
                             <tr>
                                 <th scope="col" class="col-7">Username</th>
