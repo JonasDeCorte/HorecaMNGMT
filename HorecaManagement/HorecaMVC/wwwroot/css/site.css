@@ -1,6 +1,8 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+/* Basic changes */
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -66,13 +68,3 @@ html {
 body {
   margin-bottom: 60px;
 }
-
-/*table {
-    counter-reset: rowNumber;
-}
-
-table td:first-child:before {
-    counter-increment: rowNumber;
-    content: counter(rowNumber);
-    font-weight: bold;
-}*/

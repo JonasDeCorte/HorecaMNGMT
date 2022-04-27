@@ -1,7 +1,7 @@
 ﻿@model Horeca.MVC.Models.Ingredients.IngredientListViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
+    <div class="shadow card mt-3">
         <div class="card-header">
             <h1>Ingredients</h1>
             @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
@@ -46,6 +46,9 @@
                     }
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer">
+
         </div>
     </div>
 </div>

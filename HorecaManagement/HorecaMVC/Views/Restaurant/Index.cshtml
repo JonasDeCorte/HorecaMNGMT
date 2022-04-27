@@ -1,7 +1,7 @@
 ﻿@model Horeca.MVC.Models.Restaurants.RestaurantListViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
+    <div class="shadow card bg-dark mt-3">
         <div class="card-header">
             <h1>Restaurants</h1>
             @if (accountService.Authorize(PermissionConstants.Restaurant_Create))
@@ -10,7 +10,7 @@
             }
         </div>
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-light table-hover mb-0">
                 <thead>
                     <tr>
                         <th scope="col" class="col-9">Name</th>
