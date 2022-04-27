@@ -130,7 +130,7 @@ namespace Horeca.MVC.Controllers
             }
         }
 
-            public async Task<IActionResult> AddExistingIngredient(int id)
+        public async Task<IActionResult> AddExistingIngredient(int id)
         {
             DishIngredientsByIdDto dishIngredientDto = await dishService.GetIngredientsByDishId(id);
             IEnumerable<IngredientDto> ingredients = await ingredientService.GetIngredients();

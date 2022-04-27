@@ -60,6 +60,20 @@ namespace Horeca.MVC.Helpers.Mappers
             return result;
         }
 
+        public static List<DishViewModel> MapRemainingDishesList(MenuDishesByIdDto menuDishesDto, IEnumerable<DishDto> dishes)
+        {
+            List<DishViewModel> dishList = new();
+            foreach (var dish in dishes)
+            {
+                DishViewModel dishModel = DishMapper.MapModel(dish);
+                if (!menuDishesDto.Dishes.Any(item => item.Id == dish.Id))
+                {
+                    dishList.Add(dishModel);
+                }
+            }
+            return dishList;
+        }
+
         public static Menu MapMenu(MenuDto menuDto)
         {
             return new Menu
@@ -124,6 +138,20 @@ namespace Horeca.MVC.Helpers.Mappers
                     Description = model.Description,
                     Price = model.Price,
                 }
+            };
+        }
+
+        public static MenuDishViewModel MapMenuDishModel(int id, DishDto dishDto)
+        {
+            return new MenuDishViewModel()
+            {
+                MenuId = id,
+                DishId = dishDto.Id,
+                Name = dishDto.Name,
+                Category = dishDto.Category,
+                DishType = dishDto.DishType,
+                Description = dishDto.Description,
+                Price = dishDto.Price,
             };
         }
     }

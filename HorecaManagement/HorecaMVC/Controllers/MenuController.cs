@@ -142,6 +142,35 @@ namespace Horeca.MVC.Controllers
             }
         }
 
+        public async Task<IActionResult> AddExistingDish(int id)
+        {
+            MenuDishesByIdDto menuDishesDto = await menuService.GetDishesByMenuId(id);
+            IEnumerable<DishDto> dishes = await dishService.GetDishes();
+            if (dishes == null || menuDishesDto == null)
+            {
+                return View(nameof(NotFound));
+            }
+
+            ExistingDishesViewModel model = new() { MenuId = id };
+            model.Dishes = MenuMapper.MapRemainingDishesList(menuDishesDto, dishes);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExistingDish(int id, ExistingDishesViewModel model)
+        {
+            MenuDishViewModel dishModel = MenuMapper.MapMenuDishModel(id, await dishService.GetDishById(model.DishId));
+            MutateDishMenuDto result = MenuMapper.MapMutateMenuDish(dishModel, restaurantService.GetCurrentRestaurantId());
+            var response = await menuService.AddMenuDish(result);
+            if (response == null)
+            {
+                return View(nameof(NotFound));
+            }
+
+            return RedirectToAction(nameof(Detail), new { id });
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
             MenuDto menu = await menuService.GetMenuById(id);
