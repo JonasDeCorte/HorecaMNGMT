@@ -62,15 +62,15 @@
                                         }
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan="5">
-                                        @if (accountService.Authorize(PermissionConstants.Dish_Create))
-                                        {
-                                            <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Existing Dish</a>
-                                        }
-                                    </td>
-                                </tr>
                             }
+                            <tr>
+                                <td colspan="5">
+                                    @if (accountService.Authorize(PermissionConstants.Dish_Create))
+                                    {
+                                        <a asp-action="CreateDish" asp-route-id="@Model.MenuId" class="btn btn-primary">Add Existing Dish</a>
+                                    }
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
