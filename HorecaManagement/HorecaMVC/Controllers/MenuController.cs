@@ -13,11 +13,13 @@ namespace Horeca.MVC.Controllers
     {
         private readonly IMenuService menuService;
         private readonly IDishService dishService;
+        private readonly IRestaurantService restaurantService;
 
-        public MenuController(IMenuService menuService, IDishService dishService)
+        public MenuController(IMenuService menuService, IDishService dishService, IRestaurantService restaurantService)
         {
             this.menuService = menuService;
             this.dishService = dishService;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<IActionResult> Index()
@@ -93,7 +95,7 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                MutateMenuDto result = MenuMapper.MapMutateMenu(menu, new MenuDto());
+                MutateMenuDto result = MenuMapper.MapMutateMenu(menu, restaurantService.GetCurrentRestaurantId());
 
                 var response = await menuService.AddMenu(result);
                 if (response == null)
@@ -146,11 +148,11 @@ namespace Horeca.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, MenuViewModel menu)
+        public async Task<IActionResult> Edit(MenuViewModel menu)
         {
             if (ModelState.IsValid)
             {
-                MutateMenuDto result = MenuMapper.MapMutateMenu(menu, await menuService.GetMenuById(id));
+                MutateMenuDto result = MenuMapper.MapMutateMenu(menu, restaurantService.GetCurrentRestaurantId());
 
                 var response = await menuService.UpdateMenu(result);
                 if (response == null)
@@ -158,7 +160,7 @@ namespace Horeca.MVC.Controllers
                     return View(nameof(NotFound));
                 }
 
-                return RedirectToAction(nameof(Detail), new { id });
+                return RedirectToAction(nameof(Index), new { id = menu.MenuId });
             }
             else
             {

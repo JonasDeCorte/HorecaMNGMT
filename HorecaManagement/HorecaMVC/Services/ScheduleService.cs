@@ -21,8 +21,8 @@ namespace Horeca.MVC.Services
 
         public async Task<ScheduleByIdDto> GetScheduleById(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/" +
-                $"{ClassConstants.Schedule}/{id}/{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}" +
+                $"?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
             var response = await httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
@@ -39,8 +39,8 @@ namespace Horeca.MVC.Services
 
         public async Task<IEnumerable<ScheduleDto>> GetSchedules(int restaurantId)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.All}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
             var response = await httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
@@ -58,8 +58,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> AddSchedule(MutateScheduleDto scheduleDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}/" +
-               $"{restaurantService.GetCurrentRestaurantId()}")
+               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}" +
+               $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(scheduleDto), Encoding.UTF8, "application/json")
             };
@@ -75,8 +75,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> UpdateSchedule(MutateScheduleDto scheduleDto)
         {
             var request = new HttpRequestMessage(HttpMethod.Put,
-                  $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{scheduleDto.Id}/{ClassConstants.Restaurant}/" +
-                  $"{restaurantService.GetCurrentRestaurantId()}")
+                  $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}" +
+               $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}&id={scheduleDto.Id}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(scheduleDto), Encoding.UTF8, "application/json")
             };
@@ -92,8 +92,8 @@ namespace Horeca.MVC.Services
         public async Task<HttpResponseMessage> DeleteSchedule(int id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
-               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{id}/{ClassConstants.Restaurant}/" +
-               $"{restaurantService.GetCurrentRestaurantId()}");
+               $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}" +
+               $"?id={restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

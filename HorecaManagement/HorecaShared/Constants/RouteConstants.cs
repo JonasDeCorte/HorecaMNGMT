@@ -33,7 +33,7 @@
         {
             public const string Get = $"{ClassConstants.Restaurant}";
             public const string Post = $"{ClassConstants.Restaurant}";
-            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"";
             public const string Update = $"{ClassConstants.Restaurant}";
 
             public const string GetIngredientsByDishId = $"{ClassConstants.Ingredients}{Slash}{ClassConstants.Restaurant}";
@@ -49,7 +49,7 @@
             public const string GetAllIngredientsByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";
             public const string Post = $"{ClassConstants.Restaurant}";
             public const string Update = $"{ClassConstants.Restaurant}";
-            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"";
             public const string GetById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}";
         }
 
@@ -67,7 +67,7 @@
             public const string UpdateMenu = $"{ClassConstants.Menus}{Slash}{ClassConstants.Restaurant}";
             public const string UpdateDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
 
-            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"";
             public const string DeleteMenu = $"{ClassConstants.Menus}{Slash}{ClassConstants.Restaurant}";
             public const string DeleteDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
 
@@ -80,7 +80,7 @@
             public const string Post = $"{ClassConstants.Restaurant}";
             public const string Update = $"{ClassConstants.Restaurant}";
 
-            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"";
             public const string GetById = $"{ClassConstants.Restaurant}";
             public const string PostDishes = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
             public const string UpdateDish = $"{ClassConstants.Dishes}{Slash}{ClassConstants.Restaurant}";
@@ -133,7 +133,7 @@
 
             public const string Post = $"{ClassConstants.Restaurant}";
             public const string Update = $"{ClassConstants.Restaurant}";
-            public const string Delete = $"{ClassConstants.Restaurant}";
+            public const string Delete = $"";
             public const string GetById = $"{ClassConstants.Restaurant}";
         }
     }

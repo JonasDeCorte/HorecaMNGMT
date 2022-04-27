@@ -5,6 +5,7 @@ namespace Horeca.MVC.Models.Menus
 {
     public class MenuViewModel
     {
+        [Required]
         public int MenuId { get; set; }
 
         [Required]
