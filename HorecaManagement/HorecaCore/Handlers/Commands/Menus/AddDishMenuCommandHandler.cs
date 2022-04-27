@@ -87,9 +87,9 @@ namespace Horeca.Core.Handlers.Commands.Menus
             {
                 request.Model.RestaurantId = request.RestaurantId;
             }
-            if (request.Model.Dish.Id == 0)
+            if (request.Model.Id == 0)
             {
-                request.Model.Dish.Id = request.Id;
+                request.Model.Id = request.Id;
             }
         }
     }
