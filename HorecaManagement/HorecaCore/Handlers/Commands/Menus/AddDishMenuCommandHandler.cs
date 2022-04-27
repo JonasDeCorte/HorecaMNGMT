@@ -49,7 +49,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
                     Price = request.Model.Dish.Price,
                 };
             }
-            else //Test
+            else
             {
                 logger.Info("dish exists, get dish   from database  {id} ", request.Model.Dish.Id);
                 entity = await repository.Dishes.GetDishById(request.Model.Dish.Id, request.Model.Dish.RestaurantId);
