@@ -2,6 +2,31 @@
 @model Horeca.MVC.Models.Accounts.MutatePermissionsViewModel
 
 <div class="text-center">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Account" asp-action="Index">
+                    Employees
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Account" asp-action="Detail" asp-route-username="@Model.Username">
+                    @Model.Username
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Remove Permissions</li>
+        </ol>
+    </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
             <h1>Remove from Permissions</h1>
@@ -14,7 +39,7 @@
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
-                <label asp-for="PermissionId" class="control-label"></label>
+                <label asp-for="PermissionId" class="control-label">Select Permissions</label>
                 <select asp-for="PermissionId" asp-items="@(new MultiSelectList(Model.Permissions, 
                     "Id", "PermissionName"))" 
                     class="form-control text-black" multiple="multiple" size="30">
