@@ -68,5 +68,10 @@ namespace Horeca.MVC.Helpers.Mappers
                 Unit = UnitMapper.MapUnitDto(ingredientModel)
             };
         }
+
+        internal static UpdateDishIngredientViewModel MapEditDishIngredientModel(int dishId, IngredientDto ingredient, List<UnitDto> unitDtos)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
