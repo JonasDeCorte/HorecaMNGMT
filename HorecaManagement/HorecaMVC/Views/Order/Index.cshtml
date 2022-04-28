@@ -2,24 +2,24 @@
 @model Horeca.MVC.Models.Orders.OrderListViewModel
 
 <div class="text-center">
-    <div class="card bg-light mt-3">
+    <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark pb-0">
             <h1>Orders</h1>
-            <ul class="nav nav-tabs nav-justified">
+            <ul class="nav nav-tabs nav-justified border-bottom-0">
                 <li class="nav-item">
-                    <a class="nav-link text-white bg-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
+                    <a class="nav-link text-white" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
                        asp-route-state="@OrderState.Begin" id="beginTab">
                         Begin
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white bg-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
+                    <a class="nav-link text-white" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
                        asp-route-state="@OrderState.Prepare" id="prepareTab">
                         Prepare
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white bg-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
+                    <a class="nav-link text-white" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
                        asp-route-state="@OrderState.Done" id="doneTab">
                         Done
                     </a>
@@ -29,7 +29,7 @@
         <div class="d-flex flex-column">
             @foreach (var order in Model.Orders)
             {
-                <div class="card bg-light m-3">
+                <div class="shadow card bg-light m-3">
                     <div class="card-header bg-dark">
                         <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
                         @if (order.OrderState == OrderState.Prepare)
