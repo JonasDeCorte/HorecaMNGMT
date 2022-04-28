@@ -1,8 +1,8 @@
 ﻿@model Horeca.MVC.Models.Ingredients.IngredientListViewModel
 
 <div class="text-center">
-    <div class="shadow card mt-3">
-        <div class="card-header">
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>Ingredients</h1>
             @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
             {
@@ -10,7 +10,7 @@
             }
         </div>
         <div class="table-responsive">
-            <table class="table table-hover table-nowrap mb-0">
+            <table class="table table-hover table-light table-nowrap mb-0">
                 <thead class="table-light">
                     <tr>
                         <th scope="col" class="col-3">Name</th>

@@ -12,15 +12,15 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-dark box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-dark box-shadow mb-3">
             <div class="container-fluid">
                 @if (restaurantService.GetCurrentRestaurantId() != null)
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@restaurantService.GetCurrentRestaurantName()</a>
+                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">@restaurantService.GetCurrentRestaurantName()</a>
                 }
                 else
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Horeca</a>
+                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Horeca</a>
                 }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

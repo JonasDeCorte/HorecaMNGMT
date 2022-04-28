@@ -1,45 +1,47 @@
 ﻿@model Horeca.MVC.Models.Accounts.UserPermissionsViewModel
 
 <div class="text-center">
-    <div class="container">
-        <div class="d-flex justify-content-center">
-            @if (accountService.Authorize(PermissionConstants.Permission_Create))
-            {
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
+            <h1>@Model.Username</h1>
+            <div class="d-flex justify-content-center">
+                @if (accountService.Authorize(PermissionConstants.Permission_Create))
+                {
+                    <div class="m-2">
+                        <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
+                            Add Permissions
+                        </a>
+                    </div>
+                }
+                @if (accountService.Authorize(PermissionConstants.Permission_Delete))
+                {
+                    <div class="m-2">
+                        <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
+                            Remove Permissions
+                        </a>
+                    </div>
+                }
                 <div class="m-2">
-                    <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">
-                        Add Permissions
-                    </a>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
                 </div>
-            }
-            @if (accountService.Authorize(PermissionConstants.Permission_Delete))
-            {
-                <div class="m-2">
-                    <a asp-action="RemovePermissions" asp-route-username="@Model.Username" class="btn btn-danger">
-                        Remove Permissions
-                    </a>
-                </div>
-            }
-            <div class="m-2">
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </div>
-    </div>
-    <h1 class="display-4">@Model.Username</h1>
-    <div class="container">
-        <table class="table table-responsive">
-            <thead>
-                <tr>
-                    <th>Permissions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < @Model.Permissions.Count; i++)
-                {
+        <div class="table-responsive">
+            <table class="table table-light">
+                <thead>
                     <tr>
-                        <td scope="row">@Model.Permissions[i].PermissionName</td>
+                        <th>Permissions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < @Model.Permissions.Count; i++)
+                    {
+                        <tr>
+                            <td scope="row">@Model.Permissions[i].PermissionName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

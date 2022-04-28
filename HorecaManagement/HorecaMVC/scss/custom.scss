@@ -1,18 +1,19 @@
 ﻿// Custom.scss
-// Option A: Include all of Bootstrap
 
-// Include any default variable overrides here (though functions won't be available)
-$body-bg: #5D73A9;
-$body-color: #869CD2;
+@import "../node_modules/bootstrap/scss/functions";
 
-$primary: #264267;
-$secondary: #597CA5;
+// Default variable overrides
+$body-bg: #C3CDD5;
+$body-color: #ffffff;
+
+$primary: #2E5266;
+$secondary: #39667F;
 $success: #000000;
 $info: #000000;
 $warning: #000000;
-$danger: #142943;
-$light: #869CD2;
-$dark: #41568A;
+$danger: #B34242;
+$light: #9FB1BC;
+$dark: #6E8898;
 
 $theme-colors: (
   "primary":    $primary,
@@ -25,6 +26,12 @@ $theme-colors: (
   "dark":       $dark
 );
 
+$custom-colors: (
+  "medium": #B9C6E6,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-// Then add additional custom code here
+// Additional custom code

@@ -1,8 +1,8 @@
 ﻿@model Horeca.MVC.Models.Dishes.DishListViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
-        <div class="card-header">
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>Dishes</h1>
             @if (accountService.Authorize(PermissionConstants.Dish_Create))
             {
@@ -10,7 +10,7 @@
             }
         </div>
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover table-light mb-0">
                 <thead>
                     <tr>
                         <th scope="col" class="col-2">Name</th>
@@ -54,8 +54,8 @@
 <div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Dish</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

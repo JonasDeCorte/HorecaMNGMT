@@ -1,21 +1,23 @@
 ﻿@model Horeca.MVC.Models.Restaurants.MutateRestaurantViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Edit Restaurant @Model.Name</h1>
-    <div>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
+            <h1>Edit Restaurant @Model.Name</h1>
+        </div>
         <form asp-action="Edit" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mt-2" style="display: none">
-                <label asp-for="OwnerName" class="control-label">Owner Name</label>
-                <input asp-for="OwnerName" class="form-control" readonly="readonly"/>
+                <label asp-for="OwnerName" class="control-label text-black">Owner Name</label>
+                <input asp-for="OwnerName" class="form-control text-black" readonly="readonly" />
                 <span asp-validation-for="OwnerName" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label text-black"></label>
+                <input asp-for="Name" class="form-control text-black" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="mt-2">
+            <div class="mt-2 mb-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>

@@ -1,53 +1,53 @@
 ﻿@model Horeca.MVC.Models.Bookings.CreateBookingViewModel
 
-<div class="card text-center mt-3">
-    <div class="card-header">
+<div class="shadow card bg-light text-center mt-3">
+    <div class="card-header bg-dark">
         <h1>Create Booking for @Model.BookingDate.ToShortDateString()</h1>
     </div><div>
         <form class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" style="display: none">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" readonly="readonly" />
+                <label asp-for="UserID" class="control-label text-black"></label>
+                <input asp-for="UserID" class="form-control text-black" readonly="readonly" />
                 <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
             <div style="display: none">
-                <label asp-for="ScheduleId" class="control-label"></label>
-                <input asp-for="ScheduleId" class="form-control" readonly="readonly" />
+                <label asp-for="ScheduleId" class="control-label text-black"></label>
+                <input asp-for="ScheduleId" class="form-control text-black" readonly="readonly" />
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
             <div class="form-group row mt-2">
                 <div class="col" style="display: none">
-                    <label asp-for="BookingDate" class="control-label">Date</label>
-                    <input asp-for="BookingDate" type="date" id="datePicker" class="form-control" readonly="readonly"/>
+                    <label asp-for="BookingDate" class="control-label text-black">Date</label>
+                    <input asp-for="BookingDate" type="date" id="datePicker" class="form-control text-black" readonly="readonly"/>
                     <span asp-validation-for="BookingDate" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="CheckIn" class="control-label">Check-in Time</label>
-                    <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control" />
+                    <label asp-for="CheckIn" class="control-label text-black">Check-in Time</label>
+                    <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control text-black" />
                     <span asp-validation-for="CheckIn" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="CheckOut" class="control-label">Check-out Time</label>
-                    <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control" />
+                    <label asp-for="CheckOut" class="control-label text-black">Check-out Time</label>
+                    <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control text-black" />
                     <span asp-validation-for="CheckOut" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row mt-2">
                 <div class="col">
-                    <label asp-for="FullName" class="control-label">Contact Name</label>
-                    <input asp-for="FullName" class="form-control" />
+                    <label asp-for="FullName" class="control-label text-black">Contact Name</label>
+                    <input asp-for="FullName" class="form-control text-black" />
                     <span asp-validation-for="FullName" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="PhoneNo" class="control-label">Phone Number</label>
-                    <input asp-for="PhoneNo" class="form-control" />
+                    <label asp-for="PhoneNo" class="control-label text-black">Phone Number</label>
+                    <input asp-for="PhoneNo" class="form-control text-black" />
                     <span asp-validation-for="PhoneNo" class="text-danger"></span>
                 </div>
             </div>
             <div class="mt-2">
-                <label asp-for="Pax" class="control-label"></label>
-                <input asp-for="Pax" class="form-control" />
+                <label asp-for="Pax" class="control-label text-black"></label>
+                <input asp-for="Pax" class="form-control text-black" />
                 <span asp-validation-for="Pax" class="text-danger"></span>
             </div>
             <div class="mt-2 mb-2">

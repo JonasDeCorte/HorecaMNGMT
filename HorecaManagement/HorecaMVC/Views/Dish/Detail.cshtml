@@ -1,12 +1,12 @@
 ﻿@model Horeca.MVC.Models.Dishes.DishDetailViewModel
 
 <div class="d-flex flex-column text-center align-items-center">
-    <div class="shadow card mt-3">
-        <div class="card-header">
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>@Model.Name</h1>
         </div>
         <div class="table-responsive">
-            <table class="table" style="table-layout: fixed">
+            <table class="table table-light" style="table-layout: fixed">
                 <thead>
                     <tr>
                         <th scope="col">Dish Type</th>
@@ -24,7 +24,7 @@
             </table>
         </div>
         <div class="table-responsive">
-            <table class="table mb-0">
+            <table class="table table-light mb-0">
                 <tbody>
                     <tr class="d-flex flex-column">
                         <th scope="col">Description</th>
@@ -35,12 +35,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="shadow card m-3">
-            <div class="card-header">
+        <div class="shadow card bg-light m-3">
+            <div class="card-header bg-dark">
                 <h2>Ingredients</h2>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover table-light mb-0">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -87,14 +87,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">
+            <div class="card-footer bg-dark">
                 @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
                 {
                     <a asp-action="CreateIngredient" asp-route-id="@Model.DishId" class="btn btn-primary">Create Ingredient</a>
                 }
             </div>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bg-dark">
             @if (accountService.Authorize(PermissionConstants.Dish_Update))
             {
                 <a asp-action="Edit" asp-route-id="@Model.DishId" class="btn btn-primary">Edit</a>
@@ -107,8 +107,8 @@
 <div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Dish Ingredient</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

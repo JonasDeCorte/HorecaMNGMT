@@ -1,8 +1,8 @@
 ﻿@model Horeca.MVC.Models.Restaurants.RestaurantListViewModel
 
 <div class="text-center">
-    <div class="shadow card bg-dark mt-3">
-        <div class="card-header">
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>Restaurants</h1>
             @if (accountService.Authorize(PermissionConstants.Restaurant_Create))
             {
@@ -48,8 +48,8 @@
 <div class="modal fade" id="deleteModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark">
-            <div class="modal-header">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Restaurant</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

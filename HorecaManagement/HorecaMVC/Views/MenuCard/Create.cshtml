@@ -1,16 +1,18 @@
 ﻿@model Horeca.MVC.Models.MenuCards.MenuCardViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Create Menu Card</h1>
-    <div>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
+            <h1>Create Menu Card</h1>
+        </div>
         <form class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mt-2">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label text-black"></label>
+                <input asp-for="Name" class="form-control text-black" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="mt-2">
+            <div class="mt-2 mb-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
                 <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>

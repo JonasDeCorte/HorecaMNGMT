@@ -3,8 +3,8 @@
 @model Horeca.MVC.Models.Restaurants.RestaurantDetailViewModel
 
 <div class="text-center">
-    <div class="shadow card bg-dark mt-3">
-        <div class="card-header">
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>@Model.Name</h1>
         </div>
         @if (accountService.Authorize(PermissionConstants.Schedule_Read))
@@ -57,7 +57,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer bg-dark">
                     @if (accountService.Authorize(PermissionConstants.Restaurant_Update))
                     {
                         <a asp-controller="Schedule" asp-action="Create" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
@@ -103,7 +103,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer bg-dark">
                     @if (accountService.Authorize(PermissionConstants.Restaurant_Update))
                     {
                         <a asp-action="AddEmployee" asp-route-restaurantId="@Model.Id" type="button" class="btn btn-primary">
@@ -119,8 +119,8 @@
 <div class="modal fade" id="deleteEmployeeModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="deleteModalLabel">Remove Employee</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -138,8 +138,8 @@
 <div class="modal fade" id="deleteMenuCardModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Menu Card</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -157,8 +157,8 @@
 <div class="modal fade" id="deleteScheduleModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="deleteModalLabel">Delete Schedule</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

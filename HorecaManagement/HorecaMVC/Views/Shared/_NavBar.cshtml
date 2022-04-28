@@ -7,15 +7,15 @@
            accountService.Authorize(PermissionConstants.Menu_Read) || accountService.Authorize(PermissionConstants.MenuCard_Read))
             {
                 <li class="nav-item dropdown">
-                    <a class="nav-link text-dark dropdown-toggle" href="#" id="kitchenDropdown" role="button"
+                    <a class="nav-link text-white dropdown-toggle" href="#" id="kitchenDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Kitchen
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="kitchenDropdown">
+                    <ul class="dropdown-menu bg-dark" aria-labelledby="kitchenDropdown">
                         @if (accountService.Authorize(PermissionConstants.Ingredient_Read))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ingredient" asp-action="Index">
+                                <a class="nav-link text-white dropdown-item" asp-area="" asp-controller="Ingredient" asp-action="Index">
                                     Ingredients
                                 </a>
                             </li>
@@ -23,7 +23,7 @@
                         @if (accountService.Authorize(PermissionConstants.Dish_Read))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Dish" asp-action="Index">
+                                <a class="nav-link text-white dropdown-item" asp-area="" asp-controller="Dish" asp-action="Index">
                                     Dishes
                                 </a>
                             </li>
@@ -31,7 +31,7 @@
                         @if (accountService.Authorize(PermissionConstants.Menu_Read))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Menu" asp-action="Index">
+                                <a class="nav-link text-white dropdown-item" asp-area="" asp-controller="Menu" asp-action="Index">
                                     Menus
                                 </a>
                             </li>
@@ -39,7 +39,7 @@
                         @if (accountService.Authorize(PermissionConstants.MenuCard_Read))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="MenuCard" asp-action="Index">
+                                <a class="nav-link text-white dropdown-item" asp-area="" asp-controller="MenuCard" asp-action="Index">
                                     Menu Cards
                                 </a>
                             </li>
@@ -50,7 +50,7 @@
             @if (accountService.Authorize(PermissionConstants.Order_Read))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" 
+                    <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Index" 
                         asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-state="@OrderState.Prepare">
                         Orders
                     </a>
@@ -59,46 +59,46 @@
             @if (accountService.Authorize(PermissionConstants.Booking_Read))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
+                    <a class="nav-link text-white" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
                 </li>
             }
             @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
+                    <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Index">Users</a>
                 </li>
             }
         }
     </ul>
     <ul class="navbar-nav flex-grow-1 flex-row-reverse">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+            <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
         </li>
         @if (accountService.IsLoggedIn())
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Log out</a>
+                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Logout">Log out</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link text-dark dropdown-toggle" href="#" id="userNavDropdown" role="button"
+                <a class="nav-link text-white dropdown-toggle" href="#" id="userNavDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Welcome, @accountService.GetCurrentUser().Username!
                 </a>
 
                 @if (accountService.Authorize(PermissionConstants.Restaurant_Read))
                 {
-                    <ul class="dropdown-menu" aria-labelledby="restaurantNavDropdown">
+                    <ul class="dropdown-menu bg-dark" aria-labelledby="restaurantNavDropdown">
                         @if (!restaurantService.GetCurrentRestaurantName().Equals("Horeca"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Restaurant" asp-action="Detail"
+                                <a class="nav-link text-white dropdown-item" asp-area="" asp-controller="Restaurant" asp-action="Detail"
                                     asp-route-id="@restaurantService.GetCurrentRestaurantId()">
                                     View @restaurantService.GetCurrentRestaurantName()
                                 </a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                            <a class="nav-link text-white dropdown-item" asp-area="" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
                                 Switch Restaurant
                             </a>
                         </li>
@@ -109,7 +109,7 @@
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+                <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
             </li>
         }
     </ul>
