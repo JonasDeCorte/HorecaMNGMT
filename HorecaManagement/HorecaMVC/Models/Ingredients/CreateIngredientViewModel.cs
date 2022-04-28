@@ -1,11 +1,12 @@
-﻿using Horeca.MVC.Models.Ingredients;
-using Horeca.Shared.Constants;
+﻿using Horeca.Shared.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace Horeca.MVC.Models.Ingredients
 {
     public class CreateIngredientViewModel
     {
+        public int DishId { get; set; }
+
         public int IngredientId { get; set; }
 
         [Required]

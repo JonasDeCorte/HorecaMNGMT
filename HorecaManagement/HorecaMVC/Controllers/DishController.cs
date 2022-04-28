@@ -106,7 +106,7 @@ namespace Horeca.MVC.Controllers
         {
             var units = await unitService.GetUnits();
             CreateIngredientViewModel model = IngredientMapper.MapCreateIngredientModel(units.ToList());
-
+            model.DishId = id;
             return View(model);
         }
 

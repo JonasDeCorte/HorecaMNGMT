@@ -1,6 +1,31 @@
-﻿@model Horeca.MVC.Models.Menus.MenuViewModel
+﻿@model Horeca.MVC.Models.Menus.MenuCardMenuViewModel
 
 <div class="text-center">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="MenuCard" asp-action="Index">
+                    Menus
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="MenuCard" asp-action="Detail" asp-route-id="@Model.MenuCardId">
+                    Menu Card @Model.MenuCardId
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Create Menu</li>
+        </ol>
+    </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
             <h1>Create Menu Card Menu</h1>
