@@ -45,7 +45,7 @@ namespace Horeca.Core.Handlers.Commands.Menus
 
                 throw new EntityNotFoundException();
             }
-            var menuDish = menu.MenuDishes.SingleOrDefault(x => x.Id == request.Model.Dish.Id);
+            var menuDish = menu.MenuDishes.SingleOrDefault(x => x.DishId == request.Model.Dish.Id);
 
             if (menuDish is null)
             {
