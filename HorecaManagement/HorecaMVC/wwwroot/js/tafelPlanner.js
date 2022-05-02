@@ -56,19 +56,16 @@ document.body.onclick = function (e) {
 
         fabric.Image.fromURL(target.src, function (image) {
             canvas.add(image.set({
-                id: getRandomIntInclusive(1000, 9999999),
-                name: name,
-                seats: seats,
+                Id: getRandomIntInclusive(1000, 9999999),
+                Name: name,
+                Seats: seats,
             }));
-            console.log(image.id);
-            console.log(image.name);
-            console.log(image.seats);
 
             image.scaleToWidth(200);
             canvas.centerObjectH(image).centerObjectV(image);
             image.setCoords();
             canvas.renderAll();
-            const jsondata = JSON.stringify(canvas.toDatalessJSON(['id', 'name', 'seats']));
+            const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
             console.log(jsondata);
         });
     }
@@ -133,7 +130,7 @@ async function downloadDataUrl(dataURL) {
 }
 
 document.getElementById('ToJson').onclick = function () {
-    console.log(JSON.stringify(canvas.toDatalessJSON(['id', 'name', 'seats'])));
+    console.log(JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats'])));
     return false;
 };
 
