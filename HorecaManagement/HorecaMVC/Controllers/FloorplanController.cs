@@ -8,5 +8,10 @@ namespace HorecaMVC.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> Detail()
+        {
+            return View();
+        }
     }
 }

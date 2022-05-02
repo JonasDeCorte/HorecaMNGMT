@@ -1,6 +1,4 @@
-﻿@model Horeca.MVC.Models.Ingredients.IngredientListViewModel
-
-<div class="text-center">
+﻿<div class="text-center">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -13,52 +11,43 @@
                     @restaurantService.GetCurrentRestaurantName()
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Ingredients</li>
+            <li class="breadcrumb-item active" aria-current="page">Floor Plans</li>
         </ol>
     </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
-            <h1>Ingredients</h1>
-            @if (accountService.Authorize(PermissionConstants.Ingredient_Create))
+            <h1>Floor Plans</h1>
+            @if (accountService.Authorize(PermissionConstants.Order_Create))
             {
-                <a asp-action="Create" class="btn btn-primary">New Ingredient</a>
+                <a asp-action="Create" class="btn btn-primary">New Floor Plan</a>
             }
         </div>
         <div class="table-responsive">
             <table class="table table-hover table-light mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col" class="col-3">Name</th>
-                        <th scope="col" class="col-2">Type</th>
-                        <th scope="col" class="col-2">Base Amount</th>
-                        <th scope="col" class="col-2">Unit</th>
+                        <th scope="col" class="col-9">Name</th>
                         <th scope="col" class="col-3">Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var ingredient in Model.Ingredients)
-                    {
                         <tr>
-                            <td>@ingredient.Name</td>
-                            <td>@ingredient.IngredientType</td>
-                            <td>@ingredient.BaseAmount</td>
-                            <td>@ingredient.Unit.Name</td>
+                            <td>Floor Plan 1</td>
                             <td>
-                                <a asp-action="Detail" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize(PermissionConstants.Ingredient_Update))
+                                <a asp-action="Detail" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize(PermissionConstants.Order_Update))
                                 {
-                                    <a asp-action="Edit" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Edit</a>
+                                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
                                 }
-                                @if (accountService.Authorize(PermissionConstants.Ingredient_Delete))
+                                @if (accountService.Authorize(PermissionConstants.Order_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-id="@ingredient.IngredientId">
+                                    data-bs-target="#deleteModal" data-id="Id">
                                         Delete
                                     </button>
                                 }
                             </td>
                         </tr>
-                    }
                 </tbody>
             </table>
         </div>
@@ -74,7 +63,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-black" id="dvData">
-                Are you sure you want to delete this ingredient?
+                Are you sure you want to delete this floor plan?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -91,7 +80,7 @@
 
     function OpenModalDelete(){
        var itemId = $(this).data("id");
-       $('#deleteButton').attr('href', "/Ingredient/Delete/" + itemId)
+       $('#deleteButton').attr('href', "/Floorplan/Delete/" + itemId)
        $("#deleteModal").modal();
     }
 </script>
