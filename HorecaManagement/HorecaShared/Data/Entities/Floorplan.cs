@@ -35,5 +35,9 @@
         public string Name { get; set; }
         public string Seats { get; set; }
         public string Src { get; set; }
+
+        public Restaurant? Restaurant { get; set; }
+
+        public int? RestaurantId { get; set; }
     }
 }
