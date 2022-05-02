@@ -40,6 +40,7 @@
                         <th scope="col" class="col-1">Id</th>
                         <th scope="col" class="col-2">Date</th>
                         <th scope="col" class="col-2">Period</th>
+                        <th scope="col" class="col-1">Seats</th>
                         <th scope="col" class="col-2">Contact Name</th>
                         <th scope="col" class="col-2">Phone Number</th>
                         <th scope="col" class="col-1">Status</th>
@@ -53,6 +54,7 @@
                         <td>@booking.Id</td>
                         <td>@booking.BookingDate.ToShortDateString()</td>
                         <td>@booking.CheckIn?.ToShortTimeString() - @booking.CheckOut?.ToShortTimeString()</td>
+                        <td>@booking.Pax</td>
                         <td>@booking.FullName</td>
                         <td>@booking.PhoneNo</td>
                         <td>@booking.BookingStatus</td>

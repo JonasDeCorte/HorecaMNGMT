@@ -45,12 +45,12 @@
                     </div>
                     <div class="col">
                         <label asp-for="CheckIn" class="control-label text-black">Check-in Time</label>
-                        <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control text-black" />
+                        <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control text-black" readonly="readonly"/>
                         <span asp-validation-for="CheckIn" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label asp-for="CheckOut" class="control-label text-black">Check-out Time</label>
-                        <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control text-black" />
+                        <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control text-black" readonly="readonly"/>
                         <span asp-validation-for="CheckOut" class="text-danger"></span>
                     </div>
                 </div>

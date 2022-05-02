@@ -62,3 +62,9 @@ body {
 btn {
     margin-top: 2px;
 }
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #C3CDD5;
+    border-color: #dee2e6 #dee2e6 #9FB1BC;
+    border-bottom: 0px;
+}

@@ -31,6 +31,7 @@
                     <tr>
                         <th scope="col" class="col-2">Date</th>
                         <th scope="col" class="col-2">Period</th>
+                        <th scope="col" class="col-1">Seats</th>
                         <th scope="col" class="col-2">Contact Name</th>
                         <th scope="col" class="col-2">Phone Number</th>
                         <th scope="col" class="col-2">Status</th>
@@ -40,6 +41,7 @@
                     <tr>
                         <td scope="row">@Model.BookingDate.ToShortDateString()</td>
                         <td>@Model.CheckIn?.ToShortTimeString() - @Model.CheckOut?.ToShortTimeString()</td>
+                        <td>@Model.Pax</td>
                         <td>@Model.FullName</td>
                         <td>@Model.PhoneNo</td>
                         <td>@Model.BookingStatus</td>
