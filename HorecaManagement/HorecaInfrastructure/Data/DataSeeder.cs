@@ -263,7 +263,7 @@ namespace Horeca.Infrastructure.Data
                     BookingDate = DateTime.Today,
                     CheckIn = DateTime.Today.AddHours(i),
                     CheckOut = DateTime.Today.AddHours(i + 5 / 2),
-                    PhoneNo = $"{Guid.NewGuid()}",
+                    PhoneNo = "+32478194517",
                     BookingNo = $"{Guid.NewGuid()}",
                     BookingStatus = i % 2 == 0 ? Constants.BookingStatus.PENDING : Constants.BookingStatus.EXPIRED,
                     UserId = i % 2 == 0 ? superAdmin.Id : zaal.Id,
