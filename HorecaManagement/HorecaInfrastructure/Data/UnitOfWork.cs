@@ -35,6 +35,8 @@ namespace Horeca.Infrastructure.Data
 
         public ITableRepository Tables => new TableRepository(context);
 
+        public IFloorplanRepository Floorplans => new FloorplanRepository(context);
+
         public IOrderRepository Orders => new OrderRepository(context);
 
         public async Task CommitAsync()

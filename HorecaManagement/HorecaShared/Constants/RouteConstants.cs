@@ -127,6 +127,11 @@
             public const string Post = $"{ClassConstants.Schedule}";
         }
 
+        public static class FloorplanConstants
+        {
+            public const string Get = $"{ClassConstants.Restaurant}";
+        }
+
         public static class UnitConstants
         {
             public const string GetAllByRestaurantId = $"{ClassConstants.All}{Slash}{ClassConstants.Restaurant}";

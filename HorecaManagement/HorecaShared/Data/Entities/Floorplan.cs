@@ -2,6 +2,12 @@
 {
     public class Floorplan : BaseEntity
     {
+        public string Name { get; set; }
+        public string Seats { get; set; }
+        public string Src { get; set; }
+        public Restaurant? Restaurant { get; set; }
+        public int? RestaurantId { get; set; }
+
         public string Type { get; set; }
         public string Version { get; set; }
         public string OriginX { get; set; }
@@ -32,12 +38,5 @@
         public int SkewY { get; set; }
         public int CropX { get; set; }
         public int CropY { get; set; }
-        public string Name { get; set; }
-        public string Seats { get; set; }
-        public string Src { get; set; }
-
-        public Restaurant? Restaurant { get; set; }
-
-        public int? RestaurantId { get; set; }
     }
 }
