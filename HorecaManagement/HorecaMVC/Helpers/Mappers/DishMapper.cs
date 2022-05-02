@@ -73,21 +73,22 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
-        public static DishIngredientViewModel MapUpdateIngredientModel(int dishId, IngredientDto ingredient)
+        public static UpdateDishIngredientViewModel MapUpdateIngredientModel(int dishId, IngredientDto ingredient, List<UnitDto> unitDtos)
         {
-            return new DishIngredientViewModel
+            UpdateDishIngredientViewModel model = new UpdateDishIngredientViewModel()
             {
-                DishId = dishId,
                 IngredientId = ingredient.Id,
+                DishId = dishId,
                 Name = ingredient.Name,
                 IngredientType = ingredient.IngredientType,
                 BaseAmount = ingredient.BaseAmount,
-                Unit = new UnitViewModel
-                {
-                    Id = ingredient.Unit.Id,
-                    Name = ingredient.Unit.Name
-                }
+                UnitId = ingredient.Unit.Id
             };
+            foreach (var unitDto in unitDtos)
+            {
+                model.Units.Add(UnitMapper.MapUnitModel(unitDto));
+            }
+            return model;
         }
 
         public static List<DishViewModel> MapDishModelList(List<Dish> dishes)
@@ -257,6 +258,24 @@ namespace Horeca.MVC.Helpers.Mappers
                         Id = ingredient.Unit.Id,
                         Name = ingredient.Unit.Name
                     }
+                }
+            };
+        }
+
+        public static MutateIngredientByDishDto MapMutateDishIngredientDto(int id, int? restaurantId, UpdateDishIngredientViewModel ingredient)
+        {
+            return new MutateIngredientByDishDto
+            {
+                Id = id,
+                RestaurantId = (int)restaurantId,
+                Ingredient = new MutateIngredientDto
+                {
+                    Id = ingredient.IngredientId,
+                    RestaurantId = (int)restaurantId,
+                    Name = ingredient.Name,
+                    BaseAmount = ingredient.BaseAmount,
+                    IngredientType = ingredient.IngredientType,
+                    Unit = UnitMapper.MapUnitDto(ingredient)
                 }
             };
         }

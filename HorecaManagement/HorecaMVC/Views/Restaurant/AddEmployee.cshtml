@@ -2,23 +2,40 @@
 @model Horeca.MVC.Models.Restaurants.MutateEmployeeViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Add Employee</h1>
-    <div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Add Employee</li>
+        </ol>
+    </nav>
+    <div class="shadow card bg-light">
+        <div class="card-header bg-dark">
+            <h1>Add Employee</h1>
+        </div>
         <form asp-action="AddEmployee" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-2" style="display: none">
-                <label asp-for="RestaurantId" class="control-label"></label>
-                <input asp-for="RestaurantId" class="form-control" readonly="readonly"/>
+                <label asp-for="RestaurantId" class="control-label text-black"></label>
+                <input asp-for="RestaurantId" class="form-control text-black" readonly="readonly" />
                 <span asp-validation-for="RestaurantId" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" asp-items="@(new SelectList(Model.Employees, 
-                    "Id", "Username"))" class="form-control">
-                    <option value="0">Please select</option>
+                <label asp-for="EmployeeId" class="control-label text-black">Select an employee</label>
+                <select asp-for="EmployeeId" asp-items="@(new SelectList(Model.Employees,
+                    "Id", "Username"))" class="form-control text-black">
+                    <option value="0" class="text-black">Please select</option>
                 </select>
             </div>
-            <div class="form-group mt-2">
+            <div class="form-group mt-2 mb-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>

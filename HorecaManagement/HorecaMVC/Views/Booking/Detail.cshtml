@@ -1,12 +1,32 @@
 ﻿@model Horeca.MVC.Models.Bookings.BookingViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
-        <div class="card-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@Model.ScheduleId">
+                    Schedule @Model.ScheduleId
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Booking @Model.Id</li>
+        </ol>
+    </nav>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>Booking @Model.Id</h1>
         </div>
         <div class="table-responsive">
-            <table class="table mt-2 mb-0">
+            <table class="table table-light mt-2 mb-0">
                 <thead>
                     <tr>
                         <th scope="col" class="col-2">Date</th>
@@ -27,7 +47,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bg-dark">
             <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>

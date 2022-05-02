@@ -1,46 +1,38 @@
 ﻿<div class="text-center">
-    <div class="d-flex flex-column">
-        <h1 class="display-4">Order 1 - Table 0</h1>
-        <div class="table-responsive">
-            <table class="table">
-                <tbody>
-                    <tr class="d-flex flex-column">
-                        <th scope="col">Menus</th>
-                        <td scope="row">
-                            <div class="table-responsive">
-                                <table class="table table-hover mt-2" style="table-layout: fixed">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="col-3">Name</th>
-                                            <th scope="col" class="col-4">Description</th>
-                                            <th scope="col" class="col-2">Category</th>
-                                            <th scope="col" class="col-3">Options</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Description</td>
-                                            <td>Category</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td scope="row" colspan="2">
-                            @if (accountService.Authorize(PermissionConstants.Order_Update))
-                            {
-                                <a asp-action="Edit" class="btn btn-primary">Edit</a>
-                            }
-                            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
+            <h1>Order 1 - Table 0</h1>
+        </div>
+        <div class="shadow card bg-light m-3">
+            <div class="card-header bg-dark">
+                <h1>Menus</h1>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-light mt-2" style="table-layout: fixed">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-3">Name</th>
+                            <th scope="col" class="col-4">Description</th>
+                            <th scope="col" class="col-2">Category</th>
+                            <th scope="col" class="col-3">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>Description</td>
+                            <td>Category</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-dark">
+            @if (accountService.Authorize(PermissionConstants.Order_Update))
+            {
+                <a asp-action="Edit" class="btn btn-primary">Edit</a>
+            }
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
 </div>

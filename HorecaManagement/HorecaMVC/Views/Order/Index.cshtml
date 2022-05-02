@@ -2,24 +2,39 @@
 @model Horeca.MVC.Models.Orders.OrderListViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
-        <div class="card-header pb-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Orders</li>
+        </ol>
+    </nav>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark pb-0">
             <h1>Orders</h1>
-            <ul class="nav nav-tabs nav-justified">
+            <ul class="nav nav-tabs nav-justified border-bottom-0">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
+                    <a class="nav-link text-white" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
                        asp-route-state="@OrderState.Begin" id="beginTab">
                         Begin
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
+                    <a class="nav-link text-white" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
                        asp-route-state="@OrderState.Prepare" id="prepareTab">
                         Prepare
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
+                    <a class="nav-link text-white" asp-action="Index" asp-route-restaurantId="@Model.RestaurantId"
                        asp-route-state="@OrderState.Done" id="doneTab">
                         Done
                     </a>
@@ -29,8 +44,8 @@
         <div class="d-flex flex-column">
             @foreach (var order in Model.Orders)
             {
-                <div class="card m-3">
-                    <div class="card-header">
+                <div class="shadow card bg-light m-3">
+                    <div class="card-header bg-dark">
                         <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
                         @if (order.OrderState == OrderState.Prepare)
                         {
@@ -40,7 +55,7 @@
                         }
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover table-light mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col" class="col-3">Dish</th>

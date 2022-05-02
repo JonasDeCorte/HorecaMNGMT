@@ -1,12 +1,27 @@
 ﻿@model Horeca.MVC.Models.Accounts.UserListViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
-        <div class="card-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Employees</li>
+        </ol>
+    </nav>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>Users</h1>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover table-light mb-0">
                 <thead>
                     <tr>
                         <th scope="col">Username</th>

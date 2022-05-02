@@ -1,15 +1,40 @@
 ﻿@model Horeca.MVC.Models.Ingredients.ExistingIngredientsViewModel
 
 <div class="text-center">
-    <div class="card mt-3">
-        <div class="card-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Dish" asp-action="Index">
+                    Dishes
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Dish" asp-action="Detail" asp-route-id="@Model.DishId">
+                    Dish @Model.DishId
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Add Ingredient</li>
+        </ol>
+    </nav>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
             <h1>Add Existing Ingredient</h1>
         </div>
         <form asp-action="AddExistingIngredient" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-2">
-                <label asp-for="IngredientId" class="control-label">Pick an ingredient:</label>
-                <select asp-for="IngredientId" asp-items="@(new SelectList(Model.Ingredients, "IngredientId", "Name"))" class="form-control">
+                <label asp-for="IngredientId" class="control-label text-black">Pick an ingredient:</label>
+                <select asp-for="IngredientId" asp-items="@(new SelectList(Model.Ingredients, "IngredientId", "Name"))" class="form-control text-black">
                 </select>
             </div>
             <div class="form-group mt-2 mb-2">

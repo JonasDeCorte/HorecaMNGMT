@@ -1,0 +1,38 @@
+﻿// Custom.scss
+
+// Required imports
+@import "../node_modules/bootstrap/scss/functions";
+
+// Default variable overrides
+$body-bg: #9FB1BC;
+$body-color: #ffffff;
+
+$primary: #2E5266;
+$secondary: #39667F;
+$success: #000000;
+$info: #000000;
+$warning: #000000;
+$danger: #B34242;
+$light: #C3CDD5;
+$dark: #6E8898;
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+
+$custom-colors: (
+  "medium": #B9C6E6,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Additional custom code

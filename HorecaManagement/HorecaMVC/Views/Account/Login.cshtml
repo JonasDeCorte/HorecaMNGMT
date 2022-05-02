@@ -1,22 +1,24 @@
 ﻿@model Horeca.MVC.Models.Accounts.LoginUserViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Log in</h1>
-    <div class="container">
-        <form class="w-50 mx-auto">
+<div class="text-center w-75 mx-auto">
+    <div class="shadow card mt-3 bg-light">
+        <div class="card-header bg-dark">
+            <h1>Log in</h1>
+        </div>
+        <form class="w-75 mx-auto">
             <div class="mt-2">
-                <label asp-for="Username" class="form-label">Username</label>
-                <input asp-for="Username" class="form-control" id="username" placeholder="Username">
+                <label asp-for="Username" class="form-label text-black">Username</label>
+                <input asp-for="Username" class="form-control text-black" id="username" placeholder="Username">
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="mt-2">
-                <label asp-for="Password" class="form-label">Password</label>
-                <input asp-for="Password" type="password" class="form-control" id="password" placeholder="Password">
+                <label asp-for="Password" class="form-label text-black">Password</label>
+                <input asp-for="Password" type="password" class="form-control text-black" id="password" placeholder="Password">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <input type="submit" value="Login" formmethod="post" class="btn btn-primary" />
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+            <div class="mt-2 mb-2">
+                <input type="submit" value="Login" formmethod="post" class="btn btn-primary text-white" />
+                <a href="javascript:history.back()" class="btn btn-secondary text-white">Go Back</a>
             </div>
         </form>
     </div>

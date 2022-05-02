@@ -91,13 +91,16 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult CreateDish(int id)
         {
-            var model = new DishViewModel();
+            var model = new MenuCardDishViewModel()
+            {
+                MenuCardId = id,
+            };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateDish(int id, DishViewModel dish)
+        public async Task<IActionResult> CreateDish(int id, MenuCardDishViewModel dish)
         {
             if (ModelState.IsValid)
             {
@@ -148,13 +151,16 @@ namespace Horeca.MVC.Controllers
 
         public IActionResult CreateMenu(int id)
         {
-            var model = new MenuViewModel();
+            var model = new MenuCardMenuViewModel()
+            {
+                MenuCardId = id,
+            };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMenu(int id, MenuViewModel menu)
+        public async Task<IActionResult> CreateMenu(int id, MenuCardMenuViewModel menu)
         {
             if (ModelState.IsValid)
             {
