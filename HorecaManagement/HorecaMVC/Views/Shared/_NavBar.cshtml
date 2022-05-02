@@ -62,6 +62,12 @@
                     <a class="nav-link text-white" asp-area="" asp-controller="Booking" asp-action="YourBookings">Your Bookings</a>
                 </li>
             }
+            @if (accountService.Authorize(PermissionConstants.Booking_Read))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Floorplan" asp-action="Index">Floor Plans</a>
+                </li>
+            }
         }
     </ul>
     <ul class="navbar-nav flex-grow-1 flex-row-reverse">
