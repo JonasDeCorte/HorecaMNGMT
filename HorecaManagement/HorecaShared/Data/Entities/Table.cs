@@ -2,11 +2,11 @@
 {
     public class Table : BaseEntity
     {
-        public int ScheduleId { get; set; }
+        public int? ScheduleId { get; set; }
 
         public int FloorplanId { get; set; }
 
-        public Schedule Schedule { get; set; }
+        public Schedule? Schedule { get; set; }
 
         public int? BookingId { get; set; }
 

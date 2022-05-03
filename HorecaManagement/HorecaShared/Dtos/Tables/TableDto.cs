@@ -8,7 +8,7 @@ namespace Horeca.Shared.Dtos.Tables
         
         public int FloorplanId { get; set; }
 
-        public int ScheduleId { get; set; }
+        public int? ScheduleId { get; set; }
 
         public int BookingDetailId { get; set; }
 
@@ -32,7 +32,7 @@ namespace Horeca.Shared.Dtos.Tables
 
         public int FloorplanId { get; set; }
 
-        public int ScheduleId { get; set; }
+        public int? ScheduleId { get; set; }
 
         public int BookingDetailId { get; set; }
 
@@ -43,6 +43,7 @@ namespace Horeca.Shared.Dtos.Tables
         public string Name { get; set; }
 
         public string Src { get; set; }
+
         public string Type { get; set; }
 
         public string Version { get; set; }

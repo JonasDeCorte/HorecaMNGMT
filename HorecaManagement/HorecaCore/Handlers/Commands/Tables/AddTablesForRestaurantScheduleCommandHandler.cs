@@ -36,7 +36,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
         {
             ValidateModelIds(request);
             logger.Info("trying to create {object} with request: {@Id}", nameof(Table), request);
-            var restaurantSchedule = repository.Schedules.Get(request.Model.ScheduleId);
+            var restaurantSchedule = repository.Schedules.Get((int)request.Model.ScheduleId);
 
             if (restaurantSchedule == null)
             {

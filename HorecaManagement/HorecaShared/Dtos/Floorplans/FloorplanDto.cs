@@ -1,5 +1,6 @@
 ﻿using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Restaurants;
+using Horeca.Shared.Dtos.Tables;
 
 namespace Horeca.Shared.Dtos.Floorplans
 {
@@ -11,7 +12,7 @@ namespace Horeca.Shared.Dtos.Floorplans
 
     public class FloorplanDetailDto : FloorplanDto
     {
-        public List<Table> Tables { get; set; }
+        public List<MutateTableDto> Tables { get; set; }
     }
 
     public class MutateFloorplanDto : FloorplanDto
