@@ -49,6 +49,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
             {
                 ScheduleId = restaurantSchedule.Id,
                 Schedule = restaurantSchedule,
+                FloorplanId = request.Model.FloorplanId,
                 Seats = request.Model.Seats,
                 Name = request.Model.Name,
                 Src = request.Model.Src,

@@ -4,6 +4,8 @@
     {
         public int ScheduleId { get; set; }
 
+        public int FloorplanId { get; set; }
+
         public Schedule Schedule { get; set; }
 
         public int? BookingId { get; set; }
@@ -11,6 +13,7 @@
         public Booking? Booking { get; set; }
 
         public List<Order> Orders { get; set; } = new();
+
         public int? Pax { get; set; }
 
         public string? Seats { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Horeca.Core.Handlers.Commands.Tables;
+using Horeca.Core.Handlers.Queries.Tables;
 using Horeca.Shared.AuthUtils;
 using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Constants;
@@ -20,6 +21,39 @@ namespace Horeca.API.Controllers
         public TableController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        /// <summary>
+        ///  Get list of Tables
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Success retrieving Table list</response>
+        /// <response code="400">Bad request</response>
+        [PermissionAuthorize(nameof(Table), Permissions.Read)]
+        [HttpGet]
+        [Route(RouteConstants.TableConstants.Get)]
+        [ProducesResponseType(typeof(IEnumerable<TableDto>), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> Get(int floorplanId)
+        {
+            return Ok(await mediator.Send(new GetAllTablesQuery(floorplanId)));
+        }
+
+        /// <summary>
+        /// Retrieve Table by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Success Retrieving Table by Id</response>
+        /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(Table), Permissions.Read)]
+        [HttpGet]
+        [Route(RouteConstants.TableConstants.GetById)]
+        [ProducesResponseType(typeof(TableDto), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> GetById(int id, int floorplanId)
+        {
+            return Ok(await mediator.Send(new GetTableByIdQuery(id, floorplanId)));
         }
 
         /// <summary>

@@ -55,6 +55,8 @@
         public const string Table = "Table";
         public const string TableId = "tableId";
 
+        public const string Floorplan = "Floorplan";
+
         public const string Prepare = "Prepare";
         public const string Ready = "Ready";
 
