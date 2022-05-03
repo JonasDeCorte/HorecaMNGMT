@@ -44,38 +44,6 @@ namespace Horeca.Core.Handlers.Commands.Floorplans
 
             var entity = new Floorplan
             {
-                Name = request.Model.Name,
-                Seats = request.Model.Seats,
-                Src = request.Model.Src,
-                Type = request.Model.Type,
-                Version = request.Model.Version,
-                OriginX = request.Model.OriginX,
-                OriginY = request.Model.OriginY,
-                Left = request.Model.Left,
-                Top = request.Model.Top,
-                Width = request.Model.Width,
-                Height = request.Model.Height,
-                Fill = request.Model.Fill,
-                StrokeWidth = request.Model.StrokeWidth,
-                StrokeLineCap = request.Model.StrokeLineCap,
-                StrokeDashOffset = request.Model.StrokeDashOffset,
-                StrokeLineJoin = request.Model.StrokeLineJoin,
-                StrokeMiterLimit = request.Model.StrokeMiterLimit,
-                ScaleX = request.Model.ScaleX,
-                ScaleY = request.Model.ScaleY,
-                Angle = request.Model.Angle,
-                FlipX = request.Model.FlipX,
-                FlipY = request.Model.FlipY,
-                Opacity = request.Model.Opacity,
-                Visible = request.Model.Visible,
-                BackgroundColor = request.Model.BackgroundColor,
-                FillRule = request.Model.FillRule,
-                PaintFirst = request.Model.PaintFirst,
-                GlobalCompositeOperation = request.Model.GlobalCompositeOperation,
-                SkewX = request.Model.SkewX,
-                SkewY = request.Model.SkewY,
-                CropX = request.Model.CropX,
-                CropY = request.Model.CropY,
             };
 
             repository.Floorplans.Add(entity);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Floorplans;
+using Horeca.Shared.Dtos.Restaurants;
 using MediatR;
 using NLog;
 
@@ -34,7 +35,23 @@ namespace Horeca.Core.Handlers.Queries.Floorplans
 
             logger.Info("{amount} of {nameof} have been returned", entities.Count(), nameof(FloorplanDto));
 
-            return mapper.Map<IEnumerable<FloorplanDto>>(entities);
+            var floorplanDtos = new List<FloorplanDto>();
+            foreach (var entity in entities)
+            {
+                FloorplanDto dto = new FloorplanDto
+                {
+                    Id = entity.Id,
+                    Restaurant = new RestaurantDto()
+                    {
+                        Id = entity.Restaurant.Id,
+                        Name = entity.Restaurant.Name
+                    }
+                };
+                floorplanDtos.Add(dto);
+            }
+            return floorplanDtos;
+
+            //return mapper.Map<IEnumerable<FloorplanDto>>(entities);
         }
     }
 }
