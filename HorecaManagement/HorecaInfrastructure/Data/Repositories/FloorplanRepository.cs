@@ -21,9 +21,11 @@ namespace Horeca.Infrastructure.Data.Repositories
                                  .ToListAsync();
         }
 
-        public Task<Floorplan> GetFloorplanById(int floorplanId)
+        public async Task<Floorplan> GetFloorplanById(int id, int restaurantId)
         {
-            throw new NotImplementedException();
+            return await context.Floorplans.Include(x => x.Restaurant)
+                                 .Where(x => x.RestaurantId.Equals(restaurantId))
+                                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
     }
 }
