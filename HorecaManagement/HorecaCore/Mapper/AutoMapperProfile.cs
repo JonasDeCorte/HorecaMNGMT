@@ -28,6 +28,7 @@ namespace Horeca.Core.Mapper
             CreateMap<Menu, MenuDto>();
             CreateMap<MenuCard, MenuCardDto>();
             CreateMap<MenuCard, MenuCardsByIdDto>();
+            CreateMap<Restaurant, RestaurantDto>();
             CreateMap<Restaurant, DetailRestaurantDto>();
             CreateMap<Permission, PermissionDto>();
             CreateMap<ApplicationUser, BaseUserDto>();
@@ -36,6 +37,7 @@ namespace Horeca.Core.Mapper
             CreateMap<Schedule, ScheduleByIdDto>();
             CreateMap<Restaurant, DetailRestaurantDto>();
             CreateMap<Table, TableDto>();
+            CreateMap<Table, MutateTableDto>();
             CreateMap<Floorplan, FloorplanDto>();
             CreateMap<Order, GetOrderLinesByTableIdDto>()
                 .ForMember(dest => dest.Lines, act => act.MapFrom(src => src.OrderLines));

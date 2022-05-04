@@ -133,6 +133,7 @@
         public static class FloorplanConstants
         {
             public const string Get = $"{ClassConstants.Restaurant}";
+            public const string GetFloorplanById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}";
         }
 
         public static class UnitConstants

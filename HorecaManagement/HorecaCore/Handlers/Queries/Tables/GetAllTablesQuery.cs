@@ -23,7 +23,6 @@ namespace Horeca.Core.Handlers.Queries.Tables
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public GetAllTablesQueryHandler(IUnitOfWork repository, IMapper mapper)
-
         {
             this.repository = repository;
             this.mapper = mapper;

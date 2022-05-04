@@ -50,8 +50,6 @@ namespace Horeca.Core.Handlers.Queries.Floorplans
                 floorplanDtos.Add(dto);
             }
             return floorplanDtos;
-
-            //return mapper.Map<IEnumerable<FloorplanDto>>(entities);
         }
     }
 }

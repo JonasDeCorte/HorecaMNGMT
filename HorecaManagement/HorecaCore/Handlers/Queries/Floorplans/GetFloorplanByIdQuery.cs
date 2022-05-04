@@ -2,15 +2,12 @@
 using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Dtos.Floorplans;
+using Horeca.Shared.Dtos.Restaurants;
+using Horeca.Shared.Dtos.Tables;
 using MediatR;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HorecaCore.Handlers.Queries.Floorplans
+namespace Horeca.Core.Handlers.Queries.Floorplans
 {
     public class GetFloorplanByIdQuery : IRequest<FloorplanDetailDto>
     {
@@ -39,9 +36,10 @@ namespace HorecaCore.Handlers.Queries.Floorplans
             {
                 logger.Info("trying to return {object} with id: {id}", nameof(FloorplanDetailDto), request.FloorplanId);
 
-                var floorplan = await repository.Dishes.GetDishById(request.FloorplanId, request.RestaurantId);
+                var floorplan = await repository.Floorplans.GetFloorplanById(request.FloorplanId, request.RestaurantId);
+                var tables = await repository.Tables.GetAllTablesbyFloorplanId(request.FloorplanId);
 
-                if (floorplan is null)
+                if (floorplan is null || tables is null)
                 {
                     logger.Error(EntityNotFoundException.Instance);
 
@@ -49,7 +47,18 @@ namespace HorecaCore.Handlers.Queries.Floorplans
                 }
                 logger.Info("returning {@object} with id: {id}", floorplan, request.FloorplanId);
 
-                return mapper.Map<FloorplanDetailDto>(floorplan);
+                var floorplanDto = new FloorplanDetailDto()
+                {
+                    Id = floorplan.Id,
+                    Tables = mapper.Map<List<MutateTableDto>>(tables),
+                    Restaurant = new RestaurantDto()
+                    {
+                        Id = floorplan.Restaurant.Id,
+                        Name = floorplan.Restaurant.Name,
+                    }
+                };
+
+                return floorplanDto;
             }
         }
     }
