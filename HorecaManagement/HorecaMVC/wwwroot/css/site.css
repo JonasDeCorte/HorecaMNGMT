@@ -79,6 +79,7 @@ btn {
 
 #shapes {
     overflow-y: scroll;
+    height: 600px;
 }
 
     #shapes ul {
@@ -94,7 +95,6 @@ btn {
     }
 
         #shapes li img {
-            width: 100px;
             background: #fff;
             padding: 5px;
             max-height: 200px;

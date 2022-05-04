@@ -49,6 +49,8 @@ document.body.onclick = function (e) {
     var target = e.target || e.srcElement;
     //   console.log("target: " + target);
     var isShape = target.nodeName === 'IMG' && (' ' + target.className + ' ').indexOf(' shape ') > -1;
+    console.log(target.className);
+    console.log(target.nodeName);
     console.log(isShape);
     if (isShape) {
         var name = prompt("fix name ", "name");

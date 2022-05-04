@@ -21,42 +21,55 @@
         <div class="container">
             <div class="row">
                 <div class="col-3 border-end border-dark d-flex flex-column justify-content-start align-items-center">
-
-                    <a class="btn btn-primary m-2" id="clear-canvas">
-                        <p>clear canvas</p>
-                    </a>
-                    <a class="btn btn-primary m-2" id="toImage">
-                        <p>Export</p>
-                    </a>
-                    <!--
-                        for now to test
-                        function can be used to get the json from the canvas to save in the database
-                    -->
-                    <a class="btn btn-primary m-2" id="ToJson">
-                        <p>to json </p>
-                    </a>
-                       <!--
-                        for now to test
-                        function can be used to get the json from the canvas from the database and to load the canvas
-                     -->
-                    <a  class="btn btn-primary m-2" id="FromJson">
-                        <p>From json </p>
-                    </a>
-                     <div id="shapes">
-                        <ul>
-                            <li> <img class="shape" src="~/images/Table2P.png"> </li>
-                            <li> <img class="shape" src="~/images/Table3P.jpg"> </li>
-                            <li> <img class="shape" src="~/images/Table4P.png"> </li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <a class="btn btn-primary m-2" id="clear-canvas">
+                                <p>clear canvas</p>
+                            </a>
+                        </div>
+                        <div class="col-md-auto">
+                            <a class="btn btn-primary m-2" id="toImage">
+                                <p>Export</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <!--
+                                for now to test
+                                function can be used to get the json from the canvas to save in the database
+                            -->
+                            <a class="btn btn-primary m-2" id="ToJson">
+                                <p>to json </p>
+                            </a>
+                        </div>
+                        <div class="col-md-auto">
+                            <!--
+                               for now to test
+                               function can be used to get the json from the canvas from the database and to load the canvas
+                            -->
+                            <a class="btn btn-primary m-2" id="FromJson">
+                                <p>From json </p>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-9">
-                     
-                            <div  class="canvas-container bg-white" style="width: 600px; height: 600px; position: relative; user-select: none;">
-                                <canvas class="lower-canvas" width="600" height="600" style="position: absolute; width: 600px; height: 600px; left: 0px; top: 0px; user-select: none;"></canvas>
-                                <canvas id="drawing-area" class="upper-canvas" style="position: absolute; left: 0px; top: 0px; user-select: none; width: 600px; height: 600px; cursor: default;"></canvas>
-                            </div>
+                     <div class="col-6">
+                    <div class="canvas-container bg-white" style="width: 600px; height: 600px; position: relative; user-select: none;">
+                        <canvas class="lower-canvas" width="600" height="600" style="position: absolute; width: 600px; height: 600px; left: 0px; top: 0px; user-select: none;"></canvas>
+                        <canvas id="drawing-area" class="upper-canvas" style="position: absolute; left: 0px; top: 0px; user-select: none; width: 600px; height: 600px; cursor: default;"></canvas>
+                    </div>
                 </div>
+
+                 <div class="col-3">
+                        <div id="shapes">
+                            <ul>
+                                <li> <img class="shape" src="~/images/Table2P.png"> </li>
+                                <li> <img class="shape" src="~/images/Table3P.jpg"> </li>
+                                <li> <img class="shape" src="~/images/Table4P.png"> </li>
+                            </ul>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
