@@ -134,6 +134,7 @@
         {
             public const string Get = $"{ClassConstants.Restaurant}";
             public const string GetFloorplanById = $"{ClassConstants.Id}{Slash}{ClassConstants.Restaurant}";
+            public const string Delete = $"";
         }
 
         public static class UnitConstants
