@@ -36,7 +36,7 @@ namespace Horeca.Core.Handlers.Commands.Tables
         {
             ValidateModelIds(request);
             logger.Info("trying to create {object} with request: {@Id}", nameof(Table), request);
-            var restaurantSchedule = repository.Schedules.Get(request.Model.ScheduleId);
+            var restaurantSchedule = repository.Schedules.Get((int)request.Model.ScheduleId);
 
             if (restaurantSchedule == null)
             {
@@ -49,13 +49,45 @@ namespace Horeca.Core.Handlers.Commands.Tables
             {
                 ScheduleId = restaurantSchedule.Id,
                 Schedule = restaurantSchedule,
-                Pax = request.Model.Pax,
+                FloorplanId = request.Model.FloorplanId,
+                Seats = request.Model.Seats,
+                Name = request.Model.Name,
+                Src = request.Model.Src,
+                Type = request.Model.Type,
+                Version = request.Model.Version,
+                OriginX = request.Model.OriginX,
+                OriginY = request.Model.OriginY,
+                Left = request.Model.Left,
+                Top = request.Model.Top,
+                Width = request.Model.Width,
+                Height = request.Model.Height,
+                Fill = request.Model.Fill,
+                StrokeWidth = request.Model.StrokeWidth,
+                StrokeLineCap = request.Model.StrokeLineCap,
+                StrokeDashOffset = request.Model.StrokeDashOffset,
+                StrokeLineJoin = request.Model.StrokeLineJoin,
+                StrokeMiterLimit = request.Model.StrokeMiterLimit,
+                ScaleX = request.Model.ScaleX,
+                ScaleY = request.Model.ScaleY,
+                Angle = request.Model.Angle,
+                FlipX = request.Model.FlipX,
+                FlipY = request.Model.FlipY,
+                Opacity = request.Model.Opacity,
+                Visible = request.Model.Visible,
+                BackgroundColor = request.Model.BackgroundColor,
+                FillRule = request.Model.FillRule,
+                PaintFirst = request.Model.PaintFirst,
+                GlobalCompositeOperation = request.Model.GlobalCompositeOperation,
+                SkewX = request.Model.SkewX,
+                SkewY = request.Model.SkewY,
+                CropX = request.Model.CropX,
+                CropY = request.Model.CropY,
             };
             logger.Info("adding {@object} with id {id}", table, table.Id);
 
             repository.Tables.Add(table);
 
-            restaurantSchedule.AvailableSeat -= table.Pax;
+            restaurantSchedule.AvailableSeat -= Convert.ToInt32(table.Seats);
             logger.Info("updating {object} with id {id}", restaurantSchedule, restaurantSchedule.Id);
             repository.Schedules.Update(restaurantSchedule);
 

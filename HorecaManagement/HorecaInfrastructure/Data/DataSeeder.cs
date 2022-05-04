@@ -277,19 +277,52 @@ namespace Horeca.Infrastructure.Data
             await context.SaveChangesAsync();
 
             var bookings = context.Bookings.ToList();
-            foreach (var booking in bookings)
-            {
-                Table table = new()
-                {
-                    Pax = booking.Pax,
-                    BookingId = booking.Id,
-                    ScheduleId = booking.ScheduleId,
-                };
-                context.Tables.Add(table);
-                var schedule = await context.Schedules.FindAsync(booking.ScheduleId);
-                schedule.AvailableSeat -= table.Pax;
-                context.Schedules.Update(schedule);
-            }
+            //foreach (var booking in bookings)
+            //{
+            //    Table table = new()
+            //    {
+            //        Pax = booking.Pax,
+            //        Seats = booking.Pax.ToString(),
+            //        BookingId = booking.Id,
+            //        ScheduleId = booking.ScheduleId,
+            //        Name = "",
+            //        Src = "",
+            //        Type = "",
+            //        Version = "",
+            //        OriginX = "",
+            //        OriginY = "",
+            //        Left = 1,
+            //        Top = 1,
+            //        Width = 1,
+            //        Height = 1,
+            //        Fill = "",
+            //        StrokeWidth = 1,
+            //        StrokeLineCap = "",
+            //        StrokeDashOffset = 1,
+            //        StrokeLineJoin = "",
+            //        StrokeUniform = true,
+            //        StrokeMiterLimit = 1,
+            //        ScaleX = 1,
+            //        ScaleY = 1,
+            //        Angle = 1,
+            //        FlipX = false,
+            //        FlipY = false,
+            //        Opacity = 1,
+            //        Visible = true,
+            //        BackgroundColor = "",
+            //        FillRule = "",
+            //        PaintFirst = "",
+            //        GlobalCompositeOperation = "",
+            //        SkewX = 1,
+            //        SkewY = 1,
+            //        CropX = 1,
+            //        CropY = 1,
+            //    };
+            //    context.Tables.Add(table);
+            //    var schedule = await context.Schedules.FindAsync(booking.ScheduleId);
+            //    schedule.AvailableSeat -= (int)table.Pax;
+            //    context.Schedules.Update(schedule);
+            //}
             await context.SaveChangesAsync();
 
             List<Table> list = context.Tables.AsNoTracking().ToList();

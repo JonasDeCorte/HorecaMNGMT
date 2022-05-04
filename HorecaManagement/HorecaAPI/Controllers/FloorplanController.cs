@@ -1,6 +1,9 @@
 ﻿using Horeca.Core.Handlers.Commands.Floorplans;
 using Horeca.Core.Handlers.Queries.Floorplans;
+using Horeca.Shared.AuthUtils;
+using Horeca.Shared.AuthUtils.PolicyProvider;
 using Horeca.Shared.Constants;
+using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos;
 using Horeca.Shared.Dtos.Floorplans;
 using MediatR;
@@ -51,6 +54,40 @@ namespace Horeca.API.Controllers
         public async Task<IActionResult> Post([FromBody] MutateFloorplanDto model, int restaurantId)
         {
             return StatusCode((int)HttpStatusCode.Created, await mediator.Send(new CreateFloorplanCommand(model, restaurantId)));
+        }
+
+        /// <summary>
+        /// Retrieve Floorplan by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Success Retrieving Floorplan by Id</response>
+        /// <response code="400">Bad request</response
+        //[PermissionAuthorize(nameof(Floorplan), Permissions.Read)]
+        [HttpGet]
+        [Route(RouteConstants.FloorplanConstants.GetFloorplanById)]
+        [ProducesResponseType(typeof(FloorplanDto), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> GetById(int id, int restaurantId)
+        {
+            return Ok(await mediator.Send(new GetFloorplanByIdQuery(id, restaurantId)));
+        }
+
+        /// <summary>
+        ///  Delete an existing Floorplan
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="204">Success delete an existing Floorplan</response>
+        /// <response code="400">Bad request</response
+        //[PermissionAuthorize(nameof(Floorplan), Permissions.Delete)]
+        [HttpDelete]
+        [Route(RouteConstants.FloorplanConstants.Delete)]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteFloorplanCommand(id)));
         }
     }
 }
