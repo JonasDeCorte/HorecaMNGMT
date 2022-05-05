@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.Ingredients;
 
-namespace Horeca.Core.Validators
+namespace Horeca.Core.Validators.Update
 {
-    public class MutateIngredientValidator : AbstractValidator<CreateIngredientCommand>
+    public class UpdateIngredientValidator : AbstractValidator<EditIngredientCommand>
     {
-        public MutateIngredientValidator()
+        public UpdateIngredientValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().WithMessage("Name is required");
             RuleFor(x => x.Model.IngredientType).NotEmpty().WithMessage("IngredientType is required");

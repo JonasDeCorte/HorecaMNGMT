@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.Orders;
 
-namespace Horeca.Core.Validators
+namespace Horeca.Core.Validators.Create
 {
     public class CreateOrderValidator : AbstractValidator<AddOrderCommand>
 

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.MenuCards;
 
-namespace Horeca.Core.Validators
+namespace Horeca.Core.Validators.Create
 {
     public class CreateMenuCardValidator : AbstractValidator<CreateMenuCardCommand>
     {

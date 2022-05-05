@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.Units;
 
-namespace Horeca.Core.Validators
+namespace Horeca.Core.Validators.Update
 {
-    public class CreateUnitValidator : AbstractValidator<CreateUnitCommand>
+    public class UpdateUnitValidator : AbstractValidator<EditUnitCommand>
     {
-        public CreateUnitValidator()
+        public UpdateUnitValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().WithMessage("Name is required");
         }
