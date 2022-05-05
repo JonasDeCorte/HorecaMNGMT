@@ -44,6 +44,7 @@ namespace Horeca.Core.Handlers.Commands.Floorplans
 
             var entity = new Floorplan
             {
+                Name = request.Model.Name,
             };
 
             repository.Floorplans.Add(entity);

@@ -50,6 +50,7 @@ namespace Horeca.Core.Handlers.Queries.Floorplans
                 var floorplanDto = new FloorplanDetailDto()
                 {
                     Id = floorplan.Id,
+                    Name = floorplan.Name,
                     Tables = mapper.Map<List<MutateTableDto>>(tables),
                     Restaurant = new RestaurantDto()
                     {

@@ -7,5 +7,7 @@ namespace Horeca.Shared.Data.Repositories
         public Task<Floorplan> GetFloorplanById(int id, int restaurantId);
 
         public Task<IEnumerable<Floorplan>> GetAllFloorplans(int restaurantId);
+
+        public void DeleteFloorplan(int id);
     }
 }

@@ -2,11 +2,6 @@
 using Horeca.Shared.Data.Entities;
 using MediatR;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Horeca.Core.Handlers.Commands.Floorplans
 {
@@ -34,7 +29,7 @@ namespace Horeca.Core.Handlers.Commands.Floorplans
         {
             logger.Info("trying to delete {object} with Id: {id}", nameof(Floorplan), request.Id);
 
-            repository.Floorplans.Delete(request.Id);
+            repository.Floorplans.DeleteFloorplan(request.Id);
 
             await repository.CommitAsync();
 

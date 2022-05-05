@@ -27,5 +27,35 @@ namespace Horeca.Infrastructure.Data.Repositories
                                  .Where(x => x.RestaurantId.Equals(restaurantId))
                                  .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
+
+        public async void DeleteFloorplan(int id)
+        {
+            using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var floorplan = await context.Floorplans.FindAsync(id);
+                    if (floorplan != null)
+                    {
+                        context.Floorplans.Remove(floorplan);
+                    }
+                    var tables = context.Tables.Where(x => x.FloorplanId.Equals(id));
+                    foreach (var table in tables)
+                    {
+                        context.Tables.Remove(table);
+                    }
+                    await context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                }
+                finally
+                {
+                    await transaction.DisposeAsync();
+                }
+            }
+        }
     }
 }
