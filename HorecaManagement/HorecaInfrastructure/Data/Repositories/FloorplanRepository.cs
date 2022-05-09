@@ -31,33 +31,31 @@ namespace Horeca.Infrastructure.Data.Repositories
 
         public async Task<int> DeleteFloorplan(int id)
         {
-            using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = context.Database.BeginTransaction())
+            using Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = context.Database.BeginTransaction();
+            try
             {
-                try
+                var floorplan = await context.Floorplans.FindAsync(id);
+                if (floorplan != null)
                 {
-                    var floorplan = await context.Floorplans.FindAsync(id);
-                    if (floorplan != null)
+                    var tables = context.Tables.Where(x => x.FloorplanId.Equals(id));
+                    foreach (var table in tables)
                     {
-                        var tables = context.Tables.Where(x => x.FloorplanId.Equals(id));
-                        foreach (var table in tables)
-                        {
-                            context.Tables.Remove(table);
-                        }
-                        context.Floorplans.Remove(floorplan);
+                        context.Tables.Remove(table);
                     }
-                    await context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                    return id;
+                    context.Floorplans.Remove(floorplan);
                 }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
-                    return 0;
-                }
-                finally
-                {
-                    await transaction.DisposeAsync();
-                }
+                await context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return id;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return 0;
+            }
+            finally
+            {
+                await transaction.DisposeAsync();
             }
         }
     }

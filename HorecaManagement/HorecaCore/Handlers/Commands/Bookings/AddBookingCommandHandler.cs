@@ -61,24 +61,40 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     throw new UnAvailableSeatException();
                 }
 
-                var entity = new Booking
-                {
-                    BookingDate = request.Model.BookingDate,
-                    BookingNo = Guid.NewGuid().ToString(),
-                    BookingStatus = Constants.BookingStatus.PENDING,
-                    CheckIn = request.Model.CheckIn,
-                    CheckOut = request.Model.CheckOut,
-                    FullName = request.Model.FullName,
-                    PhoneNo = request.Model.PhoneNo,
-                    UserId = user.Id,
-                    Pax = request.Model.Pax,
-                    ScheduleId = schedule.Id
-                };
+                Booking entity = CreateBookingObject(request, user, schedule, logger);
 
                 entity = await repository.Bookings.Add(entity);
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
                 return mapper.Map<BookingDto>(entity);
+            }
+
+            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Logger logger)
+            {
+                Booking booking = new Booking();
+                booking.BookingStatus = Constants.BookingStatus.PENDING;
+                booking.BookingNo = Guid.NewGuid().ToString();
+                booking.BookingDate = schedule.ScheduleDate;
+                booking.FullName = request.Model.FullName;
+                booking.PhoneNo = request.Model.PhoneNo;
+                booking.UserId = user.Id;
+                booking.Pax = request.Model.Pax;
+                booking.ScheduleId = schedule.Id;
+                IsTimeWithinScheduleRange(request, schedule, logger);
+                booking.CheckIn = request.Model.CheckIn;
+                booking.CheckOut = request.Model.CheckOut;
+                return booking;
+            }
+
+            private static void IsTimeWithinScheduleRange(AddBookingCommand request, Schedule schedule, Logger logger)
+            {
+                if (request.Model.CheckIn < schedule.StartTime || request.Model.CheckIn > schedule.EndTime
+                    ||
+                    request.Model.CheckOut < schedule.StartTime || request.Model.CheckOut > schedule.EndTime)
+                {
+                    logger.Error(TimeIsNotWithinRangeException.Instance);
+                    throw new TimeIsNotWithinRangeException();
+                }
             }
         }
     }
