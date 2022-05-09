@@ -55,6 +55,7 @@ document.body.onclick = function (e) {
     if (isShape) {
         var name = prompt("fix name ", "name");
         var seats = prompt("fix aantal stoelen  ", 4);
+        var c = document.getElementById('drawing-area');
 
         fabric.Image.fromURL(target.src, function (image) {
             canvas.add(image.set({
@@ -66,6 +67,21 @@ document.body.onclick = function (e) {
             image.scaleToWidth(200);
             canvas.centerObjectH(image).centerObjectV(image);
             image.setCoords();
+            canvas.renderAll();
+
+            //var ctx = c.getContext("2d");
+            //var angle = 0;
+            //var chairs = 6;
+            //var cx = canvas.width >> 1, cy = canvas.height >> 1, radius = (canvas.height >> 1) - 10;
+            //var step = Math.PI * 2 / chairs;
+
+            //for (var count = 0; count < chairs; count++) {
+            //    var x = cx + radius * Math.cos(angle);
+            //    var y = cy + radius * Math.sin(angle);
+            //    ctx.rect(x - 5, y - 5, 10, 10);
+            //    angle += step;
+            //}
+            //ctx.stroke();
             canvas.renderAll();
             const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
             console.log(jsondata);
@@ -139,9 +155,7 @@ document.getElementById('ToJson').onclick = function () {
 document.getElementById('FromJson').onclick = function () {
     var JSONData = prompt("json");
     canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
-        console.log(JSONData);
         canvas.setActiveObject(object);
-        console.log(object.id, object.alt);
     });
 };
 
