@@ -1,5 +1,6 @@
 ﻿using Horeca.MVC.Models.Floorplans;
 using Horeca.Shared.Dtos.Floorplans;
+using Horeca.Shared.Dtos.Restaurants;
 
 namespace Horeca.MVC.Helpers.Mappers
 {
@@ -38,6 +39,16 @@ namespace Horeca.MVC.Helpers.Mappers
                 model.Tables.Add(TableMapper.MapTableDetailModel(table));
             }
             return model;
+        }
+
+        public static MutateFloorplanDto MapMutateFloorplanDto(FloorplanViewModel floorplan, RestaurantDto restaurant)
+        {
+            return new MutateFloorplanDto
+            {
+                Id = floorplan.Id,
+                Name = floorplan.Name,
+                Restaurant = restaurant
+            };
         }
     }
 }

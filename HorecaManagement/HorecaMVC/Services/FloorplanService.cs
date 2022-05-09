@@ -2,6 +2,7 @@
 using Horeca.Shared.Constants;
 using Horeca.Shared.Dtos.Floorplans;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Horeca.MVC.Services
 {
@@ -54,14 +55,33 @@ namespace Horeca.MVC.Services
             return null;
         }
 
-        public Task<HttpResponseMessage> AddFloorplan(MutateFloorplanDto dto)
+        public async Task<HttpResponseMessage> AddFloorplan(MutateFloorplanDto dto)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Floorplan}/{ClassConstants.Restaurant}" +
+                $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json")
+            };
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+            return null;
         }
 
-        public Task<HttpResponseMessage> DeleteFloorplan(int id)
+        public async Task<HttpResponseMessage> DeleteFloorplan(int id)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Floorplan}?id={id}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+            return null;
         }
     }
 }

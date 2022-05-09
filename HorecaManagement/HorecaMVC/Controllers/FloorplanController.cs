@@ -1,6 +1,7 @@
 ﻿using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Models.Floorplans;
 using Horeca.MVC.Services.Interfaces;
+using Horeca.Shared.Dtos.Floorplans;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HorecaMVC.Controllers
@@ -8,10 +9,12 @@ namespace HorecaMVC.Controllers
     public class FloorplanController : Controller
     {
         private readonly IFloorplanService floorplanService;
+        private readonly IRestaurantService restaurantService;
 
-        public FloorplanController(IFloorplanService floorplanService)
+        public FloorplanController(IFloorplanService floorplanService, IRestaurantService restaurantService)
         {
             this.floorplanService = floorplanService;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<IActionResult> Index()
@@ -36,6 +39,44 @@ namespace HorecaMVC.Controllers
             FloorplanDetailViewModel model = FloorplanMapper.MapFloorplanDetailModel(floorplan);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await floorplanService.DeleteFloorplan(id);
+            if (response == null) 
+            {
+                return View(nameof(NotFound));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Create()
+        {
+            var model = new FloorplanViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(FloorplanViewModel floorplan)
+        {
+            if (ModelState.IsValid)
+            {
+                var restaurant = await restaurantService.GetRestaurantById((int)restaurantService.GetCurrentRestaurantId());
+                MutateFloorplanDto result = FloorplanMapper.MapMutateFloorplanDto(floorplan, restaurant);
+                var response = await floorplanService.AddFloorplan(result);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(floorplan);
+            }
         }
     }
 }

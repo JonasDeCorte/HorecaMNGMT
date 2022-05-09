@@ -46,7 +46,7 @@
                                 @if (accountService.Authorize(PermissionConstants.Order_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-id="Id">
+                                    data-bs-target="#deleteModal" data-id="@floorplan.Id">
                                         Delete
                                     </button>
                                 }
