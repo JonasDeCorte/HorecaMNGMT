@@ -1,4 +1,5 @@
-﻿using Horeca.Infrastructure.Data.Repositories.Generic;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace Horeca.Infrastructure.Data.Repositories
                                  .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async void DeleteFloorplan(int id)
+        public async Task<int> DeleteFloorplan(int id)
         {
             using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = context.Database.BeginTransaction())
             {
@@ -46,10 +47,12 @@ namespace Horeca.Infrastructure.Data.Repositories
                     }
                     await context.SaveChangesAsync();
                     await transaction.CommitAsync();
+                    return id;
                 }
                 catch (Exception)
                 {
                     await transaction.RollbackAsync();
+                    return 0;
                 }
                 finally
                 {
