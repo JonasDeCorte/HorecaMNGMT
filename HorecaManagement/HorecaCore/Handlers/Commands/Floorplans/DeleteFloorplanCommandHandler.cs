@@ -29,7 +29,7 @@ namespace Horeca.Core.Handlers.Commands.Floorplans
         {
             logger.Info("trying to delete {object} with Id: {id}", nameof(Floorplan), request.Id);
 
-            repository.Floorplans.DeleteFloorplan(request.Id);
+            await repository.Floorplans.DeleteFloorplan(request.Id);
 
             await repository.CommitAsync();
 

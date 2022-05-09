@@ -38,12 +38,12 @@ namespace Horeca.Infrastructure.Data.Repositories
                     var floorplan = await context.Floorplans.FindAsync(id);
                     if (floorplan != null)
                     {
+                        var tables = context.Tables.Where(x => x.FloorplanId.Equals(id));
+                        foreach (var table in tables)
+                        {
+                            context.Tables.Remove(table);
+                        }
                         context.Floorplans.Remove(floorplan);
-                    }
-                    var tables = context.Tables.Where(x => x.FloorplanId.Equals(id));
-                    foreach (var table in tables)
-                    {
-                        context.Tables.Remove(table);
                     }
                     await context.SaveChangesAsync();
                     await transaction.CommitAsync();
