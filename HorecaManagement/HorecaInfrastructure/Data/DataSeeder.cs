@@ -314,9 +314,6 @@ namespace Horeca.Infrastructure.Data
             await context.SaveChangesAsync();
 
             List<Table> list = context.Tables.AsNoTracking().ToList();
-            Array orderstate = Enum.GetValues(typeof(Constants.OrderState));
-            Array dishstate = Enum.GetValues(typeof(Constants.OrderState));
-            Random random = new();
 
             foreach (var table in list)
             {
@@ -324,7 +321,7 @@ namespace Horeca.Infrastructure.Data
                 Order order = new()
                 {
                     TableId = table.Id,
-                    OrderState = (Constants.OrderState)orderstate.GetValue(random.Next(orderstate.Length)),
+                    OrderState = Constants.OrderState.Begin,
                     OrderLines = new List<OrderLine>()
                     {
                         new OrderLine()
@@ -332,7 +329,7 @@ namespace Horeca.Infrastructure.Data
                         DishId = dish.Id,
                         Price = dish.Price,
                         Quantity = table.Id+1,
-                        DishState = (Constants.DishState)dishstate.GetValue(random.Next(dishstate.Length)),
+                        DishState = Constants.DishState.Waiting
                         },
                      }
                 };
