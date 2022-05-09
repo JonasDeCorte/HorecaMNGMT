@@ -127,6 +127,8 @@
             public const string Get = $"{ClassConstants.All}{Slash}{ClassConstants.Floorplan}";
             public const string GetById = $"{ClassConstants.Floorplan}";
             public const string Post = $"{ClassConstants.Schedule}";
+            public const string Update = $"{ClassConstants.Floorplan}";
+            public const string Delete = $"";
             public const string AddTablesFromFloorplan = $"{ClassConstants.Floorplan}";
         }
 

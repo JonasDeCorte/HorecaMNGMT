@@ -29,7 +29,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success retrieving Floorplan list</response>
         /// <response code="400">Bad request</response>
-        //[PermissionAuthorize(nameof(Floorplan), Permissions.Read)]
+        [PermissionAuthorize(nameof(Floorplan), Permissions.Read)]
         [HttpGet]
         [Route(RouteConstants.FloorplanConstants.Get)]
         [ProducesResponseType(typeof(IEnumerable<FloorplanDto>), (int)HttpStatusCode.OK)]
@@ -46,7 +46,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="201">Success creating new Floorplan</response>
         /// <response code="400">Bad request</response
-        //[PermissionAuthorize(nameof(Floorplan), Permissions.Create)]
+        [PermissionAuthorize(nameof(Floorplan), Permissions.Create)]
         [HttpPost]
         [Route(RouteConstants.DishConstants.Post)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.Created)]
@@ -63,7 +63,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="200">Success Retrieving Floorplan by Id</response>
         /// <response code="400">Bad request</response
-        //[PermissionAuthorize(nameof(Floorplan), Permissions.Read)]
+        [PermissionAuthorize(nameof(Floorplan), Permissions.Read)]
         [HttpGet]
         [Route(RouteConstants.FloorplanConstants.GetFloorplanById)]
         [ProducesResponseType(typeof(FloorplanDto), (int)HttpStatusCode.OK)]
@@ -80,7 +80,7 @@ namespace Horeca.API.Controllers
         /// <returns></returns>
         /// <response code="204">Success delete an existing Floorplan</response>
         /// <response code="400">Bad request</response
-        //[PermissionAuthorize(nameof(Floorplan), Permissions.Delete)]
+        [PermissionAuthorize(nameof(Floorplan), Permissions.Delete)]
         [HttpDelete]
         [Route(RouteConstants.FloorplanConstants.Delete)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]

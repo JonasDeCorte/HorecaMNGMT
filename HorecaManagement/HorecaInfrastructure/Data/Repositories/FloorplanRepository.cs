@@ -1,4 +1,5 @@
-﻿using Horeca.Infrastructure.Data.Repositories.Generic;
+﻿using Horeca.Core.Exceptions;
+using Horeca.Infrastructure.Data.Repositories.Generic;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,38 @@ namespace Horeca.Infrastructure.Data.Repositories
             return await context.Floorplans.Include(x => x.Restaurant)
                                  .Where(x => x.RestaurantId.Equals(restaurantId))
                                  .FirstOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public async Task<int> DeleteFloorplan(int id)
+        {
+            using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var floorplan = await context.Floorplans.FindAsync(id);
+                    if (floorplan != null)
+                    {
+                        var tables = context.Tables.Where(x => x.FloorplanId.Equals(id));
+                        foreach (var table in tables)
+                        {
+                            context.Tables.Remove(table);
+                        }
+                        context.Floorplans.Remove(floorplan);
+                    }
+                    await context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return id;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    return 0;
+                }
+                finally
+                {
+                    await transaction.DisposeAsync();
+                }
+            }
         }
     }
 }

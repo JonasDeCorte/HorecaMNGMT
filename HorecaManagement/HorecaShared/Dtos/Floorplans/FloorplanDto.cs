@@ -7,6 +7,7 @@ namespace Horeca.Shared.Dtos.Floorplans
     public class FloorplanDto
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public RestaurantDto? Restaurant { get; set; }
     }
 

@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.MenuCards;
 
-namespace Horeca.Core.Validators
+namespace Horeca.Core.Validators.Update
 {
-    public class CreateDishMenuCardValidator : AbstractValidator<AddDishMenuCardCommand>
+    public class UpdateDishMenuCardValidator : AbstractValidator<EditDishMenuCardCommand>
 
     {
-        public CreateDishMenuCardValidator()
+        public UpdateDishMenuCardValidator()
         {
-            RuleFor(x => x.Model.MenuCardId).NotEmpty().WithMessage("menucard  Id cannot be empty");
             RuleFor(x => x.Model.Dish.Name).NotEmpty().WithMessage("Name is required");
             RuleFor(x => x.Model.Dish.Description).NotEmpty().WithMessage("Description is required");
             RuleFor(x => x.Model.Dish.DishType).NotEmpty().WithMessage("DishType is required");

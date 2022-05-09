@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Horeca.Core.Handlers.Commands.Schedules;
 
-namespace Horeca.Core.Validators
+namespace Horeca.Core.Validators.Create
 {
     public class CreateRestaurantScheduleDtoValidator : AbstractValidator<AddScheduleCommand>
     {

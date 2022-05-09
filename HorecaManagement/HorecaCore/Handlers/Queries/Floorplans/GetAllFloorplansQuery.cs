@@ -41,6 +41,7 @@ namespace Horeca.Core.Handlers.Queries.Floorplans
                 FloorplanDto dto = new FloorplanDto
                 {
                     Id = entity.Id,
+                    Name = entity.Name,
                     Restaurant = new RestaurantDto()
                     {
                         Id = entity.Restaurant.Id,
