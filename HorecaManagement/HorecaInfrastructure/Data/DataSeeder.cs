@@ -242,9 +242,9 @@ namespace Horeca.Infrastructure.Data
                     User = superAdmin
                 });
                 context.Restaurants.Add(restaurant);
-
                 await context.SaveChangesAsync();
                 context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
+
                 DateTime newSchedule = DateTime.Today.AddDays(1);
                 Array scheduleStatus = Enum.GetValues(typeof(Constants.ScheduleStatus));
                 Random randomStatus = new();
@@ -279,13 +279,12 @@ namespace Horeca.Infrastructure.Data
 
                 Floorplan floorplan = new()
                 {
-                    Name = "Floorplan " + i,
+                    Name = $"Floorplan {i}",
                 };
                 context.Floorplans.Add(floorplan);
                 await context.SaveChangesAsync();
 
                 floorplan.RestaurantId = restaurant.Id;
-                floorplan.Restaurant = restaurant;
                 context.Floorplans.Update(floorplan);
                 await context.SaveChangesAsync();
 
@@ -299,7 +298,7 @@ namespace Horeca.Infrastructure.Data
                     Name = "Table" + i,
                     Pax = booking.Pax,
                     Seats = booking.Pax.ToString(),
-                    Src = "https://localhost:7164/images/Table2P.png%22",
+                    Src = "https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png",
                     Type = "image",
                     OriginX = "1",
                     OriginY = "1",
@@ -314,38 +313,38 @@ namespace Horeca.Infrastructure.Data
             }
             await context.SaveChangesAsync();
 
-            //List<Table> list = context.Tables.AsNoTracking().ToList();
-            //Array orderstate = Enum.GetValues(typeof(Constants.OrderState));
-            //Array dishstate = Enum.GetValues(typeof(Constants.OrderState));
-            //Random random = new();
+            List<Table> list = context.Tables.AsNoTracking().ToList();
+            Array orderstate = Enum.GetValues(typeof(Constants.OrderState));
+            Array dishstate = Enum.GetValues(typeof(Constants.OrderState));
+            Random random = new();
 
-            //foreach (var table in list)
-            //{
-            //    var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
-            //    Order order = new()
-            //    {
-            //        TableId = table.Id,
-            //        OrderState = (Constants.OrderState)orderstate.GetValue(random.Next(orderstate.Length)),
-            //        OrderLines = new List<OrderLine>()
-            //        {
-            //            new OrderLine()
-            //            {
-            //            DishId = dish.Id,
-            //            Price = dish.Price,
-            //            Quantity = table.Id+1,
-            //            DishState = (Constants.DishState)dishstate.GetValue(random.Next(dishstate.Length)),
-            //            },
-            //         }
-            //    };
-            //    var resto = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == table.Id);
-            //    resto.Orders.Add(order);
-            //    context.Restaurants.Update(resto);
-            //    await context.SaveChangesAsync();
-            //}
+            foreach (var table in list)
+            {
+                var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
+                Order order = new()
+                {
+                    TableId = table.Id,
+                    OrderState = (Constants.OrderState)orderstate.GetValue(random.Next(orderstate.Length)),
+                    OrderLines = new List<OrderLine>()
+                    {
+                        new OrderLine()
+                        {
+                        DishId = dish.Id,
+                        Price = dish.Price,
+                        Quantity = table.Id+1,
+                        DishState = (Constants.DishState)dishstate.GetValue(random.Next(dishstate.Length)),
+                        },
+                     }
+                };
+                var resto = await context.Restaurants.SingleOrDefaultAsync(x => x.Id == table.Id);
+                resto.Orders.Add(order);
+                context.Restaurants.Update(resto);
+                await context.SaveChangesAsync();
+            }
 
             await context.SaveChangesAsync();
 
-            #endregion Add Restaurants, Bookings, Tables, Orders
+            #endregion Add Restaurants, Bookings, Tables, Orders, Floorplans
 
             #region Add RestaurantId to ingredient
 
