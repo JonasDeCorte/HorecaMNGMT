@@ -49,9 +49,6 @@ document.body.onclick = function (e) {
     var target = e.target || e.srcElement;
     //   console.log("target: " + target);
     var isShape = target.nodeName === 'IMG' && (' ' + target.className + ' ').indexOf(' shape ') > -1;
-    console.log(target.className);
-    console.log(target.nodeName);
-    console.log(isShape);
     if (isShape) {
         var name = prompt("fix name ", "name");
         var seats = prompt("fix aantal stoelen  ", 4);
@@ -64,24 +61,38 @@ document.body.onclick = function (e) {
                 Seats: seats,
             }));
 
-            image.scaleToWidth(200);
             canvas.centerObjectH(image).centerObjectV(image);
             image.setCoords();
             canvas.renderAll();
+            var coords = image.aCoords;
 
-            //var ctx = c.getContext("2d");
-            //var angle = 0;
-            //var chairs = 6;
-            //var cx = canvas.width >> 1, cy = canvas.height >> 1, radius = (canvas.height >> 1) - 10;
-            //var step = Math.PI * 2 / chairs;
+            var center = image.getCenterPoint();
+            console.log("center: " + image.getCenterPoint());
+            var chairs = seats;
+            var cx = center.x, cy = center.y;
+            var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
+            console.log("Radius :" + radius);
+            var degree_step = Math.PI * 2 / chairs;
+            console.log("cx: " + cx);
+            console.log("cy: " + cy);
+       
+            for (var count = 0; count < chairs; count++) {
+                console.log("angle: " + count * degree_step);
+                var x = cx + radius * Math.cos(count * degree_step);
+                var y = cy + radius * Math.sin(count * degree_step) ;
+               
+                x = x - 25;
+                y = y - 25;
 
-            //for (var count = 0; count < chairs; count++) {
-            //    var x = cx + radius * Math.cos(angle);
-            //    var y = cy + radius * Math.sin(angle);
-            //    ctx.rect(x - 5, y - 5, 10, 10);
-            //    angle += step;
-            //}
-            //ctx.stroke();
+                var rect = new fabric.Rect({
+                    top: y,
+                    left: x,
+                    fill: 'red',
+                    width: 50,
+                    height: 50
+                });
+                canvas.add(rect);
+            }
             canvas.renderAll();
             const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
             console.log(jsondata);
