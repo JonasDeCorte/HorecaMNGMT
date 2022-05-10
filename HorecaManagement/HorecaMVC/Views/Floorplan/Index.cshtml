@@ -1,4 +1,6 @@
-﻿<div class="text-center">
+﻿@model Horeca.MVC.Models.Floorplans.FloorplanListViewModel
+
+<div class="text-center">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -31,10 +33,12 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var floorplan in Model.Floorplans)
+                    {
                         <tr>
-                            <td>Floor Plan 1</td>
+                            <td>@floorplan.Name</td>
                             <td>
-                                <a asp-action="Detail" class="btn btn-primary">Details</a>
+                                <a asp-action="Detail" asp-route-id="@floorplan.Id" class="btn btn-primary">Details</a>
                                 @if (accountService.Authorize(PermissionConstants.Order_Update))
                                 {
                                     <a asp-action="Edit" class="btn btn-primary">Edit</a>
@@ -42,12 +46,13 @@
                                 @if (accountService.Authorize(PermissionConstants.Order_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-id="Id">
+                                    data-bs-target="#deleteModal" data-id="@floorplan.Id">
                                         Delete
                                     </button>
                                 }
                             </td>
                         </tr>
+                    }
                 </tbody>
             </table>
         </div>

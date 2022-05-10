@@ -179,3 +179,17 @@ function getRandomIntInclusive(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
+resizeWindow = function() {
+    const outerCanvasContainer = document.getElementById('drawing-container');
+
+    const ratio = canvas.getWidth() / canvas.getHeight();
+    const containerWidth = outerCanvasContainer.clientWidth;
+    const scale = containerWidth / canvas.getWidth();
+    const zoom = canvas.getZoom() * scale;
+
+    canvas.setDimensions({ width: containerWidth, height: containerWidth / ratio });
+    canvas.setViewportTransform([zoom, 0, 0, zoom, 0, 0]);
+}
+
+window.onload = resizeWindow;
+window.onresize = resizeWindow;
