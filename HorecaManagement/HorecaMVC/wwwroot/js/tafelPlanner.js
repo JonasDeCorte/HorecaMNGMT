@@ -88,8 +88,8 @@ document.body.onclick = function (e) {
                             top: y,
                             left: x,
                             fill: 'red',
-                            width: 10,
-                            height: 10,
+                            width: 50,
+                            height: 50,
                             excludeFromExport: true
                         });
                         canvas.add(rect);
@@ -241,7 +241,7 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
 
-resizeWindow = function() {
+resizeWindow = function () {
     const outerCanvasContainer = document.getElementById('drawing-container');
 
     const ratio = canvas.getWidth() / canvas.getHeight();
