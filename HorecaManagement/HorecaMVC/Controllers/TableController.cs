@@ -17,26 +17,23 @@ namespace Horeca.MVC.Controllers
             this.restaurantService = restaurantService;
         }
 
+        [Route("/Table/CreateTables/{floorplanId}")]
         [HttpPost]
-        public async Task<IActionResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan)
+        public async Task<JsonResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan, int floorplanId)
         {
             if (floorplan == null)
             {
-                Console.WriteLine("Your floorplan viewmodel is null.");
-                return Json("");
-            } else
+                return Json("Not Found");
+            } 
+            else
             {
-                foreach (var table in floorplan.Objects)
-                {
-                    Console.WriteLine(table.Name + " " + table.originX);
-                }
-                FloorplanDetailDto dto = FloorplanMapper.MapFloorplanDetailDto(floorplan, 1, (int)restaurantService.GetCurrentRestaurantId());
-                var response = await tableService.AddTablesFromFloorplan(dto);
+                FloorplanDetailDto dto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
+                var response = await tableService.AddTablesFromFloorplan(dto, floorplanId);
                 if (response == null)
                 {
-                    return Json("");
+                    return Json("Not Found");
                 }
-                return Json(floorplan);
+                return Json(response);
             }
         }
     }
