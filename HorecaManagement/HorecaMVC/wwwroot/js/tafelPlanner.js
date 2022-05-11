@@ -52,52 +52,54 @@ document.body.onclick = function (e) {
     if (isShape) {
         var name = prompt("fix name ", "name");
         var seats = prompt("fix aantal stoelen  ", 4);
-        var c = document.getElementById('drawing-area');
+        if ((seats != null && seats !== '') && (name != null && name !== '')) {
+            if (!isNaN(seats)) {
+                fabric.Image.fromURL(target.src, function (image) {
+                    canvas.add(image.set({
+                        Id: getRandomIntInclusive(1000, 9999999),
+                        Name: name,
+                        Seats: seats,
+                    }));
 
-        fabric.Image.fromURL(target.src, function (image) {
-            canvas.add(image.set({
-                Id: getRandomIntInclusive(1000, 9999999),
-                Name: name,
-                Seats: seats,
-            }));
+                    canvas.centerObjectH(image).centerObjectV(image);
+                    image.setCoords();
+                    canvas.renderAll();
+                    var coords = image.aCoords;
 
-            canvas.centerObjectH(image).centerObjectV(image);
-            image.setCoords();
-            canvas.renderAll();
-            var coords = image.aCoords;
+                    var center = image.getCenterPoint();
+                    console.log("center: " + image.getCenterPoint());
+                    var chairs = seats;
+                    var cx = center.x, cy = center.y;
+                    var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
+                    console.log("Radius :" + radius);
+                    var degree_step = Math.PI * 2 / chairs;
+                    console.log("cx: " + cx);
+                    console.log("cy: " + cy);
 
-            var center = image.getCenterPoint();
-            console.log("center: " + image.getCenterPoint());
-            var chairs = seats;
-            var cx = center.x, cy = center.y;
-            var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
-            console.log("Radius :" + radius);
-            var degree_step = Math.PI * 2 / chairs;
-            console.log("cx: " + cx);
-            console.log("cy: " + cy);
+                    for (var count = 0; count < chairs; count++) {
+                        console.log("angle: " + count * degree_step);
+                        var x = cx + radius * Math.cos(count * degree_step);
+                        var y = cy + radius * Math.sin(count * degree_step);
 
-            for (var count = 0; count < chairs; count++) {
-                console.log("angle: " + count * degree_step);
-                var x = cx + radius * Math.cos(count * degree_step);
-                var y = cy + radius * Math.sin(count * degree_step);
+                        x = x - 25;
+                        y = y - 25;
 
-                x = x - 25;
-                y = y - 25;
-
-                var rect = new fabric.Rect({
-                    top: y,
-                    left: x,
-                    fill: 'red',
-                    width: 50,
-                    height: 50,
-                    excludeFromExport: true
+                        var rect = new fabric.Rect({
+                            top: y,
+                            left: x,
+                            fill: 'red',
+                            width: 10,
+                            height: 10,
+                            excludeFromExport: true
+                        });
+                        canvas.add(rect);
+                    }
+                    canvas.renderAll();
+                    const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
+                    console.log(jsondata);
                 });
-                canvas.add(rect);
             }
-            canvas.renderAll();
-            const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
-            console.log(jsondata);
-        });
+        }
     }
 };
 
@@ -168,8 +170,6 @@ document.getElementById('FromJson').onclick = function () {
     var JSONData = prompt("json");
     canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
         canvas.setActiveObject(object);
-       
-    
     });
 };
 
@@ -192,7 +192,6 @@ function canvasJSONCallBack() {
         var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
         console.log("Radius :" + radius);
         var degree_step = Math.PI * 2 / chairs;
-
 
         console.log("cx: " + cx);
         console.log("cy: " + cy);
@@ -217,10 +216,8 @@ function canvasJSONCallBack() {
         }
         canvas.renderAll();
     }
-   
+
     console.log("post:  " + canvas.getObjects());
-
-
 }
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
