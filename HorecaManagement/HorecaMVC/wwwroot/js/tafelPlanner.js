@@ -161,17 +161,17 @@ async function downloadDataUrl(dataURL) {
 
 $("#ToJson").click(function () {
     var floorplanCanvas = canvas.toDatalessJSON(['Id', 'Name', 'Seats']);
-
+    var floorplanId = $(this).data("id");
     $.ajax({
         type: "post",
         dataType: "application/json",
         cache: false,
-        url: "/Table/CreateTables",
+        url: "/Table/CreateTables/" + floorplanId,
         data: JSON.stringify(floorplanCanvas),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            alert(result);
+            alert("Floorplan has been saved!");
         },
         error: function (result) {
             alert("No Connection to server");

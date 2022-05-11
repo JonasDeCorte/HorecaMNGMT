@@ -30,15 +30,14 @@ namespace Horeca.MVC.Services
             throw new NotImplementedException();
         }
 
-        public async Task<HttpResponseMessage> AddTablesFromFloorplan(FloorplanDetailDto dto)
+        public async Task<HttpResponseMessage> AddTablesFromFloorplan(FloorplanDetailDto dto, int floorplanId)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Table}/{ClassConstants.Floorplan}" +
-                $"?{ClassConstants.FloorplanId}={dto.Id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
+                $"?{ClassConstants.FloorplanId}={floorplanId}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}")
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json")
             };
-            var json = JsonConvert.SerializeObject(dto);
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

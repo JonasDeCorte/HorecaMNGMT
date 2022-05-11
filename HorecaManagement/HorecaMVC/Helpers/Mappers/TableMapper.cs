@@ -34,8 +34,8 @@ namespace Horeca.MVC.Helpers.Mappers
             return new MutateTableDto()
             {
                 FloorplanId = floorplanId,
-                ScheduleId = 1,
-                BookingDetailId = 1,
+                ScheduleId = floorplanId,
+                BookingDetailId = floorplanId,
                 Pax = Convert.ToInt32(table.Seats),
                 Seats = table.Seats,
                 Name = table.Name,
