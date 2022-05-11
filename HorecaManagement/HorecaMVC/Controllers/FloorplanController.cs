@@ -30,9 +30,10 @@ namespace HorecaMVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Detail(int id)
+        [Route("/Floorplan/Detail/{floorplanId}")]
+        public async Task<IActionResult> Detail(int floorplanId)
         {
-            var floorplan = await floorplanService.GetFloorplanById(id);
+            var floorplan = await floorplanService.GetFloorplanById(floorplanId);
             if (floorplan == null)
             {
                 return View(nameof(NotFound));

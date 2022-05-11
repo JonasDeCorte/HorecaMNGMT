@@ -38,7 +38,7 @@
                         <tr>
                             <td>@floorplan.Name</td>
                             <td>
-                                <a asp-action="Detail" asp-route-id="@floorplan.Id" class="btn btn-primary">Details</a>
+                                <a asp-action="Detail" asp-route-floorplanId="@floorplan.Id" class="btn btn-primary">Details</a>
                                 @if (accountService.Authorize(PermissionConstants.Order_Update))
                                 {
                                     <a asp-action="Edit" class="btn btn-primary">Edit</a>

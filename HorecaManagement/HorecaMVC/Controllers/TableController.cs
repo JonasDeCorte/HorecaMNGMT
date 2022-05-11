@@ -10,30 +10,46 @@ namespace Horeca.MVC.Controllers
     {
         private readonly ITableService tableService;
         private readonly IRestaurantService restaurantService;
+        private readonly IFloorplanService floorplanService;
 
-        public TableController(ITableService tableService, IRestaurantService restaurantService)
+        public TableController(ITableService tableService, IRestaurantService restaurantService, IFloorplanService floorplanService)
         {
             this.tableService = tableService;
             this.restaurantService = restaurantService;
+            this.floorplanService = floorplanService;
         }
 
         [Route("/Table/CreateTables/{floorplanId}")]
         [HttpPost]
-        public async Task<JsonResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan, int floorplanId)
+        public async Task<IActionResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan, int floorplanId)
         {
             if (floorplan == null)
             {
-                return Json("Not Found");
+                return View(nameof(NotFound));
             } 
             else
             {
-                FloorplanDetailDto dto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
-                var response = await tableService.AddTablesFromFloorplan(dto, floorplanId);
+                FloorplanDetailDto oldFloorplanDto = await floorplanService.GetFloorplanById(floorplanId);
+                if (oldFloorplanDto.Tables.Any())
+                {
+                    foreach(var table in oldFloorplanDto.Tables)
+                    {
+                        var res = await tableService.DeleteTable(table.Id);
+                        if (res == null)
+                        {
+                            return View(nameof(NotFound));
+                        }
+                    }
+                }
+
+                FloorplanDetailDto newFloorplanDto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
+                var response = await tableService.AddTablesFromFloorplan(newFloorplanDto, floorplanId);
                 if (response == null)
                 {
-                    return Json("Not Found");
+                    return View(nameof(NotFound));
                 }
-                return Json(response);
+
+                return RedirectToAction("Detail", "Floorplan", new { id = floorplanId });
             }
         }
     }
