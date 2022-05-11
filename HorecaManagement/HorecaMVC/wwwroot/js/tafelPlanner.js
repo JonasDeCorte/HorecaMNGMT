@@ -176,11 +176,13 @@ document.getElementById('FromJson').onclick = function () {
 function canvasJSONCallBack() {
     canvas.renderAll();
     canvas.calcOffset();
-    console.log(canvas.getObjects());
-    var image = canvas.item(0);
-    image.calcACoords();
-    console.log(image);
-    console.log(image.aCoords);
+    var length = canvas.getObjects().length;
+    console.log(length);
+    for (var i = 0; i < length; i++) {
+        var image = canvas.item(i);
+        image.calcACoords();
+        console.log(image);
+        console.log(image.aCoords);
 
         var coords = image.aCoords
         var center = image.getCenterPoint();
@@ -213,7 +215,9 @@ function canvasJSONCallBack() {
             });
             canvas.add(rect);
         }
-    canvas.renderAll();
+        canvas.renderAll();
+    }
+   
     console.log("post:  " + canvas.getObjects());
 
 
