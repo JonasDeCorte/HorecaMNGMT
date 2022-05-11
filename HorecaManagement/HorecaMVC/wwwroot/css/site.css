@@ -78,7 +78,7 @@ btn {
 }
 
 #shapes {
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     height: 600px;
 }
 

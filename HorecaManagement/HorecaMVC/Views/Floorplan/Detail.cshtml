@@ -27,13 +27,15 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-2 border-end border-dark d-flex flex-column justify-content-start align-items-center">
+                <div class="col-3 border-end border-dark d-flex flex-column justify-content-start align-items-center">
+                   <div class="d-grid gap-2 d-md-block">
                     <a class="btn btn-primary m-2" id="clear-canvas">
                         Clear canvas
                     </a>
                     <a class="btn btn-primary m-2" id="toImage">
                         Export
                     </a>
+                   
                     <!--
                         for now to test
                         function can be used to get the json from the canvas to save in the database
@@ -48,14 +50,22 @@
                     <a class="btn btn-primary m-2" id="FromJson">
                         Get floorplan
                     </a>
-                </div>
-                <div class="col-7">
-                    <div id="drawing-container" class="canvas-container bg-white" style="position: relative; user-select: none;">
-                        <canvas class="lower-canvas" style="position: absolute; width: 600px; height: 600px; left: 0px; top: 0px; user-select: none;"></canvas>
-                        <canvas id="drawing-area" class="upper-canvas" style="position: absolute; left: 0px; top: 0px; user-select: none; width: 600px; height: 600px; cursor: default;"></canvas>
+                     </div>
+                     <div id="shapes">
+                        <ul>
+                            <li> <img class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png"> </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-9">
+                    <div id="drawing-container" class="canvas-container bg-white" style="position: relative; user-select: none;">
+                        <canvas class="lower-canvas" style="position: absolute; /*width: 600px; height: 600px; */left: 0px; top: 0px; user-select: none;"></canvas>
+                        <canvas id="drawing-area" class="upper-canvas" style="position: absolute; left: 0px; top: 0px; user-select: none;/* width: 600px; height: 600px; */cursor: default;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                  <div class="col">
                     <div id="shapes">
                         <ul>
                             <li> <img class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png"> </li>
@@ -63,6 +73,7 @@
                     </div>
                 </div>
             </div>
+              
         </div>
     </div>
 </div>
