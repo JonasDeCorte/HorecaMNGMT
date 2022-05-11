@@ -3,6 +3,7 @@ using Horeca.MVC.Models.Floorplans;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Floorplans;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HorecaMVC.Controllers
 {
@@ -37,6 +38,10 @@ namespace HorecaMVC.Controllers
                 return View(nameof(NotFound));
             }
             FloorplanDetailViewModel model = FloorplanMapper.MapFloorplanDetailModel(floorplan);
+
+            GetFloorplanCanvasViewModel canvasDto = FloorplanMapper.MapFloorplanCanvasModel(floorplan);
+            var json = JsonConvert.SerializeObject(canvasDto);
+            model.Json = json;
 
             return View(model);
         }

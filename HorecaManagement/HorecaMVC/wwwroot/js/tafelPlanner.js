@@ -1,7 +1,7 @@
 ﻿// create a wrapper around native canvas element (with id="drawing-area")
 const canvas = new fabric.Canvas('drawing-area', {
     height: 600,
-    width: 600
+    width: 600,
 });
 // zoom and pan
 
@@ -146,14 +146,18 @@ $("#ToJson").click(function () {
             alert("No Connection to server");
         },
     });
+    console.log(JSON.stringify(floorplanCanvas));
 });
 
-document.getElementById('FromJson').onclick = function () {
-    var JSONData = prompt("json");
+$("#FromJson").click(function () {
+    var data = $(this).data("json");
+    var JSONData = JSON.stringify(data);
+    console.log(JSONData);
     canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
         canvas.setActiveObject(object);
     });
-};
+});
+
 function DrawTableWithChairs(image, canvas, seats) {
     canvas.centerObjectH(image).centerObjectV(image);
     image.setCoords();
@@ -216,7 +220,7 @@ function canvasJSONCallBack() {
         var coords = image.aCoords
         var center = image.getCenterPoint();
         console.log("center: " + image.getCenterPoint());
-        var chairs = image.Seats;
+        var chairs = image.seats;
         var cx = center.x, cy = center.y;
         var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
         console.log("Radius :" + radius);

@@ -50,7 +50,7 @@
                for now to test
                function can be used to get the json from the canvas from the database and to load the canvas
             -->
-            <a class="btn btn-primary m-2" id="FromJson">
+            <a class="btn btn-primary m-2" id="FromJson" data-json="@Model.Json">
                 Get floorplan
             </a>
         </div>
@@ -111,7 +111,7 @@
     for now to test
     function can be used to get the json from the canvas from the database and to load the canvas
     -->
-    <a class="btn btn-primary m-2" id="FromJson">
+    <a class="btn btn-primary m-2" id="FromJson" data-id="@Model.Id">
     Get floorplan
     </a>
     </div>
@@ -143,3 +143,5 @@
     </div>*@
 <script src="~/lib/fabric.js/fabric.min.js"></script>
 <script src="~/js/tafelPlanner.js"></script>
+<script>
+</script>
