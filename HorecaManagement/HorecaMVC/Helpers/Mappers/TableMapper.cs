@@ -28,5 +28,28 @@ namespace Horeca.MVC.Helpers.Mappers
                 ScaleY = table.ScaleY,
             };
         }
+
+        public static MutateTableDto MapMutateTableDto(CanvasTableViewModel table, int floorplanId)
+        {
+            return new MutateTableDto()
+            {
+                FloorplanId = floorplanId,
+                ScheduleId = 1,
+                BookingDetailId = 1,
+                Pax = Convert.ToInt32(table.Seats),
+                Seats = table.Seats,
+                Name = table.Name,
+                Src = table.src,
+                Type = table.type,
+                OriginX = table.originX,
+                OriginY = table.originY,
+                Left = (int)table.left,
+                Top = (int)table.top,
+                Width = table.width,
+                Height = table.height,
+                ScaleX = table.scaleX,
+                ScaleY = table.scaleY,
+            };
+        }
     }
 }

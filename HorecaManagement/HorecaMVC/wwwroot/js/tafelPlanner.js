@@ -161,10 +161,25 @@ async function downloadDataUrl(dataURL) {
     a.remove();
 }
 
-document.getElementById('ToJson').onclick = function () {
-    console.log(JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats'])));
-    return false;
-};
+$("#ToJson").click(function () {
+    var floorplanCanvas = canvas.toDatalessJSON(['Id', 'Name', 'Seats']);
+
+    $.ajax({
+        type: "post",
+        dataType: "application/json",
+        cache: false,
+        url: "/Table/CreateTables",
+        data: JSON.stringify(floorplanCanvas),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            alert(result);
+        },
+        error: function (result) {
+            alert("No Connection to server");
+        },
+    });
+});
 
 document.getElementById('FromJson').onclick = function () {
     var JSONData = prompt("json");
@@ -219,12 +234,14 @@ function canvasJSONCallBack() {
 
     console.log("post:  " + canvas.getObjects());
 }
+
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
-resizeWindow = function () {
+
+resizeWindow = function() {
     const outerCanvasContainer = document.getElementById('drawing-container');
 
     const ratio = canvas.getWidth() / canvas.getHeight();

@@ -30,6 +30,7 @@ builder.Services.AddHttpClient<IScheduleService, ScheduleService>("HttpMessageHa
 builder.Services.AddHttpClient<IBookingService, BookingService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IOrderService, OrderService>("HttpMessageHandler");
 builder.Services.AddHttpClient<IFloorplanService, FloorplanService>("HttpMessageHandler");
+builder.Services.AddHttpClient<ITableService, TableService>("HttpMessageHandler");
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 

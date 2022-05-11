@@ -78,5 +78,7 @@ namespace HorecaMVC.Controllers
                 return View(floorplan);
             }
         }
+
+
     }
 }
