@@ -21,11 +21,11 @@ namespace Horeca.MVC.Controllers
 
         [Route("/Table/CreateTables/{floorplanId}")]
         [HttpPost]
-        public async Task<IActionResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan, int floorplanId)
+        public async Task<JsonResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan, int floorplanId)
         {
             if (floorplan == null)
             {
-                return View(nameof(NotFound));
+                return Json(nameof(NotFound));
             } 
             else
             {
@@ -37,7 +37,7 @@ namespace Horeca.MVC.Controllers
                         var res = await tableService.DeleteTable(table.Id);
                         if (res == null)
                         {
-                            return View(nameof(NotFound));
+                            return Json(nameof(NotFound));
                         }
                     }
                 }
@@ -46,10 +46,10 @@ namespace Horeca.MVC.Controllers
                 var response = await tableService.AddTablesFromFloorplan(newFloorplanDto, floorplanId);
                 if (response == null)
                 {
-                    return View(nameof(NotFound));
+                    return Json(nameof(NotFound));
                 }
 
-                return RedirectToAction("Detail", "Floorplan", new { id = floorplanId });
+                return Json(Url.Action("Detail", "Floorplan", new { id = floorplanId }));
             }
         }
     }

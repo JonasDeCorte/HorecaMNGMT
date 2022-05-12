@@ -130,7 +130,6 @@ async function downloadDataUrl(dataURL) {
 $("#ToJson").click(function () {
     var floorplanCanvas = canvas.toDatalessJSON(['Id', 'Name', 'Seats']);
     var floorplanId = $(this).data("id");
-    console.log(floorplanCanvas);
     $.ajax({
         type: "post",
         dataType: "application/json",
@@ -140,13 +139,10 @@ $("#ToJson").click(function () {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            alert("Floorplan has been saved!");
-        },
-        error: function (result) {
-            alert("No Connection to server");
-        },
+            console.log("RESULT OF CREATETABLES: " + result);
+            window.location.href = result;
+        }
     });
-    console.log(JSON.stringify(floorplanCanvas));
 });
 
 $("#FromJson").click(function () {
@@ -206,6 +202,7 @@ function DrawTableWithChairs(image, canvas, seats) {
     }
     canvas.renderAll();
 }
+
 function canvasJSONCallBack() {
     canvas.renderAll();
     canvas.calcOffset();
@@ -213,8 +210,8 @@ function canvasJSONCallBack() {
     console.log(length);
     for (var i = 0; i < length; i++) {
         var image = canvas.item(i);
+        console.log("image : " + image + "id: " + i);
         image.calcACoords();
-        console.log(image);
         console.log(image.aCoords);
 
         var coords = image.aCoords
@@ -222,18 +219,27 @@ function canvasJSONCallBack() {
         console.log("center: " + image.getCenterPoint());
         var chairs = image.seats;
         var cx = center.x, cy = center.y;
-        var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
+        //var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
+        var radius = 90;
         console.log("Radius :" + radius);
         var degree_step = Math.PI * 2 / chairs;
 
         console.log("cx: " + cx);
         console.log("cy: " + cy);
 
+        //var size = {
+        // width: window.innerWidth || document.body.clientWidth,
+        // height: window.innerHeight || document.body.clientHeight
+        //}
+        //console.log(size);
+        //radius = radius - 145;
+
         for (var count = 0; count < chairs; count++) {
             console.log("angle: " + count * degree_step);
             var x = cx + radius * Math.cos(count * degree_step);
             var y = cy + radius * Math.sin(count * degree_step);
-
+            console.log("x: " + x);
+            console.log("y: " + y);
             x = x - 25;
             y = y - 25;
 
@@ -249,8 +255,7 @@ function canvasJSONCallBack() {
         }
         canvas.renderAll();
     }
-
-    console.log("post:  " + canvas.getObjects());
+    console.log("post: " + canvas.getObjects());
 }
 
 function getRandomIntInclusive(min, max) {

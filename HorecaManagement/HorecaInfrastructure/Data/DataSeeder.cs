@@ -159,6 +159,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(restaurantPerms.Take(1));
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -186,6 +187,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(restaurantPerms.Take(1));
 
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
