@@ -50,22 +50,33 @@ document.body.onclick = function (e) {
     //   console.log("target: " + target);
     var isShape = target.nodeName === 'IMG' && (' ' + target.className + ' ').indexOf(' shape ') > -1;
     if (isShape) {
-        var name = prompt("fix name ", "name");
-        var seats = prompt("fix aantal stoelen  ", 4);
-        if ((seats != null && seats !== '') && (name != null && name !== '')) {
-            if (!isNaN(seats)) {
-                fabric.Image.fromURL(target.src, function (image) {
-                    canvas.add(image.set({
-                        Id: getRandomIntInclusive(1000, 9999999),
-                        Name: name,
-                        Seats: seats,
-                    }));
-                    DrawTableWithChairs(image, canvas, seats);
-                    const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
-                    console.log(jsondata);
-                });
-            }
-        }
+        $(document).ready(function () {
+            e.preventDefault();
+            $(document).on("click", "#AddModal", OpenModal);
+            $("#btnSubmit").click(function () {
+                var seats = document.getElementById("seats-text").value;
+                var name = document.getElementById("table-name").value;
+                var form = document.getElementById("AddTableForm");
+                console.log(seats);
+                console.log(name);
+                if ((seats != null && seats !== '') && (name != null && name !== '')) {
+                    if (!isNaN(seats) && seats > 0) {
+                        fabric.Image.fromURL(target.src, function (image) {
+                            canvas.add(image.set({
+                                Id: getRandomIntInclusive(1000, 9999999),
+                                Name: name,
+                                Seats: seats,
+                            }));
+                            DrawTableWithChairs(image, canvas, seats);
+                            const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
+                            console.log(jsondata);
+                        });
+                    }
+                }
+                form.reset();
+                $('#AddModal').modal('hide'); // does't work for some reason??
+            })
+        });
     }
 };
 
@@ -173,7 +184,8 @@ function DrawTableWithChairs(image, canvas, seats) {
     console.log("center: " + image.getCenterPoint());
     var chairs = seats;
     var cx = center.x, cy = center.y;
-    var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
+    //var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
+    var radius = 90;
     console.log("Radius :" + radius);
     var degree_step = Math.PI * 2 / chairs;
     console.log("cx: " + cx);
@@ -183,18 +195,20 @@ function DrawTableWithChairs(image, canvas, seats) {
         width: window.innerWidth || document.body.clientWidth,
         height: window.innerHeight || document.body.clientHeight
     }
-    console.log(size);
-    if (size.width > 1200) {
-        radius = radius - 145;
-    }
-    else {
-        radius = radius - 80;
-    }
+    console.log("size :" + size);
+    //if (size.width > 1200) {
+    //radius = radius - 145;
+    //}
+    //else {
+    //    radius = radius - 110;
+    //}
 
     for (var count = 0; count < chairs; count++) {
         console.log("angle: " + count * degree_step);
         var x = cx + radius * Math.cos(count * degree_step);
         var y = cy + radius * Math.sin(count * degree_step);
+        console.log("x: " + x);
+        console.log("y: " + y);
 
         x = x - 25;
         y = y - 25;
@@ -285,5 +299,28 @@ resizeWindow = function () {
     canvas.setViewportTransform([zoom, 0, 0, zoom, 0, 0]);
 }
 
+function OpenModal() {
+    $("#addModal").modal();
+}
+// Example starter JavaScript for disabling form submissions if there are invalid fieldss
+(function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
 window.onload = resizeWindow;
 window.onresize = resizeWindow;
