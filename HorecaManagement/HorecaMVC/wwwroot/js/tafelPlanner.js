@@ -77,9 +77,6 @@ document.body.onclick = function (e) {
                 $('#AddModal').modal('hide'); // does't work for some reason??
             })
         });
-      
-       
-      
     }
 };
 
@@ -241,8 +238,6 @@ function canvasJSONCallBack() {
         image.calcACoords();
         console.log(image.aCoords);
 
-
-
         var coords = image.aCoords
         var center = image.getCenterPoint();
         console.log("center: " + image.getCenterPoint());
@@ -253,12 +248,8 @@ function canvasJSONCallBack() {
         console.log("Radius :" + radius);
         var degree_step = Math.PI * 2 / chairs;
 
-
-
         console.log("cx: " + cx);
         console.log("cy: " + cy);
-
-
 
         //var size = {
         // width: window.innerWidth || document.body.clientWidth,
@@ -266,8 +257,6 @@ function canvasJSONCallBack() {
         //}
         //console.log(size);
         //radius = radius - 145;
-
-
 
         for (var count = 0; count < chairs; count++) {
             console.log("angle: " + count * degree_step);
@@ -277,8 +266,6 @@ function canvasJSONCallBack() {
             console.log("y: " + y);
             x = x - 25;
             y = y - 25;
-
-
 
             var rect = new fabric.Rect({
                 top: y,
@@ -312,9 +299,6 @@ resizeWindow = function () {
     canvas.setDimensions({ width: containerWidth, height: containerWidth / ratio });
     canvas.setViewportTransform([zoom, 0, 0, zoom, 0, 0]);
 }
-
-
-
 
 function OpenModal() {
     $("#addModal").modal();
