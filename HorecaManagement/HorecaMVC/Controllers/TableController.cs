@@ -1,5 +1,6 @@
 ﻿using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Models.Floorplans;
+using Horeca.MVC.Models.Tables;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Floorplans;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,19 @@ namespace Horeca.MVC.Controllers
             this.tableService = tableService;
             this.restaurantService = restaurantService;
             this.floorplanService = floorplanService;
+        }
+
+        [Route("/Table/Detail/{tableId}/{floorplanId}")]
+        public async Task<IActionResult> Detail(int tableId, int floorplanId)
+        {
+            var response = await tableService.GetTableById(tableId, floorplanId);
+            if (response == null)
+            {
+                return View(nameof(NotFound));
+            }
+            TableViewModel model = TableMapper.MapTableModel(response);
+
+            return View(model);
         }
 
         [Route("/Table/CreateTables/{floorplanId}")]

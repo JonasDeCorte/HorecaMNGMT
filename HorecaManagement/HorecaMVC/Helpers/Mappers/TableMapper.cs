@@ -5,9 +5,25 @@ namespace Horeca.MVC.Helpers.Mappers
 {
     public class TableMapper
     {
-        public static TableDetailViewModel MapTableDetailModel(MutateTableDto table)
+
+        public static TableViewModel MapTableModel(TableDto response)
         {
-            return new TableDetailViewModel()
+            return new TableViewModel()
+            {
+                Id = response.Id,
+                FloorplanId = response.FloorplanId,
+                ScheduleId = response.ScheduleId,
+                BookingDetailId = response.BookingDetailId,
+                Pax = response.Pax,
+                Seats = response.Seats,
+                Name = response.Name,
+                Src = response.Src,
+            };
+        }
+
+        public static FloorplanTableViewModel MapFloorplanTableModel(MutateTableDto table)
+        {
+            return new FloorplanTableViewModel()
             {
                 Id = table.Id,
                 FloorplanId = table.FloorplanId,
@@ -26,6 +42,27 @@ namespace Horeca.MVC.Helpers.Mappers
                 Height = table.Height,
                 ScaleX = table.ScaleX,
                 ScaleY = table.ScaleY,
+            };
+        }
+
+        public static GetCanvasTableViewModel MapCanvasTableModel(MutateTableDto table)
+        {
+            return new GetCanvasTableViewModel()
+            {
+                id = table.Id,
+                name = table.Name,
+                pax = table.Pax,
+                seats = table.Seats,
+                src = table.Src,
+                type = table.Type,
+                originX = table.OriginX,
+                originY = table.OriginY,
+                left = table.Left,
+                top = table.Top,
+                width = table.Width,
+                height = table.Height,
+                scaleX = (int)table.ScaleX,
+                scaleY = (int)table.ScaleY,
             };
         }
 
@@ -49,27 +86,6 @@ namespace Horeca.MVC.Helpers.Mappers
                 Height = table.height,
                 ScaleX = table.scaleX,
                 ScaleY = table.scaleY,
-            };
-        }
-
-        public static GetCanvasTableViewModel MapCanvasTableModel(MutateTableDto table)
-        {
-            return new GetCanvasTableViewModel()
-            {
-                id = table.Id,
-                name = table.Name,
-                pax = table.Pax,
-                seats = table.Seats,
-                src = table.Src,
-                type = table.Type,
-                originX = table.OriginX,
-                originY = table.OriginY,
-                left = table.Left,
-                top = table.Top,
-                width = table.Width,
-                height = table.Height,
-                scaleX = (int)table.ScaleX,
-                scaleY = (int)table.ScaleY,
             };
         }
     }

@@ -20,9 +20,23 @@ namespace Horeca.MVC.Services
             this.restaurantService = restaurantService;
         }
 
-        public Task<TableDto> GetTableById(int tableId, int floorplanId)
+        public async Task<TableDto> GetTableById(int tableId, int floorplanId)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Table}/{ClassConstants.Floorplan}" +
+                $"?id={tableId}&{ClassConstants.FloorplanId}={floorplanId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<TableDto>(await response.Content.ReadAsStringAsync());
+                if (result == null)
+                {
+                    return new TableDto();
+                }
+                return result;
+            }
+            return null;
         }
 
         public Task<IEnumerable<TableDto>> GetTables(int floorplanId)

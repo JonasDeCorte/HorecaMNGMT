@@ -159,7 +159,6 @@ $(document).ready(function () {
     var JSONData = JSON.stringify(data);
     console.log(JSONData);
     canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
-        object.set('selectable', false);
         canvas.setActiveObject(object);
     });
 });

@@ -38,7 +38,7 @@ namespace Horeca.MVC.Helpers.Mappers
             };
             foreach (var table in floorplanDto.Tables)
             {
-                model.Tables.Add(TableMapper.MapTableDetailModel(table));
+                model.Tables.Add(TableMapper.MapFloorplanTableModel(table));
             }
             return model;
         }

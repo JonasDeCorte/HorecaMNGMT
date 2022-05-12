@@ -24,6 +24,16 @@ canvas.on('mouse:down', function (opt) {
         this.lastPosX = evt.clientX;
         this.lastPosY = evt.clientY;
     }
+    if (opt.target) {
+        if (opt.target.id) {
+            console.log('ID:', opt.target.id);
+            var element = document.getElementById("FromJson");
+            var floorplanId = $(element).data("id");
+            window.location.href = "/Table/Detail/" + opt.target.id + "/" + floorplanId;
+        }
+    } else {
+        console.log('not a target');
+    }
 });
 canvas.on('mouse:move', function (opt) {
     if (this.isDragging) {
