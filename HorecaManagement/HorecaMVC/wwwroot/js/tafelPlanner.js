@@ -56,6 +56,7 @@ document.body.onclick = function (e) {
             $("#btnSubmit").click(function () {
                 var seats = document.getElementById("seats-text").value;
                 var name = document.getElementById("table-name").value;
+
                 var form = document.getElementById("AddTableForm");
                 console.log(seats);
                 console.log(name);
@@ -74,7 +75,7 @@ document.body.onclick = function (e) {
                     }
                 }
                 form.reset();
-                $('#AddModal').modal('hide'); // does't work for some reason??
+                document.getElementById("btnClose").click();
             })
         });
     }
