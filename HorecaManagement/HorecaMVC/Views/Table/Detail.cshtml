@@ -1,5 +1,5 @@
 ﻿@model Horeca.MVC.Models.Tables.TableViewModel
-<div class="container">
+<div class="text-center">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -27,8 +27,10 @@
     </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
-            @Model.Name
+            <h1>@Model.Name</h1>
         </div>
-        @Model.Seats
+        <div>
+            <img src="@Model.Src" />
+        </div>
     </div>
 </div>
