@@ -17,7 +17,12 @@
                     Floor Plans
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Floorplan" asp-action="Detail" asp-route-floorplanId="@Model.Id">
+                    @Model.Name
+                </a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">Edit</li>
         </ol>
     </nav>
     <header class="header">
@@ -33,21 +38,42 @@
     </article>
     <aside class="aside aside-1">
         <div class="d-grid gap-2 d-md-block mx-auto">
-            <a class="btn btn-primary m-2" id="clear-canvas" style="display: none;">
+            <a class="btn btn-primary m-2" id="clear-canvas">
                 Clear canvas
-            </a>
-            <a class="btn btn-primary m-2" id="FromJson" data-json="@Model.Json" style="display: none;">
-                Get floorplan
             </a>
             <a class="btn btn-primary m-2" id="toImage">
                 Export
             </a>
-            <a class="btn btn-primary m-2" asp-controller="Floorplan" asp-action="Edit" asp-route-floorplanId="@Model.Id">
-                Edit
+            <!--
+                for now to test
+                function can be used to get the json from the canvas to save in the database
+            -->
+            @if (accountService.Authorize(PermissionConstants.Floorplan_Create))
+            {
+                <a class="btn btn-primary m-2" id="ToJson" data-id="@Model.Id">
+                    Save floorplan
+                </a>
+            }
+            <!--
+               for now to test
+               function can be used to get the json from the canvas from the database and to load the canvas
+            -->
+            <a class="btn btn-primary m-2" id="FromJson" data-json="@Model.Json">
+                Get floorplan
             </a>
         </div>
     </aside>
+    @if (accountService.Authorize(PermissionConstants.Floorplan_Update))
+    {
+        <aside class="aside aside-2">
+            <div id="shapes">
+                <ul>
+                    <li> <img class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png"> </li>
+                </ul>
+            </div>
+        </aside>
+    }
     <footer class="footer"></footer>
 </div>
 <script src="~/lib/fabric.js/fabric.min.js"></script>
-<script src="~/js/floorplanDetail.js"></script>
+<script src="~/js/tafelPlanner.js"></script>

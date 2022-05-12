@@ -49,7 +49,7 @@ namespace Horeca.MVC.Controllers
                     return Json(nameof(NotFound));
                 }
 
-                return Json(Url.Action("Detail", "Floorplan", new { id = floorplanId }));
+                return Json(Url.Action("Edit", "Floorplan", new { id = floorplanId }));
             }
         }
     }
