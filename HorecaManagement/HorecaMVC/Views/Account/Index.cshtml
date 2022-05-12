@@ -34,7 +34,15 @@
                         <tr>
                             <td>@item.Username</td>
                             <td>
-                                <a asp-action="Detail" asp-route-username="@item.Username" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize(PermissionConstants.Permission_Delete) ||
+                               accountService.Authorize(PermissionConstants.Permission_Update))
+                                {
+                                    <a asp-action="Detail" asp-route-username="@item.Username" class="btn btn-primary">Details</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Detail" asp-route-username="@item.Username" class="btn btn-primary disabled">Details</a>
+                                }
                             </td>
                         </tr>
                     }

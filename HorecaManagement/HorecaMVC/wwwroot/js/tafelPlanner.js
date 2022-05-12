@@ -1,7 +1,7 @@
 ﻿// create a wrapper around native canvas element (with id="drawing-area")
 const canvas = new fabric.Canvas('drawing-area', {
     height: 600,
-    width: 600
+    width: 600,
 });
 // zoom and pan
 
@@ -144,7 +144,6 @@ async function downloadDataUrl(dataURL) {
 $("#ToJson").click(function () {
     var floorplanCanvas = canvas.toDatalessJSON(['Id', 'Name', 'Seats']);
     var floorplanId = $(this).data("id");
-    console.log(floorplanCanvas);
     $.ajax({
         type: "post",
         dataType: "application/json",
@@ -154,20 +153,31 @@ $("#ToJson").click(function () {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            alert("Floorplan has been saved!");
-        },
-        error: function (result) {
-            alert("No Connection to server");
-        },
+            window.location.href = result;
+        }
     });
 });
 
-document.getElementById('FromJson').onclick = function () {
-    var JSONData = prompt("json");
+$("#FromJson").click(function () {
+    var data = $(this).data("json");
+    var JSONData = JSON.stringify(data);
+    console.log(JSONData);
     canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
         canvas.setActiveObject(object);
     });
-};
+});
+
+$(document).ready(function () {
+    var element = document.getElementById("FromJson");
+    var data = $(element).data("json");
+    var JSONData = JSON.stringify(data);
+    console.log(JSONData);
+    canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
+        object.set('selectable', false);
+        canvas.setActiveObject(object);
+    });
+});
+
 function DrawTableWithChairs(image, canvas, seats) {
     canvas.centerObjectH(image).centerObjectV(image);
     image.setCoords();
@@ -219,6 +229,7 @@ function DrawTableWithChairs(image, canvas, seats) {
     }
     canvas.renderAll();
 }
+
 function canvasJSONCallBack() {
     canvas.renderAll();
     canvas.calcOffset();
@@ -235,7 +246,7 @@ function canvasJSONCallBack() {
         var coords = image.aCoords
         var center = image.getCenterPoint();
         console.log("center: " + image.getCenterPoint());
-        var chairs = image.Seats;
+        var chairs = image.seats;
         var cx = center.x, cy = center.y;
         //var radius = Math.sqrt(Math.pow(coords.tr.y - center.y, 2) + Math.pow(coords.tr.x - coords.tl.x / 2, 2));
         var radius = 90;

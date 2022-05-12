@@ -97,9 +97,15 @@
                                 <tr>
                                     <td>@employee.Username</td>
                                     <td>
-                                        <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">
-                                            Details
-                                        </a>
+                                        @if (accountService.Authorize(PermissionConstants.Permission_Delete) ||
+                                       accountService.Authorize(PermissionConstants.Permission_Update))
+                                        {
+                                            <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary">Details</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="Account" asp-action="Detail" asp-route-username="@employee.Username" class="btn btn-primary disabled">Details</a>
+                                        }
                                         @if (accountService.Authorize(PermissionConstants.Restaurant_Delete))
                                         {
                                             <button id="toDeleteEmployeeModal" type="button" class="modalbutton btn btn-danger"

@@ -51,5 +51,26 @@ namespace Horeca.MVC.Helpers.Mappers
                 ScaleY = table.scaleY,
             };
         }
+
+        public static GetCanvasTableViewModel MapCanvasTableModel(MutateTableDto table)
+        {
+            return new GetCanvasTableViewModel()
+            {
+                id = table.Id,
+                name = table.Name,
+                pax = table.Pax,
+                seats = table.Seats,
+                src = table.Src,
+                type = table.Type,
+                originX = table.OriginX,
+                originY = table.OriginY,
+                left = table.Left,
+                top = table.Top,
+                width = table.Width,
+                height = table.Height,
+                scaleX = (int)table.ScaleX,
+                scaleY = (int)table.ScaleY,
+            };
+        }
     }
 }

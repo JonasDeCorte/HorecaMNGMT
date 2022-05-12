@@ -14,7 +14,7 @@
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <a class="text-decoration-none" asp-controller="Account" asp-action="Index">
+                <a class="text-decoration-none">
                     Employees
                 </a>
             </li>
@@ -25,7 +25,7 @@
         <div class="card-header bg-dark">
             <h1>@Model.Username</h1>
             <div class="d-flex justify-content-center">
-                @if (accountService.Authorize(PermissionConstants.Permission_Create))
+                @if (accountService.Authorize(PermissionConstants.Permission_Update))
                 {
                     <div class="m-2">
                         <a asp-action="AddPermissions" asp-route-username="@Model.Username" class="btn btn-primary">

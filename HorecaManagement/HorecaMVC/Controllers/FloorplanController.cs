@@ -3,6 +3,7 @@ using Horeca.MVC.Models.Floorplans;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Floorplans;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HorecaMVC.Controllers
 {
@@ -29,14 +30,36 @@ namespace HorecaMVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Detail(int id)
+        [Route("/Floorplan/Detail/{floorplanId}")]
+        public async Task<IActionResult> Detail(int floorplanId)
         {
-            var floorplan = await floorplanService.GetFloorplanById(id);
+            var floorplan = await floorplanService.GetFloorplanById(floorplanId);
             if (floorplan == null)
             {
                 return View(nameof(NotFound));
             }
             FloorplanDetailViewModel model = FloorplanMapper.MapFloorplanDetailModel(floorplan);
+
+            GetFloorplanCanvasViewModel canvasDto = FloorplanMapper.MapFloorplanCanvasModel(floorplan);
+            var json = JsonConvert.SerializeObject(canvasDto);
+            model.Json = json;
+
+            return View(model);
+        }
+
+        [Route("/Floorplan/Edit/{floorplanId}")]
+        public async Task<IActionResult> Edit(int floorplanId)
+        {
+            var floorplan = await floorplanService.GetFloorplanById(floorplanId);
+            if (floorplan == null)
+            {
+                return View(nameof(NotFound));
+            }
+            FloorplanDetailViewModel model = FloorplanMapper.MapFloorplanDetailModel(floorplan);
+
+            GetFloorplanCanvasViewModel canvasDto = FloorplanMapper.MapFloorplanCanvasModel(floorplan);
+            var json = JsonConvert.SerializeObject(canvasDto);
+            model.Json = json;
 
             return View(model);
         }

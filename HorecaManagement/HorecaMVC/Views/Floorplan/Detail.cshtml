@@ -37,24 +37,10 @@
     </article>
     <aside class="aside aside-1">
         <div class="d-grid gap-2 d-md-block mx-auto">
-            <a class="btn btn-primary m-2" id="clear-canvas">
+            <a class="btn btn-primary m-2" id="clear-canvas" style="display: none;">
                 Clear canvas
             </a>
-            <a class="btn btn-primary m-2" id="toImage">
-                Export
-            </a>
-            <!--
-                for now to test
-                function can be used to get the json from the canvas to save in the database
-            -->
-            <a class="btn btn-primary m-2" id="ToJson" data-id="@Model.Id">
-                Save floorplan
-            </a>
-            <!--
-               for now to test
-               function can be used to get the json from the canvas from the database and to load the canvas
-            -->
-            <a class="btn btn-primary m-2" id="FromJson">
+            <a class="btn btn-primary m-2" id="FromJson" data-json="@Model.Json" style="display: none;">
                 Get floorplan
             </a>
         </div>

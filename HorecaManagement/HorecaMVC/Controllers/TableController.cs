@@ -10,11 +10,13 @@ namespace Horeca.MVC.Controllers
     {
         private readonly ITableService tableService;
         private readonly IRestaurantService restaurantService;
+        private readonly IFloorplanService floorplanService;
 
-        public TableController(ITableService tableService, IRestaurantService restaurantService)
+        public TableController(ITableService tableService, IRestaurantService restaurantService, IFloorplanService floorplanService)
         {
             this.tableService = tableService;
             this.restaurantService = restaurantService;
+            this.floorplanService = floorplanService;
         }
 
         [Route("/Table/CreateTables/{floorplanId}")]
@@ -23,17 +25,31 @@ namespace Horeca.MVC.Controllers
         {
             if (floorplan == null)
             {
-                return Json("Not Found");
+                return Json(nameof(NotFound));
             } 
             else
             {
-                FloorplanDetailDto dto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
-                var response = await tableService.AddTablesFromFloorplan(dto, floorplanId);
+                FloorplanDetailDto oldFloorplanDto = await floorplanService.GetFloorplanById(floorplanId);
+                if (oldFloorplanDto.Tables.Any())
+                {
+                    foreach(var table in oldFloorplanDto.Tables)
+                    {
+                        var res = await tableService.DeleteTable(table.Id);
+                        if (res == null)
+                        {
+                            return Json(nameof(NotFound));
+                        }
+                    }
+                }
+
+                FloorplanDetailDto newFloorplanDto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
+                var response = await tableService.AddTablesFromFloorplan(newFloorplanDto, floorplanId);
                 if (response == null)
                 {
-                    return Json("Not Found");
+                    return Json(nameof(NotFound));
                 }
-                return Json(response);
+
+                return Json(Url.Action("Edit", "Floorplan", new { id = floorplanId }));
             }
         }
     }

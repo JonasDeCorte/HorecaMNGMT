@@ -46,5 +46,17 @@ namespace Horeca.MVC.Services
             }
             return null;
         }
+
+        public async Task<HttpResponseMessage> DeleteTable(int tableId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Table}?id={tableId}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+            return null;
+        }
     }
 }

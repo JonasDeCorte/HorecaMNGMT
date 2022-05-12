@@ -4,7 +4,7 @@ namespace Horeca.MVC.Models.Floorplans
 {
     public class FloorplanCanvasViewModel
     {
-        public string Version { get; set; }
-        public List<CanvasTableViewModel> Objects { get; set; } = new List<CanvasTableViewModel>();
+        public string version { get; set; }
+        public List<CanvasTableViewModel> objects { get; set; } = new List<CanvasTableViewModel>();
     }
 }

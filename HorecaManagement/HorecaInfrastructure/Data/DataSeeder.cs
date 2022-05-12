@@ -159,6 +159,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(restaurantPerms.Take(1));
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -186,6 +187,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(restaurantPerms.Take(1));
 
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
@@ -300,12 +302,12 @@ namespace Horeca.Infrastructure.Data
                     Seats = booking.Pax.ToString(),
                     Src = "https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png",
                     Type = "image",
-                    OriginX = "1",
-                    OriginY = "1",
-                    Left = 1,
-                    Top = 1,
-                    Width = 1,
-                    Height = 1,
+                    OriginX = "left",
+                    OriginY = "top",
+                    Left = 200,
+                    Top = 200,
+                    Width = 100,
+                    Height = 100,
                     ScaleX = 1,
                     ScaleY = 1,
                 };
