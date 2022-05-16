@@ -42,64 +42,73 @@
             </ul>
         </div>
         <div class="d-flex flex-column">
-            @foreach (var order in Model.Orders)
+            @if (Model.Orders.Any())
             {
-                <div class="shadow card bg-light m-3">
-                    <div class="card-header bg-dark">
-                        <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
-                        @if (order.OrderState == OrderState.Prepare)
-                        {
-                            <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId" asp-route-orderId="@order.Id">
-                                Deliver
-                            </a>
-                        }
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-light mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="col-3">Dish</th>
-                                    <th scope="col" class="col-1">Quantity</th>
-                                    <th scope="col" class="col-2">Price</th>
-                                    <th scope="col" class="col-3">State</th>
-                                    @if (order.OrderState != OrderState.Done)
-                                    {
-                                        <th scope="col" class="col-3">Options</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var orderLine in order.Lines)
-                                {
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="shadow card bg-light m-3">
+                        <div class="card-header bg-dark">
+                            <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
+                            @if (order.OrderState == OrderState.Prepare)
+                            {
+                                <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId" asp-route-orderId="@order.Id">
+                                    Deliver
+                                </a>
+                            }
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-light mb-0">
+                                <thead>
                                     <tr>
-                                        <td scope="row">@orderLine.Dish.Name</td>
-                                        <td>@orderLine.Quantity</td>
-                                        <td>€@orderLine.Price</td>
-                                        <td>@orderLine.DishState</td>
+                                        <th scope="col" class="col-3">Dish</th>
+                                        <th scope="col" class="col-1">Quantity</th>
+                                        <th scope="col" class="col-2">Price</th>
+                                        <th scope="col" class="col-3">State</th>
                                         @if (order.OrderState != OrderState.Done)
                                         {
-                                            <td>
-                                                @if (order.OrderState == OrderState.Begin)
-                                                {
-                                                    <a asp-action="PrepareOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
-                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
-                                                        Prepare
-                                                    </a>
-                                                }
-                                                else if (order.OrderState == OrderState.Prepare && orderLine.DishState != DishState.Ready)
-                                                {
-                                                    <a asp-action="ReadyOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
-                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
-                                                        Ready
-                                                    </a>
-                                                }
-                                            </td>
+                                            <th scope="col" class="col-3">Options</th>
                                         }
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var orderLine in order.Lines)
+                                    {
+                                        <tr>
+                                            <td scope="row">@orderLine.Dish.Name</td>
+                                            <td>@orderLine.Quantity</td>
+                                            <td>€@orderLine.Price</td>
+                                            <td>@orderLine.DishState</td>
+                                            @if (order.OrderState != OrderState.Done)
+                                            {
+                                                <td>
+                                                    @if (order.OrderState == OrderState.Begin)
+                                                    {
+                                                        <a asp-action="PrepareOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
+                                       asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
+                                                            Prepare
+                                                        </a>
+                                                    }
+                                                    else if (order.OrderState == OrderState.Prepare && orderLine.DishState != DishState.Ready)
+                                                    {
+                                                        <a asp-action="ReadyOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
+                                       asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
+                                                            Ready
+                                                        </a>
+                                                    }
+                                                </td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="card-body">
+                    <p class="card-text">There are currently no orders in this section.</p>
                 </div>
             }
         </div>

@@ -2,6 +2,7 @@
 using Horeca.MVC.Models.Orders;
 using Horeca.Shared.Dtos.Dishes;
 using Horeca.Shared.Dtos.Orders;
+using Horeca.Shared.Dtos.Tables;
 
 namespace Horeca.MVC.Helpers.Mappers
 {
@@ -53,12 +54,28 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
+        public static CreateOrderViewModel MapCreateOrderModel(TableDto table, IEnumerable<DishDto> dishes)
+        {
+            CreateOrderViewModel model = new CreateOrderViewModel()
+            {
+                FloorplanId = table.FloorplanId,
+                TableId = table.Id,
+                Name = table.Name,
+            };
+            foreach (var dish in dishes)
+            {
+                OrderDishViewModel dishModel = DishMapper.MapOrderDishModel(dish);
+                model.Dishes.Add(dishModel);
+            }
+            return model;
+        }
+
         public static OrderLineViewModel MapOrderLineModel(OrderLineDto orderLine)
         {
             return new OrderLineViewModel()
             {
                 Id = orderLine.Id,
-                Dish = DishMapper.MapModel(orderLine.Dish),
+                Dish = DishMapper.MapDishModel(orderLine.Dish),
                 Quantity = orderLine.Quantity,
                 Price = orderLine.Price,
                 DishState = orderLine.DishState
@@ -69,23 +86,22 @@ namespace Horeca.MVC.Helpers.Mappers
         {
             MutateOrderDto dto = new MutateOrderDto()
             {
-                Id = model.Id,
                 TableId = model.TableId
             };
-            foreach (var dish in model.Dishes)
+            foreach (var dishId in model.DishId)
             {
-                OrderDishDto orderDishDto = MapOrderDishDto(dish);
+                OrderDishDto orderDishDto = MapOrderDishDto(dishId);
                 dto.Dishes.Add(orderDishDto);
             }
             return dto;
         }
 
-        public static OrderDishDto MapOrderDishDto(OrderDishViewModel dish)
+        public static OrderDishDto MapOrderDishDto(int dishId)
         {
             return new OrderDishDto()
             {
-                Id = dish.Id,
-                Quantity = dish.Quantity
+                Id = dishId,
+                Quantity = 1,
             };
         }
     }

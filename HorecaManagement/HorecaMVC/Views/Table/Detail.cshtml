@@ -42,12 +42,6 @@
                         <div class="shadow card bg-light m-3">
                             <div class="card-header bg-dark">
                                 <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
-                                @if (order.OrderState == OrderState.Prepare)
-                                {
-                                    <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-orderId="@order.Id">
-                                        Deliver
-                                    </a>
-                                }
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover table-light mb-0">
@@ -80,7 +74,16 @@
                         <p class="card-text">There are currently no orders for this table.</p>
                     </div>
                 }
+                <div class="card-footer bg-dark">
+                    @if (accountService.Authorize(PermissionConstants.Order_Create))
+                    {
+                        <a asp-action="Create" asp-controller="Order" asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id" class="btn btn-primary">Add Order</a>
+                    }
+                </div>
             </div>
+        </div>
+        <div class="card-footer bg-dark">
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
 </div>
