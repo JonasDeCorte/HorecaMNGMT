@@ -42,9 +42,7 @@
             <a class="btn btn-primary m-2" id="clear-canvas">
                 Clear canvas
             </a>
-            <a class="btn btn-primary m-2" id="toImage">
-                Export
-            </a>
+          
             @if (accountService.Authorize(PermissionConstants.Floorplan_Create))
             {
                 <a class="btn btn-primary m-2" id="ToJson" data-id="@Model.Id">
@@ -64,7 +62,7 @@
                     <li>
                         <button id="AddModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#AddPropertiesModal">
-                            <img id='img1' class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png" />
+                            <img id='img1'  class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png" />
                         </button>
                     </li>
                 </ul>

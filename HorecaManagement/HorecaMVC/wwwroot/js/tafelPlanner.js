@@ -89,24 +89,9 @@ document.getElementById('clear-canvas').onclick = function () {
     canvas.clear();
     return false;
 };
-document.getElementById('toImage').onclick = function () {
-    var data = canvas.toDataURL({ multiplier: 2, format: 'png' });
-    console.log(data);
-    downloadDataUrl(data);
 
-    return false;
-};
 
-async function downloadDataUrl(dataURL) {
-    const blob = await fetch(dataURL).then(r => r.blob());
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.download = "FloorPlan.png"
-    a.href = url;
-    a.click();
-    URL.revokeObjectURL(url);
-    a.remove();
-}
+
 
 $("#ToJson").click(function () {
     var floorplanCanvas = canvas.toDatalessJSON(['Id', 'Name', 'Seats']);
@@ -168,15 +153,11 @@ $(document).ready(function () {
             }
         }
         else {
-            console.log("entered else");
             function toonerrboodschap(message, type) {
                 var wrapper = document.createElement('div')
-                console.log(wrapper)
                 wrapper.setAttribute('id', 'idWrapper');
                 wrapper.innerHTML = '<div id="Alert" class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + message + '<button id="alertClose" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-                console.log(wrapper.innerHTML)
                 alertPlaceholder.append(wrapper)
-                console.log(alertPlaceholder);
             }
             toonerrboodschap("Error, make sure seats is a number greater than 0 and name is entered!", 'warning');
             setTimeout(function () {
