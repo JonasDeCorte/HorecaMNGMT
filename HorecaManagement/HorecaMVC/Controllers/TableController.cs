@@ -12,23 +12,26 @@ namespace Horeca.MVC.Controllers
         private readonly ITableService tableService;
         private readonly IRestaurantService restaurantService;
         private readonly IFloorplanService floorplanService;
+        private readonly IOrderService orderService;
 
-        public TableController(ITableService tableService, IRestaurantService restaurantService, IFloorplanService floorplanService)
+        public TableController(ITableService tableService, IRestaurantService restaurantService, IFloorplanService floorplanService, IOrderService orderService)
         {
             this.tableService = tableService;
             this.restaurantService = restaurantService;
             this.floorplanService = floorplanService;
+            this.orderService = orderService;
         }
 
         [Route("/Table/Detail/{tableId}/{floorplanId}")]
         public async Task<IActionResult> Detail(int tableId, int floorplanId)
         {
-            var response = await tableService.GetTableById(tableId, floorplanId);
-            if (response == null)
+            var table = await tableService.GetTableById(tableId, floorplanId);
+            var orders = await orderService.GetOrderLinesByTableId(tableId);
+            if (table == null || orders == null)
             {
                 return View(nameof(NotFound));
             }
-            TableViewModel model = TableMapper.MapTableModel(response);
+            TableDetailViewModel model = TableMapper.MapTableDetailModel(table, orders);
 
             return View(model);
         }

@@ -37,6 +37,22 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
+        public static OrderViewModel MapOrderModel(GetOrderLinesByTableIdDto order)
+        {
+            OrderViewModel model = new OrderViewModel()
+            {
+                Id = order.Id,
+                TableId = order.TableId,
+                OrderState = order.OrderState
+            };
+            foreach (var orderLine in order.Lines)
+            {
+                OrderLineViewModel lineModel = MapOrderLineModel(orderLine);
+                model.Lines.Add(lineModel);
+            }
+            return model;
+        }
+
         public static OrderLineViewModel MapOrderLineModel(OrderLineDto orderLine)
         {
             return new OrderLineViewModel()

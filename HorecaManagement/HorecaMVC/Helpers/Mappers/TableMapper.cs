@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Models.Tables;
+using Horeca.Shared.Dtos.Orders;
 using Horeca.Shared.Dtos.Tables;
 
 namespace Horeca.MVC.Helpers.Mappers
@@ -19,6 +20,26 @@ namespace Horeca.MVC.Helpers.Mappers
                 Name = response.Name,
                 Src = response.Src,
             };
+        }
+
+        public static TableDetailViewModel MapTableDetailModel(TableDto response, List<GetOrderLinesByTableIdDto> orders)
+        {
+            TableDetailViewModel model = new TableDetailViewModel()
+            {
+                Id = response.Id,
+                FloorplanId = response.FloorplanId,
+                ScheduleId = response.ScheduleId,
+                BookingDetailId = response.BookingDetailId,
+                Pax = response.Pax,
+                Seats = response.Seats,
+                Name = response.Name,
+                Src = response.Src,
+            };
+            foreach (var order in orders)
+            {
+                model.Orders.Add(OrderMapper.MapOrderModel(order));
+            }
+            return model;
         }
 
         public static FloorplanTableViewModel MapFloorplanTableModel(MutateTableDto table)

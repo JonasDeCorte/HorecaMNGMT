@@ -1,4 +1,5 @@
-﻿@model Horeca.MVC.Models.Tables.TableViewModel
+﻿@using static Horeca.Shared.Utils.Constants
+@model Horeca.MVC.Models.Tables.TableDetailViewModel
 <div class="text-center">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -30,7 +31,56 @@
             <h1>@Model.Name</h1>
         </div>
         <div>
-            <img src="@Model.Src" />
+            <div class="shadow card bg-light m-3">
+                <div class="card-header bg-dark">
+                    <h2>Orders</h2>
+                </div>
+                @if (Model.Orders.Any())
+                {
+                    @foreach (var order in Model.Orders)
+                    {
+                        <div class="shadow card bg-light m-3">
+                            <div class="card-header bg-dark">
+                                <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
+                                @if (order.OrderState == OrderState.Prepare)
+                                {
+                                    <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-orderId="@order.Id">
+                                        Deliver
+                                    </a>
+                                }
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-light mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="col-3">Dish</th>
+                                            <th scope="col" class="col-1">Quantity</th>
+                                            <th scope="col" class="col-2">Price</th>
+                                            <th scope="col" class="col-3">State</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var orderLine in order.Lines)
+                                        {
+                                            <tr>
+                                                <td scope="row">@orderLine.Dish.Name</td>
+                                                <td>@orderLine.Quantity</td>
+                                                <td>€@orderLine.Price</td>
+                                                <td>@orderLine.DishState</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                } else
+                {
+                    <div class="card-body">
+                        <p class="card-text">There are currently no orders for this table.</p>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
