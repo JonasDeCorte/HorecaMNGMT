@@ -63,15 +63,7 @@ namespace Horeca.Infrastructure.Data.Repositories
                     context.Schedules.Update(schedule);
                     context.Bookings.Add(booking);
                     await context.SaveChangesAsync();
-                    context.Tables.Add(new Table()
-                    {
-                        Pax = booking.Pax,
-                        ScheduleId = schedule.Id,
-                        Schedule = schedule,
-                        Booking = booking,
-                        BookingId = booking.Id
-                    });
-                    await context.SaveChangesAsync();
+                   
                     await transaction.CommitAsync();
                 }
                 catch (Exception)

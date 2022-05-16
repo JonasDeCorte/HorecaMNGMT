@@ -71,7 +71,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
 
             private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Logger logger)
             {
-                Booking booking = new Booking();
+                Booking booking = new();
                 booking.BookingStatus = Constants.BookingStatus.PENDING;
                 booking.BookingNo = Guid.NewGuid().ToString();
                 booking.BookingDate = schedule.ScheduleDate;
@@ -88,9 +88,12 @@ namespace Horeca.Core.Handlers.Commands.Bookings
 
             private static void IsTimeWithinScheduleRange(AddBookingCommand request, Schedule schedule, Logger logger)
             {
-                if (request.Model.CheckIn < schedule.StartTime || request.Model.CheckIn > schedule.EndTime
+                logger.Info("checkin: " + request.Model.CheckIn + " starttime: " + schedule.StartTime);
+                logger.Info("checkout: " + request.Model.CheckOut + " starttime: " + schedule.EndTime);
+
+                if (request.Model.CheckIn.Value.AddDays(1) < schedule.StartTime || request.Model.CheckIn.Value.AddDays(1) > schedule.EndTime
                     ||
-                    request.Model.CheckOut < schedule.StartTime || request.Model.CheckOut > schedule.EndTime)
+                    request.Model.CheckOut.Value.AddDays(1) < schedule.StartTime || request.Model.CheckOut.Value.AddDays(1) > schedule.EndTime)
                 {
                     logger.Error(TimeIsNotWithinRangeException.Instance);
                     throw new TimeIsNotWithinRangeException();

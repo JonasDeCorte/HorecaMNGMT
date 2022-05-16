@@ -59,6 +59,7 @@
                         <td>@booking.PhoneNo</td>
                         <td>@booking.BookingStatus</td>
                         <td>
+                            
                             <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
                             @if (accountService.Authorize(PermissionConstants.Booking_Delete))
                             {
