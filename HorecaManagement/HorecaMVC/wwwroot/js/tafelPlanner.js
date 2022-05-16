@@ -43,43 +43,12 @@ canvas.on('mouse:up', function (opt) {
     this.selection = true;
 });
 
-document.body.onclick = function (e) {
-    e = e || window.event;
-    //   console.log("event: " + e);
-    var target = e.target || e.srcElement;
-    //   console.log("target: " + target);
-    var isShape = target.nodeName === 'IMG' && (' ' + target.className + ' ').indexOf(' shape ') > -1;
-    if (isShape) {
-        $(document).ready(function () {
-            e.preventDefault();
-            $(document).on("click", "#AddModal", OpenModal);
-            $("#btnSubmit").click(function () {
-                var seats = document.getElementById("seats-text").value;
-                var name = document.getElementById("table-name").value;
+$("#img1").on("click", AddTables);
 
-                var form = document.getElementById("AddTableForm");
-                console.log(seats);
-                console.log(name);
-                if ((seats != null && seats !== '') && (name != null && name !== '')) {
-                    if (!isNaN(seats) && seats > 0) {
-                        fabric.Image.fromURL(target.src, function (image) {
-                            canvas.add(image.set({
-                                Id: getRandomIntInclusive(1000, 9999999),
-                                Name: name,
-                                Seats: seats,
-                            }));
-                            DrawTableWithChairs(image, canvas, seats);
-                            const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
-                            console.log(jsondata);
-                        });
-                    }
-                }
-                form.reset();
-                document.getElementById("btnClose").click();
-            })
-        });
-    }
-};
+function AddTables() {
+    console.log("add tablesssssssssssssssssssssssssssssssss");
+    $(document).on("click", "#AddModal", OpenModal);
+}
 
 document.onkeydown = function (e) {
     e = e || window.event;
@@ -173,6 +142,50 @@ $(document).ready(function () {
     canvas.loadFromJSON(JSONData, canvasJSONCallBack, function (o, object) {
         canvas.setActiveObject(object);
     });
+
+    $("#btnSubmit").click(function () {
+        var alertPlaceholder = document.getElementById('alertPlaceholder');
+        var seats = document.getElementById("seats-text").value;
+        var name = document.getElementById("table-name").value;
+        var form = document.getElementById("AddTableForm");
+        console.log(seats);
+        console.log(name);
+        if ((seats !== null && seats !== '') || (name !== null && name !== '')) {
+            if (!isNaN(seats) && seats > 0) {
+                fabric.Image.fromURL(img1.src, function (image) {
+                    canvas.add(image.set({
+                        Id: getRandomIntInclusive(1000, 9999999),
+                        Name: name,
+                        Seats: seats,
+                    }));
+                    DrawTableWithChairs(image, canvas, seats);
+                    const jsondata = JSON.stringify(canvas.toDatalessJSON(['Id', 'Name', 'Seats']));
+                    console.log(jsondata);
+                });
+                form.reset();
+
+                document.getElementById("btnClose").click();
+            }
+        }
+        else {
+            console.log("entered else");
+            function toonerrboodschap(message, type) {
+                var wrapper = document.createElement('div')
+                console.log(wrapper)
+                wrapper.setAttribute('id', 'idWrapper');
+                wrapper.innerHTML = '<div id="Alert" class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + message + '<button id="alertClose" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                console.log(wrapper.innerHTML)
+                alertPlaceholder.append(wrapper)
+                console.log(alertPlaceholder);
+            }
+            toonerrboodschap("Error, make sure seats is a number greater than 0 and name is entered!", 'warning');
+            setTimeout(function () {
+                $("#Alert").fadeOut("slow", function () {
+                    document.getElementById("alertClose").click();
+                });
+            }, 2000);
+        }
+    })
 });
 
 function DrawTableWithChairs(image, canvas, seats) {
@@ -197,12 +210,6 @@ function DrawTableWithChairs(image, canvas, seats) {
         height: window.innerHeight || document.body.clientHeight
     }
     console.log("size :" + size);
-    //if (size.width > 1200) {
-    //radius = radius - 145;
-    //}
-    //else {
-    //    radius = radius - 110;
-    //}
 
     for (var count = 0; count < chairs; count++) {
         console.log("angle: " + count * degree_step);
@@ -303,25 +310,6 @@ resizeWindow = function () {
 function OpenModal() {
     $("#addModal").modal();
 }
-// Example starter JavaScript for disabling form submissions if there are invalid fieldss
-(function () {
-    'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll('.needs-validation')
-
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-})()
 window.onload = resizeWindow;
 window.onresize = resizeWindow;

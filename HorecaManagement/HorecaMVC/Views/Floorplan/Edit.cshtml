@@ -1,5 +1,6 @@
 ﻿@model Horeca.MVC.Models.Floorplans.FloorplanDetailViewModel
 <div class="wrapper">
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -63,7 +64,7 @@
                     <li>
                         <button id="AddModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#AddPropertiesModal">
-                            <img class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png" />
+                            <img id='img1' class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png" />
                         </button>
                     </li>
                 </ul>
@@ -97,9 +98,10 @@
                             Please choose an amount of seats greater than 0.
                         </div>
                     </div>
-                    <button type="button" id="btnSubmit" form="addTableForm" class="btn btn-primary">Add</button>
+                    <button type="button" id="btnSubmit" class="btn btn-primary">Add</button>
                     <button type="button" id="btnClose" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" type="submit">Submit form</button> <!-- buggy asf -->
+                    <div id="alertPlaceholder"></div>
+
                 </form>
             </div>
         </div>
