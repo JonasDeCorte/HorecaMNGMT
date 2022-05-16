@@ -319,7 +319,7 @@ namespace Horeca.Infrastructure.Data
 
             foreach (var table in list)
             {
-                var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
+                var dishes = await context.Dishes.AsNoTracking().Where(x => x.Id <= 3).ToListAsync();
                 Order order = new()
                 {
                     TableId = table.Id,
@@ -328,9 +328,23 @@ namespace Horeca.Infrastructure.Data
                     {
                         new OrderLine()
                         {
-                        DishId = dish.Id,
-                        Price = dish.Price,
-                        Quantity = table.Id+1,
+                        DishId = dishes[0].Id,
+                        Price = dishes[0].Price,
+                        Quantity = table.Id +1,
+                        DishState = Constants.DishState.Waiting
+                        },
+                        new OrderLine()
+                        {
+                        DishId = dishes[1].Id,
+                        Price = dishes[2].Price,
+                        Quantity = table.Id +1,
+                        DishState = Constants.DishState.Waiting
+                        },
+                        new OrderLine()
+                        {
+                        DishId = dishes[2].Id,
+                        Price = dishes[2].Price,
+                        Quantity = table.Id +1,
                         DishState = Constants.DishState.Waiting
                         },
                      }

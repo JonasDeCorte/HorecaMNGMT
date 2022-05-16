@@ -39,9 +39,9 @@ namespace Horeca.MVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create(int tableId)
+        public IActionResult Create(int tableId)
         {
-            CreateOrderViewModel model = new CreateOrderViewModel()
+            CreateOrderViewModel model = new()
             {
                 TableId = tableId
             };
@@ -60,15 +60,20 @@ namespace Horeca.MVC.Controllers
             return View();
         }
 
-        [Route("/Order/{restaurantId}/{orderId}/Prepare/{orderLineId}")]
-        public async Task<IActionResult> PrepareOrderLine(int restaurantId, int orderId, int orderLineId)
+        [Route("/Order/{restaurantId}/{orderId}/Prepare/{orderLineId}/{state}")]
+        public async Task<IActionResult> PrepareOrderLine(int restaurantId, int orderId, int orderLineId, OrderState state = OrderState.Begin)
         {
             var response = await orderService.PrepareOrderLine(restaurantId, orderId, orderLineId);
             if (response == null)
             {
                 return View(nameof(NotFound));
             }
-            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Begin});
+            if (state == OrderState.Prepare)
+            {
+                return RedirectToAction(nameof(Index), new { restaurantId, state });
+            }
+
+            return RedirectToAction(nameof(Index), new { restaurantId, state = OrderState.Begin });
         }
 
         [Route("/Order/{restaurantId}/{orderId}/Ready/{orderLineId}")]
@@ -79,7 +84,9 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
+            var deliver = await orderService.DeliverOrder(restaurantId, orderId);
+
+            return RedirectToAction(nameof(Index), new { restaurantId, state = OrderState.Prepare });
         }
 
         [Route("/Order/{restaurantId}/{orderId}/Deliver")]
@@ -90,7 +97,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
+            return RedirectToAction(nameof(Index), new { restaurantId, state = OrderState.Prepare });
         }
     }
 }

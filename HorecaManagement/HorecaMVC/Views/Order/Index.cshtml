@@ -47,12 +47,7 @@
                 <div class="shadow card bg-light m-3">
                     <div class="card-header bg-dark">
                         <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
-                        @if (order.OrderState == OrderState.Prepare)
-                        {
-                            <a asp-action="DeliverOrder" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId" asp-route-orderId="@order.Id">
-                                Deliver
-                            </a>
-                        }
+                    
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover table-light mb-0">
@@ -82,7 +77,14 @@
                                                 @if (order.OrderState == OrderState.Begin)
                                                 {
                                                     <a asp-action="PrepareOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
-                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id">
+                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id" asp-route-state ="@order.OrderState">
+                                                        Prepare
+                                                    </a>
+                                                }
+                                                else if(order.OrderState == OrderState.Prepare && orderLine.DishState == DishState.Waiting)
+                                                {
+                                                     <a asp-action="PrepareOrderLine" class="btn btn-primary" asp-route-restaurantId="@Model.RestaurantId"
+                                                        asp-route-orderId="@order.Id" asp-route-orderLineId="@orderLine.Id" asp-route-state = "@order.OrderState">
                                                         Prepare
                                                     </a>
                                                 }
@@ -107,6 +109,9 @@
 </div>
 
 <script>
+    $(document).ready(function () {
+
+    });
     function CheckOrderState() {
         var location = window.location.href.split('/');
         if (location[5] == "Begin") {
