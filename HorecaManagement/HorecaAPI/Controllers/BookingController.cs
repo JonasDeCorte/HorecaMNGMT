@@ -24,24 +24,6 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
-        /// Retrive the total number of  pending reservation in database.
-        /// </summary>
-        /// <returns>
-        /// Number of  Pending Reservation will be returned.
-        /// </returns>
-        /// <response code="200">Success retrieving total number of pending reservations list</response>
-        /// <response code="400">Bad request</response>
-        [HttpGet]
-        [Route(RouteConstants.BookingConstants.GetPendingBookingCount)]
-        [PermissionAuthorize(nameof(Booking), Permissions.Read)]
-        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
-        [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Get()
-        {
-            return Ok(await mediator.Send(new GetPendingBookingCountQuery()));
-        }
-
-        /// <summary>
         /// Retrive the bookings by schedule id .
         /// </summary>
         /// <returns>

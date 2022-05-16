@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Horeca.Shared.Utils
+﻿namespace Horeca.Shared.Utils
 {
     public class Constants
     {
         public static class BookingStatus
         {
-            public const string PENDING = "Pending";
             public const string EXPIRED = "Expired";
             public const string COMPLETE = "Completed";
         }

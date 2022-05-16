@@ -27,7 +27,6 @@
                     </button>
                     <ul class="dropdown-menu bg-light" aria-labelledby="selectStatusButton">
                         <li><a asp-action="YourBookings" asp-route-status="all" class="dropdown-item">All</a></li>
-                        <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.PENDING" class="dropdown-item">Pending</a></li>
                         <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.EXPIRED" class="dropdown-item">Expired</a></li>
                         <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.COMPLETE" class="dropdown-item">Complete</a></li>
                     </ul>

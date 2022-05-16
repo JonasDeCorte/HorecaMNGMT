@@ -270,7 +270,7 @@ namespace Horeca.Infrastructure.Data
                     CheckOut = DateTime.Today.AddHours(i + 5 / 2),
                     PhoneNo = "+32478194517",
                     BookingNo = $"{Guid.NewGuid()}",
-                    BookingStatus = i % 2 == 0 ? Constants.BookingStatus.PENDING : Constants.BookingStatus.EXPIRED,
+                    BookingStatus = Constants.BookingStatus.COMPLETE,
                     UserId = i % 2 == 0 ? superAdmin.Id : zaal.Id,
                     User = i % 2 == 0 ? superAdmin : zaal,
                     Schedule = schedule,

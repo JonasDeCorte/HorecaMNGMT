@@ -16,11 +16,6 @@ namespace Horeca.Infrastructure.Data.Repositories
             this.context = context;
         }
 
-        public int AdminGetPendingBookingCount()
-        {
-            return context.Bookings.Count(b => b.BookingStatus.Equals(Constants.BookingStatus.PENDING));
-        }
-
         public async Task<Booking> GetBookingById(int bookingID)
         {
             return await context.Bookings.Include(b => b.User)
@@ -63,7 +58,7 @@ namespace Horeca.Infrastructure.Data.Repositories
                     context.Schedules.Update(schedule);
                     context.Bookings.Add(booking);
                     await context.SaveChangesAsync();
-                   
+
                     await transaction.CommitAsync();
                 }
                 catch (Exception)

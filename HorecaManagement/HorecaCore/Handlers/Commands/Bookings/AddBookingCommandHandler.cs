@@ -72,7 +72,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Logger logger)
             {
                 Booking booking = new();
-                booking.BookingStatus = Constants.BookingStatus.PENDING;
+                booking.BookingStatus = Constants.BookingStatus.COMPLETE;
                 booking.BookingNo = Guid.NewGuid().ToString();
                 booking.BookingDate = schedule.ScheduleDate;
                 booking.FullName = request.Model.FullName;
