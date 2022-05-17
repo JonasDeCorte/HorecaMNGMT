@@ -54,7 +54,7 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
-        public static CreateOrderViewModel MapCreateOrderModel(TableDto table, IEnumerable<DishDto> dishes)
+        public static CreateOrderViewModel MapCreateOrderModel(TableDto table, IEnumerable<DishDto> dishes, int varyingDishes)
         {
             CreateOrderViewModel model = new CreateOrderViewModel()
             {
@@ -62,6 +62,10 @@ namespace Horeca.MVC.Helpers.Mappers
                 TableId = table.Id,
                 Name = table.Name,
             };
+            for (int i = 0; i < varyingDishes; i++)
+            {
+                model.Quantities.Add(1);
+            }
             foreach (var dish in dishes)
             {
                 OrderDishViewModel dishModel = DishMapper.MapOrderDishModel(dish);
@@ -88,20 +92,22 @@ namespace Horeca.MVC.Helpers.Mappers
             {
                 TableId = model.TableId
             };
+            int i = 0;
             foreach (var dishId in model.DishId)
             {
-                OrderDishDto orderDishDto = MapOrderDishDto(dishId);
+                OrderDishDto orderDishDto = MapOrderDishDto(dishId, model.Quantities[i]);
                 dto.Dishes.Add(orderDishDto);
+                i++;
             }
             return dto;
         }
 
-        public static OrderDishDto MapOrderDishDto(int dishId)
+        public static OrderDishDto MapOrderDishDto(int dishId, int quantity)
         {
             return new OrderDishDto()
             {
                 Id = dishId,
-                Quantity = 1,
+                Quantity = quantity,
             };
         }
     }

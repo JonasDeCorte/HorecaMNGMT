@@ -43,11 +43,11 @@ namespace Horeca.MVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create(int tableId, int floorplanId)
+        public async Task<IActionResult> Create(int tableId, int floorplanId, int varyingDishes)
         {
             var dishes = await dishService.GetDishes();
             var table = await tableService.GetTableById(tableId, floorplanId);
-            CreateOrderViewModel model = OrderMapper.MapCreateOrderModel(table, dishes);
+            CreateOrderViewModel model = OrderMapper.MapCreateOrderModel(table, dishes, varyingDishes);
 
             return View(model);
         }

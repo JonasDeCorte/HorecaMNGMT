@@ -2,3 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+$("#addQuantities").click(function () {
+    var values = $("#dishIds").val();
+    var valueAmount = values.length;
+    console.log("Idlist length: " + valueAmount);
+});
