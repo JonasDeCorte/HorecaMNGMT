@@ -45,7 +45,9 @@
                                     <td>@schedule.AvailableSeat / @schedule.Capacity</td>
                                     <td>@schedule.Status</td>
                                     <td>
-                                        @if (schedule.Status != ScheduleStatus.Expired)
+                                        @if (schedule.Status != ScheduleStatus.Expired 
+                                        && schedule.Status != ScheduleStatus.Unavailable 
+                                        && schedule.Status != ScheduleStatus.Full)
                                         {
 
                                             @if (accountService.Authorize(PermissionConstants.Booking_Create))

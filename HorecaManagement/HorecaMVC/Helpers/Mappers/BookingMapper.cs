@@ -39,7 +39,7 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static BookingHistoryViewModel MapBookingHistoryModel(BookingHistoryDto bookingHistoryDto)
         {
-            BookingHistoryViewModel bookingHistoryViewModel = new BookingHistoryViewModel();
+            BookingHistoryViewModel bookingHistoryViewModel = new();
             foreach (BookingDto bookingDto in bookingHistoryDto.BookingDetails)
             {
                 BookingViewModel bookingViewModel = MapBookingModel(bookingDto);
@@ -50,7 +50,7 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static BookingListViewModel MapBookingListModel(IEnumerable<BookingDto> bookings)
         {
-            BookingListViewModel bookingListViewModel = new BookingListViewModel();
+            BookingListViewModel bookingListViewModel = new();
             foreach (BookingDto bookingDto in bookings)
             {
                 bookingListViewModel.Bookings.Add(MapBookingModel(bookingDto));
@@ -70,6 +70,36 @@ namespace Horeca.MVC.Helpers.Mappers
                 PhoneNo = model.PhoneNo,
                 ScheduleId = model.ScheduleId,
                 Pax = model.Pax,
+            };
+        }
+
+        public static EditBookingDto MapEditBookingDto(EditBookingViewModel model)
+        {
+            return new EditBookingDto()
+            {
+                Id = model.Id,
+                BookingDate = model.BookingDate,
+                CheckIn = model.CheckIn,
+                CheckOut = model.CheckOut,
+                FullName = model.FullName,
+                PhoneNo = model.PhoneNo,
+                ScheduleId = model.ScheduleId,
+                Pax = model.Pax,
+            };
+        }
+
+        public static EditBookingViewModel MapEditBookingModel(BookingDto booking)
+        {
+            return new EditBookingViewModel
+            {
+                Id = booking.Id,
+                BookingDate = booking.BookingDate,
+                CheckIn = booking.CheckIn,
+                CheckOut = booking.CheckOut,
+                FullName = booking.FullName,
+                Pax = booking.Pax,
+                PhoneNo = booking.PhoneNo,
+                ScheduleId = booking.ScheduleId,
             };
         }
     }

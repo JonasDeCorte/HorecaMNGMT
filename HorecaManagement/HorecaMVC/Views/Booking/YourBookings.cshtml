@@ -60,6 +60,13 @@
                         <td>
                             
                             <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
+                             @if (accountService.Authorize(PermissionConstants.Booking_Update))
+                                    {
+                                        <a asp-action="Edit" asp-route-bookingNo="@booking.BookingNo" 
+                                   class="btn btn-primary">
+                                            Edit
+                                        </a>
+                                    }
                             @if (accountService.Authorize(PermissionConstants.Booking_Delete))
                             {
                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
