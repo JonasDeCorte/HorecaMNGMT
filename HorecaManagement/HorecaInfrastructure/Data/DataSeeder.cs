@@ -114,6 +114,7 @@ namespace Horeca.Infrastructure.Data
             var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
             var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
             var appUserRead = listPermissions.Where(x => x.Name.Equals("ApplicationUser_Read"));
+            var employeeRead = listPermissions.Where(x => x.Name.Equals("Employee_Read"));
 
             #endregion permissions
 
@@ -214,6 +215,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(employeeRead);
 
             AddApplicationUserPermissions(context, restaurantBeheerder, listListPerms);
             listListPerms.Clear();
@@ -657,6 +659,10 @@ namespace Horeca.Infrastructure.Data
                 new Permission()
                 {
                     Name = PermissionConstants.ApplicationUser_Delete
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Employee_Read
                 }
             };
 
