@@ -127,7 +127,7 @@ namespace Horeca.API.Controllers
         [Route(RouteConstants.TableConstants.Update)]
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(BaseResponseDto))]
-        public async Task<IActionResult> Update([FromBody] MutateTableDto model, int id, int floorplanId)
+        public async Task<IActionResult> Update([FromBody] EditTableDto model, int id, int floorplanId)
         {
             return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new EditTableCommand(model, id, floorplanId)));
         }

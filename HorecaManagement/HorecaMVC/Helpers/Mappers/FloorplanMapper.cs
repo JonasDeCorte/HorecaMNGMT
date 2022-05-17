@@ -10,7 +10,7 @@ namespace Horeca.MVC.Helpers.Mappers
     {
         public static FloorplanListViewModel MapFloorplanListModel(IEnumerable<FloorplanDto> floorplanDtos)
         {
-            FloorplanListViewModel model = new FloorplanListViewModel();
+            FloorplanListViewModel model = new();
             foreach (var floorplanDto in floorplanDtos)
             {
                 model.Floorplans.Add(MapFloorplanModel(floorplanDto));
@@ -30,7 +30,7 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static FloorplanDetailViewModel MapFloorplanDetailModel(FloorplanDetailDto floorplanDto)
         {
-            FloorplanDetailViewModel model = new FloorplanDetailViewModel()
+            FloorplanDetailViewModel model = new()
             {
                 Id = floorplanDto.Id,
                 RestaurantId = floorplanDto.Restaurant.Id,
@@ -45,7 +45,7 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static FloorplanDetailDto MapFloorplanDetailDto(FloorplanCanvasViewModel model, int floorplanId, int restaurantId)
         {
-            FloorplanDetailDto dto = new FloorplanDetailDto()
+            FloorplanDetailDto dto = new()
             {
                 Id = floorplanId,
                 Name = "string",
@@ -56,7 +56,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 }
             };
             dto.Tables = new List<MutateTableDto>();
-            foreach(var table in model.objects)
+            foreach (var table in model.objects)
             {
                 var tableDto = TableMapper.MapMutateTableDto(table, floorplanId);
                 dto.Tables.Add(tableDto);
@@ -66,8 +66,10 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static GetFloorplanCanvasViewModel MapFloorplanCanvasModel(FloorplanDetailDto floorplan)
         {
-            GetFloorplanCanvasViewModel model = new GetFloorplanCanvasViewModel();
-            model.objects = new List<GetCanvasTableViewModel>();
+            GetFloorplanCanvasViewModel model = new()
+            {
+                objects = new List<GetCanvasTableViewModel>()
+            };
             foreach (var table in floorplan.Tables)
             {
                 var canvasTable = TableMapper.MapCanvasTableModel(table);

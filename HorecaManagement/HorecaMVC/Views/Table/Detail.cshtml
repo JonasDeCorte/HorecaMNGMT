@@ -28,8 +28,14 @@
     </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
-            <h1>@Model.Name</h1>
+            <h1>@Model.Name </h1>
+             @if (accountService.Authorize(PermissionConstants.Table_Update))
+            {
+                <a asp-action="Edit" asp-route-tableId="@Model.Id" asp-route-floorplanId="@Model.FloorplanId" class="btn btn-primary">Edit</a>
+            }
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
+
         <div>
             <div class="shadow card bg-light m-3">
                 <div class="card-header bg-dark">

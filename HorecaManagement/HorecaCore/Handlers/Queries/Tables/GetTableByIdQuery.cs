@@ -18,13 +18,13 @@ namespace Horeca.Core.Handlers.Queries.Tables
             FloorplanId = floorplanId;
         }
 
-        public class GetDishByIdQueryHandler : IRequestHandler<GetTableByIdQuery, TableDto>
+        public class GetTableByIdQueryHandler : IRequestHandler<GetTableByIdQuery, TableDto>
         {
             private readonly IUnitOfWork repository;
             private readonly IMapper mapper;
             private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-            public GetDishByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
+            public GetTableByIdQueryHandler(IUnitOfWork repository, IMapper mapper)
             {
                 this.repository = repository;
                 this.mapper = mapper;

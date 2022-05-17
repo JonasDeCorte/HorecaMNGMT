@@ -6,7 +6,6 @@ namespace Horeca.MVC.Helpers.Mappers
 {
     public class TableMapper
     {
-
         public static TableViewModel MapTableModel(TableDto response)
         {
             return new TableViewModel()
@@ -22,9 +21,21 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
+        public static EditTableViewModel MapEditTableModel(TableDto response)
+        {
+            return new EditTableViewModel()
+            {
+                Id = response.Id,
+                FloorplanId = response.FloorplanId,
+                Pax = response.Pax,
+                Seats = response.Seats,
+                Name = response.Name,
+            };
+        }
+
         public static TableDetailViewModel MapTableDetailModel(TableDto response, List<GetOrderLinesByTableIdDto> orders)
         {
-            TableDetailViewModel model = new TableDetailViewModel()
+            TableDetailViewModel model = new()
             {
                 Id = response.Id,
                 FloorplanId = response.FloorplanId,
@@ -44,7 +55,7 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static FloorplanTableViewModel MapFloorplanTableModel(MutateTableDto table)
         {
-            return new FloorplanTableViewModel()
+            return new FloorplanTableViewModel
             {
                 Id = table.Id,
                 FloorplanId = table.FloorplanId,
@@ -63,6 +74,18 @@ namespace Horeca.MVC.Helpers.Mappers
                 Height = table.Height,
                 ScaleX = table.ScaleX,
                 ScaleY = table.ScaleY,
+            };
+        }
+
+        public static EditTableDto MapEditTableDto(EditTableViewModel table, int floorplanId)
+        {
+            return new EditTableDto
+            {
+                FloorplanId = floorplanId,
+                Id = table.Id,
+                Name = table.Name,
+                Pax = table.Pax,
+                Seats = table.Seats,
             };
         }
 

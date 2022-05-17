@@ -3,6 +3,7 @@ using Horeca.MVC.Models.Floorplans;
 using Horeca.MVC.Models.Tables;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Floorplans;
+using Horeca.Shared.Dtos.Tables;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Horeca.MVC.Controllers
@@ -36,6 +37,41 @@ namespace Horeca.MVC.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Edit(int tableId, int floorplanId)
+        {
+            TableDto table = await tableService.GetTableById(tableId, floorplanId);
+            EditTableViewModel model = TableMapper.MapEditTableModel(table);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditTableViewModel table)
+        {
+            Console.WriteLine("entered edit method");
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("entered modelstate ");
+
+                EditTableDto result = TableMapper.MapEditTableDto(table, table.FloorplanId);
+
+                var response = await tableService.EditTableFromFloorplan(result, table.FloorplanId);
+                if (response == null)
+                {
+                    Console.WriteLine("response edit method null ");
+
+                    return View(nameof(NotFound));
+                }
+                Console.WriteLine("response not null edit method");
+
+                return RedirectToAction(nameof(Detail), new { tableId = table.Id, floorplanId = table.FloorplanId });
+            }
+            else
+            {
+                return View(table);
+            }
+        }
+
         [Route("/Table/CreateTables/{floorplanId}")]
         [HttpPost]
         public async Task<JsonResult> CreateTables([FromBody] FloorplanCanvasViewModel floorplan, int floorplanId)
@@ -43,13 +79,13 @@ namespace Horeca.MVC.Controllers
             if (floorplan == null)
             {
                 return Json(nameof(NotFound));
-            } 
+            }
             else
             {
                 FloorplanDetailDto oldFloorplanDto = await floorplanService.GetFloorplanById(floorplanId);
                 if (oldFloorplanDto.Tables.Any())
                 {
-                    foreach(var table in oldFloorplanDto.Tables)
+                    foreach (var table in oldFloorplanDto.Tables)
                     {
                         var res = await tableService.DeleteTable(table.Id);
                         if (res == null)

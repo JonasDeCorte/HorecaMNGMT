@@ -5,7 +5,7 @@ namespace Horeca.Shared.Dtos.Tables
     public class TableDto
     {
         public int Id { get; set; }
-        
+
         public int FloorplanId { get; set; }
 
         public int? ScheduleId { get; set; }
@@ -24,6 +24,19 @@ namespace Horeca.Shared.Dtos.Tables
     public class TableDetailDto : TableDto
     {
         public List<Order> Orders { get; set; }
+    }
+
+    public class EditTableDto
+    {
+        public int Id { get; set; }
+
+        public int FloorplanId { get; set; }
+
+        public int? Pax { get; set; }
+
+        public string? Seats { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class MutateTableDto

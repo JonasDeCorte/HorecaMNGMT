@@ -3,9 +3,9 @@ using Horeca.Core.Handlers.Commands.MenuCards;
 
 namespace Horeca.Core.Validators.Update
 {
-    public class CreateMenuMenuCardValidator : AbstractValidator<EditMenuMenuCardCommand>
+    public class UpdateMenuMenuCardValidator : AbstractValidator<EditMenuMenuCardCommand>
     {
-        public CreateMenuMenuCardValidator()
+        public UpdateMenuMenuCardValidator()
         {
             RuleFor(x => x.Model.Menu.Description).NotEmpty().WithMessage("Description is required");
             RuleFor(x => x.Model.Menu.Name).NotEmpty().WithMessage("Name is required");

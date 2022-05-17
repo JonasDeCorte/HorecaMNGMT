@@ -72,5 +72,22 @@ namespace Horeca.MVC.Services
             }
             return null;
         }
+
+        public async Task<HttpResponseMessage> EditTableFromFloorplan(EditTableDto table, int floorplanId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put,
+              $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Table}/{ClassConstants.Floorplan}" +
+              $"?id={table.Id}&{ClassConstants.FloorplanId}={floorplanId}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(table), Encoding.UTF8, "application/json")
+            };
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+            return null;
+        }
     }
 }

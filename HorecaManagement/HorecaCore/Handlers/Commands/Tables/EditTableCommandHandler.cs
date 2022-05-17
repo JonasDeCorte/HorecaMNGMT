@@ -8,11 +8,11 @@ namespace Horeca.Core.Handlers.Commands.Tables
 {
     public class EditTableCommand : IRequest<int>
     {
-        public MutateTableDto Model { get; }
+        public EditTableDto Model { get; }
         public int Id { get; }
         public int FloorplanId { get; }
 
-        public EditTableCommand(MutateTableDto model, int id, int floorplanId)
+        public EditTableCommand(EditTableDto model, int id, int floorplanId)
         {
             Model = model;
             Id = id;
@@ -46,24 +46,9 @@ namespace Horeca.Core.Handlers.Commands.Tables
 
             table.Seats = request.Model.Seats ?? table.Seats;
             table.Name = request.Model.Name ?? table.Name;
-            table.Src = request.Model.Src ?? table.Src;
-            table.Type = request.Model.Type ?? table.Type;
-            table.OriginX = request.Model.OriginX ?? table.OriginX;
-            table.OriginY = request.Model.OriginY ?? table.OriginY;
+
             if (request.Model.Pax != table.Pax)
                 table.Pax = request.Model.Pax;
-            if (request.Model.Left != table.Left)
-                table.Left = request.Model.Left;
-            if (request.Model.Top != table.Top)
-                table.Top = request.Model.Top;
-            if (request.Model.Width != table.Width)
-                table.Width = request.Model.Width;
-            if (request.Model.Height != table.Height)
-                table.Height = request.Model.Height;
-            if (request.Model.ScaleX != table.ScaleX)
-                table.ScaleX = request.Model.ScaleX;
-            if (request.Model.ScaleY != table.ScaleY)
-                table.ScaleY = request.Model.ScaleY;
 
             repository.Tables.Update(table);
 
