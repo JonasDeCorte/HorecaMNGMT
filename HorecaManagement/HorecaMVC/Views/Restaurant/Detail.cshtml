@@ -87,7 +87,7 @@
                 </div>
             </div>
         }
-        @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read))
+        @if (accountService.Authorize(PermissionConstants.ApplicationUser_Read) && accountService.Authorize(PermissionConstants.Employee_Read))
         {
             <div class="shadow card bg-light m-3">
                 <div class="card-header bg-dark">
