@@ -54,29 +54,6 @@ canvas.on('mouse:up', function (opt) {
     this.selection = true;
 });
 
-document.getElementById('clear-canvas').onclick = function () {
-    canvas.clear();
-    return false;
-};
-document.getElementById('toImage').onclick = function () {
-    var data = canvas.toDataURL({ multiplier: 2, format: 'png' });
-    console.log(data);
-    downloadDataUrl(data);
-
-    return false;
-};
-
-async function downloadDataUrl(dataURL) {
-    const blob = await fetch(dataURL).then(r => r.blob());
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.download = "FloorPlan.png"
-    a.href = url;
-    a.click();
-    URL.revokeObjectURL(url);
-    a.remove();
-}
-
 $(document).ready(function () {
     var element = document.getElementById("FromJson");
     var data = $(element).data("json");
