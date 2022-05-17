@@ -59,8 +59,10 @@
                                                 <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
                                             }
                                         }
-
+                                             @if (accountService.Authorize(PermissionConstants.Schedule_Read))
+                                            {
                                             <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                            }
                                             @if (accountService.Authorize(PermissionConstants.Schedule_Delete))
                                             {
                                                 <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
