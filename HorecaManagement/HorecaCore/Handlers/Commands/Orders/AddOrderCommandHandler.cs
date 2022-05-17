@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Horeca.Core.Exceptions;
+﻿using Horeca.Core.Exceptions;
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Orders;
