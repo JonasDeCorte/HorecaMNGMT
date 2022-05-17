@@ -65,7 +65,7 @@ namespace Horeca.MVC.Helpers.Mappers
             List<DishViewModel> dishList = new();
             foreach (var dish in dishes)
             {
-                DishViewModel dishModel = DishMapper.MapModel(dish);
+                DishViewModel dishModel = DishMapper.MapDishModel(dish);
                 if (!menuDishesDto.Dishes.Any(item => item.Id == dish.Id))
                 {
                     dishList.Add(dishModel);

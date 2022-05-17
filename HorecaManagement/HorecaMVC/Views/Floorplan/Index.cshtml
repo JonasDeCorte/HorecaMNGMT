@@ -1,4 +1,6 @@
-﻿<div class="text-center">
+﻿@model Horeca.MVC.Models.Floorplans.FloorplanListViewModel
+
+<div class="text-center">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -17,7 +19,7 @@
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
             <h1>Floor Plans</h1>
-            @if (accountService.Authorize(PermissionConstants.Order_Create))
+            @if (accountService.Authorize(PermissionConstants.Floorplan_Create))
             {
                 <a asp-action="Create" class="btn btn-primary">New Floor Plan</a>
             }
@@ -31,23 +33,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var floorplan in Model.Floorplans)
+                    {
                         <tr>
-                            <td>Floor Plan 1</td>
+                            <td>@floorplan.Name</td>
                             <td>
-                                <a asp-action="Detail" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize(PermissionConstants.Order_Update))
+                                <a asp-action="Detail" asp-route-floorplanId="@floorplan.Id" class="btn btn-primary">Details</a>
+                                @if (accountService.Authorize(PermissionConstants.Floorplan_Update))
                                 {
-                                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                                    <a asp-action="Edit" asp-route-floorplanId="@floorplan.Id" class="btn btn-primary">Edit</a>
                                 }
-                                @if (accountService.Authorize(PermissionConstants.Order_Delete))
+                                @if (accountService.Authorize(PermissionConstants.Floorplan_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-id="Id">
+                                    data-bs-target="#deleteModal" data-id="@floorplan.Id">
                                         Delete
                                     </button>
                                 }
                             </td>
                         </tr>
+                    }
                 </tbody>
             </table>
         </div>

@@ -1,0 +1,132 @@
+﻿@using static Horeca.Shared.Utils.Constants
+@model Horeca.MVC.Models.Tables.TableDetailViewModel
+<div class="text-center">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Floorplan" asp-action="Index">
+                    Floor Plans
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Floorplan" asp-action="Detail" asp-route-floorplanId="@Model.FloorplanId">
+                    Floorplan @Model.FloorplanId
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+    <div class="shadow card bg-light mt-3">
+        <div class="card-header bg-dark">
+            <h1>@Model.Name </h1>
+             @if (accountService.Authorize(PermissionConstants.Table_Update))
+            {
+                <a asp-action="Edit" asp-route-tableId="@Model.Id" asp-route-floorplanId="@Model.FloorplanId" class="btn btn-primary">Edit</a>
+            }
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+        </div>
+
+        <div>
+            <div class="shadow card bg-light m-3">
+                <div class="card-header bg-dark">
+                    <h2>Orders</h2>
+                </div>
+                @if (Model.Orders.Any())
+                {
+                    @foreach (var order in Model.Orders)
+                    {
+                        <div class="shadow card bg-light m-3">
+                            <div class="card-header bg-dark">
+                                <h5 class="card-title">Order @order.Id - Table @order.TableId</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-light mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="col-3">Dish</th>
+                                            <th scope="col" class="col-1">Quantity</th>
+                                            <th scope="col" class="col-2">Price</th>
+                                            <th scope="col" class="col-3">State</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var orderLine in order.Lines)
+                                        {
+                                            <tr>
+                                                <td scope="row">@orderLine.Dish.Name</td>
+                                                <td>@orderLine.Quantity</td>
+                                                <td>€@orderLine.Price</td>
+                                                <td>@orderLine.DishState</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                } else
+                {
+                    <div class="card-body">
+                        <p class="card-text">There are currently no orders for this table.</p>
+                    </div>
+                }
+                <div class="card-footer bg-dark">
+                    @if (accountService.Authorize(PermissionConstants.Order_Create))
+                    {
+                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addOrderModal">
+                            Add Order
+                        </button>
+                        @*<a asp-action="Create" asp-controller="Order" asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id" class="btn btn-primary">Add Order</a>*@
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-dark">
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addOrderModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="addOrderLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title" id="addOrderLabel">Add Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-black">
+                How many different dishes will be added to this order?
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Amount of Dishes</label>
+                    <input type="text" class="form-control" id="dishAmount" placeholder="Amount of Dishes">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" asp-action="Create" asp-controller="Order" asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id" id="addOrderBtn">
+                    Add Order
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#dishAmount").change(function() {
+        //$("#addOrderBtn").attr("asp-route-varyingDishes", $("#dishAmount").val());
+        $("#addOrderBtn").attr("href", "/Order/Create?floorplanId=" + @Model.FloorplanId + "&tableId=" + @Model.Id + "&varyingDishes=" + $("#dishAmount").val());
+    });
+</script>

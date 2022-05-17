@@ -2,7 +2,7 @@
 {
     public class UserNotFoundException : Exception
     {
-        public UserNotFoundException() : base("User can't be found.")
+        public UserNotFoundException() : base("User does not exist")
         {
         }
 

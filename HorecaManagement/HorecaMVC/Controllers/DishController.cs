@@ -166,7 +166,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            DishViewModel model = DishMapper.MapModel(dish);
+            DishViewModel model = DishMapper.MapDishModel(dish);
 
             return View(model);
         }

@@ -96,7 +96,7 @@ namespace Horeca.MVC.Helpers.Mappers
             {
                 if (!menuListsDto.Dishes.Any(item => item.Id == dish.Id))
                 {
-                    DishViewModel dishModel = DishMapper.MapModel(dish);
+                    DishViewModel dishModel = DishMapper.MapDishModel(dish);
                     dishList.Add(dishModel);
                 }
             }

@@ -4,8 +4,6 @@ namespace Horeca.Shared.Data.Repositories
 {
     public interface IBookingRepository : IRepository<Booking>
     {
-        public int AdminGetPendingBookingCount();
-
         public Task<Booking> GetByNumber(string bookingNo);
 
         public Task<Booking> GetBookingById(int bookingID);

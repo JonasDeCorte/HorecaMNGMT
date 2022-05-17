@@ -109,6 +109,7 @@ namespace Horeca.Infrastructure.Data
             var restaurantSchedulePerms = listPermissions.Where(x => x.Name.StartsWith("RestauranSchedule_"));
             var bookingPerms = listPermissions.Where(x => x.Name.StartsWith("Booking_"));
             var tablePerms = listPermissions.Where(x => x.Name.StartsWith("Table_"));
+            var floorplanPerms = listPermissions.Where(x => x.Name.StartsWith("Floorplan_"));
             var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
             var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
             var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
@@ -158,6 +159,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(restaurantPerms.Take(1));
             AddApplicationUserPermissions(context, chef, listListPerms);
             listListPerms.Clear();
 
@@ -179,11 +181,13 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(menuPerms);
             listListPerms.Add(menuCardPerms);
             listListPerms.Add(tablePerms);
+            listListPerms.Add(floorplanPerms);
             listListPerms.Add(bookingPerms);
             listListPerms.Add(restaurantSchedulePerms);
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
+            listListPerms.Add(restaurantPerms.Take(1));
 
             AddApplicationUserPermissions(context, zaal, listListPerms);
             listListPerms.Clear();
@@ -201,6 +205,7 @@ namespace Horeca.Infrastructure.Data
             };
             await userManager.CreateAsync(restaurantBeheerder, "restaurantBeheerder123!");
             listListPerms.Add(tablePerms);
+            listListPerms.Add(floorplanPerms);
             listListPerms.Add(bookingPerms);
             listListPerms.Add(restaurantPerms);
             listListPerms.Add(restaurantSchedulePerms);
@@ -215,7 +220,7 @@ namespace Horeca.Infrastructure.Data
 
             #endregion ApplicationUser restaurantBeheerder
 
-            #region Add Restaurants, Bookings, Tables, Orders
+            #region Add Restaurants, Bookings, Tables, Orders, Floorplans
 
             for (int i = 1; i < AmountOfEachType; i++)
             {
@@ -239,13 +244,13 @@ namespace Horeca.Infrastructure.Data
                     User = superAdmin
                 });
                 context.Restaurants.Add(restaurant);
-
                 await context.SaveChangesAsync();
                 context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
+
                 DateTime newSchedule = DateTime.Today.AddDays(1);
                 Array scheduleStatus = Enum.GetValues(typeof(Constants.ScheduleStatus));
                 Random randomStatus = new();
-                Schedule Schedule = new()
+                Schedule schedule = new()
                 {
                     RestaurantId = restaurant.Id,
                     ScheduleDate = newSchedule,
@@ -255,7 +260,7 @@ namespace Horeca.Infrastructure.Data
                     AvailableSeat = 20,
                     Status = (Constants.ScheduleStatus)scheduleStatus.GetValue(randomStatus.Next(scheduleStatus.Length))
                 };
-                context.Schedules.Add(Schedule);
+                context.Schedules.Add(schedule);
 
                 Booking booking = new()
                 {
@@ -263,55 +268,84 @@ namespace Horeca.Infrastructure.Data
                     BookingDate = DateTime.Today,
                     CheckIn = DateTime.Today.AddHours(i),
                     CheckOut = DateTime.Today.AddHours(i + 5 / 2),
-                    PhoneNo = $"{Guid.NewGuid()}",
+                    PhoneNo = "+32478194517",
                     BookingNo = $"{Guid.NewGuid()}",
-                    BookingStatus = i % 2 == 0 ? Constants.BookingStatus.PENDING : Constants.BookingStatus.EXPIRED,
+                    BookingStatus = Constants.BookingStatus.COMPLETE,
                     UserId = i % 2 == 0 ? superAdmin.Id : zaal.Id,
                     User = i % 2 == 0 ? superAdmin : zaal,
-                    Schedule = Schedule,
-                    ScheduleId = Schedule.Id,
+                    Schedule = schedule,
+                    ScheduleId = schedule.Id,
                     Pax = i
                 };
                 context.Bookings.Add(booking);
-            }
-            await context.SaveChangesAsync();
 
-            var bookings = context.Bookings.ToList();
-            foreach (var booking in bookings)
-            {
+                Floorplan floorplan = new()
+                {
+                    Name = $"Floorplan {i}",
+                };
+                context.Floorplans.Add(floorplan);
+                await context.SaveChangesAsync();
+
+                floorplan.RestaurantId = restaurant.Id;
+                context.Floorplans.Update(floorplan);
+                await context.SaveChangesAsync();
+
                 Table table = new()
                 {
-                    Pax = booking.Pax,
-                    BookingId = booking.Id,
+                    FloorplanId = i,
                     ScheduleId = booking.ScheduleId,
+                    Schedule = schedule,
+                    BookingId = booking.Id,
+                    Booking = booking,
+                    Name = "Table" + i,
+                    Pax = booking.Pax,
+                    Seats = booking.Pax.ToString(),
+                    Src = "https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png",
+                    Type = "image",
+                    OriginX = "left",
+                    OriginY = "top",
+                    Left = 200,
+                    Top = 200,
+                    Width = 100,
+                    Height = 100,
+                    ScaleX = 1,
+                    ScaleY = 1,
                 };
                 context.Tables.Add(table);
-                var schedule = await context.Schedules.FindAsync(booking.ScheduleId);
-                schedule.AvailableSeat -= table.Pax;
-                context.Schedules.Update(schedule);
             }
             await context.SaveChangesAsync();
 
             List<Table> list = context.Tables.AsNoTracking().ToList();
-            Array orderstate = Enum.GetValues(typeof(Constants.OrderState));
-            Array dishstate = Enum.GetValues(typeof(Constants.OrderState));
-            Random random = new();
 
             foreach (var table in list)
             {
-                var dish = await context.Dishes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == table.Id);
+                var dishes = await context.Dishes.AsNoTracking().Where(x => x.Id <= 3).ToListAsync();
                 Order order = new()
                 {
                     TableId = table.Id,
-                    OrderState = (Constants.OrderState)orderstate.GetValue(random.Next(orderstate.Length)),
+                    OrderState = Constants.OrderState.Begin,
                     OrderLines = new List<OrderLine>()
                     {
                         new OrderLine()
                         {
-                        DishId = dish.Id,
-                        Price = dish.Price,
-                        Quantity = table.Id+1,
-                        DishState = (Constants.DishState)dishstate.GetValue(random.Next(dishstate.Length)),
+                        DishId = dishes[0].Id,
+                        Price = dishes[0].Price,
+                        Quantity = table.Id +1,
+                        DishState = Constants.DishState.Waiting
+                        },
+                        new OrderLine()
+                        {
+                        DishId = dishes[1].Id,
+                        Price = dishes[2].Price,
+                        Quantity = table.Id +1,
+                        DishState = Constants.DishState.Waiting
+                        },
+                        new OrderLine()
+                        {
+                        DishId = dishes[2].Id,
+                        Price = dishes[2].Price,
+                        Quantity = table.Id +1,
+                        DishState = Constants.DishState.Waiting
                         },
                      }
                 };
@@ -323,7 +357,7 @@ namespace Horeca.Infrastructure.Data
 
             await context.SaveChangesAsync();
 
-            #endregion Add Restaurants, Bookings, Tables, Orders
+            #endregion Add Restaurants, Bookings, Tables, Orders, Floorplans
 
             #region Add RestaurantId to ingredient
 
@@ -556,6 +590,24 @@ namespace Horeca.Infrastructure.Data
                 {
                     Name = PermissionConstants.Table_Delete
                 },
+
+                new Permission()
+                {
+                    Name = PermissionConstants.Floorplan_Read
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Floorplan_Create
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Floorplan_Update
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.Floorplan_Delete
+                },
+
                 new Permission()
                 {
                     Name = PermissionConstants.Order_Read

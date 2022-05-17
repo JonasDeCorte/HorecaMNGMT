@@ -74,6 +74,13 @@ namespace Horeca.Shared.Constants
         public const string Table_Update = $"{nameof(Table)}_{Permissions.Update}";
         public const string Table_Delete = $"{nameof(Table)}_{Permissions.Delete}";
 
+        // Floorplan perms
+
+        public const string Floorplan_Read = $"{nameof(Floorplan)}_{Permissions.Read}";
+        public const string Floorplan_Create = $"{nameof(Floorplan)}_{Permissions.Create}";
+        public const string Floorplan_Update = $"{nameof(Floorplan)}_{Permissions.Update}";
+        public const string Floorplan_Delete = $"{nameof(Floorplan)}_{Permissions.Delete}";
+
         // Order perms
 
         public const string Order_Read = $"{nameof(Order)}_{Permissions.Read}";

@@ -35,7 +35,6 @@ namespace Horeca.Core.Handlers.Queries.Bookings
             var bookings = await repository.Bookings.GetBookingsForRestaurantSchedule(request.ScheduleId);
 
             logger.Info("bookings found with: {req} items", bookings.Count());
-            Console.WriteLine(bookings);
 
             var mapped = mapper.Map<IEnumerable<BookingDto>>(bookings);
             return mapped;

@@ -19,6 +19,7 @@ namespace Horeca.Shared.Data
         IBookingRepository Bookings { get; }
 
         ITableRepository Tables { get; }
+        IFloorplanRepository Floorplans { get; }
 
         IOrderRepository Orders { get; }
 

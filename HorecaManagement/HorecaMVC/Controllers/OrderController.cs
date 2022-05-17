@@ -10,10 +10,14 @@ namespace Horeca.MVC.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService orderService;
+        private readonly IDishService dishService;
+        private readonly ITableService tableService;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, IDishService dishService, ITableService tableService)
         {
             this.orderService = orderService;
+            this.dishService = dishService;
+            this.tableService = tableService;
         }
 
         [Route("/Order/{restaurantId}/{state}")]
@@ -39,36 +43,47 @@ namespace Horeca.MVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create(int tableId)
+        public async Task<IActionResult> Create(int tableId, int floorplanId, int varyingDishes)
         {
-            CreateOrderViewModel model = new CreateOrderViewModel()
-            {
-                TableId = tableId
-            };
+            var dishes = await dishService.GetDishes();
+            var table = await tableService.GetTableById(tableId, floorplanId);
+            CreateOrderViewModel model = OrderMapper.MapCreateOrderModel(table, dishes, varyingDishes);
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateOrderViewModel model)
         {
-            MutateOrderDto dto = OrderMapper.MapCreateOrderDto(model);
-            var response = await orderService.AddOrder(dto);
-            if (response == null)
+            if (ModelState.IsValid)
             {
-                return View(nameof(NotFound));
+                MutateOrderDto dto = OrderMapper.MapCreateOrderDto(model);
+                var response = await orderService.AddOrder(dto);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
+                return RedirectToAction("Detail", "Table", new { tableId = model.TableId, floorplanId = model.FloorplanId });
+            } else
+            {
+                return View(model);
             }
-            return View();
         }
 
-        [Route("/Order/{restaurantId}/{orderId}/Prepare/{orderLineId}")]
-        public async Task<IActionResult> PrepareOrderLine(int restaurantId, int orderId, int orderLineId)
+        [Route("/Order/{restaurantId}/{orderId}/Prepare/{orderLineId}/{state}")]
+        public async Task<IActionResult> PrepareOrderLine(int restaurantId, int orderId, int orderLineId, OrderState state = OrderState.Begin)
         {
             var response = await orderService.PrepareOrderLine(restaurantId, orderId, orderLineId);
             if (response == null)
             {
                 return View(nameof(NotFound));
             }
-            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Begin});
+            if (state == OrderState.Prepare)
+            {
+                return RedirectToAction(nameof(Index), new { restaurantId, state });
+            }
+
+            return RedirectToAction(nameof(Index), new { restaurantId, state = OrderState.Begin });
         }
 
         [Route("/Order/{restaurantId}/{orderId}/Ready/{orderLineId}")]
@@ -79,7 +94,9 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
+            var deliver = await orderService.DeliverOrder(restaurantId, orderId);
+
+            return RedirectToAction(nameof(Index), new { restaurantId, state = OrderState.Prepare });
         }
 
         [Route("/Order/{restaurantId}/{orderId}/Deliver")]
@@ -90,7 +107,7 @@ namespace Horeca.MVC.Controllers
             {
                 return View(nameof(NotFound));
             }
-            return RedirectToAction(nameof(Index), new { restaurantId = restaurantId, state = OrderState.Prepare });
+            return RedirectToAction(nameof(Index), new { restaurantId, state = OrderState.Prepare });
         }
     }
 }

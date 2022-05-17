@@ -1,6 +1,6 @@
 using Horeca.API.Authorization;
 using Horeca.API.Middleware;
-using Horeca.API.PipelineBehaviours;
+using Horeca.API.PipelineBehaviors;
 using Horeca.Core;
 using Horeca.Infrastructure;
 using Horeca.Infrastructure.Data;

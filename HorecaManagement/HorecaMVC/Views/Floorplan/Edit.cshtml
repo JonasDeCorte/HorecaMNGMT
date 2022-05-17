@@ -1,0 +1,109 @@
+﻿@model Horeca.MVC.Models.Floorplans.FloorplanDetailViewModel
+<div class="wrapper">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
+                    @restaurantService.GetCurrentRestaurantName()
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Floorplan" asp-action="Index">
+                    Floor Plans
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Floorplan" asp-action="Detail" asp-route-floorplanId="@Model.Id">
+                    @Model.Name
+                </a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">Edit</li>
+        </ol>
+    </nav>
+    <header class="header">
+        <div class="card-header bg-dark">
+            <h1>@Model.Name</h1>
+        </div>
+    </header>
+    <article class="main">
+        <div id="drawing-container" class="canvas-container bg-white" style="position: relative; user-select: none;">
+            <canvas class="lower-canvas" style="position: absolute; /*width: 600px; height: 600px; */left: 0px; top: 0px; user-select: none;"></canvas>
+            <canvas id="drawing-area" class="upper-canvas" style="position: absolute; left: 0px; top: 0px; user-select: none;/* width: 600px; height: 600px; */cursor: default;"></canvas>
+        </div>
+    </article>
+    <aside class="aside aside-1">
+        <div class="d-grid gap-2 d-md-block mx-auto">
+            <a class="btn btn-primary m-2" id="clear-canvas">
+                Clear canvas
+            </a>
+          
+            @if (accountService.Authorize(PermissionConstants.Floorplan_Create))
+            {
+                <a class="btn btn-primary m-2" id="ToJson" data-id="@Model.Id">
+                    Save floorplan
+                </a>
+            }
+            <a class="btn btn-primary m-2" id="FromJson" data-json="@Model.Json">
+                Get floorplan
+            </a>
+        </div>
+    </aside>
+    @if (accountService.Authorize(PermissionConstants.Floorplan_Update))
+    {
+        <aside class="aside aside-2">
+            <div id="shapes">
+                <ul>
+                    <li>
+                        <button id="AddModal" type="button" class="modalbutton btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#AddPropertiesModal">
+                            <img id='img1'  class="shape" src="https://euc1.posios.com/posimages/MAIN/images/tables/01-parasol-dark.png" />
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    }
+</div>
+
+<div class="modal fade" id="AddPropertiesModal" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="AddPropertiesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title" id="AddPropertiesModalLabel">Floorplan properties</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-black">
+                Please enter details.
+                <form id="AddTableForm" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="table-name" class="col-form-label">Give your table a name:</label>
+                        <input required type="text" class="form-control" id="table-name">
+                        <div class="invalid-feedback">
+                            Please choose a name for your table.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="seats-text" class="col-form-label">amount of seats:</label>
+                        <input required class="form-control" id="seats-text">
+                        <div class="invalid-feedback">
+                            Please choose an amount of seats greater than 0.
+                        </div>
+                    </div>
+                    <button type="button" id="btnSubmit" class="btn btn-primary">Add</button>
+                    <button type="button" id="btnClose" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div id="alertPlaceholder"></div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/fabric.js/fabric.min.js"></script>
+<script src="~/js/tafelPlanner.js"></script>

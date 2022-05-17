@@ -9,7 +9,7 @@ namespace Horeca.MVC.Helpers.Mappers
 {
     public static class DishMapper
     {
-        public static DishViewModel MapModel(DishDto dish)
+        public static DishViewModel MapDishModel(DishDto dish)
         {
             DishViewModel model = new()
             {
@@ -29,7 +29,7 @@ namespace Horeca.MVC.Helpers.Mappers
             DishListViewModel model = new();
             foreach (var item in dishes)
             {
-                DishViewModel dishModel = MapModel(item);
+                DishViewModel dishModel = MapDishModel(item);
                 model.Dishes.Add(dishModel);
             }
             return model;
@@ -73,6 +73,15 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
+        public static OrderDishViewModel MapOrderDishModel(DishDto dish)
+        {
+            return new OrderDishViewModel()
+            {
+                Id = dish.Id,
+                Name = dish.Name,
+            };
+        }
+
         public static UpdateDishIngredientViewModel MapUpdateIngredientModel(int dishId, IngredientDto ingredient, List<UnitDto> unitDtos)
         {
             UpdateDishIngredientViewModel model = new UpdateDishIngredientViewModel()
@@ -97,7 +106,7 @@ namespace Horeca.MVC.Helpers.Mappers
             foreach (var dish in dishes)
             {
                 DishDto dishDto = MapDishDto(dish);
-                DishViewModel dishModel = MapModel(dishDto);
+                DishViewModel dishModel = MapDishModel(dishDto);
                 list.Add(dishModel);
             }
             return list;
@@ -109,7 +118,7 @@ namespace Horeca.MVC.Helpers.Mappers
             foreach (var dish in dishes)
             {
                 DishDto dishDto = MapDishDto(dish);
-                DishViewModel dishModel = MapModel(dishDto);
+                DishViewModel dishModel = MapDishModel(dishDto);
                 list.Add(dishModel);
             }
             return list;

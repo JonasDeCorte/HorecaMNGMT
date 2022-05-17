@@ -52,7 +52,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     bookingFromDb.Pax = request.Model.Pax;
                     bookingFromDb.Schedule.AvailableSeat -= bookingFromDb.Pax;
                 }
-                bookingFromDb.BookingStatus = Constants.BookingStatus.PENDING;
+                bookingFromDb.BookingStatus = Constants.BookingStatus.COMPLETE;
                 repository.Schedules.Update(bookingFromDb.Schedule);
                 repository.Bookings.Update(bookingFromDb);
                 await repository.CommitAsync();

@@ -52,10 +52,6 @@ namespace Horeca.Core.Handlers.Queries.Bookings
             status = char.ToUpper(status[0]) + status[1..];
             switch (status)
             {
-                case Constants.BookingStatus.PENDING:
-                    bookings = bookings.Where(b => b.BookingStatus.Equals(Constants.BookingStatus.PENDING));
-                    break;
-
                 case Constants.BookingStatus.EXPIRED:
                     bookings = bookings.Where(b => b.BookingStatus.Equals(Constants.BookingStatus.EXPIRED));
                     break;

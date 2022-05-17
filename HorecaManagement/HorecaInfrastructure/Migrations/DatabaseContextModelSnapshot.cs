@@ -138,9 +138,15 @@ namespace HorecaInfrastructure.Migrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Pax")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -151,44 +157,11 @@ namespace HorecaInfrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ScheduleId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.BookingDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Pax")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestaurantScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("RestaurantScheduleId");
-
-                    b.ToTable("BookingDetails");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
@@ -220,12 +193,15 @@ namespace HorecaInfrastructure.Migrations
                     b.Property<int?>("MenuCardId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MenuId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -234,7 +210,7 @@ namespace HorecaInfrastructure.Migrations
 
                     b.HasIndex("MenuCardId");
 
-                    b.HasIndex("MenuId");
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Dishes");
                 });
@@ -271,6 +247,37 @@ namespace HorecaInfrastructure.Migrations
                     b.ToTable("DishIngredients");
                 });
 
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Floorplan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Floorplans");
+                });
+
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
                 {
                     b.Property<int>("Id")
@@ -296,13 +303,18 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UnitId")
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UnitId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.HasIndex("UnitId");
 
@@ -338,12 +350,20 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MenuCardId");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Menus");
                 });
@@ -377,6 +397,114 @@ namespace HorecaInfrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuCards");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuDish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DishId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("menuId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishId");
+
+                    b.HasIndex("menuId");
+
+                    b.ToTable("MenuDishes");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderState")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.OrderLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DishId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DishState")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderLines");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Permission", b =>
@@ -461,7 +589,40 @@ namespace HorecaInfrastructure.Migrations
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.RestaurantSchedule", b =>
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.RestaurantUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RestaurantUsers");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Schedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -503,40 +664,7 @@ namespace HorecaInfrastructure.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("RestaurantSchedules");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.RestaurantUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RestaurantUsers");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Table", b =>
@@ -547,29 +675,75 @@ namespace HorecaInfrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BookingDetailId")
+                    b.Property<int?>("BookingId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("FloorplanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Pax")
+                    b.Property<int>("Left")
                         .HasColumnType("int");
 
-                    b.Property<int>("RestaurantScheduleId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginX")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginY")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Pax")
                         .HasColumnType("int");
+
+                    b.Property<double>("ScaleX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ScaleY")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Seats")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Src")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Top")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingDetailId");
+                    b.HasIndex("BookingId");
 
-                    b.HasIndex("RestaurantScheduleId");
+                    b.HasIndex("FloorplanId");
+
+                    b.HasIndex("ScheduleId");
 
                     b.ToTable("Tables");
                 });
@@ -592,10 +766,15 @@ namespace HorecaInfrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Units");
                 });
@@ -768,32 +947,21 @@ namespace HorecaInfrastructure.Migrations
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Booking", b =>
                 {
+                    b.HasOne("Horeca.Shared.Data.Entities.Schedule", "Schedule")
+                        .WithMany()
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Horeca.Shared.Data.Entities.Account.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Schedule");
+
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.BookingDetail", b =>
-                {
-                    b.HasOne("Horeca.Shared.Data.Entities.Booking", "Booking")
-                        .WithMany()
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Horeca.Shared.Data.Entities.RestaurantSchedule", "RestaurantSchedule")
-                        .WithMany()
-                        .HasForeignKey("RestaurantScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("RestaurantSchedule");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
@@ -802,9 +970,11 @@ namespace HorecaInfrastructure.Migrations
                         .WithMany("Dishes")
                         .HasForeignKey("MenuCardId");
 
-                    b.HasOne("Horeca.Shared.Data.Entities.Menu", null)
-                        .WithMany("Dishes")
-                        .HasForeignKey("MenuId");
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.DishIngredient", b =>
@@ -826,13 +996,26 @@ namespace HorecaInfrastructure.Migrations
                     b.Navigation("Ingredient");
                 });
 
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Floorplan", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
                 {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId");
+
                     b.HasOne("Horeca.Shared.Data.Entities.Unit", "Unit")
                         .WithMany("Ingredients")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UnitId");
+
+                    b.Navigation("Restaurant");
 
                     b.Navigation("Unit");
                 });
@@ -842,24 +1025,68 @@ namespace HorecaInfrastructure.Migrations
                     b.HasOne("Horeca.Shared.Data.Entities.MenuCard", null)
                         .WithMany("Menus")
                         .HasForeignKey("MenuCardId");
+
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuCard", b =>
                 {
-                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
-                        .WithMany("MenuCards")
-                        .HasForeignKey("RestaurantId");
-                });
-
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.RestaurantSchedule", b =>
-                {
                     b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
                         .WithMany()
-                        .HasForeignKey("RestaurantId")
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuDish", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Dish", "Dish")
+                        .WithMany("MenuDishes")
+                        .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Restaurant");
+                    b.HasOne("Horeca.Shared.Data.Entities.Menu", "Menu")
+                        .WithMany("MenuDishes")
+                        .HasForeignKey("menuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dish");
+
+                    b.Navigation("Menu");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Order", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("RestaurantId");
+
+                    b.HasOne("Horeca.Shared.Data.Entities.Table", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.OrderLine", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Dish", "Dish")
+                        .WithMany()
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Horeca.Shared.Data.Entities.Order", null)
+                        .WithMany("OrderLines")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Dish");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.RestaurantUser", b =>
@@ -881,21 +1108,45 @@ namespace HorecaInfrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Horeca.Shared.Data.Entities.Table", b =>
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Schedule", b =>
                 {
-                    b.HasOne("Horeca.Shared.Data.Entities.BookingDetail", "BookingDetail")
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
                         .WithMany()
-                        .HasForeignKey("BookingDetailId");
-
-                    b.HasOne("Horeca.Shared.Data.Entities.RestaurantSchedule", "RestaurantSchedule")
-                        .WithMany()
-                        .HasForeignKey("RestaurantScheduleId")
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BookingDetail");
+                    b.Navigation("Restaurant");
+                });
 
-                    b.Navigation("RestaurantSchedule");
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Table", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Booking", "Booking")
+                        .WithMany()
+                        .HasForeignKey("BookingId");
+
+                    b.HasOne("Horeca.Shared.Data.Entities.Floorplan", null)
+                        .WithMany("Tables")
+                        .HasForeignKey("FloorplanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Horeca.Shared.Data.Entities.Schedule", "Schedule")
+                        .WithMany()
+                        .HasForeignKey("ScheduleId");
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Unit", b =>
+                {
+                    b.HasOne("Horeca.Shared.Data.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.UserPermission", b =>
@@ -978,6 +1229,13 @@ namespace HorecaInfrastructure.Migrations
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Dish", b =>
                 {
                     b.Navigation("DishIngredients");
+
+                    b.Navigation("MenuDishes");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Floorplan", b =>
+                {
+                    b.Navigation("Tables");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Ingredient", b =>
@@ -987,7 +1245,7 @@ namespace HorecaInfrastructure.Migrations
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Menu", b =>
                 {
-                    b.Navigation("Dishes");
+                    b.Navigation("MenuDishes");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.MenuCard", b =>
@@ -997,11 +1255,21 @@ namespace HorecaInfrastructure.Migrations
                     b.Navigation("Menus");
                 });
 
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Order", b =>
+                {
+                    b.Navigation("OrderLines");
+                });
+
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Restaurant", b =>
                 {
                     b.Navigation("Employees");
 
-                    b.Navigation("MenuCards");
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Horeca.Shared.Data.Entities.Table", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Horeca.Shared.Data.Entities.Unit", b =>

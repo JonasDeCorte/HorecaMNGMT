@@ -3,15 +3,8 @@
 
 // Write your JavaScript code.
 
-
-function toggleView() {
-    var table = document.getElementById("tableView");
-    var cards = document.getElementById("cardsView");
-    if (table.style.display !== "none") {
-        table.style.display = "none";
-        cards.style.display = "flex";
-    } else {
-        table.style.display = "table";
-        cards.style.display = "none";
-    }
-}
+$("#addQuantities").click(function () {
+    var values = $("#dishIds").val();
+    var valueAmount = values.length;
+    console.log("Idlist length: " + valueAmount);
+});

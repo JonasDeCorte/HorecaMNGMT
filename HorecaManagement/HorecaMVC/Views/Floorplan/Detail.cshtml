@@ -1,4 +1,5 @@
-﻿<div class="text-center">
+﻿@model Horeca.MVC.Models.Floorplans.FloorplanDetailViewModel
+<div class="wrapper">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -11,23 +12,36 @@
                     @restaurantService.GetCurrentRestaurantName()
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Floor Plan</li>
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Floorplan" asp-action="Index">
+                    Floor Plans
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
         </ol>
     </nav>
-    <div class="shadow card bg-light mt-3">
+    <header class="header">
         <div class="card-header bg-dark">
-            <h1>Floor Plan</h1>
+            <h1>@Model.Name</h1>
         </div>
-        <div class="container">
-        <div class="row" style="height: 500px;">
-            <div class="col-3 border-end border-dark d-flex flex-column justify-content-start align-items-center">
-                <a class="btn btn-primary m-2">Add Object</a>
-                <a class="btn btn-primary m-2">Change dimensions</a>
-            </div>
-            <div class="col-9">
-                actual floor plan here
-            </div>
+    </header>
+    <article class="main">
+        <div id="drawing-container" class="canvas-container bg-white" style="position: relative; user-select: none;">
+            <canvas class="lower-canvas" style="position: absolute; /*width: 600px; height: 600px; */left: 0px; top: 0px; user-select: none;"></canvas>
+            <canvas id="drawing-area" class="upper-canvas" style="position: absolute; left: 0px; top: 0px; user-select: none;/* width: 600px; height: 600px; */cursor: default;"></canvas>
         </div>
+    </article>
+    <aside class="aside aside-1">
+        <div class="d-grid gap-2 d-md-block mx-auto">
+            <a class="btn btn-primary m-2" id="FromJson" data-json="@Model.Json" data-id="@Model.Id" style="display: none;">
+                Get floorplan
+            </a>
+            <a class="btn btn-primary m-2" asp-controller="Floorplan" asp-action="Edit" asp-route-floorplanId="@Model.Id">
+                Edit
+            </a>
         </div>
-    </div>
+    </aside>
+    <footer class="footer"></footer>
 </div>
+<script src="~/lib/fabric.js/fabric.min.js"></script>
+<script src="~/js/floorplanDetail.js"></script>

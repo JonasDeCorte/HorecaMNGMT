@@ -27,7 +27,6 @@
                     </button>
                     <ul class="dropdown-menu bg-light" aria-labelledby="selectStatusButton">
                         <li><a asp-action="YourBookings" asp-route-status="all" class="dropdown-item">All</a></li>
-                        <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.PENDING" class="dropdown-item">Pending</a></li>
                         <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.EXPIRED" class="dropdown-item">Expired</a></li>
                         <li><a asp-action="YourBookings" asp-route-status="@BookingStatus.COMPLETE" class="dropdown-item">Complete</a></li>
                     </ul>
@@ -59,7 +58,15 @@
                         <td>@booking.PhoneNo</td>
                         <td>@booking.BookingStatus</td>
                         <td>
+                            
                             <a asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
+                             @if (accountService.Authorize(PermissionConstants.Booking_Update))
+                                    {
+                                        <a asp-action="Edit" asp-route-bookingNo="@booking.BookingNo" 
+                                   class="btn btn-primary">
+                                            Edit
+                                        </a>
+                                    }
                             @if (accountService.Authorize(PermissionConstants.Booking_Delete))
                             {
                             <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
