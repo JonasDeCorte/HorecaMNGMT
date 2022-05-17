@@ -41,7 +41,11 @@ namespace Horeca.Core.Handlers.Commands.Restaurants
                 };
 
                 ApplicationUser? owner = await userManager.FindByNameAsync(request.Model.OwnerName);
-
+                if (owner == null)
+                {
+                    logger.Error(UserNotFoundException.Instance);
+                    throw new UserNotFoundException();
+                }
                 if (!owner.IsOwner)
                 {
                     logger.Error(IsNotOwnerException.Instance);
