@@ -15,11 +15,11 @@ namespace Horeca.MVC.Helpers.Mappers
         }
 
         public static UnitDto MapUnitDto(CreateIngredientViewModel ingredientModel)
-        {
+        {   
             return new UnitDto
             {
                 Id = ingredientModel.UnitId,
-                Name = ingredientModel.Name
+                Name = ingredientModel.UnitName
             };
         }
 

@@ -10,11 +10,13 @@ namespace Horeca.MVC.Controllers
     {
         private readonly IIngredientService ingredientService;
         private readonly IUnitService unitService;
+        private readonly IRestaurantService restaurantService;
 
-        public IngredientController(IIngredientService ingredientService, IUnitService unitService)
+        public IngredientController(IIngredientService ingredientService, IUnitService unitService, IRestaurantService restaurantService)
         {
             this.ingredientService = ingredientService;
             this.unitService = unitService;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<IActionResult> Index()
@@ -70,6 +72,19 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (ingredient.UnitId > 0)
+                {
+                    var unit = await unitService.GetUnitById(ingredient.UnitId);
+                    if (unit == null)
+                    {
+                        return View(nameof(NotFound));
+                    }
+                    ingredient.UnitName = unit.Name;
+                }
+                else
+                {
+                    ingredient.UnitName = ingredient.Name;
+                }
                 MutateIngredientDto result = IngredientMapper.MapCreateIngredientDto(ingredient);
                 var response = await ingredientService.AddIngredient(result);
                 if (response == null)
