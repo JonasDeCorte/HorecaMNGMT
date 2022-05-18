@@ -68,12 +68,12 @@
                     <a class="nav-link text-white" asp-area="" asp-controller="Floorplan" asp-action="Index">Floor Plans</a>
                 </li>
             }
-            @if (accountService.Authorize(PermissionConstants.ApplicationUser_Delete))
+@*            @if (accountService.Authorize(PermissionConstants.ApplicationUser_Delete))
             {
                 <li class="nav-item">
                     <a class="nav-link text-white" asp-action="Index" asp-controller="Account" class="btn btn-primary">Users</a>
                 </li>
-            }
+            }*@
         }
     </ul>
     <ul class="navbar-nav flex-grow-1 flex-row-reverse">
