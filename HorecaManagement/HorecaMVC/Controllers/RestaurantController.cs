@@ -127,10 +127,14 @@ namespace Horeca.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee(MutateEmployeeViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+
             var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
             if (response == null)
             {
                 return View(nameof(NotFound));
+            }
             }
 
             return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
