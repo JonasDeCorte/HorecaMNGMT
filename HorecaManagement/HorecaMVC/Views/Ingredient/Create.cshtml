@@ -46,7 +46,7 @@
                     <label asp-for="UnitId" class="form-label text-black">Unit</label>
                     <select asp-for="UnitId" asp-items="@(new SelectList(Model.Units, "Id", "Name"))"
                             class="form-control text-black">
-                        <option value="0" class="text-black">Please select</option>
+                      
                     </select>
                     <span asp-validation-for="UnitId" class="text-danger"></span>
                 </div>

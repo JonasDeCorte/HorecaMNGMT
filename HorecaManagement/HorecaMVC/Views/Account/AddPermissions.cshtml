@@ -42,7 +42,7 @@
                 <label asp-for="PermissionId" class="control-label text-black">Select Permissions</label>
                 <select asp-for="PermissionId" asp-items="@(new MultiSelectList(Model.Permissions,
                     "Id", "PermissionName"))" class="form-control text-black" multiple="multiple" size="30">
-                    <option value="0" class="text-black">Please select</option>
+                  
                 </select>
             </div>
             <div class="form-group mt-2 mb-2">

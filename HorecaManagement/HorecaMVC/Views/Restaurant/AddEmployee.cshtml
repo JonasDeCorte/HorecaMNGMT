@@ -32,7 +32,7 @@
                 <label asp-for="EmployeeId" class="control-label text-black">Select an employee</label>
                 <select asp-for="EmployeeId" asp-items="@(new SelectList(Model.Employees,
                     "Id", "Username"))" class="form-control text-black">
-                    <option value="0" class="text-black">Please select</option>
+                  
                 </select>
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
