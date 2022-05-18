@@ -33,7 +33,7 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static TableDetailViewModel MapTableDetailModel(TableDto response, List<GetOrderLinesByTableIdDto> orders)
+        public static TableDetailViewModel MapTableDetailModel(TableDto response, List<GetOrderLinesByTableIdDto> orders, int existingDishes)
         {
             TableDetailViewModel model = new()
             {
@@ -45,6 +45,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 Seats = response.Seats,
                 Name = response.Name,
                 Src = response.Src,
+                ExistingDishes = existingDishes,
             };
             foreach (var order in orders)
             {

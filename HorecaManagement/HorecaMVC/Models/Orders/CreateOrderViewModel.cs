@@ -14,10 +14,7 @@ namespace Horeca.MVC.Models.Orders
         [StringLength(50, ErrorMessage = ErrorConstants.StringLength50)]
         public string Name { get; set; }
 
-        //[Required]
-        //[Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
-        //public int Quantity { get; set; }
-
+        [Required, MinLength(1, ErrorMessage = "At least one item required")]
         public List<int> Quantities { get; set; } = new List<int>();
 
         [Required, MinLength(1, ErrorMessage = "At least one item required")]
