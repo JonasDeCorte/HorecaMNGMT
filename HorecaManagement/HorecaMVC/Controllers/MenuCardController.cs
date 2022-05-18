@@ -141,7 +141,6 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 MenuCardDishViewModel dishModel = MenuCardMapper.MapMutateMenuCardDishModel(id, await dishService.GetDishById(model.DishId));
-
                 MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, restaurantService.GetCurrentRestaurantId(), dishModel);
                 var response = await menuCardService.AddMenuCardDish(id, result);
                 if (response == null)
@@ -194,7 +193,7 @@ namespace Horeca.MVC.Controllers
 
             ExistingMenuCardMenusViewModel model = new() { MenuCardId = id };
             model.Menus = MenuCardMapper.MapRemainingMenusList(menuListsDto, menus);
-
+            
             return View(model);
         }
 
