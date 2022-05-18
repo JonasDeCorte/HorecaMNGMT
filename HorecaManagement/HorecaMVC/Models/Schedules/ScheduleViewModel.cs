@@ -13,6 +13,7 @@ namespace Horeca.MVC.Models.Schedules
 
         [Display(Name = "Schedule Date")]
         [Required]
+        [Date]
         public DateTime ScheduleDate { get; set; }
 
         [Display(Name = "Start Time")]
