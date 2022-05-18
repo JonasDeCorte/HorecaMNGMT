@@ -18,6 +18,7 @@
             public const string RegisterAdmin = $"{ClassConstants.RegisterAdmin}";
             public const string UserPermissions = $"{ClassConstants.User}{Slash}{ClassConstants.UserPermissions}";
             public const string GetAllUsers = $"{ClassConstants.Users}";
+            public const string DeleteUser = $"{ClassConstants.User}";
         }
 
         public static class BookingConstants
