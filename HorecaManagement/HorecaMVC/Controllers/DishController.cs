@@ -115,6 +115,15 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.UnitId > 0)
+                {
+                    var unit = await unitService.GetUnitById(model.UnitId);
+                    if (unit == null)
+                    {
+                        return View(nameof(NotFound));
+                    }
+                    model.UnitName = unit.Name;
+                }
                 MutateIngredientByDishDto result = DishMapper.MapCreateDishIngredientDto(id, restaurantService.GetCurrentRestaurantId(), model);
                 var response = await dishService.AddDishIngredient(id, result);
                 if (response == null)
@@ -213,6 +222,15 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (ingredient.UnitId > 0)
+                {
+                    var unit = await unitService.GetUnitById(ingredient.UnitId);
+                    if (unit == null)
+                    {
+                        return View(nameof(NotFound));
+                    }
+                    ingredient.UnitName = unit.Name;
+                }
                 MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(ingredient.DishId, restaurantService.GetCurrentRestaurantId(), ingredient);
                 var response = await dishService.UpdateDishIngredient(result);
                 if (response == null)
