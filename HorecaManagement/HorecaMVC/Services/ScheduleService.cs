@@ -93,7 +93,7 @@ namespace Horeca.MVC.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Delete,
                $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}" +
-               $"?id={restaurantService.GetCurrentRestaurantId()}");
+               $"?id={id}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
