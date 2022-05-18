@@ -108,7 +108,7 @@ namespace Horeca.MVC.Helpers.Mappers
             List<MenuViewModel> menuList = new();
             foreach (var menu in menus)
             {
-                if (!menuListsDto.Dishes.Any(item => item.Id == menu.Id))
+                if (!menuListsDto.Menus.Any(item => item.Id == menu.Id))
                 {
                     MenuViewModel menuModel = MenuMapper.MapModel(menu);
                     menuList.Add(menuModel);
