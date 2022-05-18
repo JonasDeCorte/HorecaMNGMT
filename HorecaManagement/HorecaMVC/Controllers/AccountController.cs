@@ -99,8 +99,7 @@ namespace Horeca.MVC.Controllers
                 {
                     return View(nameof(Register));
                 }
-
-                return RedirectToAction(nameof(Index), new { area = "Home" });
+                return RedirectToAction(nameof(Index), "Home");
             }
             else
             {
