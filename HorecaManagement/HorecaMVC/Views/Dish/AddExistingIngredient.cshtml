@@ -36,6 +36,7 @@
                 <label asp-for="IngredientId" class="control-label text-black">Pick an ingredient:</label>
                 <select asp-for="IngredientId" asp-items="@(new SelectList(Model.Ingredients, "IngredientId", "Name"))" class="form-control text-black">
                 </select>
+                <span asp-validation-for="IngredientId" class="text-danger"></span>
             </div>
             <div class="form-group mt-2 mb-2">
                 <input type="submit" value="Add" class="btn btn-primary" />

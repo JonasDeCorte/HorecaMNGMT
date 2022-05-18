@@ -91,9 +91,9 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 logger.Info("checkin: " + request.Model.CheckIn + " starttime: " + schedule.StartTime);
                 logger.Info("checkout: " + request.Model.CheckOut + " starttime: " + schedule.EndTime);
 
-                if (request.Model.CheckIn.Value.AddDays(1) < schedule.StartTime || request.Model.CheckIn.Value.AddDays(1) > schedule.EndTime
+                if (request.Model.CheckIn.Value.AddDays(1) < schedule.StartTime && request.Model.CheckIn.Value.AddDays(1) > schedule.EndTime
                     ||
-                    request.Model.CheckOut.Value.AddDays(1) < schedule.StartTime || request.Model.CheckOut.Value.AddDays(1) > schedule.EndTime)
+                    request.Model.CheckOut.Value.AddDays(1) > schedule.StartTime && request.Model.CheckOut.Value.AddDays(1) < schedule.EndTime)
                 {
                     logger.Error(TimeIsNotWithinRangeException.Instance);
                     throw new TimeIsNotWithinRangeException();

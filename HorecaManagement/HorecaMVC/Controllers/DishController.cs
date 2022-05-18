@@ -148,14 +148,16 @@ namespace Horeca.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExistingIngredient(int id, ExistingIngredientsViewModel model)
         {
-            IngredientViewModel ingredientModel = IngredientMapper.MapModel(await ingredientService.GetIngredientById(model.IngredientId));
-            MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(id, restaurantService.GetCurrentRestaurantId(), ingredientModel);
-            var response = await dishService.AddDishIngredient(id, result);
-            if (response == null)
+            if (ModelState.IsValid)
             {
-                return View(nameof(NotFound));
+                IngredientViewModel ingredientModel = IngredientMapper.MapModel(await ingredientService.GetIngredientById(model.IngredientId));
+                MutateIngredientByDishDto result = DishMapper.MapMutateDishIngredientDto(id, restaurantService.GetCurrentRestaurantId(), ingredientModel);
+                var response = await dishService.AddDishIngredient(id, result);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
             }
-
             return RedirectToAction(nameof(Detail), new { id });
         }
 
