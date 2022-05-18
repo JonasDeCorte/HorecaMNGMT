@@ -110,13 +110,12 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static MutateTableDto MapMutateTableDto(CanvasTableViewModel table, int floorplanId)
+        public static MutateTableDto MapMutateTableDto(CanvasTableViewModel table, int floorplanId, int restaurantId)
         {
             return new MutateTableDto()
             {
                 FloorplanId = floorplanId,
-                ScheduleId = floorplanId,
-                BookingDetailId = floorplanId,
+                ScheduleId = restaurantId,
                 Pax = Convert.ToInt32(table.Seats),
                 Seats = table.Seats,
                 Name = table.Name,

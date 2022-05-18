@@ -58,7 +58,7 @@ namespace Horeca.MVC.Helpers.Mappers
             dto.Tables = new List<MutateTableDto>();
             foreach (var table in model.objects)
             {
-                var tableDto = TableMapper.MapMutateTableDto(table, floorplanId);
+                var tableDto = TableMapper.MapMutateTableDto(table, floorplanId, restaurantId);
                 dto.Tables.Add(tableDto);
             }
             return dto;
