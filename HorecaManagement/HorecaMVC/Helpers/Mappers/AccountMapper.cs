@@ -119,7 +119,8 @@ namespace Horeca.MVC.Helpers.Mappers
             {
                 Username = userModel.Username,
                 Email = userModel.Email,
-                Password = userModel.Password
+                Password = userModel.Password,
+                IsOwner = userModel.IsOwner,
             };
         }
 

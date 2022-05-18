@@ -93,6 +93,8 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             permsToAdd.AddRange(menuRead);
             permsToAdd.AddRange(dishRead);
             permsToAdd.AddRange(applicationUserRead);
+            permsToAdd.AddRange(scheduleRead);
+
 
             foreach (var item in permsToAdd)
             {
