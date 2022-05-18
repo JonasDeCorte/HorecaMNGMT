@@ -16,5 +16,6 @@ namespace Horeca.MVC.Services.Interfaces
         public UserDto GetCurrentUser();
         public bool Authorize(string permission);
         public bool IsLoggedIn();
+        public Task<HttpResponseMessage> DeleteUser(string username);
     }
 }

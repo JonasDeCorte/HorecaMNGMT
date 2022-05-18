@@ -176,5 +176,17 @@ namespace Horeca.MVC.Controllers
                 return View(model);
             }
         }
+
+        [Route("/Account/DeleteUser/{username}")]
+        public async Task<IActionResult> DeleteUser(string username)
+        {
+            var response = await accountService.DeleteUser(username);
+            if (response == null)
+            {
+                return View(nameof(NotFound));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
