@@ -52,21 +52,15 @@ namespace Horeca.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditTableViewModel table)
         {
-            Console.WriteLine("entered edit method");
             if (ModelState.IsValid)
             {
-                Console.WriteLine("entered modelstate ");
-
                 EditTableDto result = TableMapper.MapEditTableDto(table, table.FloorplanId);
 
                 var response = await tableService.EditTableFromFloorplan(result, table.FloorplanId);
                 if (response == null)
                 {
-                    Console.WriteLine("response edit method null ");
-
                     return View(nameof(NotFound));
                 }
-                Console.WriteLine("response not null edit method");
 
                 return RedirectToAction(nameof(Detail), new { tableId = table.Id, floorplanId = table.FloorplanId });
             }
