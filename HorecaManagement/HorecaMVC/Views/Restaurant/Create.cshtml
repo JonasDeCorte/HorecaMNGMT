@@ -16,6 +16,7 @@
                 <label asp-for="OwnerName" class="control-label text-black">Owner Name</label>
                 <input asp-for="OwnerName" class="form-control text-black" />
                 <span asp-validation-for="OwnerName" class="text-danger"></span>
+                <span class="text-danger" >@TempData["error"]</span>
             </div>
             <div class="mt-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />

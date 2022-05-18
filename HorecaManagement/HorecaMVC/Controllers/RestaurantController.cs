@@ -68,8 +68,10 @@ namespace Horeca.MVC.Controllers
                 var response = await restaurantService.AddRestaurant(restaurantDto);
                 if (response == null)
                 {
-                    return View(nameof(NotFound));
+                    TempData["error"] = "restaurant owner does not exist";
+                    return View(nameof(Create));
                 }
+
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -129,13 +131,11 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-
-            var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
-            if (response == null)
-            {
-                return View(nameof(NotFound));
-            }
-
+                var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
             }
             return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
         }
