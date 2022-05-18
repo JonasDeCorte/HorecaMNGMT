@@ -51,7 +51,6 @@ namespace Horeca.MVC.Controllers
                 var response = await scheduleService.AddSchedule(restaurantDto);
                 if (response == null)
                 {
-                    TempData["period"] = "A schedule with this period already exists.";
                     return View(nameof(Create));
                 }
                 return RedirectToAction(nameof(Detail), "Restaurant", new { id = model.RestaurantId });

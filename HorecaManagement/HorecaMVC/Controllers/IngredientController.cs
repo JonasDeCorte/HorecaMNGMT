@@ -118,6 +118,15 @@ namespace Horeca.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (ingredient.UnitId > 0)
+                {
+                    var unit = await unitService.GetUnitById(ingredient.UnitId);
+                    if (unit == null)
+                    {
+                        return View(ingredient);
+                    }
+                    ingredient.UnitName = unit.Name;
+                }
                 MutateIngredientDto result = IngredientMapper.MapUpdateIngredientDto(ingredient, await ingredientService.GetIngredientById(id));
                 var response = await ingredientService.UpdateIngredient(result);
                 if (response == null)

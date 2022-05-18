@@ -68,7 +68,6 @@ namespace Horeca.MVC.Controllers
                 var response = await restaurantService.AddRestaurant(restaurantDto);
                 if (response == null)
                 {
-                    TempData["error"] = "restaurant owner does not exist";
                     return View(nameof(Create));
                 }
 
