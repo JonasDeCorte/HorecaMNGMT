@@ -226,5 +226,17 @@ namespace Horeca.MVC.Services
             }
             return true;
         }
+
+        public async Task<HttpResponseMessage> DeleteUser(string username)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.User}?username={username}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+            return null;
+        }
     }
 }

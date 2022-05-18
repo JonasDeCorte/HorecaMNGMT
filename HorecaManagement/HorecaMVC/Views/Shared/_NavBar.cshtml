@@ -8,7 +8,7 @@
             {
                 <li class="nav-item dropdown">
                     <a class="nav-link text-white dropdown-toggle" href="#" id="kitchenDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+               data-bs-toggle="dropdown" aria-expanded="false">
                         Kitchen
                     </a>
                     <ul class="dropdown-menu bg-dark" aria-labelledby="kitchenDropdown">
@@ -50,8 +50,8 @@
             @if (accountService.Authorize(PermissionConstants.Order_Read))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Index" 
-                        asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-state="@OrderState.Begin">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Index"
+               asp-route-restaurantId="@restaurantService.GetCurrentRestaurantId()" asp-route-state="@OrderState.Begin">
                         Orders
                     </a>
                 </li>
@@ -68,6 +68,12 @@
                     <a class="nav-link text-white" asp-area="" asp-controller="Floorplan" asp-action="Index">Floor Plans</a>
                 </li>
             }
+@*            @if (accountService.Authorize(PermissionConstants.ApplicationUser_Delete))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-action="Index" asp-controller="Account" class="btn btn-primary">Users</a>
+                </li>
+            }*@
         }
     </ul>
     <ul class="navbar-nav flex-grow-1 flex-row-reverse">
