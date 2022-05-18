@@ -32,9 +32,11 @@ namespace Horeca.MVC.Models.Bookings
 
         public int ScheduleId { get; set; }
 
+        public int ScheduleCapacity { get; set; }
+
         [Display(Name = "Amount of people")]
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
+        [Capacity("ScheduleCapacity", ErrorMessage = ErrorConstants.AmountOfPerson)]
         public int Pax { get; set; }
     }
 }

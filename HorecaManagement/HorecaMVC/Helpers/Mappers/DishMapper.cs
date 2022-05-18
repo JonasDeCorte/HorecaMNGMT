@@ -84,7 +84,7 @@ namespace Horeca.MVC.Helpers.Mappers
 
         public static UpdateDishIngredientViewModel MapUpdateIngredientModel(int dishId, IngredientDto ingredient, List<UnitDto> unitDtos)
         {
-            UpdateDishIngredientViewModel model = new UpdateDishIngredientViewModel()
+            UpdateDishIngredientViewModel model = new()
             {
                 IngredientId = ingredient.Id,
                 DishId = dishId,

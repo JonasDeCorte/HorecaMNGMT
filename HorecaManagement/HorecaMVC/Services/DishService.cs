@@ -23,7 +23,7 @@ namespace Horeca.MVC.Services
 
         public async Task<IEnumerable<DishDto>> GetDishes()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, 
+            var request = new HttpRequestMessage(HttpMethod.Get,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ClassConstants.Restaurant}" +
                 $"?{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
@@ -42,7 +42,7 @@ namespace Horeca.MVC.Services
 
         public async Task<DishDto> GetDishById(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, 
+            var request = new HttpRequestMessage(HttpMethod.Get,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ClassConstants.Id}/{ClassConstants.Restaurant}" +
                 $"?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
@@ -61,7 +61,7 @@ namespace Horeca.MVC.Services
 
         public async Task<DishIngredientsByIdDto> GetIngredientsByDishId(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, 
+            var request = new HttpRequestMessage(HttpMethod.Get,
                 $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Dish}/{ClassConstants.Ingredients}/{ClassConstants.Restaurant}" +
                 $"?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
@@ -116,8 +116,7 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            
-            var test = request.Content.ReadAsStringAsync();
+
             if (response.IsSuccessStatusCode)
             {
                 return response;
