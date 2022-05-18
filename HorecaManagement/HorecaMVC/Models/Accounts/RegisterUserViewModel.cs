@@ -8,5 +8,7 @@ namespace Horeca.MVC.Models.Accounts
         [Required]
         [EmailAddress(ErrorMessage = ErrorConstants.Invalid)]
         public string Email { get; set; }
+
+        public bool IsOwner { get; set; } = false;
     }
 }

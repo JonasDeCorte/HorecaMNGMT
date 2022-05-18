@@ -106,15 +106,16 @@ namespace Horeca.Infrastructure.Data
             var menuPerms = listPermissions.Where(x => x.Name.StartsWith("Menu_"));
             var menuCardPerms = listPermissions.Where(x => x.Name.StartsWith("MenuCard_"));
             var restaurantPerms = listPermissions.Where(x => x.Name.StartsWith("Restaurant_"));
-            var restaurantSchedulePerms = listPermissions.Where(x => x.Name.StartsWith("RestauranSchedule_"));
+            var schedulePerms = listPermissions.Where(x => x.Name.StartsWith("Schedule_"));
             var bookingPerms = listPermissions.Where(x => x.Name.StartsWith("Booking_"));
             var tablePerms = listPermissions.Where(x => x.Name.StartsWith("Table_"));
             var floorplanPerms = listPermissions.Where(x => x.Name.StartsWith("Floorplan_"));
             var permissionPerms = listPermissions.Where(x => x.Name.StartsWith("Permission_"));
-            var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_"));
+            var ApplicationUserPerms = listPermissions.Where(x => x.Name.StartsWith("ApplicationUser_")).Take(5);
             var OrderPerms = listPermissions.Where(x => x.Name.StartsWith("Order_"));
             var appUserRead = listPermissions.Where(x => x.Name.Equals("ApplicationUser_Read"));
             var employeeRead = listPermissions.Where(x => x.Name.Equals("Employee_Read"));
+            var appUserOwner = listPermissions.Where(x => x.Name.Equals("ApplicationUser_IsOwner"));
 
             #endregion permissions
 
@@ -184,7 +185,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(tablePerms);
             listListPerms.Add(floorplanPerms);
             listListPerms.Add(bookingPerms);
-            listListPerms.Add(restaurantSchedulePerms);
+            listListPerms.Add(schedulePerms);
             listListPerms.Add(OrderPerms);
             listListPerms.Add(appUserRead);
             listListPerms.Add(ApplicationUserPerms.Take(2));
@@ -209,7 +210,7 @@ namespace Horeca.Infrastructure.Data
             listListPerms.Add(floorplanPerms);
             listListPerms.Add(bookingPerms);
             listListPerms.Add(restaurantPerms);
-            listListPerms.Add(restaurantSchedulePerms);
+            listListPerms.Add(schedulePerms);
             listListPerms.Add(permissionPerms);
             listListPerms.Add(ApplicationUserPerms);
             listListPerms.Add(OrderPerms);
@@ -659,6 +660,10 @@ namespace Horeca.Infrastructure.Data
                 new Permission()
                 {
                     Name = PermissionConstants.ApplicationUser_Delete
+                },
+                new Permission()
+                {
+                    Name = PermissionConstants.ApplicationUser_IsOwner
                 },
                 new Permission()
                 {
