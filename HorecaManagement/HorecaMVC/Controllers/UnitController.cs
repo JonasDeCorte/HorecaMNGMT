@@ -33,7 +33,7 @@ namespace Horeca.MVC.Controllers
                     return View(nameof(NotFound));
                 }
 
-                return RedirectToAction(nameof(Index), "Ingredient");
+                return RedirectToAction(nameof(Create), "Ingredient");
             }
             else
             {
