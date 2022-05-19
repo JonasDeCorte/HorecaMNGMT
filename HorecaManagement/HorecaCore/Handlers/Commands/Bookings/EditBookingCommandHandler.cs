@@ -51,12 +51,29 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     bookingFromDb.Schedule.AvailableSeat += bookingFromDb.Pax;
                     bookingFromDb.Pax = request.Model.Pax;
                     bookingFromDb.Schedule.AvailableSeat -= bookingFromDb.Pax;
+                    CheckScheduleStatus(bookingFromDb);
                 }
                 bookingFromDb.BookingStatus = Constants.BookingStatus.COMPLETE;
                 repository.Schedules.Update(bookingFromDb.Schedule);
                 repository.Bookings.Update(bookingFromDb);
                 await repository.CommitAsync();
                 return bookingFromDb.Id;
+            }
+
+            private static void CheckScheduleStatus(Booking bookingFromDb)
+            {
+                if (bookingFromDb.Schedule.AvailableSeat > 0)
+                {
+                    bookingFromDb.Schedule.Status = Constants.ScheduleStatus.Available;
+                }
+                if (bookingFromDb.Schedule.AvailableSeat > 0 && bookingFromDb.Schedule.Status.Equals(Constants.ScheduleStatus.Full))
+                {
+                    bookingFromDb.Schedule.Status = Constants.ScheduleStatus.Available;
+                }
+                if (bookingFromDb.Schedule.AvailableSeat == 0)
+                {
+                    bookingFromDb.Schedule.Status = Constants.ScheduleStatus.Full;
+                }
             }
 
             private static Booking UpdateEntity(EditBookingCommand request, Booking bookingFromDB)

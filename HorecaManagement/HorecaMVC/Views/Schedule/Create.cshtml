@@ -63,14 +63,9 @@
                         <span asp-validation-for="Capacity" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group mt-2">
+                <div class="form-group mt-2" style="display: none;">
                     <label asp-for="Status" class="control-label text-black"></label>
-                    <select asp-for="Status" class="form-control text-black">
-                        <option value="@ScheduleStatus.Available">Available</option>
-                        <option value="@ScheduleStatus.Unavailable">Unavailable</option>
-                        <option value="@ScheduleStatus.Full">Full</option>
-                        <option value="@ScheduleStatus.Expired">Expired</option>
-                    </select>
+                    <input asp-for="Status" class="form-control text-black" value="@ScheduleStatus.Available" readonly="readonly"/>
                 </div>
                 <div class="form-group mt-2 mb-2">
                     <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />

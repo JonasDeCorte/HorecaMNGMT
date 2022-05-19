@@ -60,6 +60,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     logger.Error(UnAvailableSeatException.Instance);
                     throw new UnAvailableSeatException();
                 }
+                CheckScheduleStatus(schedule, remainingSeats);
 
                 Booking entity = CreateBookingObject(request, user, schedule, logger);
 
@@ -67,6 +68,15 @@ namespace Horeca.Core.Handlers.Commands.Bookings
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
                 return mapper.Map<BookingDto>(entity);
+            }
+
+            private void CheckScheduleStatus(Schedule schedule, int remainingSeats)
+            {
+                if (remainingSeats == 0)
+                {
+                    schedule.Status = Constants.ScheduleStatus.Full;
+                    repository.Schedules.Update(schedule);
+                }
             }
 
             private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Logger logger)

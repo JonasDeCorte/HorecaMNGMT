@@ -251,7 +251,6 @@ namespace Horeca.Infrastructure.Data
                 context.Entry(restaurant).State = EntityState.Detached; // so we can re use it later on
 
                 DateTime newSchedule = DateTime.Today.AddDays(1);
-                Array scheduleStatus = Enum.GetValues(typeof(Constants.ScheduleStatus));
                 Random randomStatus = new();
                 Schedule schedule = new()
                 {
@@ -261,9 +260,9 @@ namespace Horeca.Infrastructure.Data
                     EndTime = newSchedule.AddHours(2),
                     Capacity = 20,
                     AvailableSeat = 20,
-                    Status = (Constants.ScheduleStatus)scheduleStatus.GetValue(randomStatus.Next(scheduleStatus.Length))
                 };
                 context.Schedules.Add(schedule);
+                await context.SaveChangesAsync();
 
                 Booking booking = new()
                 {
@@ -281,6 +280,16 @@ namespace Horeca.Infrastructure.Data
                     Pax = i
                 };
                 context.Bookings.Add(booking);
+                schedule.AvailableSeat -= booking.Pax;
+                if (schedule.AvailableSeat == 0)
+                {
+                    schedule.Status = Constants.ScheduleStatus.Full;
+                } else
+                {
+                    schedule.Status = Constants.ScheduleStatus.Available;
+                }
+                context.Schedules.Update(schedule);
+                await context.SaveChangesAsync();
 
                 Floorplan floorplan = new()
                 {

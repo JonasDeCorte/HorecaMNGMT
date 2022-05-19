@@ -3,6 +3,7 @@ using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using MediatR;
 using NLog;
+using static Horeca.Shared.Utils.Constants;
 
 namespace Horeca.Core.Handlers.Commands.Bookings
 {
@@ -38,6 +39,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             }
 
             booking.Schedule.AvailableSeat += booking.Pax;
+            CheckScheduleStatus(booking);
             repository.Schedules.Update(booking.Schedule);
             repository.Bookings.Delete(booking.Id);
 
@@ -46,6 +48,14 @@ namespace Horeca.Core.Handlers.Commands.Bookings
             logger.Info("deleted {object} with Id: {id}", nameof(Booking), request.Id);
 
             return request.Id;
+        }
+
+        private static void CheckScheduleStatus(Booking booking)
+        {
+            if (booking.Schedule.AvailableSeat > 0 && booking.Schedule.Status.Equals(ScheduleStatus.Full))
+            {
+                booking.Schedule.Status = ScheduleStatus.Available;
+            }
         }
     }
 }

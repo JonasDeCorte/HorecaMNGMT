@@ -23,7 +23,7 @@
     </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
-            <h1>Create Booking for @Model.BookingDate.ToShortDateString()</h1>
+            <h1>Book a spot on @Model.BookingDate.ToShortDateString() @Model.CheckIn?.ToShortTimeString() - @Model.CheckOut?.ToShortTimeString() </h1>
         </div><div>
             <form class="w-75 mx-auto">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -43,12 +43,12 @@
                         <input asp-for="BookingDate" type="date" id="datePicker" class="form-control text-black" readonly="readonly" />
                         <span asp-validation-for="BookingDate" class="text-danger"></span>
                     </div>
-                    <div class="col">
+                    <div class="col" style="display: none">
                         <label asp-for="CheckIn" class="control-label text-black">Check-in Time</label>
                         <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control text-black" readonly="readonly"/>
                         <span asp-validation-for="CheckIn" class="text-danger"></span>
                     </div>
-                    <div class="col">
+                    <div class="col" style="display: none">
                         <label asp-for="CheckOut" class="control-label text-black">Check-out Time</label>
                         <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control text-black" readonly="readonly"/>
                         <span asp-validation-for="CheckOut" class="text-danger"></span>
