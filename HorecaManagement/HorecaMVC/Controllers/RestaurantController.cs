@@ -122,6 +122,11 @@ namespace Horeca.MVC.Controllers
             var restaurant = await restaurantService.GetRestaurantById(restaurantId);
             MutateEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees, restaurant);
             model.RestaurantId = restaurantId;
+            if (!model.Employees.Any())
+            {
+                ModelState.AddModelError("EmployeeId", "No employees to be added");
+
+            }
             return View(model);
         }
 

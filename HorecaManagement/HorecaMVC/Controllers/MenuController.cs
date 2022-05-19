@@ -153,7 +153,11 @@ namespace Horeca.MVC.Controllers
 
             ExistingMenuDishesViewModel model = new() { MenuId = id };
             model.Dishes = MenuMapper.MapRemainingDishesList(menuDishesDto, dishes);
+            if (!model.Dishes.Any())
+            {
+                ModelState.AddModelError("DishId", "No dishes to be added");
 
+            }
             return View(model);
         }
 

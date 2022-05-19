@@ -150,7 +150,11 @@ namespace Horeca.MVC.Controllers
 
             ExistingIngredientsViewModel model = new() { DishId = id };
             model.Ingredients = DishMapper.MapRemainingIngredientsList(dishIngredientDto, ingredients);
+            if (!model.Ingredients.Any())
+            {
+                ModelState.AddModelError("IngredientId", "No ingredient to be added");
 
+            }
             return View(model);
         }
 

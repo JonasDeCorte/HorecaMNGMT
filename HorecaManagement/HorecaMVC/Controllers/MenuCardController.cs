@@ -131,13 +131,16 @@ namespace Horeca.MVC.Controllers
 
             ExistingMenuCardDishesViewModel model = new() { MenuCardId = id };
             model.Dishes = MenuCardMapper.MapRemainingDishesList(menuListsDto, dishes);
-
+            if (!model.Dishes.Any())
+            {
+                ModelState.AddModelError("DishId", "No dishes to be added");
+            }
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddExistingDish(int id, ExistingMenuCardDishesViewModel model)
-        {
+        {   
             if (ModelState.IsValid)
             {
                 MenuCardDishViewModel dishModel = MenuCardMapper.MapMutateMenuCardDishModel(id, await dishService.GetDishById(model.DishId));
@@ -193,7 +196,10 @@ namespace Horeca.MVC.Controllers
 
             ExistingMenuCardMenusViewModel model = new() { MenuCardId = id };
             model.Menus = MenuCardMapper.MapRemainingMenusList(menuListsDto, menus);
-            
+            if (!model.Menus.Any())
+            {
+                ModelState.AddModelError("MenuId", "No menus to be added");
+            }
             return View(model);
         }
 
