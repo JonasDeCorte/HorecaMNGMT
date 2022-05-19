@@ -117,7 +117,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" id="addOrderBtn" asp-action="Create" asp-controller="Order"
+                <a class="btn btn-primary disabled" id="addOrderBtn" asp-action="Create" asp-controller="Order"
                    asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id">
                     Add Order
                 </a>
@@ -130,7 +130,7 @@
 <script>
     $("#dishAmount").change(function() {
         $("#addOrderBtn").attr("href", "/Order/Create?floorplanId=" + @Model.FloorplanId + "&tableId=" + @Model.Id + "&varyingDishes=" + $("#dishAmount").val());
-        if ($("#dishAmount").val() > @Model.ExistingDishes || $("#dishAmount").val() <= 0) {
+        if ($("#dishAmount").val() > @Model.ExistingDishes || $("#dishAmount").val() <= 0 || $("#dishAmount").val() == null) {
             $("#addOrderBtn").addClass("disabled");
             $("#validationFailed").text("Amount of dishes must be above 0, and cannot be higher than the amount of existing dishes");
         } else {
