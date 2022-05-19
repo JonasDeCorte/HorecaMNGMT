@@ -54,10 +54,7 @@
                                             {
                                                 <a asp-controller="Booking" asp-action="Create" asp-route-id="@schedule.Id" class="btn btn-primary">Book</a>
                                             }
-                                            @if (accountService.Authorize(PermissionConstants.Schedule_Update))
-                                            {
-                                                <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
-                                            }
+                                           
                                         }
                                              @if (accountService.Authorize(PermissionConstants.Schedule_Read))
                                             {
