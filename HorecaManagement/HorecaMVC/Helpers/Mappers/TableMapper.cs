@@ -14,7 +14,6 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = response.FloorplanId,
                 ScheduleId = response.ScheduleId,
                 BookingDetailId = response.BookingDetailId,
-                Pax = response.Pax,
                 Seats = response.Seats,
                 Name = response.Name,
                 Src = response.Src,
@@ -27,7 +26,6 @@ namespace Horeca.MVC.Helpers.Mappers
             {
                 Id = response.Id,
                 FloorplanId = response.FloorplanId,
-                Pax = response.Pax,
                 Seats = response.Seats,
                 Name = response.Name,
             };
@@ -41,7 +39,6 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = response.FloorplanId,
                 ScheduleId = response.ScheduleId,
                 BookingDetailId = response.BookingDetailId,
-                Pax = response.Pax,
                 Seats = response.Seats,
                 Name = response.Name,
                 Src = response.Src,
@@ -62,7 +59,6 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = table.FloorplanId,
                 ScheduleId = table.ScheduleId,
                 BookingDetailId = table.BookingDetailId,
-                Pax = table.Pax,
                 Seats = table.Seats,
                 Name = table.Name,
                 Src = table.Src,
@@ -85,8 +81,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = floorplanId,
                 Id = table.Id,
                 Name = table.Name,
-                Pax = table.Pax,
                 Seats = table.Seats,
+                Pax = Convert.ToInt32(table.Seats),
             };
         }
 

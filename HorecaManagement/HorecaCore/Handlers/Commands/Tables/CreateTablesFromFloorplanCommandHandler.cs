@@ -2,7 +2,6 @@
 using Horeca.Shared.Data;
 using Horeca.Shared.Data.Entities;
 using Horeca.Shared.Dtos.Floorplans;
-using Horeca.Shared.Dtos.Tables;
 using MediatR;
 using NLog;
 
