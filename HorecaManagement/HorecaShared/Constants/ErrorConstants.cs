@@ -9,5 +9,6 @@
         public const string SeatsSmaller = "Available Seats must be lower than or equal to capacity.";
         public const string AboveZero = "{0} must be higher than 0.";
         public const string Invalid = "Invalid {0}";
+        public const string AmountOfPerson = "Entered amount exceeds total capacity.";
     }
 }

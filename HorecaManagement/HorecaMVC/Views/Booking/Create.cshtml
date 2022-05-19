@@ -71,6 +71,10 @@
                     <input asp-for="Pax" class="form-control text-black" />
                     <span asp-validation-for="Pax" class="text-danger"></span>
                 </div>
+                  <div class="mt-2" style="display: none">
+                    <label asp-for="ScheduleCapacity" class="control-label text-black"></label>
+                    <input asp-for="ScheduleCapacity" class="form-control text-black" />
+                </div>
                 <div class="mt-2 mb-2">
                     <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
                     <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>

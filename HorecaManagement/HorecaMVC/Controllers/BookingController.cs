@@ -66,7 +66,7 @@ namespace Horeca.MVC.Controllers
                 var response = await BookingService.AddBooking(bookingDto);
                 if (response == null)
                 {
-                    return View(nameof(NotFound));
+                    return View(model);
                 }
 
                 return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });

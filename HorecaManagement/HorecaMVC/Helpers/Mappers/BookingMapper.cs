@@ -34,6 +34,7 @@ namespace Horeca.MVC.Helpers.Mappers
                 BookingDate = scheduleDto.ScheduleDate,
                 CheckIn = scheduleDto.StartTime,
                 CheckOut = scheduleDto.EndTime,
+                ScheduleCapacity = scheduleDto.Capacity
             };
         }
 
