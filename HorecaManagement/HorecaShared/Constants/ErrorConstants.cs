@@ -10,5 +10,8 @@
         public const string AboveZero = "{0} must be higher than 0.";
         public const string Invalid = "Invalid {0}";
         public const string AmountOfPerson = "Entered amount exceeds total capacity.";
+
+        public const string Password = "Error occured while signing in user, password incorrect";
+        public const string Username = "User does not exist";
     }
 }
