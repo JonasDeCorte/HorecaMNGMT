@@ -39,7 +39,13 @@ namespace Horeca.Core.Handlers.Queries.Floorplans
                 var floorplan = await repository.Floorplans.GetFloorplanById(request.FloorplanId, request.RestaurantId);
                 var tables = await repository.Tables.GetAllTablesbyFloorplanId(request.FloorplanId);
 
-                if (floorplan is null || tables is null)
+                if (floorplan is null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+
+                    throw new EntityNotFoundException();
+                }
+                if (tables is null)
                 {
                     logger.Error(EntityNotFoundException.Instance);
 

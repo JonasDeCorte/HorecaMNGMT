@@ -93,7 +93,7 @@ namespace Horeca.MVC.Controllers
                     }
                 }
 
-                FloorplanDetailDto newFloorplanDto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
+                FloorplanDetailDto newFloorplanDto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId(), oldFloorplanDto);
                 var response = await tableService.AddTablesFromFloorplan(newFloorplanDto, floorplanId);
                 if (response == null)
                 {
