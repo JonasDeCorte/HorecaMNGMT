@@ -277,6 +277,7 @@ namespace Horeca.Infrastructure.Data
                     User = i % 2 == 0 ? superAdmin : zaal,
                     Schedule = schedule,
                     ScheduleId = schedule.Id,
+                    RestaurantId = restaurant.Id,
                     Pax = i
                 };
                 context.Bookings.Add(booking);
@@ -284,7 +285,8 @@ namespace Horeca.Infrastructure.Data
                 if (schedule.AvailableSeat == 0)
                 {
                     schedule.Status = Constants.ScheduleStatus.Full;
-                } else
+                }
+                else
                 {
                     schedule.Status = Constants.ScheduleStatus.Available;
                 }

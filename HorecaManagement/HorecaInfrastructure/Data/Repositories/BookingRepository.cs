@@ -20,6 +20,7 @@ namespace Horeca.Infrastructure.Data.Repositories
         {
             return await context.Bookings.Include(b => b.User)
                                          .Include(x => x.Schedule)
+                                         .Include(b => b.Restaurant)
                                          .FirstOrDefaultAsync(b => b.Id == bookingID);
         }
 
@@ -27,6 +28,7 @@ namespace Horeca.Infrastructure.Data.Repositories
         {
             return await context.Bookings.Include(b => b.User)
                                          .Include(x => x.Schedule)
+                                         .Include(b => b.Restaurant)
                                          .FirstOrDefaultAsync(b => b.BookingNo == bookingNo);
         }
 
@@ -34,6 +36,7 @@ namespace Horeca.Infrastructure.Data.Repositories
         {
             return await context.Bookings.Include(b => b.User)
                                          .Include(b => b.Schedule)
+                                         .Include(b => b.Restaurant)
                                          .Where(x => x.ScheduleId.Equals(scheduleId))
                                          .ToListAsync();
         }
@@ -80,6 +83,7 @@ namespace Horeca.Infrastructure.Data.Repositories
             {
                 return await context.Bookings.Include(x => x.User)
                                              .Include(x => x.Schedule)
+                                             .Include(b => b.Restaurant)
                                              .Where(b => b.User.Id == userId)
                                              .ToListAsync();
             }
@@ -87,6 +91,7 @@ namespace Horeca.Infrastructure.Data.Repositories
             {
                 return await context.Bookings.Include(b => b.Schedule)
                                              .Include(x => x.User)
+                                             .Include(b => b.Restaurant)
                                              .Where(b => b.User.Id == userId && b.BookingStatus.Equals(status))
                                              .ToListAsync();
             }
@@ -96,6 +101,7 @@ namespace Horeca.Infrastructure.Data.Repositories
         {
             return await context.Bookings.Include(b => b.User)
                                          .Include(b => b.Schedule)
+                                         .Include(b => b.Restaurant)
                                          .Where(x => x.ScheduleId.Equals(scheduleId))
                                          .ToListAsync();
         }

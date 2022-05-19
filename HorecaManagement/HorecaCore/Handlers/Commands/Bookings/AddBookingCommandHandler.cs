@@ -52,6 +52,14 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     throw new EntityNotFoundException();
                 }
 
+                var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
+
+                if (restaurant == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+                    throw new EntityNotFoundException();
+                }
+
                 int remainingSeats = schedule.AvailableSeat - request.Model.Pax;
 
                 if (remainingSeats < 0)
@@ -62,7 +70,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 }
                 CheckScheduleStatus(schedule, remainingSeats);
 
-                Booking entity = CreateBookingObject(request, user, schedule, logger);
+                Booking entity = CreateBookingObject(request, user, schedule, restaurant, logger);
 
                 entity = await repository.Bookings.Add(entity);
 
@@ -79,7 +87,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 }
             }
 
-            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Logger logger)
+            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Restaurant restaurant, Logger logger)
             {
                 Booking booking = new();
                 booking.BookingStatus = Constants.BookingStatus.COMPLETE;
@@ -90,6 +98,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 booking.UserId = user.Id;
                 booking.Pax = request.Model.Pax;
                 booking.ScheduleId = schedule.Id;
+                booking.RestaurantId = restaurant.Id;
                 IsTimeWithinScheduleRange(request, schedule, logger);
                 booking.CheckIn = request.Model.CheckIn;
                 booking.CheckOut = request.Model.CheckOut;

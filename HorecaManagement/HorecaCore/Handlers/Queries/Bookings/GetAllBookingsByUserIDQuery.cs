@@ -60,6 +60,7 @@ namespace Horeca.Core.Handlers.Queries.Bookings
                     UserId = b.UserId,
                     Pax = b.Pax,
                     ScheduleId = b.ScheduleId,
+                    RestaurantId = b.RestaurantId
                 });
             }
         }
