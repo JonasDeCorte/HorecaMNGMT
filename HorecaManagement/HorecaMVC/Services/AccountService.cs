@@ -97,11 +97,18 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+
+            RegisterDto result = JsonConvert.DeserializeObject<RegisterDto>(await response.Content.ReadAsStringAsync());
+            if (result.ErrorMessage != null)
             {
+                if (result.ErrorMessage.Equals(ErrorConstants.Register))
+                {
+                    response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                }
                 return response;
             }
-            return null;
+
+            return response;
         }
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)

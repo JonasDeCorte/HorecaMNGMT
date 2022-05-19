@@ -9,7 +9,7 @@ using NLog;
 
 namespace Horeca.Core.Handlers.Commands.Accounts
 {
-    public class RegisterCommand : IRequest<string>
+    public class RegisterCommand : IRequest<RegisterDto>
     {
         public RegisterCommand(RegisterUserDto model)
         {
@@ -19,7 +19,7 @@ namespace Horeca.Core.Handlers.Commands.Accounts
         public RegisterUserDto Model { get; }
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterDto>
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUnitOfWork repository;
@@ -31,15 +31,20 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             this.repository = repository;
         }
 
-        public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<RegisterDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             logger.Info("trying to register {object} with username: {username}", nameof(ApplicationUser), request.Model.Username);
 
             var userExists = await userManager.FindByNameAsync(request.Model.Username);
+            string error = string.Empty;
+
             if (userExists != null)
             {
                 logger.Error(RegisterException.Instance);
-                throw new RegisterException();
+                return new RegisterDto()
+                {
+                    ErrorMessage = RegisterException.Instance.Message
+                };
             }
 
             ApplicationUser user = new()
@@ -63,14 +68,19 @@ namespace Horeca.Core.Handlers.Commands.Accounts
 
                 await repository.CommitAsync();
             }
-
             if (!result.Succeeded)
             {
                 logger.Error(RegisterException.Instance);
-                throw new RegisterException();
+                return new RegisterDto()
+                {
+                    ErrorMessage = RegisterException.Instance.Message
+                };
             }
 
-            return user.Id;
+            return new RegisterDto()
+            {
+                UserId = user.Id
+            };
         }
 
         private void AddDefaultUserPermissions(ApplicationUser user)
@@ -86,7 +96,6 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             var dishRead = allPerms.Where(x => x.Name.StartsWith("Dish_Read"));
             var applicationUserRead = allPerms.Where(x => x.Name.StartsWith("ApplicationUser_Read"));
 
-
             permsToAdd.AddRange(bookings);
             permsToAdd.AddRange(restaurantRead);
             permsToAdd.AddRange(menuCardRead);
@@ -94,7 +103,6 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             permsToAdd.AddRange(dishRead);
             permsToAdd.AddRange(applicationUserRead);
             permsToAdd.AddRange(scheduleRead);
-
 
             foreach (var item in permsToAdd)
             {

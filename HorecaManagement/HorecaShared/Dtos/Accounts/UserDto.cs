@@ -29,4 +29,10 @@
         public string? Password { get; set; }
         public bool IsOwner { get; set; }
     }
+
+    public class RegisterDto
+    {
+        public string UserId { get; set; }
+        public string ErrorMessage { get; set; }
+    }
 }

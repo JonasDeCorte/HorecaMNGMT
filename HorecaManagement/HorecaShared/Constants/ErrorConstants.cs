@@ -13,5 +13,6 @@
 
         public const string Password = "Error occured while signing in user, password incorrect";
         public const string Username = "User does not exist";
+        public const string Register = "Error occured while registering user.";
     }
 }

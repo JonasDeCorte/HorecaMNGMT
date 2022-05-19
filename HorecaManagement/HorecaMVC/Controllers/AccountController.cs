@@ -101,10 +101,12 @@ namespace Horeca.MVC.Controllers
                 RegisterUserDto user = AccountMapper.MapRegisterUser(model);
 
                 var response = await accountService.RegisterUser(user);
-                if (response == null)
+                if (response == null || response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    return View(nameof(Register));
+                    ModelState.AddModelError("Username", ErrorConstants.Register);
+                    return View(model);
                 }
+
                 return RedirectToAction(nameof(Index), "Home");
             }
             else
