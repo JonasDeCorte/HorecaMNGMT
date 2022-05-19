@@ -11,17 +11,19 @@ namespace Horeca.MVC.Controllers
         private readonly IScheduleService scheduleService;
         private readonly IAccountService accountService;
         private readonly IBookingService bookingService;
+        private readonly IRestaurantService restaurantService;
 
-        public ScheduleController(IScheduleService scheduleService, IAccountService accountService, IBookingService bookingService)
+        public ScheduleController(IScheduleService scheduleService, IAccountService accountService, IBookingService bookingService, IRestaurantService restaurantService)
         {
             this.scheduleService = scheduleService;
             this.accountService = accountService;
             this.bookingService = bookingService;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<ActionResult> Detail(int id)
         {
-            var schedule = await scheduleService.GetScheduleById(id);
+            var schedule = await scheduleService.GetScheduleById(id, restaurantService.GetCurrentRestaurantId());
             var scheduleBookings = await bookingService.GetBookingsBySchedule(id);
             if (schedule == null || scheduleBookings == null)
             {
@@ -63,7 +65,7 @@ namespace Horeca.MVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var schedule = await scheduleService.GetScheduleById(id);
+            var schedule = await scheduleService.GetScheduleById(id, restaurantService.GetCurrentRestaurantId());
             MutateScheduleViewModel model = ScheduleMapper.MapMutateScheduleModel(schedule);
 
             return View(model);

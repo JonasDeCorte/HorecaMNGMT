@@ -19,10 +19,10 @@ namespace Horeca.MVC.Services
             this.restaurantService = restaurantService;
         }
 
-        public async Task<ScheduleByIdDto> GetScheduleById(int id)
+        public async Task<ScheduleByIdDto> GetScheduleById(int id, int? restaurantId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Schedule}/{ClassConstants.Restaurant}" +
-                $"?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
+                $"?id={id}&{ClassConstants.RestaurantId}={restaurantId}");
             var response = await httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)

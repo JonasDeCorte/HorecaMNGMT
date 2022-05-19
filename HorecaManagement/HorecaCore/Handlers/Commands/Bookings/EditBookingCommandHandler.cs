@@ -50,7 +50,13 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 {
                     bookingFromDb.Schedule.AvailableSeat += bookingFromDb.Pax;
                     bookingFromDb.Pax = request.Model.Pax;
-                    bookingFromDb.Schedule.AvailableSeat -= bookingFromDb.Pax;
+
+                    var remainingSeats = bookingFromDb.Schedule.AvailableSeat -= bookingFromDb.Pax;
+                    if(remainingSeats < 0)
+                    {
+                        logger.Error(UnAvailableSeatException.Instance);
+                        throw new UnAvailableSeatException();
+                    }
                     CheckScheduleStatus(bookingFromDb);
                 }
                 bookingFromDb.BookingStatus = Constants.BookingStatus.COMPLETE;

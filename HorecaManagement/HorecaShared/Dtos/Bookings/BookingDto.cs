@@ -19,6 +19,9 @@
         public int? RestaurantId { get; set; }
 
         public int Pax { get; set; }
+
+        public string ErrorMessage { get; set; }
+
     }
 
     public class BookingHistoryDto
@@ -40,6 +43,7 @@
         public int RestaurantId { get; set; }
 
         public int Pax { get; set; }
+
     }
 
     public class EditBookingDto
