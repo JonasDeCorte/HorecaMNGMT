@@ -10,5 +10,10 @@
         /// The refresh token.
         /// </summary>
         public string RefreshToken { get; set; }
+
+        /// <summary>
+        /// The Error message.
+        /// </summary>
+        public string ErrorMessage { get; set; }
     }
 }
