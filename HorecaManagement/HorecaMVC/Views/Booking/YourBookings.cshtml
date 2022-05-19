@@ -36,12 +36,11 @@
             <table class="table table-hover table-light mb-0">
                 <thead class="table-header">
                     <tr>
-                        <th scope="col" class="col-1">Id</th>
+                        <th scope="col" class="col-1">Restaurant Id</th>
                         <th scope="col" class="col-1">Date</th>
                         <th scope="col" class="col-1">Period</th>
                         <th scope="col" class="col-1">Seats</th>
                         <th scope="col" class="col-2">Contact Name</th>
-                        <th scope="col" class="col-2">Phone Number</th>
                         <th scope="col" class="col-1">Status</th>
                         <th scope="col" class="col-4">Options</th>
                     </tr>
@@ -50,12 +49,11 @@
                     @foreach (var booking in Model.Bookings)
                     {
                     <tr>
-                        <td>@booking.Id</td>
+                        <td>@booking.RestaurantId</td>
                         <td>@booking.BookingDate.ToShortDateString()</td>
                         <td>@booking.CheckIn?.ToShortTimeString() - @booking.CheckOut?.ToShortTimeString()</td>
                         <td>@booking.Pax</td>
                         <td>@booking.FullName</td>
-                        <td>@booking.PhoneNo</td>
                         <td>@booking.BookingStatus</td>
                         <td>
                             

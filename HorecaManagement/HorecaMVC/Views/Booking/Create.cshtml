@@ -37,6 +37,11 @@
                     <input asp-for="ScheduleId" class="form-control text-black" readonly="readonly" />
                     <span asp-validation-for="ScheduleId" class="text-danger"></span>
                 </div>
+                <div style="display: none">
+                    <label asp-for="RestaurantId" class="control-label text-black"></label>
+                    <input asp-for="RestaurantId" class="form-control text-black" readonly="readonly" />
+                    <span asp-validation-for="RestaurantId" class="text-danger"></span>
+                </div>
                 <div class="form-group row mt-2">
                     <div class="col" style="display: none">
                         <label asp-for="BookingDate" class="control-label text-black">Date</label>

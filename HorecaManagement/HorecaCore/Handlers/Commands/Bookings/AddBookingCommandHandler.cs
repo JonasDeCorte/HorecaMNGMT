@@ -61,13 +61,15 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 }
 
                 int remainingSeats = schedule.AvailableSeat - request.Model.Pax;
-
+                string error = "";
                 if (remainingSeats < 0)
                 {
                     logger.Error($"Unable to add member new booking {request.Model} due to insufficient seat");
                     logger.Error(UnAvailableSeatException.Instance);
-                    throw new UnAvailableSeatException();
+                    error = UnAvailableSeatException.Instance.Message;
+                    //throw new UnAvailableSeatException();
                 }
+                
                 CheckScheduleStatus(schedule, remainingSeats);
 
                 Booking entity = CreateBookingObject(request, user, schedule, restaurant, logger);
@@ -75,7 +77,9 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 entity = await repository.Bookings.Add(entity);
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
-                return mapper.Map<BookingDto>(entity);
+                var dto =  mapper.Map<BookingDto>(entity);
+                dto.ErrorMessage = error;
+                return dto;
             }
 
             private void CheckScheduleStatus(Schedule schedule, int remainingSeats)
@@ -87,7 +91,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 }
             }
 
-            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Restaurant restaurant, Logger logger)
+            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Restaurant restaurant,Logger logger)
             {
                 Booking booking = new();
                 booking.BookingStatus = Constants.BookingStatus.COMPLETE;

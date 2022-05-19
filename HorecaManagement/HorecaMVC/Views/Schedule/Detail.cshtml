@@ -48,9 +48,6 @@
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             }
             }
-
-           
-            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
     @if (accountService.Authorize(PermissionConstants.Schedule_Update))

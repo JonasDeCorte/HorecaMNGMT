@@ -8,6 +8,10 @@ namespace Horeca.MVC.Models.Bookings
     {
         public string UserID { get; set; }
 
+        public int ScheduleId { get; set; }
+
+        public int RestaurantId { get; set; }
+
         [Display(Name = "Booking date")]
         [Required]
         public DateTime BookingDate { get; set; }
@@ -30,13 +34,11 @@ namespace Horeca.MVC.Models.Bookings
         [RegularExpression(@"\+[0-9]+", ErrorMessage = ErrorConstants.Invalid)]
         public string PhoneNo { get; set; }
 
-        public int ScheduleId { get; set; }
-
         public int ScheduleCapacity { get; set; }
 
         [Display(Name = "Amount of people")]
         [Required]
-        [Capacity("ScheduleCapacity", ErrorMessage = ErrorConstants.AmountOfPerson)]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int Pax { get; set; }
     }
 }
