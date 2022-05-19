@@ -153,8 +153,8 @@ $(document).ready(function () {
             }, 1000);
             return;
         }
-        if (seats == null || seats == '' || isNaN(seats) || seats < 0) {
-            toonerrboodschap("Error, enter amount of seats, or make sure seats is a number and greater than 0", 'warning');
+        if (seats == null || seats == '' || isNaN(seats) || seats < 0 || seats > 30) {
+            toonerrboodschap("Error, enter amount of seats, or make sure seats is a number and greater than 0 and smaller than 30 ", 'warning');
             setTimeout(function () {
                 $("#Alert").fadeOut("slow", function () {
                     var AllAlertClose = document.querySelectorAll("alertClose");
@@ -170,7 +170,7 @@ $(document).ready(function () {
             return;
         }
         if ((seats !== null && seats !== '') || (name !== null && name !== '')) {
-            if (!isNaN(seats) && seats > 0) {
+            if (!isNaN(seats) && seats > 0 && seats <= 30) {
                 fabric.Image.fromURL(img1.src, function (image) {
                     canvas.add(image.set({
                         Id: getRandomIntInclusive(1000, 9999999),
