@@ -130,9 +130,9 @@
 <script>
     $("#dishAmount").change(function() {
         $("#addOrderBtn").attr("href", "/Order/Create?floorplanId=" + @Model.FloorplanId + "&tableId=" + @Model.Id + "&varyingDishes=" + $("#dishAmount").val());
-        if ($("#dishAmount").val() > @Model.ExistingDishes) {
+        if ($("#dishAmount").val() > @Model.ExistingDishes || $("#dishAmount").val() <= 0) {
             $("#addOrderBtn").addClass("disabled");
-            $("#validationFailed").text("Amount of dishes cannot be higher than currently existing dishes");
+            $("#validationFailed").text("Amount of dishes must be above 0, and cannot be higher than the amount of existing dishes");
         } else {
             $("#addOrderBtn").removeClass("disabled");
             $("#validationFailed").text("");
