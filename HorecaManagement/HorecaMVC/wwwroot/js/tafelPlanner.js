@@ -90,9 +90,6 @@ document.getElementById('clear-canvas').onclick = function () {
     return false;
 };
 
-
-
-
 $("#ToJson").click(function () {
     var floorplanCanvas = canvas.toDatalessJSON(['Id', 'Name', 'Seats']);
     var floorplanId = $(this).data("id");
@@ -118,7 +115,12 @@ $("#FromJson").click(function () {
         canvas.setActiveObject(object);
     });
 });
-
+function toonerrboodschap(message, type) {
+    var wrapper = document.createElement('div')
+    wrapper.setAttribute('id', 'idWrapper');
+    wrapper.innerHTML = '<div id="Alert" class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + message + '<button id="alertClose" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+    alertPlaceholder.append(wrapper)
+}
 $(document).ready(function () {
     var element = document.getElementById("FromJson");
     var data = $(element).data("json");
@@ -135,6 +137,38 @@ $(document).ready(function () {
         var form = document.getElementById("AddTableForm");
         console.log(seats);
         console.log(name);
+        if (name == null || name == '') {
+            toonerrboodschap("Error, enter table name !", 'warning');
+            setTimeout(function () {
+                $("#Alert").fadeOut("slow", function () {
+                    var AllAlertClose = document.querySelectorAll("alertClose");
+                    for (var i = 0; i < AllAlertClose.length; i++) {
+                        AllAlertClose[i].click();
+                    }
+                    var wrappers = document.querySelectorAll("#idWrapper");
+                    for (var i = 0; i < wrappers.length; i++) {
+                        wrappers[i].remove();
+                    }
+                });
+            }, 1000);
+            return;
+        }
+        if (seats == null || seats == '' || isNaN(seats) || seats < 0) {
+            toonerrboodschap("Error, enter amount of seats, or make sure seats is a number and greater than 0", 'warning');
+            setTimeout(function () {
+                $("#Alert").fadeOut("slow", function () {
+                    var AllAlertClose = document.querySelectorAll("alertClose");
+                    for (var i = 0; i < AllAlertClose.length; i++) {
+                        AllAlertClose[i].click();
+                    }
+                    var wrappers = document.querySelectorAll("#idWrapper");
+                    for (var i = 0; i < wrappers.length; i++) {
+                        wrappers[i].remove();
+                    }
+                });
+            }, 1000);
+            return;
+        }
         if ((seats !== null && seats !== '') || (name !== null && name !== '')) {
             if (!isNaN(seats) && seats > 0) {
                 fabric.Image.fromURL(img1.src, function (image) {
@@ -151,20 +185,6 @@ $(document).ready(function () {
 
                 document.getElementById("btnClose").click();
             }
-        }
-        else {
-            function toonerrboodschap(message, type) {
-                var wrapper = document.createElement('div')
-                wrapper.setAttribute('id', 'idWrapper');
-                wrapper.innerHTML = '<div id="Alert" class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + message + '<button id="alertClose" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-                alertPlaceholder.append(wrapper)
-            }
-            toonerrboodschap("Error, make sure seats is a number greater than 0 and name is entered!", 'warning');
-            setTimeout(function () {
-                $("#Alert").fadeOut("slow", function () {
-                    document.getElementById("alertClose").click();
-                });
-            }, 2000);
         }
     })
 });
@@ -238,13 +258,6 @@ function canvasJSONCallBack() {
 
         console.log("cx: " + cx);
         console.log("cy: " + cy);
-
-        //var size = {
-        // width: window.innerWidth || document.body.clientWidth,
-        // height: window.innerHeight || document.body.clientHeight
-        //}
-        //console.log(size);
-        //radius = radius - 145;
 
         for (var count = 0; count < chairs; count++) {
             console.log("angle: " + count * degree_step);
