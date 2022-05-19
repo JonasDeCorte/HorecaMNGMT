@@ -96,6 +96,8 @@ namespace Horeca.MVC.Controllers
             }
             else
             {
+                var units = await unitService.GetUnits();
+                ingredient = IngredientMapper.MapCreateIngredientModel(units.ToList());
                 return View(ingredient);
             }
         }
@@ -103,11 +105,11 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             IngredientDto ingredient = await ingredientService.GetIngredientById(id);
-            var units = await unitService.GetUnits();
             if (ingredient == null)
             {
                 return View(nameof(NotFound));
             }
+            var units = await unitService.GetUnits();
             CreateIngredientViewModel model = IngredientMapper.MapEditIngredientModel(ingredient, units.ToList());
 
             return View(model);
@@ -138,6 +140,13 @@ namespace Horeca.MVC.Controllers
             }
             else
             {
+                IngredientDto ingred = await ingredientService.GetIngredientById(id);
+                if (ingredient == null)
+                {
+                    return View(nameof(NotFound));
+                }
+                var units = await unitService.GetUnits();
+                ingredient = IngredientMapper.MapEditIngredientModel(ingred, units.ToList());
                 return View(ingredient);
             }
         }
