@@ -150,6 +150,23 @@ namespace Horeca.API.Controllers
         }
 
         /// <summary>
+        ///  Delete an existing User
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        /// <response code="204">Successfully deleted an existing User</response>
+        /// <response code="400">Bad request</response
+        [PermissionAuthorize(nameof(ApplicationUser), Permissions.Delete)]
+        [HttpDelete]
+        [Route(RouteConstants.AccountConstants.DeleteUser)]
+        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(BaseResponseDto))]
+        public async Task<IActionResult> DeleteByUsername(string username)
+        {
+            return StatusCode((int)HttpStatusCode.OK, await mediator.Send(new DeleteUserCommand(username)));
+        }
+
+        /// <summary>
         /// gets all users
         /// </summary>
         /// <returns></returns>

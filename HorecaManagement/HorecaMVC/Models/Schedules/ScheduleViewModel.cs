@@ -13,6 +13,7 @@ namespace Horeca.MVC.Models.Schedules
 
         [Display(Name = "Schedule Date")]
         [Required]
+        [Date(ErrorMessage = "Date must not be in the past.")]
         public DateTime ScheduleDate { get; set; }
 
         [Display(Name = "Start Time")]

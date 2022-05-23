@@ -14,7 +14,6 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = response.FloorplanId,
                 ScheduleId = response.ScheduleId,
                 BookingDetailId = response.BookingDetailId,
-                Pax = response.Pax,
                 Seats = response.Seats,
                 Name = response.Name,
                 Src = response.Src,
@@ -27,13 +26,12 @@ namespace Horeca.MVC.Helpers.Mappers
             {
                 Id = response.Id,
                 FloorplanId = response.FloorplanId,
-                Pax = response.Pax,
                 Seats = response.Seats,
                 Name = response.Name,
             };
         }
 
-        public static TableDetailViewModel MapTableDetailModel(TableDto response, List<GetOrderLinesByTableIdDto> orders)
+        public static TableDetailViewModel MapTableDetailModel(TableDto response, List<GetOrderLinesByTableIdDto> orders, int existingDishes)
         {
             TableDetailViewModel model = new()
             {
@@ -41,10 +39,10 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = response.FloorplanId,
                 ScheduleId = response.ScheduleId,
                 BookingDetailId = response.BookingDetailId,
-                Pax = response.Pax,
                 Seats = response.Seats,
                 Name = response.Name,
                 Src = response.Src,
+                ExistingDishes = existingDishes,
             };
             foreach (var order in orders)
             {
@@ -61,7 +59,6 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = table.FloorplanId,
                 ScheduleId = table.ScheduleId,
                 BookingDetailId = table.BookingDetailId,
-                Pax = table.Pax,
                 Seats = table.Seats,
                 Name = table.Name,
                 Src = table.Src,
@@ -84,8 +81,8 @@ namespace Horeca.MVC.Helpers.Mappers
                 FloorplanId = floorplanId,
                 Id = table.Id,
                 Name = table.Name,
-                Pax = table.Pax,
                 Seats = table.Seats,
+                Pax = Convert.ToInt32(table.Seats),
             };
         }
 
@@ -110,13 +107,12 @@ namespace Horeca.MVC.Helpers.Mappers
             };
         }
 
-        public static MutateTableDto MapMutateTableDto(CanvasTableViewModel table, int floorplanId)
+        public static MutateTableDto MapMutateTableDto(CanvasTableViewModel table, int floorplanId, int restaurantId)
         {
             return new MutateTableDto()
             {
                 FloorplanId = floorplanId,
-                ScheduleId = floorplanId,
-                BookingDetailId = floorplanId,
+                ScheduleId = restaurantId,
                 Pax = Convert.ToInt32(table.Seats),
                 Seats = table.Seats,
                 Name = table.Name,

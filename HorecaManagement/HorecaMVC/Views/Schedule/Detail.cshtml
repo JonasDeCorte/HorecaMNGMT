@@ -48,9 +48,6 @@
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             }
             }
-
-           
-            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
     @if (accountService.Authorize(PermissionConstants.Schedule_Update))
@@ -74,26 +71,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var booking in Model.Bookings)
+                        @if (Model.Bookings.Any())
+                        {
+                            @foreach (var booking in Model.Bookings)
+                            {
+                                <tr>
+                                    <td>@booking.Id</td>
+                                    <td>@booking.BookingDate.ToShortDateString()</td>
+                                    <td>@booking.CheckIn?.ToShortTimeString() - @booking.CheckOut?.ToShortTimeString()</td>
+                                    <td>@booking.Pax</td>
+                                    <td>@booking.FullName</td>
+                                    <td>@booking.PhoneNo</td>
+                                    <td>@booking.BookingStatus</td>
+                                    <td>
+                                        <a asp-controller="Booking" asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
+                                        @if (accountService.Authorize(PermissionConstants.Booking_Delete))
+                                        {
+                                            <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-id="@booking.Id">
+                                                Delete
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
                         {
                             <tr>
-                                <td>@booking.Id</td>
-                                <td>@booking.BookingDate.ToShortDateString()</td>
-                                <td>@booking.CheckIn?.ToShortTimeString() - @booking.CheckOut?.ToShortTimeString()</td>
-                                <td>@booking.Pax</td>
-                                <td>@booking.FullName</td>
-                                <td>@booking.PhoneNo</td>
-                                <td>@booking.BookingStatus</td>
-                                <td>
-                                    <a asp-controller="Booking" asp-action="Detail" asp-route-bookingNo="@booking.BookingNo" class="btn btn-primary">Details</a>
-                                    @if (accountService.Authorize(PermissionConstants.Booking_Delete))
-                                    {
-                                        <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-id="@booking.Id">
-                                            Delete
-                                        </button>
-                                    }
-                                </td>
+                                <td colspan="8">This schedule currently does not have any bookings.</td>
                             </tr>
                         }
                     </tbody>

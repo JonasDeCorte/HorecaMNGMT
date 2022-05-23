@@ -6,6 +6,9 @@ namespace Horeca.Shared.Data.Entities
     {
         private ApplicationUser? _user;
         public string UserId { get; set; }
+        public Restaurant? Restaurant { get; set; }
+
+        public int? RestaurantId { get; set; }
 
         public ApplicationUser User
         {

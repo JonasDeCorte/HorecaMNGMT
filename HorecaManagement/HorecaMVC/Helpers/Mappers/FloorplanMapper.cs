@@ -43,8 +43,9 @@ namespace Horeca.MVC.Helpers.Mappers
             return model;
         }
 
-        public static FloorplanDetailDto MapFloorplanDetailDto(FloorplanCanvasViewModel model, int floorplanId, int restaurantId)
+        public static FloorplanDetailDto MapFloorplanDetailDto(FloorplanCanvasViewModel model, int floorplanId, int restaurantId, FloorplanDetailDto oldFloorplanDto)
         {
+            var oldFloorplanTables = oldFloorplanDto.Tables;
             FloorplanDetailDto dto = new()
             {
                 Id = floorplanId,
@@ -58,8 +59,11 @@ namespace Horeca.MVC.Helpers.Mappers
             dto.Tables = new List<MutateTableDto>();
             foreach (var table in model.objects)
             {
-                var tableDto = TableMapper.MapMutateTableDto(table, floorplanId);
-                dto.Tables.Add(tableDto);
+                if (!string.IsNullOrEmpty(table.Name))
+                {
+                    var tableDto = TableMapper.MapMutateTableDto(table, floorplanId, restaurantId);
+                    dto.Tables.Add(tableDto);
+                }
             }
             return dto;
         }

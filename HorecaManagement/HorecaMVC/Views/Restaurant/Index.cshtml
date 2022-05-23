@@ -29,10 +29,7 @@
                             <td>@restaurant.Name</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@restaurant.Id" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize(PermissionConstants.Restaurant_Update))
-                                {
-                                    <a asp-action="Edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit</a>
-                                }
+                                
 
                                 @if (accountService.Authorize(PermissionConstants.Restaurant_Delete))
                                 {

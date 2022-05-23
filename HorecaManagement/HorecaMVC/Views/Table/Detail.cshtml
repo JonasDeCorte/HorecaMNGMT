@@ -87,7 +87,6 @@
                             data-bs-target="#addOrderModal">
                             Add Order
                         </button>
-                        @*<a asp-action="Create" asp-controller="Order" asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id" class="btn btn-primary">Add Order</a>*@
                     }
                 </div>
             </div>
@@ -109,16 +108,20 @@
             </div>
             <div class="modal-body text-black">
                 How many different dishes will be added to this order?
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Amount of Dishes</label>
-                    <input type="text" class="form-control" id="dishAmount" placeholder="Amount of Dishes">
-                </div>
+                <form name="dishAmountForm">
+                    <div class="form-group">
+                        <label for="dishAmount">Amount of Dishes</label>
+                        <input type="text" class="form-control" id="dishAmount" placeholder="Amount of Dishes" required>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" asp-action="Create" asp-controller="Order" asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id" id="addOrderBtn">
+                <a class="btn btn-primary disabled" id="addOrderBtn" asp-action="Create" asp-controller="Order"
+                   asp-route-floorplanId="@Model.FloorplanId" asp-route-tableId="@Model.Id">
                     Add Order
                 </a>
+                <div id="validationFailed" class="text-danger"></div>
             </div>
         </div>
     </div>
@@ -126,7 +129,13 @@
 
 <script>
     $("#dishAmount").change(function() {
-        //$("#addOrderBtn").attr("asp-route-varyingDishes", $("#dishAmount").val());
         $("#addOrderBtn").attr("href", "/Order/Create?floorplanId=" + @Model.FloorplanId + "&tableId=" + @Model.Id + "&varyingDishes=" + $("#dishAmount").val());
+        if ($("#dishAmount").val() > @Model.ExistingDishes || $("#dishAmount").val() <= 0 || $("#dishAmount").val() == null) {
+            $("#addOrderBtn").addClass("disabled");
+            $("#validationFailed").text("Amount of dishes must be above 0, and cannot be higher than the amount of existing dishes");
+        } else {
+            $("#addOrderBtn").removeClass("disabled");
+            $("#validationFailed").text("");
+        }
     });
 </script>

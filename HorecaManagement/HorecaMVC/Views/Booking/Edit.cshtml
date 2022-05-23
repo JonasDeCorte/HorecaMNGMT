@@ -9,12 +9,12 @@
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@restaurantService.GetCurrentRestaurantId()">
-                    @restaurantService.GetCurrentRestaurantName()
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@Model.RestaurantId">
+                    Restaurant @Model.RestaurantId
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Detail" asp-route-id="@Model.ScheduleId">
+                <a class="text-decoration-none" asp-controller="Schedule" asp-action="Detail" asp-route-id="@Model.ScheduleId">
                     Schedule @Model.ScheduleId
                 </a>
             </li>
@@ -23,20 +23,29 @@
     </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
-            <h1>Edit Booking for @Model.BookingDate.ToShortDateString()</h1>
+            <h1>Edit the booking on @Model.BookingDate.ToShortDateString() @Model.CheckIn?.ToShortTimeString() - @Model.CheckOut?.ToShortTimeString() </h1>
         </div><div>
             <form class="w-75 mx-auto">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group" style="display: none">
                     <label asp-for="Id" class="control-label text-black"></label>
                     <input asp-for="Id" class="form-control text-black" readonly="readonly" />
-                    <span asp-validation-for="Id" class="text-danger"></span>
                 </div>
-               
+                <div class="form-group" style="display: none">
+                    <label asp-for="ScheduleAvailable" class="control-label text-black"></label>
+                    <input asp-for="ScheduleAvailable" class="form-control text-black" readonly="readonly" />
+                </div>
+                <div class="form-group" style="display: none">
+                    <label asp-for="RestaurantId" class="control-label text-black"></label>
+                    <input asp-for="RestaurantId" class="form-control text-black" readonly="readonly" />
+                </div>
                 <div style="display: none">
                     <label asp-for="ScheduleId" class="control-label text-black"></label>
                     <input asp-for="ScheduleId" class="form-control text-black" readonly="readonly" />
-                    <span asp-validation-for="ScheduleId" class="text-danger"></span>
+                </div>
+                <div class="col" style="display: none">
+                    <label asp-for="BookingNo" class="control-label text-black"></label>
+                    <input asp-for="BookingNo" class="form-control text-black" readonly="readonly" />
                 </div>
                 <div class="form-group row mt-2">
                     <div class="col" style="display: none">
@@ -44,12 +53,12 @@
                         <input asp-for="BookingDate" type="date" id="datePicker" class="form-control text-black" readonly="readonly" />
                         <span asp-validation-for="BookingDate" class="text-danger"></span>
                     </div>
-                    <div class="col">
+                    <div class="col" style="display: none">
                         <label asp-for="CheckIn" class="control-label text-black">Check-in Time</label>
                         <input asp-for="CheckIn" type="time" id="checkInPicker" class="form-control text-black" readonly="readonly"/>
                         <span asp-validation-for="CheckIn" class="text-danger"></span>
                     </div>
-                    <div class="col">
+                    <div class="col" style="display: none">
                         <label asp-for="CheckOut" class="control-label text-black">Check-out Time</label>
                         <input asp-for="CheckOut" type="time" id="checkOutPicker" class="form-control text-black" readonly="readonly"/>
                         <span asp-validation-for="CheckOut" class="text-danger"></span>
@@ -68,13 +77,12 @@
                     </div>
                 </div>
                 <div class="mt-2">
-                    <label asp-for="Pax" class="control-label text-black"></label>
+                    <label asp-for="Pax" class="control-label text-black">@Model.ScheduleAvailable seats are left.</label>
                     <input asp-for="Pax" class="form-control text-black" />
                     <span asp-validation-for="Pax" class="text-danger"></span>
                 </div>
                 <div class="mt-2 mb-2">
                     <input type="submit" value="Edit" formmethod="post" class="btn btn-primary" />
-                    <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
                 </div>
             </form>
         </div>

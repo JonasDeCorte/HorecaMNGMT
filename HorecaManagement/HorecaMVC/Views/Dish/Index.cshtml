@@ -45,10 +45,7 @@
                             <td>€@dish.Price</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@dish.DishId" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize(PermissionConstants.Dish_Update))
-                                {
-                                    <a asp-action="Edit" asp-route-id="@dish.DishId" class="btn btn-primary">Edit</a>
-                                }
+                              
 
                                 @if (accountService.Authorize(PermissionConstants.Dish_Delete))
                                 {

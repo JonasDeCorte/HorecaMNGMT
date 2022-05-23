@@ -3,20 +3,24 @@ using Horeca.MVC.Helpers.Mappers;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Bookings;
 using Microsoft.AspNetCore.Mvc;
+using Horeca.Shared.Dtos.Schedules;
+using Horeca.Shared.Constants;
 
 namespace Horeca.MVC.Controllers
 {
     public class BookingController : Controller
     {
-        private IBookingService BookingService { get; }
-        private IAccountService AccountService { get; }
-        private IScheduleService ScheduleService { get; }
+        private IBookingService BookingService;
+        private IAccountService AccountService;
+        private IScheduleService ScheduleService;
+        private readonly IRestaurantService restaurantService;
 
-        public BookingController(IBookingService bookingService, IAccountService accountService, IScheduleService scheduleService)
+        public BookingController(IBookingService bookingService, IAccountService accountService, IScheduleService scheduleService, IRestaurantService restaurantService)
         {
             this.BookingService = bookingService;
             this.AccountService = accountService;
             this.ScheduleService = scheduleService;
+            this.restaurantService = restaurantService;
         }
 
         public async Task<IActionResult> YourBookings(string status = "all")
@@ -47,7 +51,7 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Create(int id)
         {
             var user = await AccountService.GetUserByName(AccountService.GetCurrentUser().Username);
-            var schedule = await ScheduleService.GetScheduleById(id);
+            var schedule = await ScheduleService.GetScheduleById(id, restaurantService.GetCurrentRestaurantId());
             if (user == null || schedule == null)
             {
                 return View("NotFound");
@@ -64,9 +68,10 @@ namespace Horeca.MVC.Controllers
             {
                 MakeBookingDto bookingDto = BookingMapper.MapMakeBookingDto(model);
                 var response = await BookingService.AddBooking(bookingDto);
-                if (response == null)
+                if (response == null || response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    return View(nameof(NotFound));
+                    ModelState.AddModelError("Pax", ErrorConstants.ExceedSeats);
+                    return View(model);
                 }
 
                 return RedirectToAction(nameof(Detail), "Schedule", new { id = model.ScheduleId });
@@ -80,12 +85,13 @@ namespace Horeca.MVC.Controllers
         public async Task<IActionResult> Edit(string bookingNo)
         {
             BookingDto booking = await BookingService.GetBookingByNumber(bookingNo);
-            if (booking == null)
+            ScheduleByIdDto schedule = await ScheduleService.GetScheduleById(booking.ScheduleId, booking.RestaurantId);
+            if (booking == null || schedule == null)
             {
                 return View(nameof(NotFound));
             }
             EditBookingViewModel model = BookingMapper.MapEditBookingModel(booking);
-
+            model.ScheduleAvailable = schedule.AvailableSeat + booking.Pax;
             return View(model);
         }
 
@@ -105,6 +111,9 @@ namespace Horeca.MVC.Controllers
             }
             else
             {
+                ScheduleByIdDto schedule = await ScheduleService.GetScheduleById(model.ScheduleId, model.RestaurantId);
+                BookingDto booking = await BookingService.GetBookingByNumber(model.BookingNo);
+                model.ScheduleAvailable = schedule.AvailableSeat + booking.Pax;
                 return View(model);
             }
         }

@@ -103,5 +103,6 @@ namespace Horeca.Shared.Constants
         public const string ApplicationUser_Delete = $"{nameof(ApplicationUser)}_{Permissions.Delete}";
         public const string Employee_Read = $"Employee_{Permissions.Read}";
         public const string NewUser = $"{nameof(ApplicationUser)}_NewUser";
+        public const string ApplicationUser_IsOwner = $"{nameof(ApplicationUser)}_IsOwner";
     }
 }

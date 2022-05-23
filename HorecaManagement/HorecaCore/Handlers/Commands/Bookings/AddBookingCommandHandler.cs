@@ -52,24 +52,46 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                     throw new EntityNotFoundException();
                 }
 
-                int remainingSeats = schedule.AvailableSeat - request.Model.Pax;
+                var restaurant = repository.Restaurants.Get(request.Model.RestaurantId);
 
+                if (restaurant == null)
+                {
+                    logger.Error(EntityNotFoundException.Instance);
+                    throw new EntityNotFoundException();
+                }
+
+                int remainingSeats = schedule.AvailableSeat - request.Model.Pax;
+                string error = "";
                 if (remainingSeats < 0)
                 {
                     logger.Error($"Unable to add member new booking {request.Model} due to insufficient seat");
                     logger.Error(UnAvailableSeatException.Instance);
-                    throw new UnAvailableSeatException();
+                    error = UnAvailableSeatException.Instance.Message;
+                    //throw new UnAvailableSeatException();
                 }
+                
+                CheckScheduleStatus(schedule, remainingSeats);
 
-                Booking entity = CreateBookingObject(request, user, schedule, logger);
+                Booking entity = CreateBookingObject(request, user, schedule, restaurant, logger);
 
                 entity = await repository.Bookings.Add(entity);
 
                 logger.Info("adding {bookingno} with id {id}", entity.BookingNo, entity.Id);
-                return mapper.Map<BookingDto>(entity);
+                var dto =  mapper.Map<BookingDto>(entity);
+                dto.ErrorMessage = error;
+                return dto;
             }
 
-            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Logger logger)
+            private void CheckScheduleStatus(Schedule schedule, int remainingSeats)
+            {
+                if (remainingSeats == 0)
+                {
+                    schedule.Status = Constants.ScheduleStatus.Full;
+                    repository.Schedules.Update(schedule);
+                }
+            }
+
+            private static Booking CreateBookingObject(AddBookingCommand request, ApplicationUser user, Schedule schedule, Restaurant restaurant,Logger logger)
             {
                 Booking booking = new();
                 booking.BookingStatus = Constants.BookingStatus.COMPLETE;
@@ -80,6 +102,7 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 booking.UserId = user.Id;
                 booking.Pax = request.Model.Pax;
                 booking.ScheduleId = schedule.Id;
+                booking.RestaurantId = restaurant.Id;
                 IsTimeWithinScheduleRange(request, schedule, logger);
                 booking.CheckIn = request.Model.CheckIn;
                 booking.CheckOut = request.Model.CheckOut;
@@ -91,9 +114,9 @@ namespace Horeca.Core.Handlers.Commands.Bookings
                 logger.Info("checkin: " + request.Model.CheckIn + " starttime: " + schedule.StartTime);
                 logger.Info("checkout: " + request.Model.CheckOut + " starttime: " + schedule.EndTime);
 
-                if (request.Model.CheckIn.Value.AddDays(1) < schedule.StartTime || request.Model.CheckIn.Value.AddDays(1) > schedule.EndTime
+                if (request.Model.CheckIn.Value.AddDays(1) < schedule.StartTime && request.Model.CheckIn.Value.AddDays(1) > schedule.EndTime
                     ||
-                    request.Model.CheckOut.Value.AddDays(1) < schedule.StartTime || request.Model.CheckOut.Value.AddDays(1) > schedule.EndTime)
+                    request.Model.CheckOut.Value.AddDays(1) > schedule.StartTime && request.Model.CheckOut.Value.AddDays(1) < schedule.EndTime)
                 {
                     logger.Error(TimeIsNotWithinRangeException.Instance);
                     throw new TimeIsNotWithinRangeException();

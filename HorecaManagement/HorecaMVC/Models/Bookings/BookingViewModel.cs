@@ -8,11 +8,13 @@ namespace Horeca.MVC.Models.Bookings
     {
         public int Id { get; set; }
 
+        public int ScheduleId { get; set; }
+
+        public int? RestaurantId { get; set; }
+
         public string BookingNo { get; set; }
 
         public string UserID { get; set; }
-
-        public int ScheduleId { get; set; }
 
         [Display(Name = "Booking date")]
         [Required]

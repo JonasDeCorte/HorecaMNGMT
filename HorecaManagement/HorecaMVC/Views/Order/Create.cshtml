@@ -41,29 +41,22 @@
             <div class="mt-2" style="display: none;">
                 <label asp-for="FloorplanId" class="control-label text-black"></label>
                 <input asp-for="FloorplanId" class="form-control text-black" readonly="readonly"/>
-                <span asp-validation-for="FloorplanId" class="text-danger"></span>
             </div>
             <div class="mt-2" style="display: none;">
                 <label asp-for="TableId" class="control-label text-black"></label>
                 <input asp-for="TableId" class="form-control text-black" readonly="readonly"/>
-                <span asp-validation-for="TableId" class="text-danger"></span>
             </div>
             <div class="mt-2" style="display: none;">
                 <label asp-for="Name" class="control-label text-black"></label>
                 <input asp-for="Name" class="form-control text-black" readonly="readonly"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <label asp-for="DishId" class="control-label text-black">Select Dishes</label>
                 <select id="dishIds" asp-for="DishId" asp-items="@(new MultiSelectList(Model.Dishes,
                     "Id", "Name"))" class="form-control text-black" multiple="multiple" size="5">
                 </select>
+                <span asp-validation-for="DishId" class="text-danger"></span>
             </div>
-            @*<div class="form-group mt-2">
-                <label asp-for="Quantity" class="control-label text-black">Quantity</label>
-                <input asp-for="Quantity" class="form-control text-black" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>*@
             @for (int i = 0; i < Model.Quantities.Count; i++)
             {
                 <div class="form-group mt-2">
@@ -72,17 +65,8 @@
                     <span asp-validation-for="Quantities[i]" class="text-danger"></span>
                 </div>
             }
-            @*@foreach (var amount in Model.Quantities)
-            {
-                <div class="form-group mt-2">
-                    <label asp-for="@amount" class="control-label text-black">Quantity</label>
-                    <input asp-for="@amount" class="form-control text-black" />
-                    <span asp-validation-for="@amount" class="text-danger"></span>
-                </div>
-            }*@
             <div class="mt-2 mb-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </form>
     </div>

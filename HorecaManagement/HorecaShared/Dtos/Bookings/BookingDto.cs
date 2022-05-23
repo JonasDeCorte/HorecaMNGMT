@@ -1,6 +1,4 @@
-﻿using Horeca.Shared.Dtos.Schedules;
-
-namespace Horeca.Shared.Dtos.Bookings
+﻿namespace Horeca.Shared.Dtos.Bookings
 {
     public class BookingDto
     {
@@ -18,7 +16,12 @@ namespace Horeca.Shared.Dtos.Bookings
 
         public string PhoneNo { get; set; }
         public int ScheduleId { get; set; }
+        public int? RestaurantId { get; set; }
+
         public int Pax { get; set; }
+
+        public string ErrorMessage { get; set; }
+
     }
 
     public class BookingHistoryDto
@@ -37,7 +40,10 @@ namespace Horeca.Shared.Dtos.Bookings
 
         public string PhoneNo { get; set; }
         public int ScheduleId { get; set; }
+        public int RestaurantId { get; set; }
+
         public int Pax { get; set; }
+
     }
 
     public class EditBookingDto
@@ -51,6 +57,7 @@ namespace Horeca.Shared.Dtos.Bookings
 
         public string PhoneNo { get; set; }
         public int ScheduleId { get; set; }
+
         public int Pax { get; set; }
     }
 }

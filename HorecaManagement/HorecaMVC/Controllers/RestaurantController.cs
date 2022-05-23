@@ -68,8 +68,9 @@ namespace Horeca.MVC.Controllers
                 var response = await restaurantService.AddRestaurant(restaurantDto);
                 if (response == null)
                 {
-                    return View(nameof(NotFound));
+                    return View(nameof(Create));
                 }
+
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -121,18 +122,25 @@ namespace Horeca.MVC.Controllers
             var restaurant = await restaurantService.GetRestaurantById(restaurantId);
             MutateEmployeeViewModel model = RestaurantMapper.MapAddEmployeeModel(employees, restaurant);
             model.RestaurantId = restaurantId;
+            if (!model.Employees.Any())
+            {
+                ModelState.AddModelError("EmployeeId", "No employees to be added");
+
+            }
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddEmployee(MutateEmployeeViewModel model)
         {
-            var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
-            if (response == null)
+            if (ModelState.IsValid)
             {
-                return View(nameof(NotFound));
+                var response = await restaurantService.AddRestaurantEmployee(model.EmployeeId, model.RestaurantId);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
             }
-
             return RedirectToAction(nameof(Detail), new { id = model.RestaurantId });
         }
 

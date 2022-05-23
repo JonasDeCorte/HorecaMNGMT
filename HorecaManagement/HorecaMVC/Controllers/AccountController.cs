@@ -4,6 +4,7 @@ using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Accounts;
 using Horeca.Shared.Dtos.UserPermissions;
 using Microsoft.AspNetCore.Mvc;
+using Horeca.Shared.Constants;
 
 namespace Horeca.MVC.Controllers
 {
@@ -55,11 +56,16 @@ namespace Horeca.MVC.Controllers
             if (ModelState.IsValid)
             {
                 LoginUserDto user = AccountMapper.MapLoginUser(model);
-
                 var response = await accountService.LoginUser(user);
-                if (response == null)
+                if (response == null || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
-                    return View(nameof(Login));
+                    ModelState.AddModelError("Password", ErrorConstants.Password);
+                    return View(model);
+                }
+                if (response == null || response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    ModelState.AddModelError("UserName", ErrorConstants.Username);
+                    return View(model);
                 }
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -95,12 +101,13 @@ namespace Horeca.MVC.Controllers
                 RegisterUserDto user = AccountMapper.MapRegisterUser(model);
 
                 var response = await accountService.RegisterUser(user);
-                if (response == null)
+                if (response == null || response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    return View(nameof(Register));
+                    ModelState.AddModelError("Username", ErrorConstants.Register);
+                    return View(model);
                 }
 
-                return RedirectToAction(nameof(Index), new { area = "Home" });
+                return RedirectToAction(nameof(Index), "Home");
             }
             else
             {
@@ -175,6 +182,18 @@ namespace Horeca.MVC.Controllers
             {
                 return View(model);
             }
+        }
+
+        [Route("/Account/DeleteUser/{username}")]
+        public async Task<IActionResult> DeleteUser(string username)
+        {
+            var response = await accountService.DeleteUser(username);
+            if (response == null)
+            {
+                return View(nameof(NotFound));
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

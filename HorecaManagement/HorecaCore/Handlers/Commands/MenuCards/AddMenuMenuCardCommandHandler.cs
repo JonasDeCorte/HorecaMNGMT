@@ -59,7 +59,7 @@ namespace Horeca.Core.Handlers.Commands.MenuCards
                     throw new EntityNotFoundException();
                 }
                 logger.Info("check if menuCard contains dish with id {id}", entity.Id);
-                var existingMenu = menuCard.Dishes.SingleOrDefault(x => x.Id.Equals(entity.Id), null);
+                var existingMenu = menuCard.Menus.SingleOrDefault(x => x.Id.Equals(entity.Id));
 
                 if (existingMenu != null)
                 {

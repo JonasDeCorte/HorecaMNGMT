@@ -51,7 +51,6 @@
                     <label asp-for="UnitId" class="form-label text-black">Unit</label>
                     <select asp-for="UnitId" asp-items="@(new SelectList(Model.Units, "Id", "Name"))"
                             class="form-control text-black">
-                        <option value="0" class="text-black">Please select</option>
                     </select>
                 </div>
                 <div class="d-flex justify-content-end" style="width: 5%">
@@ -63,7 +62,6 @@
             </div>
             <div class="mt-2 mb-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </form>
     </div>

@@ -21,6 +21,14 @@
                 <input asp-for="Password" type="password" class="form-control text-black" id="password" placeholder="Password">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            @if (accountService.Authorize(PermissionConstants.ApplicationUser_IsOwner))
+            {
+                <div class="mt-2">
+                    <label asp-for="IsOwner" class="form-label text-black">Is the user an Owner?</label>
+                    <input asp-for="IsOwner" type="checkbox" class="form-check-input text-black" id="isOwner" placeholder="Is Owner" default>
+                    <span asp-validation-for="IsOwner" class="text-danger"></span>
+                </div>
+            }
             <div class="mt-2 mb-2">
                 <input type="submit" value="Register" formmethod="post" class="btn btn-primary text-white" />
                 <a href="javascript:history.back()" class="btn btn-secondary text-white">Go Back</a>

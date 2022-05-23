@@ -54,13 +54,12 @@
                                             {
                                                 <a asp-controller="Booking" asp-action="Create" asp-route-id="@schedule.Id" class="btn btn-primary">Book</a>
                                             }
-                                            @if (accountService.Authorize(PermissionConstants.Schedule_Update))
-                                            {
-                                                <a asp-controller="Schedule" asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
-                                            }
+                                           
                                         }
-
+                                             @if (accountService.Authorize(PermissionConstants.Schedule_Read))
+                                            {
                                             <a asp-controller="Schedule" asp-action="Detail" asp-route-id="@schedule.Id" class="btn btn-primary">Details</a>
+                                            }
                                             @if (accountService.Authorize(PermissionConstants.Schedule_Delete))
                                             {
                                                 <button id="toDeleteScheduleModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"
@@ -159,25 +158,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteMenuCardModal" data-bs-keyboard="false" tabindex="-1"
-     aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content bg-light">
-            <div class="modal-header bg-dark">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Menu Card</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-black">
-                Are you sure you want to remove this menu card from this restaurant?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                <a id="deleteMenuCardButton" class="btn btn-danger">Yes</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="deleteScheduleModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -200,7 +180,6 @@
 <script>
     $(document).ready(function(){
        $(document).on("click","#toDeleteScheduleModal",OpenModalDeleteSchedule);
-       $(document).on("click","#toDeleteMenuCardModal",OpenModalDeleteMenuCard);
        $(document).on("click","#toDeleteEmployeeModal",OpenModalDeleteEmployee);
     });
 
@@ -209,13 +188,6 @@
        var itemId = $(this).data("id");
        $('#deleteScheduleButton').attr('href', "/Schedule/Delete/" + restaurantId + "/" + itemId);
        $("#deleteScheduleModal").modal();
-    }
-
-    function OpenModalDeleteMenuCard(){
-       var restaurantId = @Model.Id;
-       var itemId = $(this).data("id");
-       $('#deleteMenuCardButton').attr('href', "/Restaurant/" + restaurantId + "/RemoveMenuCard/" + itemId);
-       $("#deleteMenuCardModal").modal();
     }
 
     function OpenModalDeleteEmployee(){

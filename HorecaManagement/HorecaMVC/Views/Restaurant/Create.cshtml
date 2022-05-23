@@ -1,6 +1,16 @@
 ﻿@model Horeca.MVC.Models.Restaurants.MutateRestaurantViewModel
 
 <div class="text-center">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none" asp-controller="Restaurant" asp-action="Index" asp-route-id="@accountService.GetCurrentUser().Id">
+                    Restaurants
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </nav>
     <div class="shadow card bg-light mt-3">
         <div class="card-header bg-dark">
             <h1>Create Restaurant</h1>
@@ -17,9 +27,8 @@
                 <input asp-for="OwnerName" class="form-control text-black" />
                 <span asp-validation-for="OwnerName" class="text-danger"></span>
             </div>
-            <div class="mt-2">
+            <div class="mt-2 mb-2">
                 <input type="submit" value="Create" formmethod="post" class="btn btn-primary" />
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </form>
     </div>

@@ -39,8 +39,8 @@ namespace Horeca.MVC.Services
 
         public async Task<UnitDto> GetUnitById(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/{id}/" +
-                $"{ClassConstants.Restaurant}/{restaurantService.GetCurrentRestaurantId()}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Unit}/" +
+                $"{ClassConstants.Restaurant}?id={id}&{ClassConstants.RestaurantId}={restaurantService.GetCurrentRestaurantId()}");
 
             var response = await httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)

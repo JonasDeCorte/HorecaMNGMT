@@ -37,34 +37,35 @@
         </div>
         <form asp-action="EditDish" class="w-75 mx-auto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mt-2">
+          <div class="form-group mt-2">
                 <label asp-for="Name" class="control-label text-black"></label>
                 <input asp-for="Name" class="form-control text-black" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <label asp-for="Category" class="control-label text-black"></label>
-                <input asp-for="Category" class="form-control text-black" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="mt-2">
-                <label asp-for="DishType" class="control-label text-black"></label>
-                <input asp-for="DishType" class="form-control text-black" />
-                <span asp-validation-for="DishType" class="text-danger"></span>
+            <div class="row mt-2">
+                <div class="col">
+                    <label asp-for="Category" class="control-label text-black"></label>
+                    <input asp-for="Category" class="form-control text-black" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="DishType" class="control-label text-black"></label>
+                    <input asp-for="DishType" class="form-control text-black" />
+                    <span asp-validation-for="DishType" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="Price" class="control-label text-black"></label>
+                    <input asp-for="Price" class="form-control text-black">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
             <div class="mt-2">
                 <label asp-for="Description" class="control-label text-black"></label>
                 <textarea asp-for="Description" class="form-control row-3 text-black"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="mt-2">
-                <label asp-for="Price" class="control-label text-black"></label>
-                <input asp-for="Price" class="form-control text-black" id="baseAmount">
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
             <div class="form-group mt-2 mb-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
             </div>
         </form>
     </div>

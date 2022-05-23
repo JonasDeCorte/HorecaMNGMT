@@ -16,7 +16,7 @@ namespace Horeca.MVC.Services
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IRestaurantService restaurantService;
 
-        public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService, 
+        public AccountService(HttpClient httpClient, IConfiguration configuration, ITokenService tokenService,
             IHttpContextAccessor httpContextAccessor, IRestaurantService restaurantService)
         {
             this.httpClient = httpClient;
@@ -34,13 +34,22 @@ namespace Horeca.MVC.Services
             {
                 Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")
             };
-            var response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
+            HttpResponseMessage response = await httpClient.SendAsync(request);
 
             TokenResultDto result = JsonConvert.DeserializeObject<TokenResultDto>(await response.Content.ReadAsStringAsync());
+            if (result.ErrorMessage != null)
+            {
+                if (result.ErrorMessage.Equals(ErrorConstants.Password))
+                {
+                    response.StatusCode = System.Net.HttpStatusCode.Forbidden;
+                }
+                if (result.ErrorMessage.Equals(ErrorConstants.Username))
+                {
+                    response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                }
+                return response;
+            }
+
             tokenService.SetAccessToken(result.AccessToken);
             tokenService.SetRefreshToken(result.RefreshToken);
 
@@ -88,11 +97,18 @@ namespace Horeca.MVC.Services
             };
 
             var response = await httpClient.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+
+            RegisterDto result = JsonConvert.DeserializeObject<RegisterDto>(await response.Content.ReadAsStringAsync());
+            if (result.ErrorMessage != null)
             {
+                if (result.ErrorMessage.Equals(ErrorConstants.Register))
+                {
+                    response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                }
                 return response;
             }
-            return null;
+
+            return response;
         }
 
         public async Task<HttpResponseMessage> RegisterAdmin(RegisterUserDto user)
@@ -225,6 +241,18 @@ namespace Horeca.MVC.Services
                 return false;
             }
             return true;
+        }
+
+        public async Task<HttpResponseMessage> DeleteUser(string username)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{configuration.GetSection("BaseURL").Value}/{ClassConstants.Account}/{ClassConstants.User}?username={username}");
+
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+            return null;
         }
     }
 }

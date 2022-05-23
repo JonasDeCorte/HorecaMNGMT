@@ -120,6 +120,14 @@ namespace Horeca.MVC.Services
             };
 
             var response = await HttpClient.SendAsync(request);
+            BookingDto result = JsonConvert.DeserializeObject<BookingDto>(await response.Content.ReadAsStringAsync());
+            if(result.ErrorMessage != null)
+            {
+                if (result.ErrorMessage.Equals(ErrorConstants.ExceedSeats))
+                {
+                    response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                }
+            }
             if (response.IsSuccessStatusCode)
             {
                 return response;

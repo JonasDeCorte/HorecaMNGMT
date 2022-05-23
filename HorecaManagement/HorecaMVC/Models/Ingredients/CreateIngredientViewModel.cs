@@ -22,8 +22,11 @@ namespace Horeca.MVC.Models.Ingredients
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int BaseAmount { get; set; }
-
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.AboveZero)]
         public int UnitId { get; set; }
+        public string? UnitName{ get; set; }
+
 
         public List<UnitViewModel> Units { get; set; } = new List<UnitViewModel>();
     }

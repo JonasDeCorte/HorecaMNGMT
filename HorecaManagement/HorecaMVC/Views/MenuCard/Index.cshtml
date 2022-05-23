@@ -39,10 +39,7 @@
                             <td>@menuCard.Name</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@menuCard.Id" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize(PermissionConstants.MenuCard_Update))
-                                {
-                                    <a asp-action="Edit" asp-route-id="@menuCard.Id" class="btn btn-primary">Edit</a>
-                                }
+                               
                                 @if (accountService.Authorize(PermissionConstants.MenuCard_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"

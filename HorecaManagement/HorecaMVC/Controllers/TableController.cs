@@ -14,13 +14,16 @@ namespace Horeca.MVC.Controllers
         private readonly IRestaurantService restaurantService;
         private readonly IFloorplanService floorplanService;
         private readonly IOrderService orderService;
+        private readonly IDishService dishService;
 
-        public TableController(ITableService tableService, IRestaurantService restaurantService, IFloorplanService floorplanService, IOrderService orderService)
+        public TableController(ITableService tableService, IRestaurantService restaurantService, IFloorplanService floorplanService, IOrderService orderService,
+            IDishService dishService)
         {
             this.tableService = tableService;
             this.restaurantService = restaurantService;
             this.floorplanService = floorplanService;
             this.orderService = orderService;
+            this.dishService = dishService;
         }
 
         [Route("/Table/Detail/{tableId}/{floorplanId}")]
@@ -28,11 +31,12 @@ namespace Horeca.MVC.Controllers
         {
             var table = await tableService.GetTableById(tableId, floorplanId);
             var orders = await orderService.GetOrderLinesByTableId(tableId);
+            var dishes = await dishService.GetDishes();
             if (table == null || orders == null)
             {
                 return View(nameof(NotFound));
             }
-            TableDetailViewModel model = TableMapper.MapTableDetailModel(table, orders);
+            TableDetailViewModel model = TableMapper.MapTableDetailModel(table, orders, dishes.Count());
 
             return View(model);
         }
@@ -48,21 +52,15 @@ namespace Horeca.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditTableViewModel table)
         {
-            Console.WriteLine("entered edit method");
             if (ModelState.IsValid)
             {
-                Console.WriteLine("entered modelstate ");
-
                 EditTableDto result = TableMapper.MapEditTableDto(table, table.FloorplanId);
 
                 var response = await tableService.EditTableFromFloorplan(result, table.FloorplanId);
                 if (response == null)
                 {
-                    Console.WriteLine("response edit method null ");
-
                     return View(nameof(NotFound));
                 }
-                Console.WriteLine("response not null edit method");
 
                 return RedirectToAction(nameof(Detail), new { tableId = table.Id, floorplanId = table.FloorplanId });
             }
@@ -95,7 +93,7 @@ namespace Horeca.MVC.Controllers
                     }
                 }
 
-                FloorplanDetailDto newFloorplanDto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId());
+                FloorplanDetailDto newFloorplanDto = FloorplanMapper.MapFloorplanDetailDto(floorplan, floorplanId, (int)restaurantService.GetCurrentRestaurantId(), oldFloorplanDto);
                 var response = await tableService.AddTablesFromFloorplan(newFloorplanDto, floorplanId);
                 if (response == null)
                 {

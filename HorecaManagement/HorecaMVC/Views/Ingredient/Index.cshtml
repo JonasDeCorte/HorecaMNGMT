@@ -45,10 +45,7 @@
                             <td>@ingredient.Unit.Name</td>
                             <td>
                                 <a asp-action="Detail" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Details</a>
-                                @if (accountService.Authorize(PermissionConstants.Ingredient_Update))
-                                {
-                                    <a asp-action="Edit" asp-route-id="@ingredient.IngredientId" class="btn btn-primary">Edit</a>
-                                }
+                           
                                 @if (accountService.Authorize(PermissionConstants.Ingredient_Delete))
                                 {
                                     <button id="toDeleteModal" type="button" class="modalbutton btn btn-danger" data-bs-toggle="modal"

@@ -42,7 +42,11 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             if (user == null)
             {
                 logger.Error(UserNotFoundException.Instance);
-                throw new UserNotFoundException();
+                return new TokenResultDto()
+                {
+                    ErrorMessage = UserNotFoundException.Instance.Message
+                };
+                //throw new UserNotFoundException();
             }
 
             var signInResult = await signInManager.PasswordSignInAsync(user, request.Model.Password, false, false);
@@ -50,7 +54,11 @@ namespace Horeca.Core.Handlers.Commands.Accounts
             if (!signInResult.Succeeded)
             {
                 logger.Error(SignInException.Instance);
-                throw new SignInException();
+                return new TokenResultDto()
+                {
+                    ErrorMessage = SignInException.Instance.Message
+                };
+                //throw new SignInException();
             }
             logger.Info("Authenticating {object} with username: {username}", nameof(ApplicationUser), request.Model.Username);
 

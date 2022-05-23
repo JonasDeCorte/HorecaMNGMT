@@ -131,21 +131,26 @@ namespace Horeca.MVC.Controllers
 
             ExistingMenuCardDishesViewModel model = new() { MenuCardId = id };
             model.Dishes = MenuCardMapper.MapRemainingDishesList(menuListsDto, dishes);
-
+            if (!model.Dishes.Any())
+            {
+                ModelState.AddModelError("DishId", "No dishes to be added");
+            }
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddExistingDish(int id, ExistingMenuCardDishesViewModel model)
-        {
-            MenuCardDishViewModel dishModel = MenuCardMapper.MapMutateMenuCardDishModel(id, await dishService.GetDishById(model.DishId));
-            MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, restaurantService.GetCurrentRestaurantId(), dishModel);
-            var response = await menuCardService.AddMenuCardDish(id, result);
-            if (response == null)
+        {   
+            if (ModelState.IsValid)
             {
-                return View(nameof(NotFound));
+                MenuCardDishViewModel dishModel = MenuCardMapper.MapMutateMenuCardDishModel(id, await dishService.GetDishById(model.DishId));
+                MutateDishMenuCardDto result = MenuCardMapper.MapMutateMenuCardDish(id, restaurantService.GetCurrentRestaurantId(), dishModel);
+                var response = await menuCardService.AddMenuCardDish(id, result);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
             }
-
             return RedirectToAction(nameof(Detail), new { id });
         }
 
@@ -191,21 +196,26 @@ namespace Horeca.MVC.Controllers
 
             ExistingMenuCardMenusViewModel model = new() { MenuCardId = id };
             model.Menus = MenuCardMapper.MapRemainingMenusList(menuListsDto, menus);
-
+            if (!model.Menus.Any())
+            {
+                ModelState.AddModelError("MenuId", "No menus to be added");
+            }
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddExistingMenu(int id, ExistingMenuCardMenusViewModel model)
         {
-            MenuCardMenuViewModel menuModel = MenuCardMapper.MapMutateMenuCardMenuModel(id, await menuService.GetMenuById(model.MenuId));
-            MutateMenuMenuCardDto result = MenuCardMapper.MapMutateMenuCardMenu(id, restaurantService.GetCurrentRestaurantId(), menuModel);
-            var response = await menuCardService.AddMenuCardMenu(id, result);
-            if (response == null)
+            if (ModelState.IsValid)
             {
-                return View(nameof(NotFound));
+                MenuCardMenuViewModel menuModel = MenuCardMapper.MapMutateMenuCardMenuModel(id, await menuService.GetMenuById(model.MenuId));
+                MutateMenuMenuCardDto result = MenuCardMapper.MapMutateMenuCardMenu(id, restaurantService.GetCurrentRestaurantId(), menuModel);
+                var response = await menuCardService.AddMenuCardMenu(id, result);
+                if (response == null)
+                {
+                    return View(nameof(NotFound));
+                }
             }
-
             return RedirectToAction(nameof(Detail), new { id });
         }
 

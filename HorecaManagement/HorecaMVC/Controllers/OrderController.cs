@@ -1,4 +1,5 @@
 ﻿using Horeca.MVC.Helpers.Mappers;
+using Horeca.MVC.Models.Dishes;
 using Horeca.MVC.Models.Orders;
 using Horeca.MVC.Services.Interfaces;
 using Horeca.Shared.Dtos.Orders;
@@ -66,6 +67,12 @@ namespace Horeca.MVC.Controllers
                 return RedirectToAction("Detail", "Table", new { tableId = model.TableId, floorplanId = model.FloorplanId });
             } else
             {
+                var dishes = await dishService.GetDishes();
+                foreach (var dish in dishes)
+                {
+                    OrderDishViewModel dishModel = DishMapper.MapOrderDishModel(dish);
+                    model.Dishes.Add(dishModel);
+                }
                 return View(model);
             }
         }
