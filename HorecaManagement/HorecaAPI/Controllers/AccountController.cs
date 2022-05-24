@@ -12,6 +12,7 @@ using Horeca.Shared.Dtos.Tokens;
 using Horeca.Shared.Dtos.UserPermissions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

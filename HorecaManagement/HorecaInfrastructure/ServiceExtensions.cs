@@ -61,8 +61,17 @@ namespace Horeca.Infrastructure
         // Adding Authentication
         public static AuthenticationBuilder AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = new JwtSettings();
-            configuration.Bind(nameof(JwtSettings), jwtSettings);
+            var jwtSettings = new JwtSettings()
+            {
+                AccessTokenExpirationMinutes = 3,
+                AccessTokenSecret = "my_too_strong_access_secret_key",
+                Audience = "https://localhost:5001",
+                Issuer = "https://localhost:5001",
+                RefreshTokenExpirationMinutes = 60,
+                RefreshTokenSecret = "my_too_strong_refresh_secret_key"
+            };
+            //configuration.Bind(nameof(JwtSettings), jwtSettings);
+
             services.AddSingleton(jwtSettings);
             return services.AddAuthentication(x =>
             {
